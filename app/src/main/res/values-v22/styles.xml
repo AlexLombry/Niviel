@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ButtonPrimary" parent="@style/BaseButton">
+        <item name="android:backgroundTint">@color/primary</item>
+    </style>
+
+    <style name="ButtonInfo" parent="@style/BaseButton">
+        <item name="android:backgroundTint">@color/info</item>
+    </style>
+
+    <style name="ButtonSuccess" parent="@style/BaseButton">
+        <item name="android:backgroundTint">@color/success</item>
+    </style>
+
+    <style name="ButtonWarning" parent="@style/BaseButton">
+        <item name="android:backgroundTint">@color/warning</item>
+    </style>
+
+    <style name="ButtonDanger" parent="@style/BaseButton">
+        <item name="android:backgroundTint">@color/danger</item>
+    </style>
+</resources>
