@@ -1,10 +1,62 @@
 <resources>
+
+    <!--
+        Référence:
+            &#160; espace
+    -->
+
     <string name="app_name">Niviel</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="email">Email</string>
-    <string name="password">Mot de passe</string>
+    <string name="action_settings">Réglages</string>
+    <string name="title_activity_login">Connexion</string>
+
+    <string name="title_activity_profile">Profil</string>
+    <string name="title_activity_personal_record">@string/personal_records</string>
+
+    <!-- CUBES -->
+    <string name="cube_3x3">Rubik&#8216;s cube</string>
+    <string name="cube_3x3_blind">3x3 blindfolded</string>
+    <string name="cube_3x3_oh">3x3 one hand</string>
+    <string name="cube_3x3_fm">3x3 fewest moves</string>
+    <string name="cube_2x2">Rubik&#8216;s cube 2x2</string>
+    <string name="cube_4x4">Rubik&#8216;s cube 4x4</string>
+    <string name="cube_5x5">Rubik&#8216;s cube 5x5</string>
+    <string name="cube_6x6">Rubik&#8216;s cube 6x6</string>
+    <string name="cube_7x7">Rubik&#8216;s cube 7x7</string>
+    <string name="megaminx">Megaminx</string>
+    <string name="piraminx">Piramix</string>
+    <string name="square_1">Square-1</string>
+    <string name="cube_clock">Rubik&#8216;s clock</string>
+    <string name="skewb">Skewb</string>
+
+    <!-- Records -->
+    <string name="personal_records">Records personnels</string>
+    <string name="single">Single :&#160;</string>
+    <string name="average">Average :&#160;</string>
+    <string name="time">Temps :&#160;</string>
+    <string name="nr">Classement national :&#160;</string>
+    <string name="cr">Classement continental :&#160;</string>
+    <string name="wr">Classement mondial :&#160;</string>
+
+    <!-- Fake records -->
+    <string name="fake_single">5.89</string>
+    <string name="fake_average">7.45</string>
+
+    <!-- Errors -->
+    <string name="error_connection">Erreur de connexion</string>
+    <string name="error_interpretation_html">Erreur d&#8216;interpretation du code HTML</string>
+
+
+    <!-- Actions -->
     <string name="enter">Valider</string>
     <string name="sign_up">Inscription</string>
     <string name="sign_in">Connexion</string>
+    <string name="reload">Recharger</string>
+    <string name="more_info">Plus d&#8216;infos</string>
+    <string name="ok">OK</string>
+
+    <!-- Others -->
+    <string name="email">Email</string>
+    <string name="password">Mot de passe</string>
+    <string name="second">s</string>
+    <string name="zero">0</string>
 </resources>
