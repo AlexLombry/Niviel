@@ -18,14 +18,10 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Conversions;
 import com.adrastel.niviel.callbacks.VolleyCallback;
 import com.adrastel.niviel.connectivity.WcaAuth;
 
 import org.json.JSONException;
-
-import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -159,7 +155,6 @@ public class LoginActivity extends AppCompatActivity {
                      *
                      */
 
-                // TODO: lire java doc
 
 
 
@@ -190,7 +185,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
 
-                // todo: Mettre une vérification (pare-feu)
 
                 return false;
             }
@@ -280,7 +274,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 Toast.makeText(getApplicationContext(), description, Toast.LENGTH_LONG).show();
-                // TODO: faire une page d'erreur
                 //webView.loadUrl(oauth);
             }
         });

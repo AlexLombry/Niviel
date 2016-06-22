@@ -85,8 +85,6 @@ public class Record {
         return gson.toJson(this);
 
      }
-
-
     // Getters
 
 

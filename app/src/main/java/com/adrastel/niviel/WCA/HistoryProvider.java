@@ -68,7 +68,6 @@ public class HistoryProvider {
             }*/
 
             if(isEvent(tr)) {
-                Log.d("event", tr.text(), true);
                 bufferHistory.setEvent(tr.text());
             }
 
@@ -81,7 +80,6 @@ public class HistoryProvider {
                  * On verifie le HTML si c'est un sous titre
                  */
                 if (isTitle(tr)) {
-                    //Log.d("titre", tr.text());
 
                     if (!checkHtml(hydrate(tr))) {
                         Toast.makeText(context, context.getString(R.string.error_interpretation_html), Toast.LENGTH_LONG).show();
@@ -190,6 +188,7 @@ public class HistoryProvider {
 
     }
 
+    //todo resourdre le pb des competitions vides
     /**
      *
      * On donne une ligne brut, et hydrate dispatch les element et les rassemble dans un bufferhidtory
@@ -203,9 +202,6 @@ public class HistoryProvider {
      * @return un tempon de history
      */
     private static BufferHistory hydrate(Element tr, BufferHistory oldBuffer) {
-        if(oldBuffer != null) {
-            Log.d("before", oldBuffer.getEvent());
-        }
 
         BufferHistory bufferHistory = new BufferHistory();
 

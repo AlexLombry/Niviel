@@ -1,0 +1,126 @@
+[{
+	"average": "26.23",
+	"competitions": [{
+		"average": "26.23",
+		"best": "20.71",
+		"competition": "Hem MariCubik Open 2016",
+		"event": "Rubik\u0027s Cube",
+		"place": "26",
+		"result_details": "28.50   34.02   28.68   20.71   21.50",
+		"round": "Second"
+	}, {
+		"average": "28.56",
+		"best": "23.28",
+		"event": "Rubik\u0027s Cube",
+		"place": "26",
+		"result_details": "25.72   23.28   43.09   25.27   34.68",
+		"round": "First"
+	}, {
+		"average": "29.92",
+		"best": "25.71",
+		"competition": "Open Cube Project 2016",
+		"event": "Rubik\u0027s Cube",
+		"place": "73",
+		"result_details": "29.46   41.70   25.71   28.41   31.90",
+		"round": "First"
+	}],
+	"cr_average": "5200",
+	"cr_single": "4801",
+	"event": "Rubik\u0027s Cube",
+	"nr_average": "401",
+	"nr_single": "373",
+	"single": "20.71",
+	"wr_average": "20702",
+	"wr_single": "19082"
+}, {
+	"average": "",
+	"competitions": [{
+		"average": " ",
+		"best": "2:40.34",
+		"competition": "Hem MariCubik Open 2016",
+		"event": "4x4 Cube",
+		"place": "23",
+		"result_details": "2:40.34   3:44.68",
+		"round": "Combined First"
+	}, {
+		"average": " ",
+		"best": "2:59.75",
+		"competition": "Open Cube Project 2016",
+		"event": "4x4 Cube",
+		"place": "55",
+		"result_details": "DNF   2:59.75",
+		"round": "Combined First"
+	}],
+	"cr_average": " ",
+	"cr_single": "4572",
+	"event": "4x4 Cube",
+	"nr_average": "",
+	"nr_single": "335",
+	"single": "2:40.34",
+	"wr_average": " ",
+	"wr_single": "14657"
+}, {
+	"average": "7.62",
+	"competitions": [{
+		"average": "7.62",
+		"best": "5.25",
+		"competition": "Hem MariCubik Open 2016",
+		"event": "2x2 Cube",
+		"place": "16",
+		"result_details": "8.77   5.25   7.68   7.22   7.97",
+		"round": "Second"
+	}, {
+		"average": "10.59",
+		"best": "6.43",
+		"event": "2x2 Cube",
+		"place": "27",
+		"result_details": "12.66   10.43   6.43   12.52   8.81",
+		"round": "First"
+	}, {
+		"average": "7.87",
+		"best": "6.37",
+		"competition": "Open Cube Project 2016",
+		"event": "2x2 Cube",
+		"place": "56",
+		"result_details": "6.37   8.17   8.51   7.86   7.57",
+		"round": "First"
+	}],
+	"cr_average": "3457",
+	"cr_single": "3367",
+	"event": "2x2 Cube",
+	"nr_average": "238",
+	"nr_single": "238",
+	"single": "5.25",
+	"wr_average": "11416",
+	"wr_single": "11030"
+}, {
+	"average": "1:06.49",
+	"competitions": [],
+	"cr_average": "3022",
+	"cr_single": "3572",
+	"event": "3x3 one-handed",
+	"nr_average": "220",
+	"nr_single": "266",
+	"single": "1:01.13",
+	"wr_average": "10984",
+	"wr_single": "12625"
+}, {
+	"average": "13.62",
+	"competitions": [{
+		"average": "13.62",
+		"best": "9.36",
+		"competition": "Open Cube Project 2016",
+		"event": "Pyraminx",
+		"place": "33",
+		"result_details": "9.36   13.11   17.71   12.71   15.03",
+		"round": "Combined First"
+	}],
+	"cr_average": "2371",
+	"cr_single": "2453",
+	"event": "Pyraminx",
+	"nr_average": "140",
+	"nr_single": "142",
+	"single": "9.36",
+	"wr_average": "7037",
+	"wr_single": "6991"
+}]
