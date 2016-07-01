@@ -8,6 +8,8 @@ public class BufferRecord extends Record {
     }
 
 
+
+
     public void setEvent(String event) {
         this.event = event;
     }

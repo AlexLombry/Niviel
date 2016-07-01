@@ -6,27 +6,14 @@
     -->
 
     <string name="app_name">Niviel</string>
-    <string name="action_settings">Réglages</string>
-    <string name="title_activity_login">Connexion</string>
 
-    <string name="title_activity_profile">Profil</string>
-    <string name="title_activity_personal_record">@string/personal_records</string>
+
+    <!-- Activities -->
+    <string name="title_activity_record">@string/personal_records</string>
+    <string name="title_activity_history">@string/history</string>
 
     <!-- CUBES -->
     <string name="cube_3x3">Rubik&#8216;s cube</string>
-    <string name="cube_3x3_blind">3x3 blindfolded</string>
-    <string name="cube_3x3_oh">3x3 one hand</string>
-    <string name="cube_3x3_fm">3x3 fewest moves</string>
-    <string name="cube_2x2">Rubik&#8216;s cube 2x2</string>
-    <string name="cube_4x4">Rubik&#8216;s cube 4x4</string>
-    <string name="cube_5x5">Rubik&#8216;s cube 5x5</string>
-    <string name="cube_6x6">Rubik&#8216;s cube 6x6</string>
-    <string name="cube_7x7">Rubik&#8216;s cube 7x7</string>
-    <string name="megaminx">Megaminx</string>
-    <string name="piraminx">Piramix</string>
-    <string name="square_1">Square-1</string>
-    <string name="cube_clock">Rubik&#8216;s clock</string>
-    <string name="skewb">Skewb</string>
 
     <!-- Records -->
     <string name="personal_records">Records personnels</string>
@@ -41,9 +28,11 @@
     <string name="history">Historique</string>
     <string name="competition">Competition :&#160;</string>
     <string name="round">Round :&#160;</string>
-    <string name="place">Place :&#160;</string>
     <string name="best">Meilleur :&#160;</string>
     <string name="details">Détails :&#160;</string>
+
+    <!-- Ranking -->
+    <string name="ranking">Classement</string>
 
     <!-- Fake records -->
     <string name="fake_single">5.89</string>
@@ -52,20 +41,21 @@
     <!-- Errors -->
     <string name="error_connection">Erreur de connexion</string>
     <string name="error_interpretation_html">Erreur d&#8216;interpretation du code HTML</string>
+    <string name="error_no_local_data">Pas de données locales</string>
 
 
     <!-- Actions -->
-    <string name="enter">Valider</string>
-    <string name="sign_up">Inscription</string>
-    <string name="sign_in">Connexion</string>
+    <string name="settings">Réglages</string>
+    <string name="profile">Profil</string>
     <string name="reload">Recharger</string>
     <string name="more_info">Plus d&#8216;infos</string>
+    <string name="expend">Étendre</string>
+    <string name="share">Partager</string>
 
     <string name="ok">OK</string>
 
     <!-- Others -->
-    <string name="email">Email</string>
-    <string name="password">Mot de passe</string>
     <string name="second">s</string>
     <string name="zero">0</string>
+
 </resources>

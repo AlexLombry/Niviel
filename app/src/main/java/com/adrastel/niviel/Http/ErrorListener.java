@@ -2,7 +2,6 @@ package com.adrastel.niviel.Http;
 
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 

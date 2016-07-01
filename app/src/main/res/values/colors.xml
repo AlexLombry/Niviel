@@ -4,19 +4,13 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="color_button">#FFFFFF</color>
-
-    <color name="primary">@color/colorPrimary</color>
+    <color name="content">#424242</color>
 
     <!-- 600 green -->
-    <color name="success">#43A047</color>
 
     <!-- 700 cyan -->
-    <color name="info">#0097A7</color>
 
     <!-- 800 orange -->
-    <color name="warning">#EF6C00</color>
 
     <!-- 900 red -->
-    <color name="danger">#B71C1C</color>
 </resources>

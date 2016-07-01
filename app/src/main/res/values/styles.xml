@@ -17,28 +17,4 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="BaseButton">
-        <item name="android:textColor">@color/color_button</item>
-    </style>
-
-    <style name="ButtonPrimary" parent="@style/BaseButton">
-        <item name="android:background">@color/primary</item>
-    </style>
-
-    <style name="ButtonInfo" parent="@style/BaseButton">
-        <item name="android:background">@color/info</item>
-    </style>
-
-    <style name="ButtonSuccess" parent="@style/BaseButton">
-        <item name="android:background">@color/success</item>
-    </style>
-
-    <style name="ButtonWarning" parent="@style/BaseButton">
-        <item name="android:background">@color/warning</item>
-    </style>
-
-    <style name="ButtonDanger" parent="@style/BaseButton">
-        <item name="android:background">@color/danger</item>
-    </style>
-
 </resources>

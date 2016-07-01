@@ -1,43 +1,41 @@
 package com.adrastel.niviel.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Log;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import com.adrastel.niviel.fragments.BaseFragment;
+import com.adrastel.niviel.fragments.HistoryFragment;
+import com.adrastel.niviel.fragments.RankingFragment;
+import com.adrastel.niviel.fragments.RecordFragment;
 
 public class MainActivity extends AppCompatActivity {
 
 
     private Context context;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private FragmentManager fragmentManager;
+    private BaseFragment fragment;
 
 
+    /**
+     * Lors de la creation de l'activité
+     * @param savedInstanceState bundle
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,170 +43,54 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final ActionBar actionBar = getSupportActionBar();
+
+        if(actionBar != null) {
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+        fragmentManager = getSupportFragmentManager();
+
         context = getApplicationContext();
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        SharedPreferences preferences = context.getSharedPreferences(Constants.SECRETS.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        assert fab != null;
-        fab.setOnClickListener(new View.OnClickListener() {
+        if(savedInstanceState != null && fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT) != null) {
+            Log.d("plein");
+            this.fragment = (BaseFragment) fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT);
+
+        }
+        else {
+            Log.d("vide");
+            this.fragment = new RecordFragment();
+
+        }
+
+        switchFragment(fragment, "Hello");
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), ProfileActivity.class);
-                startActivity(intent);
+            public boolean onNavigationItemSelected(MenuItem item) {
 
-                /*WcaAPI api = new WcaAPI(view.getContext(), null);
-                api.getRecord("2016DERO01", new ProfileCallback() {
-                    @Override
-                    public void onSuccess(Profile response) {
-                        Log.d(response.getWca_id());
-                        Log.d(response.getName());
-                        Log.d(response.getGender());
-                    }
+                // On choisit le fragment
+                BaseFragment fragment = selectDrawerItem(item);
+                switchFragment(fragment, item.getTitle());
 
-                    @Override
-                    public void onError(int errorCode, String body) {
-                        Log.e(errorCode, body);
-                    }
-                });*/
+                item.setChecked(true);
+                closeDrawer();
+                return true;
             }
         });
 
-        int expires_in = preferences.getInt(Constants.PREFERENCES.EXPIRES_IN, 0);
-
-
-
-
-
-
-        //Intent intent = new Intent(this, LoginActivity.class);
-
-        //startActivityForResult(intent, Constants.CODES.BASIC_REQUEST);
-
-
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if(requestCode == Constants.CODES.BASIC_REQUEST  && resultCode == Activity.RESULT_OK) {
-            HashMap<String, String> token = (HashMap<String, String>) data.getSerializableExtra(Constants.EXTRAS.AUTHORIZATION_CODE);
-
-            String access_token = token.get("access_token");
-            String token_type = token.get("token_type");
-            String scope = token.get("scope");
-            int created_at = Integer.parseInt(token.get("created_at"));
-            int expires_in = Integer.parseInt(token.get("expires_in"));
-
-            final SharedPreferences preferences = context.getSharedPreferences(Constants.SECRETS.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-
-
-
-            /*editor.putString(Constants.PREFERENCES.ACCESS_TOKEN, access_token);
-            editor.putString(Constants.PREFERENCES.TOKEN_TYPE, token_type);
-            editor.putString(Constants.PREFERENCES.SCOPE, scope);
-            editor.putInt(Constants.PREFERENCES.CREATED_AT, created_at);
-            editor.putInt(Constants.PREFERENCES.EXPIRES_IN, expires_in);*/
-
-            getUserId(access_token, new VolleyCallback() {
-                @Override
-                public void onSuccess(String stringResponse) throws JSONException {
-
-                    //JSONObject root = new JSONObject(stringResponse);
-                    //JSONObject me = root.getJSONObject("me");
-
-                    //HashMap<String, String> response = JsonStringToMap(me);
-
-
-                    //SharedPreferences.Editor editor = preferences.edit();
-
-
-
-                    //editor.apply();
-                }
-            });
-
-
-
-
-        }
-
-    }
-
-    private void getUserId(final String access_token, final VolleyCallback callback) {
-        //String url = "https://www.worldcubeassociation.org/api/v0/users/2016DERO01";
-
-        String url = Constants.API.ME;
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    callback.onSuccess(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("HTTP Error");
-
-                try {
-                    String body = new String(error.networkResponse.data, "utf-8");
-                    Log.d(body);
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-
-                params.put("Authorization", "Bearer " + access_token);
-
-                return params;
-            }
-
-        };
-
-        queue.add(request);
-
-    }
-
-    public interface VolleyCallback {
-        void onSuccess(String response) throws JSONException;
     }
 
     /**
-     *
-     * A partir d'une String en JSON retourne un HashMap
-     *
-     * @param request la requete format JSON
-     * @return HashMap
-     * @throws JSONException si la conversion en JSONObject rate
+     * On inflate le menu
+     * @param menu menu
+     * @return true pour l'instancier
      */
-    public HashMap<String, String> JsonStringToMap(JSONObject request) throws JSONException {
-
-        HashMap<String, String> response = new HashMap<>();
-        //JSONObject json = new JSONObject(request);
-        Iterator<?> keys = request.keys();
-
-        while(keys.hasNext()) {
-            String key = (String) keys.next();
-            String value = request.getString(key);
-            response.put(key, value);
-        }
-
-        return response;
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -216,17 +98,120 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Lors d'un clique de la toolbar
+     * @param item item
+     * @return true pour arreter l'execution
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+            case android.R.id.home:
+                openDrawer();
+                return true;
+
             case R.id.action_personal_records:
 
-                Intent intent = new Intent(this, ProfileActivity.class);
+                Intent intent = new Intent(this, RecordActivity.class);
                 startActivity(intent);
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Si on presse back, on ferme le menu
+     */
+    @Override
+    public void onBackPressed() {
+
+        if(isDrawerOpen()) {
+            closeDrawer();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    /**
+     * On sauvegarde le fragment actuel
+     * @param outState bundle
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if(fragment != null) {
+            fragmentManager.putFragment(outState, Constants.STORAGE.FRAGMENT, fragment);
+        }
+    }
+
+    /**
+     * Choisit le fragment à prendre
+     * @param item item
+     */
+    private BaseFragment selectDrawerItem(MenuItem item) {
+        BaseFragment fragment;
+
+        switch(item.getItemId()) {
+            case R.id.nav_profile:
+                fragment = new RecordFragment();
+                break;
+
+            case R.id.nav_history:
+                fragment = new HistoryFragment();
+                break;
+
+            case R.id.nav_ranking:
+                fragment = new RankingFragment();
+                break;
+
+            default:
+                fragment = new RecordFragment();
+        }
+
+        this.fragment = fragment;
+        return fragment;
+    }
+
+    /**
+     * Change de fragment
+     * @param fragment fragment
+     * @param title titre
+     */
+    private void switchFragment(BaseFragment fragment, CharSequence title) {
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .commit();
+
+        setTitle(fragment.getTitle());
+    }
+
+    /**
+     * Ouvre le menu
+     */
+    private void openDrawer() {
+        if(drawerLayout != null) {
+            drawerLayout.openDrawer(GravityCompat.START);
+        }
+    }
+
+    /**
+     * Ferme le menu
+     */
+    private void closeDrawer() {
+        if(drawerLayout != null) {
+            drawerLayout.closeDrawers();
+        }
+    }
+
+    /**
+     * Regarde si le menu est ouvert
+     * @return true si il est ouver
+     */
+    private boolean isDrawerOpen() {
+        return drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START);
     }
 }

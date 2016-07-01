@@ -7,7 +7,6 @@ import com.adrastel.niviel.Models.BufferRecord;
 import com.adrastel.niviel.Models.History;
 import com.adrastel.niviel.Models.Record;
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Log;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Personal Record decode a partir du code HTML les record du joueur
  */
-public class RecordProvider {
+public class RecordProvider extends Provider{
 
 
     /**

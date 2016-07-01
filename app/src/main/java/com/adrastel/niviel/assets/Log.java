@@ -14,6 +14,8 @@ public class Log {
         android.util.Log.d(TAG, tag + ": \"" + message + "\"");
     }
 
+
+
     public static void e(String message)  {
         android.util.Log.e(TAG, message);
     }

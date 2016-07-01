@@ -2,7 +2,9 @@ package com.adrastel.niviel.Models;
 
 import com.google.gson.Gson;
 
-public class History {
+import java.io.Serializable;
+
+public class History extends BaseModel implements Serializable{
 
     /**
      * Le type de cube
@@ -55,7 +57,6 @@ public class History {
         average = history.getAverage();
         result_details = history.getResult_details();
     }
-
 
     // Pour les logs
     @Override

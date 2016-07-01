@@ -14,13 +14,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.adrastel.niviel.Models.Record;
+import com.adrastel.niviel.Models.History;
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.WCA.RecordProvider;
-import com.adrastel.niviel.adapters.RecordAdapter;
+import com.adrastel.niviel.WCA.HistoryProvider;
+import com.adrastel.niviel.adapters.HistoryAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
-import com.android.volley.DefaultRetryPolicy;
+import com.adrastel.niviel.assets.Log;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -36,65 +36,34 @@ import org.jsoup.nodes.Document;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class RecordFragment extends HtmlFragment {
+public class HistoryFragment extends HtmlFragment {
 
-    // Composants
     private Activity activity;
-    private RequestQueue requestQueue;
+    private HistoryAdapter adapter;
     private SharedPreferences preferences;
     private ConnectivityManager connectivityManager;
+    private ArrayList<History> histories = new ArrayList<>();
+    private RequestQueue requestQueue;
 
-    // Adapters
-    private RecordAdapter adapter;
-
-    // Collections
-    private ArrayList<Record> records = new ArrayList<>();
-
-    // Widgets
     private ProgressBar progressBar;
 
-    private static final String Mathias = "2016DERO01";
-    private static final String Lucas = "2011ETTE01";
-
-    private static final String WCA_ID = Lucas;
-    private static final String BASE_URL = "https://www.worldcubeassociation.org/results/p.php?i=";
-
-
-
-    /**
-     * Le code non dépendant du layout lors de la creation du bundle
-     * @param savedInstanceState bundle
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // On initialise les composants
-
         activity = getActivity();
-        preferences = activity.getSharedPreferences(Constants.SECRETS.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         requestQueue = Volley.newRequestQueue(activity);
+        preferences = activity.getSharedPreferences(Constants.SECRETS.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        // On initilalise l'adapter
-        adapter = new RecordAdapter(records);
-
+        adapter = new HistoryAdapter(histories);
     }
 
-    /**
-     * Le code dépendant du layout lors de la creation du bundle
-     * @param inflater inlfater
-     * @param container vue parent
-     * @param savedInstanceState bundle
-     * @return vue enfant
-     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-        // On initialise le recyclerview
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_list_recycler);
         assert recyclerView != null;
 
@@ -103,8 +72,9 @@ public class RecordFragment extends HtmlFragment {
 
         recyclerView.setAdapter(adapter);
 
-        // On initialise le progressbar
         progressBar = (ProgressBar) view.findViewById(R.id.fragment_list_loader);
+
+        progressBar.setVisibility(View.VISIBLE);
 
         return view;
     }
@@ -113,21 +83,20 @@ public class RecordFragment extends HtmlFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        progressBar.setVisibility(View.VISIBLE);
 
         // On charge les données si elles sont dans la RAM
-        if(savedInstanceState != null && savedInstanceState.getString(Constants.STORAGE.RECORDS, null) != null) {
+        if(savedInstanceState != null && savedInstanceState.getString(Constants.STORAGE.HISTORY, null) != null) {
 
 
-            String json = savedInstanceState.getString(Constants.STORAGE.RECORDS, null);
+            String json = savedInstanceState.getString(Constants.STORAGE.HISTORY, null);
 
             if(json != null) {
-                Type type = new TypeToken<ArrayList<Record>>() {}.getType();
+                Type type = new TypeToken<ArrayList<History>>() {}.getType();
                 Gson gson = new Gson();
 
-                ArrayList<Record> records = gson.fromJson(json, type);
+                ArrayList<History> histories = gson.fromJson(json, type);
 
-                refreshData(records);
+                refreshData(histories);
 
             }
 
@@ -145,7 +114,6 @@ public class RecordFragment extends HtmlFragment {
             progressBar.setVisibility(View.GONE);
             Toast.makeText(activity, getString(R.string.error_connection), Toast.LENGTH_LONG).show();
         }
-
     }
 
     /**
@@ -158,47 +126,23 @@ public class RecordFragment extends HtmlFragment {
 
         // todo: mettre en parcelable
         Gson gson = new Gson();
-        String json = gson.toJson(records);
+        String json = gson.toJson(histories);
 
-        outState.putString(Constants.STORAGE.RECORDS, json);
+        outState.putString(Constants.STORAGE.HISTORY, json);
     }
 
     @Override
     public String getTitle() {
-        return activity != null ? activity.getString(R.string.title_activity_record) : null;
-    }
-
-    /**
-     * Retourne l'URL utilisée pour faire des requete http
-     * @return url
-     */
-    public static String getUrl() {
-        return BASE_URL + WCA_ID;
+        return activity != null ? activity.getString(R.string.title_activity_history) : null;
     }
 
 
-
-    /**
-     * Actualise les records
-     * @param records records
-     */
-    private void refreshData(ArrayList<Record> records) {
-        this.records.clear();
-        this.records.addAll(records);
-        adapter.notifyDataSetChanged();
-    }
-
-    /**
-     * Récupere les records via une requete HTTP
-     */
     private void requestData() {
-        progressBar.setVisibility(View.VISIBLE);
-        StringRequest request = new StringRequest(Request.Method.GET, getUrl(), new Response.Listener<String>() {
 
+        StringRequest request = new StringRequest(Request.Method.GET, RecordFragment.getUrl(), new Response.Listener<String>() {
             @Override
             public void onResponse(final String response) {
 
-                // Comme le traitement est lourd, on met le code dans un nouveau Thread
 
                 new Thread(new Runnable() {
 
@@ -209,7 +153,10 @@ public class RecordFragment extends HtmlFragment {
                         Document document = Jsoup.parse(response);
 
                         // On remplace les anciennes données par des nouvelles
-                        final ArrayList<Record> records = RecordProvider.getRecord(activity, document, true);
+                        final ArrayList<History> histories = HistoryProvider.getHistory(activity, document);
+
+                        Gson gson = new Gson();
+                        Log.d(gson.toJson(histories));
 
                         // todo ne pas oublier d'ajouter le record pour faire des comparaisons
                         //HistoryProvider.getHistory(activity, document);
@@ -219,56 +166,64 @@ public class RecordFragment extends HtmlFragment {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                refreshData(records);
+                                refreshData(histories);
                                 progressBar.setVisibility(View.GONE);
                             }
                         });
 
                         // On sauvegarde le record en JSON via Gson
-                        saveData(records, Constants.STORAGE.RECORDS);
+                        saveData(histories, Constants.STORAGE.HISTORY);
 
                     }
                 }).start();
+
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(activity, activity.getString(R.string.error_connection), Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.GONE);
+                Toast.makeText(activity, getString(R.string.error_connection), Toast.LENGTH_LONG).show();
             }
         });
 
-        // On limite le nombre de requetes
-        request.setRetryPolicy(new DefaultRetryPolicy(3000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(request);
 
     }
 
+    /**
+     * Actualise l'historique
+     * @param histories historique
+     */
+    private void refreshData(ArrayList<History> histories) {
+        this.histories.clear();
+        this.histories.addAll(histories);
+        adapter.notifyDataSetChanged();
+    }
+
+
     private boolean loadLocalData() {
 
-        String json = preferences.getString(Constants.STORAGE.RECORDS, null);
+        String json = preferences.getString(Constants.STORAGE.HISTORY, null);
 
         // Si on a déja sauvegardé une copie, on charge la copie
         if(json != null) {
             Gson gson = new Gson();
-            ArrayList<Record> records;
+            ArrayList<History> histories;
 
 
             // Tokentype recupere le type de l'objet puisque ArrayList est générique
-            Type type = new TypeToken<ArrayList<Record>>() {}.getType();
+            Type type = new TypeToken<ArrayList<History>>() {}.getType();
 
             // On recupere le record en deserialisant l'objet
-            records = gson.fromJson(json, type);
+            histories = gson.fromJson(json, type);
 
             // On ajoute les resultats et on les affiche
-            refreshData(records);
+            refreshData(histories);
 
             return true;
         }
 
         return false;
     }
-
-
 }

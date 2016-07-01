@@ -19,11 +19,14 @@ import java.util.ArrayList;
  *
  * Elle récupere le code html, récupere les compet, et hydrate le record des competitions
  */
-public class HistoryProvider {
+public class HistoryProvider extends Provider{
 
     private static final String event_class = "caption";
     private static final String event_colspan_attr = "colspan";
     private static final String event_colspan = "8";
+
+    private static String event_buffer = null;
+    private static String competition_buffer = null;
 
 
     /**
@@ -43,8 +46,6 @@ public class HistoryProvider {
 
         // On récupère les lignes
         Elements trs = table.select("tbody tr");
-
-        String event = null;
 
 
         /**
@@ -68,6 +69,7 @@ public class HistoryProvider {
             }*/
 
             if(isEvent(tr)) {
+                event_buffer = tr.text();
                 bufferHistory.setEvent(tr.text());
             }
 
@@ -80,7 +82,7 @@ public class HistoryProvider {
                  * On verifie le HTML si c'est un sous titre
                  */
                 if (isTitle(tr)) {
-
+                    //Log.d("mock test");
                     if (!checkHtml(hydrate(tr))) {
                         Toast.makeText(context, context.getString(R.string.error_interpretation_html), Toast.LENGTH_LONG).show();
                         Log.e("Error HTML history");
@@ -96,13 +98,14 @@ public class HistoryProvider {
                     if(filter != null) {
 
                         if(filter.equalsIgnoreCase(bufferHistory.getEvent())) {
-                            arrayList.add(hydrate(tr, bufferHistory));
+                            //Log.d("vrai");
+                            arrayList.add(hydrate(tr));
                         }
 
                     }
 
                     else {
-                        arrayList.add(hydrate(tr, bufferHistory));
+                        arrayList.add(hydrate(tr));
 
                     }
 
@@ -117,18 +120,9 @@ public class HistoryProvider {
 
     }
 
-    /**
-     * Execute getHistory mais récupere les historique sans filtre
-     *
-     * @see HistoryProvider#getHistory(Context, Document)
-     * @param context context
-     * @param document document
-     * @return arraylist
-     */
     public static ArrayList<History> getHistory(Context context, Document document) {
         return getHistory(context, document, null);
     }
-
 
     /**
      *
@@ -198,15 +192,11 @@ public class HistoryProvider {
      * @see BufferHistory
      *
      * @param tr la ligne
-     * @param oldBuffer l'ancien buffer
      * @return un tempon de history
      */
-    private static BufferHistory hydrate(Element tr, BufferHistory oldBuffer) {
+    private static BufferHistory hydrate(Element tr) {
 
         BufferHistory bufferHistory = new BufferHistory();
-
-
-
 
 
         for(int j = 0; j < tr.children().size(); j++) {
@@ -218,13 +208,13 @@ public class HistoryProvider {
                 case 0:
 
                     // On regarde si le texte est vide en comptant les espaces
-                    if(text.replaceAll("\\s", "").length() == 0 && oldBuffer != null) {
-                        bufferHistory.setCompetition(oldBuffer.getCompetition());
+                    if(text.replaceAll("\\s", "").length() == 0) {
+                        bufferHistory.setCompetition(competition_buffer);
                     }
 
                     else {
+                        competition_buffer = text;
                         bufferHistory.setCompetition(text);
-
                     }
                      break;
                 case 1: bufferHistory.setRound(text); break;
@@ -237,17 +227,9 @@ public class HistoryProvider {
             }
         }
 
-        // On ajoute dans le nouveau buffer des attributs de l'ancien afin de les concerver
-
-        String event = oldBuffer != null ? oldBuffer.getEvent() : null;
-
-        bufferHistory.setEvent(event);
+        bufferHistory.setEvent(event_buffer);
 
         return bufferHistory;
-    }
-
-    private static BufferHistory hydrate(Element tr) {
-        return hydrate(tr, null);
     }
 
 

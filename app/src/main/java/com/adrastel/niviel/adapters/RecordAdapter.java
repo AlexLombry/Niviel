@@ -2,8 +2,9 @@ package com.adrastel.niviel.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,18 +13,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.adrastel.niviel.Models.History;
 import com.adrastel.niviel.Models.Record;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.WCA.RecordProvider;
-import com.adrastel.niviel.assets.DividerDecoration;
+import com.adrastel.niviel.activities.HistoryActivity;
+import com.adrastel.niviel.assets.BackgroundCards;
+import com.adrastel.niviel.assets.Constants;
 
 import java.util.ArrayList;
 
-public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
+public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
 
     private ArrayList<Record> records;
-
+    private BackgroundCards backgroundCards = new BackgroundCards(4865);
+    private ArrayList<Integer> colors = backgroundCards.shuffle();
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -34,6 +37,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         public ImageView image;
         public Button more_info;
         public Button history;
+        public CardView card;
 
 
         // view holder
@@ -46,12 +50,13 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
             image = (ImageView) itemView.findViewById(R.id.adapter_profile_image);
             more_info = (Button) itemView.findViewById(R.id.adapter_profile_more_info);
             history = (Button) itemView.findViewById(R.id.adapter_profile_history);
+            card = (CardView) itemView.findViewById(R.id.adapter_profile_card);
 
         }
     }
 
     // constructeur
-    public ProfileAdapter(ArrayList<Record> records) {
+    public RecordAdapter(ArrayList<Record> records) {
         this.records = records;
     }
 
@@ -61,7 +66,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        View view = inflater.inflate(R.layout.adapter_profile, parent, false);
+        View view = inflater.inflate(R.layout.adapter_record, parent, false);
 
         return new ViewHolder(view);
     }
@@ -84,6 +89,14 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         holder.average.setText(average);
         holder.image.setImageResource(image_resource);
 
+
+        // background
+        int color_position = backgroundCards.get(position);
+        int color = colors.get(color_position);
+        holder.card.setCardBackgroundColor(color);
+
+
+        // listener
         holder.more_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,14 +104,19 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
             }
         });
 
-        if(record.getCompetitions().size() >= 0) {
+        if(record.getCompetitions() != null && record.getCompetitions().size() >= 0) {
             holder.history.setVisibility(View.VISIBLE);
         }
 
         holder.history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showHistoryDialog(view.getContext(), record);
+                Intent intent = new Intent(view.getContext(), HistoryActivity.class);
+                // todo: parelable ?
+
+                intent.putExtra(Constants.EXTRAS.RECORDS, record.getCompetitions());
+
+                view.getContext().startActivity(intent);
             }
         });
 
@@ -114,7 +132,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View view = inflater.inflate(R.layout.dialog_personal_record_info, null);
+        View view = inflater.inflate(R.layout.dialog_record_info, null);
 
         TextView single = (TextView) view.findViewById(R.id.dialog_personal_record_info_single);
         TextView nr_single = (TextView) view.findViewById(R.id.dialog_personal_record_info_single_nr);
@@ -140,43 +158,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
         builder.setTitle(record.getEvent());
 
-        builder.setView(view);
-
-        builder.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-
-        dialog.show();
-    }
-
-    private void showHistoryDialog(Context context, Record record) {
-
-        ArrayList<History> histories = record.getCompetitions();
-
-        LayoutInflater inflater = LayoutInflater.from(context);
-
-        View view = inflater.inflate(R.layout.dialog_history, null);
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.dialog_history_recycler);
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-
-        recyclerView.addItemDecoration(new DividerDecoration(context));
-
-        HistoryAdapter adapter = new HistoryAdapter(histories);
-        recyclerView.setAdapter(adapter);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        builder.setTitle(record.getEvent());
-
-        // todo: resoudre le pb de l'adapter
         builder.setView(view);
 
         builder.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {

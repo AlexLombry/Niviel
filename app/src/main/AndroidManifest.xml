@@ -22,13 +22,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.LoginActivity"
-            android:label="@string/title_activity_login"
+            android:name=".activities.RecordActivity"
+            android:label="@string/title_activity_record"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.ProfileActivity"
-            android:label="@string/title_activity_personal_record"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:name=".activities.HistoryActivity"
+            android:label="@string/title_activity_history"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

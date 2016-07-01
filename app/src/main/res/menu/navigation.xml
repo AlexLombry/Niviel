@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_profile"
+            android:title="@string/profile" />
+        <item
+            android:title="@string/personal_records"
+            android:icon="@drawable/ic_star"/>
+        <item
+            android:id="@+id/nav_history"
+            android:title="@string/history"
+            android:icon="@drawable/ic_history"/>
+        <item
+            android:id="@+id/nav_ranking"
+            android:title="@string/ranking"
+            android:icon="@drawable/ic_ranking"/>
+
+        <item android:title="Communicate">
+            <menu>
+                <item android:title="Share" />
+                <item android:title="Send" />
+            </menu>
+        </item>
+    </group>
+</menu>

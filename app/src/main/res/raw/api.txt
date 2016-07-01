@@ -1,9 +1,0 @@
-Application: Niviel: https://www.worldcubeassociation.org/oauth/applications/25
-
-Application: 8858b7016129d9494c165449e7454e38c97ad7d36dcd3679076243e7392d1f5e
-
-Secret: 6c0cd96030f82a936125c6acc46347ac6c789b25afa2a101741e38b092707b79
-
-Scopes: public
-
-Callback Urls: urn:ietf:wg:oauth:2.0:oob

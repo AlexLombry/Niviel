@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Il possede des records en single ou en average
  */
 
-public class Record {
+public class Record extends BaseModel {
 
     // Attributes
 
@@ -74,7 +74,6 @@ public class Record {
     // Constructors
 
     public Record() {}
-
 
 
     // Pour les logs
