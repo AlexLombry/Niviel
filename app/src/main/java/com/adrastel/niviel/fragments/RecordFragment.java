@@ -20,6 +20,7 @@ import com.adrastel.niviel.WCA.RecordProvider;
 import com.adrastel.niviel.adapters.RecordAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -118,6 +119,7 @@ public class RecordFragment extends HtmlFragment {
         // On charge les données si elles sont dans la RAM
         if(savedInstanceState != null && savedInstanceState.getString(Constants.STORAGE.RECORDS, null) != null) {
 
+            long debut = System.currentTimeMillis();
 
             String json = savedInstanceState.getString(Constants.STORAGE.RECORDS, null);
 
@@ -131,6 +133,10 @@ public class RecordFragment extends HtmlFragment {
 
             }
 
+            long progress = System.currentTimeMillis() - debut;
+
+            Log.d(String.valueOf(progress));
+
             progressBar.setVisibility(View.GONE);
         }
 
@@ -141,9 +147,14 @@ public class RecordFragment extends HtmlFragment {
 
         // Sinon on charge les données depuis la mémoire de l'appareil
         else {
+            long debut = System.currentTimeMillis();
             loadLocalData();
             progressBar.setVisibility(View.GONE);
             Toast.makeText(activity, getString(R.string.error_connection), Toast.LENGTH_LONG).show();
+
+            long progress = System.currentTimeMillis() - debut;
+
+            Log.d(String.valueOf(progress));
         }
 
     }

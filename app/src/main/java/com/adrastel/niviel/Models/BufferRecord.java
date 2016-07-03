@@ -8,8 +8,6 @@ public class BufferRecord extends Record {
     }
 
 
-
-
     public void setEvent(String event) {
         this.event = event;
     }
@@ -49,5 +47,7 @@ public class BufferRecord extends Record {
     public void setCompetitions(ArrayList<History> competitions) {
         this.competitions = competitions;
     }
+
+
 
 }
