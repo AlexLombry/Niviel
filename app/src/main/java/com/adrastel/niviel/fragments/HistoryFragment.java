@@ -139,7 +139,7 @@ public class HistoryFragment extends HtmlFragment {
 
     private void requestData() {
 
-        StringRequest request = new StringRequest(Request.Method.GET, RecordFragment.getUrl(), new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, RecordFragment.getStaticUrl(), new Response.Listener<String>() {
             @Override
             public void onResponse(final String response) {
 
