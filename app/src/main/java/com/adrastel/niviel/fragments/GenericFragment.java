@@ -11,6 +11,7 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.BaseAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Log;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -85,7 +86,8 @@ public abstract class GenericFragment<M extends BaseModel, A extends BaseAdapter
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                callback.runOnUIThread(datas);
+                                callback.onSuccess(datas);
+                                callback.postRequest();
                             }
                         });
                     }
@@ -96,8 +98,12 @@ public abstract class GenericFragment<M extends BaseModel, A extends BaseAdapter
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(activity, activity.getString(R.string.error_connection), Toast.LENGTH_LONG).show();
+                callback.onError(error);
+                callback.postRequest();
             }
         });
+
+        request.setRetryPolicy(new DefaultRetryPolicy(3000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         requestQueue.add(request);
     }
@@ -216,6 +222,8 @@ public abstract class GenericFragment<M extends BaseModel, A extends BaseAdapter
     protected interface requestDataCallback {
         ArrayList<? extends BaseModel> parseDatas(Document document);
 
-        void runOnUIThread(ArrayList<? extends BaseModel> datas);
+        void onSuccess(ArrayList<? extends BaseModel> datas);
+        void onError(VolleyError error);
+        void postRequest();
     }
 }

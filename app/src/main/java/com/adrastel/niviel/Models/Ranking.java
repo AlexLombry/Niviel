@@ -4,10 +4,11 @@ import com.google.gson.Gson;
 
 public class Ranking extends BaseModel {
 
-    private String person;
-    private String result;
-    private String citizen;
-    private String competition;
+    protected String rank;
+    protected String person;
+    protected String result;
+    protected String citizen;
+    protected String competition;
 
     public Ranking() {};
 
@@ -18,6 +19,11 @@ public class Ranking extends BaseModel {
         return gson.toJson(this);
 
     }
+
+    public String getRank() {
+        return rank;
+    }
+
 
     public String getPerson() {
         return person;
@@ -34,4 +40,6 @@ public class Ranking extends BaseModel {
     public String getCompetition() {
         return competition;
     }
+
+
 }

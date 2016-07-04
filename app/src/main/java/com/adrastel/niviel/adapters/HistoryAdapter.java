@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /**
  * HistoryAdapter organise les donnes données par un objet histor
  */
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
+public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
 
     private ArrayList<History> histories;
     private BackgroundCards backgroundCards = new BackgroundCards(4164);
