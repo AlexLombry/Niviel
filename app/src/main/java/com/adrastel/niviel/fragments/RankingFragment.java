@@ -105,8 +105,8 @@ public class RankingFragment extends GenericFragment<Ranking, RankingAdapter> {
      * @return titre
      */
     @Override
-    public String getTitle() {
-        return activity != null ? activity.getString(R.string.ranking) : null;
+    public int getTitle() {
+        return R.string.ranking;
     }
 
     /**

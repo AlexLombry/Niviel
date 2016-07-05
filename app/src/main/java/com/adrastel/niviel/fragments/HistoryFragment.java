@@ -31,10 +31,17 @@ import java.util.ArrayList;
 public class HistoryFragment extends GenericFragment<History, HistoryAdapter> {
 
     Activity activity;
+    Context context;
     ConnectivityManager connectivityManager;
     HistoryAdapter adapter = new HistoryAdapter(getDatas());
     ProgressBar progressBar;
     SwipeRefreshLayout swipeRefresh;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,8 +123,8 @@ public class HistoryFragment extends GenericFragment<History, HistoryAdapter> {
     }
 
     @Override
-    public String getTitle() {
-        return activity != null ? activity.getString(R.string.title_activity_history) : null;
+    public int getTitle() {
+        return R.string.title_activity_history;
     }
 
     /**
@@ -161,5 +168,8 @@ public class HistoryFragment extends GenericFragment<History, HistoryAdapter> {
                 return new TypeToken<ArrayList<History>>() {}.getType();
             }
         });
+
+        progressBar.setVisibility(View.GONE);
+        swipeRefresh.setRefreshing(false);
     }
 }

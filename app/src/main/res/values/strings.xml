@@ -25,11 +25,12 @@
     <string name="wr">Classement mondial :&#160;</string>
 
     <!-- History -->
+    <string name="event">Evenement :&#160;</string>
     <string name="history">Historique</string>
     <string name="competition">Competition :&#160;</string>
     <string name="round">Round :&#160;</string>
     <string name="best">Meilleur :&#160;</string>
-    <string name="details">Détails :&#160;</string>
+    <string name="result_details">Détails :&#160;</string>
 
     <!-- Ranking -->
     <string name="ranking">Classement</string>
@@ -51,11 +52,17 @@
     <string name="more_info">Plus d&#8216;infos</string>
     <string name="expend">Étendre</string>
     <string name="share">Partager</string>
+    <string name="details">Détails</string>
 
     <string name="ok">OK</string>
+
+    <!-- share strings -->
+    <string name="share_history">J&#8216;ai obtenu la place n°%1$s à la compétition %2$s en faisant un temps moyen de %3$s</string>
+
 
     <!-- Others -->
     <string name="second">s</string>
     <string name="zero">0</string>
+    <string name="lorem">Lorem Ipsum</string>
 
 </resources>

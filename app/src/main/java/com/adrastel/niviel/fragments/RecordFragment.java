@@ -139,8 +139,8 @@ public class RecordFragment extends GenericFragment<Record, RecordAdapter> {
      * @return titre
      */
     @Override
-    public String getTitle() {
-        return activity != null ? activity.getString(R.string.title_activity_record) : null;
+    public int getTitle() {
+        return R.string.personal_records;
     }
 
     /**

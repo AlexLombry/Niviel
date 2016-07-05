@@ -49,4 +49,8 @@ public class Assets {
         }
     }
 
+    public static String wrapStrong(String text) {
+        return "<strong>" + text + "</strong>";
+    }
+
 }

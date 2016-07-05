@@ -1,18 +1,23 @@
 package com.adrastel.niviel.adapters;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.widget.CardView;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.adrastel.niviel.Models.History;
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.BackgroundCards;
+import com.adrastel.niviel.views.CircleView;
 
 import java.util.ArrayList;
 
@@ -28,37 +33,25 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
     // Le view holder qui contient toutes les infos
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        public CircleView place;
         public TextView competition;
-        public TextView round;
-        public TextView place;
-        public TextView best;
-        public TextView average;
         public TextView result_details;
-        public CardView card;
-        public LinearLayout expend_layout;
-        public Button expend_button;
-        public Button share_button;
+        public ImageButton more;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
 
+            place = (CircleView) itemView.findViewById(R.id.adapter_history_place);
             competition = (TextView) itemView.findViewById(R.id.adapter_history_competition);
-            round = (TextView) itemView.findViewById(R.id.adapter_history_round);
-            place = (TextView) itemView.findViewById(R.id.adapter_history_place);
-            best = (TextView) itemView.findViewById(R.id.adapter_history_best);
-            average = (TextView) itemView.findViewById(R.id.adapter_history_average);
             result_details = (TextView) itemView.findViewById(R.id.adapter_history_result_details);
-            card = (CardView) itemView.findViewById(R.id.adapter_history_card);
-            expend_layout = (LinearLayout) itemView.findViewById(R.id.adapter_history_expend_layout);
-            expend_button = (Button) itemView.findViewById(R.id.adapter_history_expend_button);
-            share_button = (Button) itemView.findViewById(R.id.adapter_history_share_button);
+            more = (ImageButton) itemView.findViewById(R.id.adapter_history_more);
         }
     }
 
     // Constructeur
     public HistoryAdapter(ArrayList<History> histories) {
         this.histories = histories;
-
     }
 
     // Lors de la creation de la vue
@@ -78,66 +71,15 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
 
         final History history = histories.get(position);
 
-        final String competition = history.getCompetition();
-        String round = history.getRound();
-        String place = history.getPlace();
-        String best = history.getBest();
-        String average = history.getAverage();
+        String competition = history.getCompetition();
+        String place  = history.getPlace();
         String result_details = history.getResult_details();
 
         holder.competition.setText(competition);
-        holder.round.setText(round);
         holder.place.setText(place);
-        holder.best.setText(best);
-        holder.average.setText(average);
         holder.result_details.setText(result_details);
 
-        // background
-        int color_position = backgroundCards.get(position);
-        int color = colors.get(color_position);
-
-
-        holder.card.setCardBackgroundColor(color);
-
-
-
-
-        // listeners
-
-        holder.expend_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(holder.expend_layout.getVisibility() == View.VISIBLE) {
-                    holder.expend_layout.setVisibility(View.GONE);
-                }
-
-                else {
-                    holder.expend_layout.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-
-        holder.share_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String text = "Je suis arrivé à place n°" + history.getPlace() +
-                        " à la compétition " + history.getCompetition() +
-                        " en faisant un temps moyen de " + history.getAverage();
-                String html = "Je suis allé à la compétition <strong>" + history.getCompetition()  +
-                        "</strong>. J'ai fait en moyenne de <strong>" + history.getAverage() +
-                        "</strong> et mon meilleur temps est <strong>" + history.getBest() + "</strong>.";
-
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_TEXT, text);
-                intent.putExtra(Intent.EXTRA_HTML_TEXT, html);
-                intent.setType("text/plain");
-
-                view.getContext().startActivity(intent);
-
-            }
-        });
+        loadMenu(holder, history);
 
 
     }
@@ -147,5 +89,97 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
         return histories.size();
     }
 
+    private void loadMenu(ViewHolder holder, final History history) {
+        holder.more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+
+                PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+                popupMenu.inflate(R.menu.menu_pop_history);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        switch (item.getItemId()) {
+
+                            case R.id.menu_pop_history_details:
+                                onDetails(view.getContext(), history);
+                                return true;
+
+                            case R.id.menu_pop_history_share:
+                                onShare(view.getContext(), history);
+                                return true;
+                        }
+
+                        return false;
+                    }
+                });
+                popupMenu.show();
+
+            }
+        });
+    }
+
+    private void onDetails(Context context, History history) {
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        View view = inflater.inflate(R.layout.dialog_history_details, null);
+
+        TextView event = (TextView) view.findViewById(R.id.dialog_history_details_event);
+        TextView competition = (TextView) view.findViewById(R.id.dialog_history_details_competition);
+        TextView round = (TextView) view.findViewById(R.id.dialog_history_details_round);
+        TextView best = (TextView) view.findViewById(R.id.dialog_history_details_best);
+        TextView average = (TextView) view.findViewById(R.id.dialog_history_details_average);
+        TextView results = (TextView) view.findViewById(R.id.dialog_history_details_results);
+
+        event.setText(history.getEvent());
+        competition.setText(history.getCompetition());
+        round.setText(history.getRound());
+        best.setText(history.getBest());
+        average.setText(history.getAverage());
+        results.setText(history.getResult_details());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        builder.setTitle(context.getString(R.string.details));
+
+        builder.setView(view);
+
+        builder.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+
+    }
+
+    private void onShare(Context context, History history) {
+
+
+        String shareFormat = context.getString(R.string.share_history);
+
+        String text = String.format(shareFormat, history.getPlace(), history.getCompetition(), history.getAverage());
+
+        String html = String.format(shareFormat, Assets.wrapStrong(history.getPlace()),
+                Assets.wrapStrong(history.getCompetition()), Assets.wrapStrong(history.getAverage()));
+
+
+        Intent intent = new Intent();
+
+        intent.setType("text/plain");
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, text);
+        intent.putExtra(Intent.EXTRA_HTML_TEXT, html);
+
+        Intent chooser = Intent.createChooser(intent, context.getString(R.string.share));
+
+        context.startActivity(chooser);
+    }
 
 }

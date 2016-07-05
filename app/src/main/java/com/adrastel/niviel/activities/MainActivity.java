@@ -16,7 +16,6 @@ import android.view.MenuItem;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.HistoryFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
@@ -58,17 +57,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(savedInstanceState != null && fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT) != null) {
-            Log.d("plein");
             this.fragment = (BaseFragment) fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT);
 
         }
         else {
-            Log.d("vide");
             this.fragment = new RecordFragment();
 
         }
 
-        switchFragment(fragment, "Hello");
+        switchFragment(fragment);
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -76,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // On choisit le fragment
                 BaseFragment fragment = selectDrawerItem(item);
-                switchFragment(fragment, item.getTitle());
+                switchFragment(fragment);
 
                 item.setChecked(true);
                 closeDrawer();
@@ -178,15 +175,14 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Change de fragment
      * @param fragment fragment
-     * @param title titre
      */
-    private void switchFragment(BaseFragment fragment, CharSequence title) {
+    private void switchFragment(BaseFragment fragment) {
 
         fragmentManager.beginTransaction()
                 .replace(R.id.frame_layout, fragment)
                 .commit();
 
-        setTitle(fragment.getTitle());
+        setTitle(getString(fragment.getTitle()));
     }
 
     /**
