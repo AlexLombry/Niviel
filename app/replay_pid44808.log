@@ -1,0 +1,22 @@
+JvmtiExport can_access_local_variables 0
+JvmtiExport can_hotswap_or_post_breakpoint 0
+JvmtiExport can_post_on_exceptions 0
+# 253 ciObject found
+ciMethod java/lang/Object <init> ()V 4097 1 2435809 0 0
+ciMethod java/lang/Object getClass ()Ljava/lang/Class; 2049 1 256 0 -1
+ciMethod java/lang/Object equals (Ljava/lang/Object;)Z 4097 1 6656 0 -1
+ciMethod java/lang/String equals (Ljava/lang/Object;)Z 2049 11473 1939 0 -1
+ciMethod java/lang/String compareTo (Ljava/lang/String;)I 1137 32313 2230 0 -1
+ciMethod java/lang/Class getName ()Ljava/lang/String; 177 1 104 0 -1
+ciMethod java/util/AbstractList <init> ()V 649 1 223102 0 0
+ciMethod java/util/AbstractCollection <init> ()V 281 1 338065 0 32
+ciMethod java/util/ArrayList <init> (I)V 4113 1 26438 0 288
+ciMethod java/util/ArrayList ensureCapacityInternal (I)V 641 1 625072 0 -1
+ciMethod java/util/ArrayList size ()I 1209 1 151 0 0
+ciMethod java/util/ArrayList elementData (I)Ljava/lang/Object; 1977 1 2665411 0 0
+ciMethod java/util/ArrayList get (I)Ljava/lang/Object; 1977 1 2614493 0 128
+ciMethod java/util/ArrayList add (Ljava/lang/Object;)Z 641 1 608387 0 736
+ciMethod java/util/ArrayList rangeCheck (I)V 1977 1 2662670 0 64
+ciMethod java/util/Arrays equals ([Ljava/lang/Object;[Ljava/lang/Object;)Z 4097 145 9113 0 1760
+ciMethodData java/lang/Object <init> ()V 2 2435809 orig 264 184 158 173 87 0 0 0 0 136 4 136 20 0 0 0 0 32 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 9 71 41 1 1 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 3 0 3 0 0 0 0 0 0 0 255 255 255 255 0 0 0 0 0 0 0 0 data 0 oops 0
+ciMethodData java/util/ArrayList get (I)Ljava/lang/Object; 2 2614493 orig 264 184 158 173 87 0 0 0 0 88 2 150 20 0 0 0 0 144 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 247 0 0 0 49 31 63 1 1 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 6 0 4 0 1 0 64 0 0 0 255 255 255 255 2 0 2 0 0 0 0 0 data 8 0x20002 0x27e8c6 0x70005 0x0 0x18c17f00 0x27ecdd 0x0 0x0 oops 1
