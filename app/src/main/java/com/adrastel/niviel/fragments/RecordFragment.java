@@ -13,13 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.adrastel.niviel.Models.BaseModel;
-import com.adrastel.niviel.Models.Record;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.WCA.RecordProvider;
 import com.adrastel.niviel.adapters.RecordAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.models.BaseModel;
+import com.adrastel.niviel.models.Record;
 import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 
@@ -44,6 +44,9 @@ public class RecordFragment extends GenericFragment<Record, RecordAdapter> {
         activity = getActivity();
 
         connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        adapter.setManager(getFragmentManager());
+
     }
 
     /**

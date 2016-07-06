@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="80dp"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:paddingTop="20dp"
-              android:orientation="horizontal">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:paddingTop="20dp"
+    android:orientation="horizontal">
 
 
     <com.adrastel.niviel.views.CircleView
-        android:id="@+id/adapter_history_place"
+        android:id="@+id/adapter_list_avatar_avatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="@dimen/p2"
@@ -32,7 +33,7 @@
             android:textSize="16sp"
             android:textColor="@android:color/black"
             android:paddingBottom="4dp"
-            android:id="@+id/adapter_history_competition"
+            android:id="@+id/adapter_list_avatar_first"
             android:text="@string/competition"/>
 
 
@@ -42,14 +43,14 @@
             android:paddingTop="4dp"
             android:text="@string/zero"
             android:textSize="12sp"
-            android:id="@+id/adapter_history_result_details"/>
+            android:id="@+id/adapter_list_avatar_second"/>
 
     </LinearLayout>
 
 
 
     <ImageButton
-        android:id="@+id/adapter_history_more"
+        android:id="@+id/adapter_list_avatar_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/p2"

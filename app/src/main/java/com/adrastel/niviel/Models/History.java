@@ -1,10 +1,10 @@
-package com.adrastel.niviel.Models;
+package com.adrastel.niviel.models;
 
 import com.google.gson.Gson;
 
 import java.io.Serializable;
 
-public class History extends BaseModel implements Serializable{
+public class History extends BaseModel implements Serializable {
 
     /**
      * Le type de cube

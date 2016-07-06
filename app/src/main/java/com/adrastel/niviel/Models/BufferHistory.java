@@ -1,4 +1,4 @@
-package com.adrastel.niviel.Models;
+package com.adrastel.niviel.models;
 
 public class BufferHistory extends History {
 

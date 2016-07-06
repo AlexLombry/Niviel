@@ -13,10 +13,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.adrastel.niviel.Models.History;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.HistoryAdapter;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.models.History;
 
 import java.util.ArrayList;
 
@@ -59,6 +59,8 @@ public class HistoryActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         HistoryAdapter adapter = new HistoryAdapter(histories);
+
+        adapter.setFragmentManager(getSupportFragmentManager());
 
         recyclerView.setAdapter(adapter);
 

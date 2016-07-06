@@ -4,6 +4,14 @@ public class Constants {
 
     public interface EXTRAS {
         String RECORDS = "records";
+        String HISTORY = "history";
+        String RANKING = "ranking";
+    }
+
+    public interface TAG {
+        String RECORDS = "records";
+        String HISTORY = "history";
+        String RANKING = "ranking";
     }
 
     public interface STORAGE {

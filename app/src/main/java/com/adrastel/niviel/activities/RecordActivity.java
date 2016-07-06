@@ -16,13 +16,13 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.adrastel.niviel.Models.Record;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.WCA.RecordProvider;
 import com.adrastel.niviel.adapters.RecordAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Log;
+import com.adrastel.niviel.models.Record;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -107,6 +107,7 @@ public class RecordActivity extends AppCompatActivity {
 
         // Mise en place de l'adapter
         adapter = new RecordAdapter(records);
+        adapter.setManager(getSupportFragmentManager());
         recyclerView.setAdapter(adapter);
 
 

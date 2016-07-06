@@ -1,11 +1,13 @@
 package com.adrastel.niviel.assets;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 
+import com.adrastel.niviel.R;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -51,6 +53,19 @@ public class Assets {
 
     public static String wrapStrong(String text) {
         return "<strong>" + text + "</strong>";
+    }
+
+    public static void shareIntent(Context context, String text, String html) {
+        Intent intent = new Intent();
+
+        intent.setType("text/plain");
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, text);
+        intent.putExtra(Intent.EXTRA_HTML_TEXT, html);
+
+        Intent chooser = Intent.createChooser(intent, context.getString(R.string.share));
+
+        context.startActivity(chooser);
     }
 
 }

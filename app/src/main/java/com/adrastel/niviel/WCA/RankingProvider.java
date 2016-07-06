@@ -1,8 +1,8 @@
 package com.adrastel.niviel.WCA;
 
-import com.adrastel.niviel.Models.BufferRanking;
-import com.adrastel.niviel.Models.Ranking;
 import com.adrastel.niviel.assets.Log;
+import com.adrastel.niviel.models.BufferRanking;
+import com.adrastel.niviel.models.Ranking;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -26,7 +26,7 @@ public class RankingProvider extends Provider {
 
         BufferRanking bufferRanking;
 
-        for(int i = 3; i < trs.size(); i++) {
+        for(int i = 4; i < trs.size(); i++) {
 
             // On récupère la ligne
             Element tr = trs.get(i);
@@ -34,8 +34,9 @@ public class RankingProvider extends Provider {
             bufferRanking = hydrate(tr);
 
             arrayList.add(bufferRanking);
-            Log.d(String.valueOf(bufferRanking));
         }
+
+        Log.d(String.valueOf(arrayList.size()));
 
         return arrayList;
     }

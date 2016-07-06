@@ -13,13 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.adrastel.niviel.Models.BaseModel;
-import com.adrastel.niviel.Models.History;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.WCA.HistoryProvider;
 import com.adrastel.niviel.adapters.HistoryAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.models.BaseModel;
+import com.adrastel.niviel.models.History;
 import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 
@@ -49,6 +49,8 @@ public class HistoryFragment extends GenericFragment<History, HistoryAdapter> {
 
         activity = getActivity();
         connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        adapter.setFragmentManager(getFragmentManager());
     }
 
     /**
@@ -172,4 +174,5 @@ public class HistoryFragment extends GenericFragment<History, HistoryAdapter> {
         progressBar.setVisibility(View.GONE);
         swipeRefresh.setRefreshing(false);
     }
+
 }

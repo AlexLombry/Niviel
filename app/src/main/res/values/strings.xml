@@ -58,6 +58,7 @@
 
     <!-- share strings -->
     <string name="share_history">J&#8216;ai obtenu la place n°%1$s à la compétition %2$s en faisant un temps moyen de %3$s</string>
+    <string name="share_ranking">%1$s est classé n°%2$s avec un temps de %3$s</string>
 
 
     <!-- Others -->

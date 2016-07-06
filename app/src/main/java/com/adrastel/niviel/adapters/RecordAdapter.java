@@ -1,9 +1,9 @@
 package com.adrastel.niviel.adapters;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,12 +13,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.adrastel.niviel.Models.Record;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.WCA.RecordProvider;
 import com.adrastel.niviel.activities.HistoryActivity;
 import com.adrastel.niviel.assets.BackgroundCards;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.dialogs.RecordDialog;
+import com.adrastel.niviel.models.Record;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,7 @@ public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
     private ArrayList<Record> records;
     private BackgroundCards backgroundCards = new BackgroundCards(4865);
     private ArrayList<Integer> colors = backgroundCards.shuffle();
+    private FragmentManager manager;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -100,7 +102,7 @@ public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
         holder.more_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showMoreInfoDialog(view.getContext(), record);
+                showMoreInfoDialog(manager, record);
             }
         });
 
@@ -127,49 +129,25 @@ public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
         return records.size();
     }
 
-    private void showMoreInfoDialog(Context context, Record record) {
+    public void setManager(FragmentManager manager) {
+        this.manager = manager;
+    }
 
+    private void showMoreInfoDialog(FragmentManager manager, Record record) {
 
-        LayoutInflater inflater = LayoutInflater.from(context);
+        if(manager != null) {
 
-        View view = inflater.inflate(R.layout.dialog_record_info, null);
+            Bundle bundle = new Bundle();
 
-        TextView single = (TextView) view.findViewById(R.id.dialog_personal_record_info_single);
-        TextView nr_single = (TextView) view.findViewById(R.id.dialog_personal_record_info_single_nr);
-        TextView cr_single = (TextView) view.findViewById(R.id.dialog_personal_record_info_single_cr);
-        TextView wr_single = (TextView) view.findViewById(R.id.dialog_personal_record_info_single_wr);
+            bundle.putSerializable(Constants.EXTRAS.RECORDS, record);
 
-        TextView average = (TextView) view.findViewById(R.id.dialog_personal_record_info_average);
-        TextView nr_average = (TextView) view.findViewById(R.id.dialog_personal_record_info_average_nr);
-        TextView cr_average = (TextView) view.findViewById(R.id.dialog_personal_record_info_average_cr);
-        TextView wr_average = (TextView) view.findViewById(R.id.dialog_personal_record_info_average_wr);
+            DialogFragment recordDialog = new RecordDialog();
+            recordDialog.setArguments(bundle);
 
-        single.setText(record.getSingle());
-        nr_single.setText(record.getNr_single());
-        cr_single.setText(record.getCr_single());
-        wr_single.setText(record.getWr_single());
+            recordDialog.show(manager, Constants.TAG.RECORDS);
 
-        average.setText(record.getAverage());
-        nr_average.setText(record.getNr_average());
-        cr_average.setText(record.getCr_average());
-        wr_average.setText(record.getWr_average());
+        }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-
-        builder.setTitle(record.getEvent());
-
-        builder.setView(view);
-
-        builder.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-
-        dialog.show();
     }
 
 

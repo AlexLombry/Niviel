@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
-import com.adrastel.niviel.Models.BaseModel;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.BaseAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Log;
+import com.adrastel.niviel.models.BaseModel;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;

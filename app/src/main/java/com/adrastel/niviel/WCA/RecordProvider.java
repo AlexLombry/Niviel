@@ -3,10 +3,10 @@ package com.adrastel.niviel.WCA;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.adrastel.niviel.Models.BufferRecord;
-import com.adrastel.niviel.Models.History;
-import com.adrastel.niviel.Models.Record;
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.models.BufferRecord;
+import com.adrastel.niviel.models.History;
+import com.adrastel.niviel.models.Record;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

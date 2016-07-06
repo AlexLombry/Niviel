@@ -1,7 +1,8 @@
-package com.adrastel.niviel.Models;
+package com.adrastel.niviel.models;
 
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * Il possede des records en single ou en average
  */
 
-public class Record extends BaseModel {
+public class Record extends BaseModel implements Serializable {
 
     // Attributes
 

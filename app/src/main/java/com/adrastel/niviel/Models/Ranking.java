@@ -1,4 +1,4 @@
-package com.adrastel.niviel.Models;
+package com.adrastel.niviel.models;
 
 import com.google.gson.Gson;
 

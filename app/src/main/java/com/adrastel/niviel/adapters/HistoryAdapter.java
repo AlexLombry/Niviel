@@ -1,9 +1,9 @@
 package com.adrastel.niviel.adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.support.v7.app.AlertDialog;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,10 +13,12 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.adrastel.niviel.Models.History;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.BackgroundCards;
+import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.dialogs.HistoryDialog;
+import com.adrastel.niviel.models.History;
 import com.adrastel.niviel.views.CircleView;
 
 import java.util.ArrayList;
@@ -29,6 +31,8 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
     private ArrayList<History> histories;
     private BackgroundCards backgroundCards = new BackgroundCards(4164);
     private ArrayList<Integer> colors = backgroundCards.shuffle();
+    private FragmentManager fragmentManager;
+
 
     // Le view holder qui contient toutes les infos
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -42,10 +46,10 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
 
-            place = (CircleView) itemView.findViewById(R.id.adapter_history_place);
-            competition = (TextView) itemView.findViewById(R.id.adapter_history_competition);
-            result_details = (TextView) itemView.findViewById(R.id.adapter_history_result_details);
-            more = (ImageButton) itemView.findViewById(R.id.adapter_history_more);
+            place = (CircleView) itemView.findViewById(R.id.adapter_list_avatar_avatar);
+            competition = (TextView) itemView.findViewById(R.id.adapter_list_avatar_first);
+            result_details = (TextView) itemView.findViewById(R.id.adapter_list_avatar_second);
+            more = (ImageButton) itemView.findViewById(R.id.adapter_list_avatar_more);
         }
     }
 
@@ -60,7 +64,7 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        View view = inflater.inflate(R.layout.adapter_history, parent, false);
+        View view = inflater.inflate(R.layout.adapter_list_avatar, parent, false);
 
         return new ViewHolder(view);
     }
@@ -72,7 +76,7 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
         final History history = histories.get(position);
 
         String competition = history.getCompetition();
-        String place  = history.getPlace();
+        String place = history.getPlace();
         String result_details = history.getResult_details();
 
         holder.competition.setText(competition);
@@ -89,13 +93,18 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
         return histories.size();
     }
 
+
+    public void setFragmentManager(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
+    }
+
     private void loadMenu(ViewHolder holder, final History history) {
         holder.more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
 
                 PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-                popupMenu.inflate(R.menu.menu_pop_history);
+                popupMenu.inflate(R.menu.menu_pop_list);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -103,7 +112,7 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
                         switch (item.getItemId()) {
 
                             case R.id.menu_pop_history_details:
-                                onDetails(view.getContext(), history);
+                                onDetails(fragmentManager, history);
                                 return true;
 
                             case R.id.menu_pop_history_share:
@@ -120,42 +129,23 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
         });
     }
 
-    private void onDetails(Context context, History history) {
+    private void onDetails(FragmentManager fragmentManager, History history) {
 
-        LayoutInflater inflater = LayoutInflater.from(context);
+        if(fragmentManager != null) {
 
-        View view = inflater.inflate(R.layout.dialog_history_details, null);
 
-        TextView event = (TextView) view.findViewById(R.id.dialog_history_details_event);
-        TextView competition = (TextView) view.findViewById(R.id.dialog_history_details_competition);
-        TextView round = (TextView) view.findViewById(R.id.dialog_history_details_round);
-        TextView best = (TextView) view.findViewById(R.id.dialog_history_details_best);
-        TextView average = (TextView) view.findViewById(R.id.dialog_history_details_average);
-        TextView results = (TextView) view.findViewById(R.id.dialog_history_details_results);
 
-        event.setText(history.getEvent());
-        competition.setText(history.getCompetition());
-        round.setText(history.getRound());
-        best.setText(history.getBest());
-        average.setText(history.getAverage());
-        results.setText(history.getResult_details());
+            Bundle bundle = new Bundle();
+            bundle.putInt("test", 2);
+            bundle.putSerializable(Constants.EXTRAS.HISTORY, history);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            DialogFragment historyDialog = new HistoryDialog();
 
-        builder.setTitle(context.getString(R.string.details));
+            historyDialog.setArguments(bundle);
 
-        builder.setView(view);
+            historyDialog.show(fragmentManager, Constants.TAG.HISTORY);
 
-        builder.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-
-        dialog.show();
+        }
 
     }
 
@@ -170,16 +160,7 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
                 Assets.wrapStrong(history.getCompetition()), Assets.wrapStrong(history.getAverage()));
 
 
-        Intent intent = new Intent();
-
-        intent.setType("text/plain");
-        intent.setAction(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, text);
-        intent.putExtra(Intent.EXTRA_HTML_TEXT, html);
-
-        Intent chooser = Intent.createChooser(intent, context.getString(R.string.share));
-
-        context.startActivity(chooser);
+        Assets.shareIntent(context, text, html);
     }
 
 }
