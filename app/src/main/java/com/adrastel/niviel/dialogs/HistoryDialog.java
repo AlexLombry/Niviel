@@ -6,12 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.DetailsDialogMaker;
 import com.adrastel.niviel.models.History;
 
 public class HistoryDialog extends DialogFragment {
@@ -25,34 +23,24 @@ public class HistoryDialog extends DialogFragment {
         Bundle bundle = getArguments();
         History history = bundle.getParcelable(Constants.TAG.HISTORY);
 
-        // on crée la vue
-        LayoutInflater inflater = LayoutInflater.from(getActivity());
-
-        View view = inflater.inflate(R.layout.dialog_history_details, null);
-
-        TextView event = (TextView) view.findViewById(R.id.dialog_history_details_event);
-        TextView competition = (TextView) view.findViewById(R.id.dialog_history_details_competition);
-        TextView round = (TextView) view.findViewById(R.id.dialog_history_details_round);
-        TextView best = (TextView) view.findViewById(R.id.dialog_history_details_best);
-        TextView average = (TextView) view.findViewById(R.id.dialog_history_details_average);
-        TextView results = (TextView) view.findViewById(R.id.dialog_history_details_results);
+        DetailsDialogMaker dialogMaker = new DetailsDialogMaker(getContext());
 
         if(history != null) {
-            event.setText(history.getEvent());
-            competition.setText(history.getCompetition());
-            round.setText(history.getRound());
-            best.setText(history.getBest());
-            average.setText(history.getAverage());
-            results.setText(history.getResult_details());
+            dialogMaker.add(R.string.event, history.getEvent());
+            dialogMaker.add(R.string.competition, history.getCompetition());
+            dialogMaker.add(R.string.round, history.getRound());
+            dialogMaker.add(R.string.rank, history.getPlace());
+            dialogMaker.add(R.string.best, history.getBest());
+            dialogMaker.add(R.string.average, history.getAverage());
+            dialogMaker.add(R.string.result_details, history.getResult_details());
         }
-
-        // puis la boite de dialogue
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setMessage(R.string.details);
+        builder.setTitle(R.string.details);
 
-        builder.setView(view);
+        builder.setMessage(dialogMaker.build());
+
 
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
