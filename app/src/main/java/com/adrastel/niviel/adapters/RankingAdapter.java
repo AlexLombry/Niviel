@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.RankingDetailsDialog;
 import com.adrastel.niviel.models.Ranking;
 import com.adrastel.niviel.views.CircleView;
@@ -111,19 +110,26 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
             public void onClick(final View view) {
 
                 PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-                popupMenu.inflate(R.menu.menu_pop_list);
+                popupMenu.inflate(R.menu.menu_pop_ranking);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
 
                         switch (item.getItemId()) {
 
-                            case R.id.menu_pop_list_details:
-                                Log.d("je suis la");
+                            case R.id.menu_pop_details:
                                 onDetails(fragmentManager, ranking);
                                 return true;
 
-                            case R.id.menu_pop_list_share:
+                            case R.id.menu_pop_goto_history:
+                                gotoHistory(view.getContext());
+                                return true;
+
+                            case R.id.menu_pop_goto_records:
+                                gotoRecords(view.getContext());
+                                return true;
+
+                            case R.id.menu_pop_share:
                                 onShare(view.getContext(), ranking);
                                 return true;
                         }
@@ -135,6 +141,14 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
 
             }
         });
+    }
+
+    private void gotoHistory(Context context) {
+
+    }
+
+    private void gotoRecords(Context context) {
+
     }
 
     private void onDetails(FragmentManager fragmentManager, Ranking ranking) {

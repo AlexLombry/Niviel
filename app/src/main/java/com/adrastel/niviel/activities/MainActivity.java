@@ -1,6 +1,5 @@
 package com.adrastel.niviel.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -13,24 +12,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.fragments.BaseFragment;
-import com.adrastel.niviel.fragments.HistoryFragment;
-import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.fragments.RecordFragment;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    private Context context;
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
     private FragmentManager fragmentManager;
     private BaseFragment fragment;
 
@@ -58,8 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
-        context = getApplicationContext();
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 
@@ -78,12 +68,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
 
+                item.setChecked(true);
+                closeDrawer();
+
                 // On choisit le fragment
                 BaseFragment fragment = selectDrawerItem(item);
                 switchFragment(fragment);
 
-                item.setChecked(true);
-                closeDrawer();
+
                 return true;
             }
         });
@@ -115,11 +107,19 @@ public class MainActivity extends AppCompatActivity {
                 openDrawer();
                 return true;
 
+//            case R.id.action_personal_records:
+//
+//                Intent intent = new Intent(this, RecordActivity.class);
+//                startActivity(intent);
+//                return true;
+
             case R.id.action_personal_records:
 
-                Intent intent = new Intent(this, RecordActivity.class);
+                Intent intent = new Intent(this, FragmentActivity.class);
+
+                intent.putExtra(Constants.EXTRAS.ID, R.id.nav_profile);
+
                 startActivity(intent);
-                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -156,26 +156,7 @@ public class MainActivity extends AppCompatActivity {
      * @param item item
      */
     private BaseFragment selectDrawerItem(MenuItem item) {
-        BaseFragment fragment;
-
-        switch(item.getItemId()) {
-            case R.id.nav_profile:
-                fragment = new RecordFragment();
-                break;
-
-            case R.id.nav_history:
-                fragment = new HistoryFragment();
-                break;
-
-            case R.id.nav_ranking:
-                fragment = new RankingFragment();
-                break;
-
-            default:
-                fragment = new RecordFragment();
-        }
-
-        this.fragment = fragment;
+        fragment = Assets.getFragmentFromId(item.getItemId());
         return fragment;
     }
 

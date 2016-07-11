@@ -8,6 +8,9 @@ public class Constants {
         String RANKING = "ranking";
         String POSITION = "position";
         String ISSINGLE = "issingle";
+        String ID = "id";
+        String BUNDLE = "bundle";
+        String WCA_ID = "wca_id";
     }
 
     public interface TAG {
@@ -23,9 +26,8 @@ public class Constants {
         String FRAGMENT = "fragment";
     }
 
-    public interface FRAGMENTS {
-        int RECORD = 0x01;
-        int HISTORY = 0x02;
+    public interface PREFERENCES {
+        String WCA_ID = "2016DERO01";
     }
 
     public interface SECRETS {

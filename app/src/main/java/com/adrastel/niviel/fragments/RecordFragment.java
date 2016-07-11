@@ -30,12 +30,15 @@ import java.util.ArrayList;
 
 public class RecordFragment extends GenericFragment<Record, RecordAdapter> {
 
-    Activity activity;
-    RecordAdapter adapter = new RecordAdapter(getDatas());
-    ConnectivityManager connectivityManager;
-    SwipeRefreshLayout swipeRefresh;
+    private Activity activity;
+    private RecordAdapter adapter = new RecordAdapter(getDatas());
+    private ConnectivityManager connectivityManager;
+    private SwipeRefreshLayout swipeRefresh;
 
-    ProgressBar progressBar;
+    private String url = getUrl(Constants.PREFERENCES.WCA_ID);
+    private boolean isMe = true;
+
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +49,15 @@ public class RecordFragment extends GenericFragment<Record, RecordAdapter> {
         connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         adapter.setManager(getFragmentManager());
+
+        Bundle bundle = getArguments();
+
+        // On recupere l'id wca du bundle precedent si il n'est pas vide
+        if(bundle != null) {
+            String wca_id = getArguments().getString(Constants.EXTRAS.WCA_ID, Constants.PREFERENCES.WCA_ID);
+            url = getUrl(wca_id);
+            isMe = false;
+        }
 
     }
 
@@ -92,9 +104,7 @@ public class RecordFragment extends GenericFragment<Record, RecordAdapter> {
         }
 
         else {
-
             loadLocalData();
-
         }
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -112,7 +122,11 @@ public class RecordFragment extends GenericFragment<Record, RecordAdapter> {
      */
     @Override
     protected String getUrl() {
-        return "https://www.worldcubeassociation.org/results/p.php?i=2016DERO01";
+        return url;
+    }
+
+    private String getUrl(String wca_id) {
+        return "https://www.worldcubeassociation.org/results/p.php?i=" + wca_id;
     }
 
     public static String getStaticUrl() {
@@ -160,8 +174,15 @@ public class RecordFragment extends GenericFragment<Record, RecordAdapter> {
             @Override
             public void onSuccess(ArrayList<? extends BaseModel> datas) {
 
-                // On sauvegarde et raffrechie la liste
-                refreshAndSaveData((ArrayList<Record>) datas);
+                if(isMe) {
+                    // On sauvegarde et raffrechie la liste
+                    refreshAndSaveData((ArrayList<Record>) datas);
+
+                }
+
+                else {
+                    refreshData((ArrayList<Record>) datas);
+                }
             }
 
             @Override
@@ -178,15 +199,18 @@ public class RecordFragment extends GenericFragment<Record, RecordAdapter> {
     }
 
     /**
-     * Recupère les données dans l'appareil
+     * Recupère les données dans l'appareil si il s'agit du bon profil
      */
     private void loadLocalData() {
-        loadLocalData(new loadLocalDataCallback() {
-            @Override
-            public Type getType() {
-                return new TypeToken<ArrayList<Record>>() {}.getType();
-            }
-        });
+        if(isMe) {
+            loadLocalData(new loadLocalDataCallback() {
+                @Override
+                public Type getType() {
+                    return new TypeToken<ArrayList<Record>>() {
+                    }.getType();
+                }
+            });
+        }
     }
 
 }

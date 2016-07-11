@@ -20,7 +20,7 @@ public class RecordDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        Record record = (Record) getArguments().getSerializable(Constants.EXTRAS.RECORDS);
+        Record record = getArguments().getParcelable(Constants.EXTRAS.RECORDS);
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
 

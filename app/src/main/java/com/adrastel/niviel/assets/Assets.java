@@ -6,12 +6,16 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.text.Html;
-import android.text.Spannable;
 import android.text.Spanned;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.fragments.BaseFragment;
+import com.adrastel.niviel.fragments.HistoryFragment;
+import com.adrastel.niviel.fragments.RankingFragment;
+import com.adrastel.niviel.fragments.RecordFragment;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -154,5 +158,24 @@ public class Assets {
 
         return fromHtml(html);
     }
+
+    public static BaseFragment getFragmentFromId(@IdRes int id) {
+
+
+        switch(id) {
+            case R.id.nav_profile:
+                return new RecordFragment();
+
+            case R.id.nav_history:
+                return new HistoryFragment();
+
+            case R.id.nav_ranking:
+                return new RankingFragment();
+
+            default:
+                return new RecordFragment();
+        }
+    }
+
 
 }

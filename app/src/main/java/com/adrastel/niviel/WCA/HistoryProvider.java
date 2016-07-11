@@ -98,13 +98,14 @@ public class HistoryProvider extends Provider{
                     if(filter != null) {
 
                         if(filter.equalsIgnoreCase(bufferHistory.getEvent())) {
-                            //Log.d("vrai");
+                            Log.d("vrai");
                             arrayList.add(hydrate(tr));
                         }
 
                     }
 
                     else {
+                        Log.d("faux");
                         arrayList.add(hydrate(tr));
 
                     }

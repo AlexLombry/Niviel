@@ -5,21 +5,35 @@
 
         <item android:title="@string/my_account">
             <menu>
-                <item
-                    android:id="@+id/nav_profile"
-                    android:title="@string/profile" />
-                <item
-                    android:title="@string/personal_records"
-                    android:icon="@drawable/ic_star"/>
-                <item
-                    android:id="@+id/nav_history"
-                    android:title="@string/history"
-                    android:icon="@drawable/ic_history"/>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_profile"
+                        android:title="@string/profile" />
+                    <item
+                        android:title="@string/personal_records"
+                        android:icon="@drawable/ic_star"/>
+                    <item
+                        android:id="@+id/nav_history"
+                        android:title="@string/history"
+                        android:icon="@drawable/ic_history"/>
+                </group>
             </menu>
         </item>
-        <item
-            android:id="@+id/nav_ranking"
-            android:title="@string/ranking"
-            android:icon="@drawable/ic_ranking"/>
+
+        <item android:title="@string/ranking">
+
+            <menu>
+
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_ranking"
+                        android:title="@string/ranking"
+                        android:icon="@drawable/ic_ranking"/>
+                </group>
+
+            </menu>
+
+        </item>
+
     </group>
 </menu>

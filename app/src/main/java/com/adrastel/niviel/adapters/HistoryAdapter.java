@@ -105,18 +105,18 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
             public void onClick(final View view) {
 
                 PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-                popupMenu.inflate(R.menu.menu_pop_list);
+                popupMenu.inflate(R.menu.menu_pop_history);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
 
                         switch (item.getItemId()) {
 
-                            case R.id.menu_pop_list_details:
+                            case R.id.menu_pop_details:
                                 onDetails(fragmentManager, history);
                                 return true;
 
-                            case R.id.menu_pop_list_share:
+                            case R.id.menu_pop_share:
                                 onShare(view.getContext(), history);
                                 return true;
                         }

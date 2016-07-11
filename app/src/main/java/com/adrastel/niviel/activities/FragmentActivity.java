@@ -1,37 +1,33 @@
 package com.adrastel.niviel.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.adapters.HistoryAdapter;
+import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.models.History;
+import com.adrastel.niviel.fragments.BaseFragment;
 
-import java.util.ArrayList;
-
-public class HistoryActivity extends AppCompatActivity {
+public class FragmentActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history);
+        setContentView(R.layout.activity_fragment);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
 
-        if(actionBar != null) {
+        if(actionBar != null)  {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -45,24 +41,27 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
 
-        Context context = getApplicationContext();
-
         Intent intent = getIntent();
-        assert intent != null;
 
-        ArrayList<History> histories = intent.getParcelableArrayListExtra(Constants.EXTRAS.RECORDS);
-        assert histories != null;
+        int id = intent.getIntExtra(Constants.EXTRAS.ID, 0);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.activity_history_recycler);
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        BaseFragment fragment = Assets.getFragmentFromId(id);
 
-        HistoryAdapter adapter = new HistoryAdapter(histories);
+        Bundle bundle = intent.getBundleExtra(Constants.EXTRAS.BUNDLE);
 
-        adapter.setFragmentManager(getSupportFragmentManager());
+        if(bundle != null) {
 
-        recyclerView.setAdapter(adapter);
+            fragment.setArguments(bundle);
+
+        }
+
+        fragmentManager.beginTransaction()
+                .replace(R.id.activity_fragment_view, fragment)
+                .commit();
+
+        setTitle(fragment.getTitle());
 
     }
 
@@ -74,9 +73,9 @@ public class HistoryActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 }

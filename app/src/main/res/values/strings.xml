@@ -39,33 +39,32 @@
     </string-array>
 
     <!-- Records -->
+
     <string name="personal_records">Records personnels</string>
     <string name="single">Single</string>
+    <string name="single_format">Single :&#160;</string>
     <string name="average">Moyenne</string>
+    <string name="average_format">Moyenne :&#160;</string>
     <string name="time">Temps :&#160;</string>
     <string name="nr">Classement national :&#160;</string>
     <string name="cr">Classement continental :&#160;</string>
     <string name="wr">Classement mondial :&#160;</string>
 
     <!-- History -->
-    <string name="event">Evenement :&#160;</string>
+    <string name="event">Evenement</string>
     <string name="history">Historique</string>
-    <string name="competition">Competition :&#160;</string>
-    <string name="round">Round :&#160;</string>
-    <string name="best">Meilleur :&#160;</string>
-    <string name="average_field">Moyenne :&#160;</string>
-    <string name="result_details">Détails :&#160;</string>
+    <string name="competition">Competition</string>
+    <string name="round">Round</string>
+    <string name="best">Meilleur</string>
+    <string name="average_field">Moyenne</string>
+    <string name="result_details">Détails</string>
 
     <!-- Ranking -->
     <string name="ranking">Classement</string>
-    <string name="rank">Place :&#160;</string>
-    <string name="person">Personne :&#160;</string>
-    <string name="result">Résultat :&#160;</string>
-    <string name="citizen">Nationnalité :&#160;</string>
-
-    <!-- Fake records -->
-    <string name="fake_single">5.89</string>
-    <string name="fake_average">7.45</string>
+    <string name="rank">Place</string>
+    <string name="person">Personne</string>
+    <string name="result">Résultat</string>
+    <string name="citizen">Nationnalité</string>
 
     <!-- Errors -->
     <string name="error_connection">Erreur de connexion</string>
@@ -87,6 +86,9 @@
     <string name="switch_cube">Changer de cube</string>
     <string name="my_account">Mon compte</string>
 
+    <!-- see -->
+    <string name="goto_history">Aller à l\'historique</string>
+    <string name="goto_records">Aller à ses records</string>
 
     <!-- share strings -->
     <string name="share_history">J&#8216;ai obtenu la place n°%1$s à la compétition %2$s en faisant un temps moyen de %3$s</string>
@@ -97,6 +99,8 @@
     <string name="second">s</string>
     <string name="zero">0</string>
     <string name="lorem">Lorem Ipsum</string>
+    <string name="title_activity_fragment">FragmentActivity</string>
+    <string name="action_settings">Settings</string>
 
 
 </resources>

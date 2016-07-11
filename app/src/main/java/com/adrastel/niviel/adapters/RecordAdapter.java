@@ -1,5 +1,6 @@
 package com.adrastel.niviel.adapters;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.WCA.RecordProvider;
+import com.adrastel.niviel.activities.FragmentActivity;
 import com.adrastel.niviel.activities.HistoryActivity;
 import com.adrastel.niviel.assets.BackgroundCards;
 import com.adrastel.niviel.assets.Constants;
@@ -113,12 +115,7 @@ public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
         holder.history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), HistoryActivity.class);
-                // todo: parelable ?
-
-                intent.putExtra(Constants.EXTRAS.RECORDS, record.getCompetitions());
-
-                view.getContext().startActivity(intent);
+                showHistory(view.getContext(), record);
             }
         });
 
@@ -133,13 +130,27 @@ public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
         this.manager = manager;
     }
 
+    private void showHistory(Context context, Record record) {
+
+        // Les parametres du fragment
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(Constants.EXTRAS.RECORDS, record.getCompetitions());
+
+        // Les parametres de l'activity
+        Intent intent = new Intent(context, FragmentActivity.class);
+        intent.putExtra(Constants.EXTRAS.ID, R.id.nav_history);
+        intent.putExtra(Constants.EXTRAS.BUNDLE, bundle);
+
+        context.startActivity(intent);
+    }
+
     private void showMoreInfoDialog(FragmentManager manager, Record record) {
 
         if(manager != null) {
 
             Bundle bundle = new Bundle();
 
-            bundle.putSerializable(Constants.EXTRAS.RECORDS, record);
+            bundle.putParcelable(Constants.EXTRAS.RECORDS, record);
 
             DialogFragment recordDialog = new RecordDialog();
             recordDialog.setArguments(bundle);

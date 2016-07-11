@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content" android:layout_height="wrap_content"
     android:background="#EEE">
 
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/adapter_profile_card"
@@ -49,13 +50,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/single"/>
+                            android:text="@string/single_format"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/adapter_profile_single"
-                            android:text="@string/fake_single"/>
+                            android:text="@string/zero"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -72,13 +73,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/average"/>
+                            android:text="@string/average_format"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/adapter_profile_average"
-                            android:text="@string/fake_average"/>
+                            android:text="@string/zero"/>
 
                         <TextView
                             android:layout_width="wrap_content"

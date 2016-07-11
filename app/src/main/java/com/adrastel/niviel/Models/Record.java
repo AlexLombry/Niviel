@@ -1,5 +1,8 @@
 package com.adrastel.niviel.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 
 import java.io.Serializable;
@@ -13,7 +16,7 @@ import java.util.ArrayList;
  * Il possede des records en single ou en average
  */
 
-public class Record extends BaseModel implements Serializable {
+public class Record extends BaseModel implements Parcelable {
 
     // Attributes
 
@@ -77,6 +80,32 @@ public class Record extends BaseModel implements Serializable {
     public Record() {}
 
 
+    protected Record(Parcel in) {
+        wca_id = in.readString();
+        event = in.readString();
+        single = in.readString();
+        nr_single = in.readString();
+        cr_single = in.readString();
+        wr_single = in.readString();
+        average = in.readString();
+        nr_average = in.readString();
+        cr_average = in.readString();
+        wr_average = in.readString();
+        competitions = in.createTypedArrayList(History.CREATOR);
+    }
+
+    public static final Creator<Record> CREATOR = new Creator<Record>() {
+        @Override
+        public Record createFromParcel(Parcel in) {
+            return new Record(in);
+        }
+
+        @Override
+        public Record[] newArray(int size) {
+            return new Record[size];
+        }
+    };
+
     // Pour les logs
     @Override
     public String toString() {
@@ -130,5 +159,25 @@ public class Record extends BaseModel implements Serializable {
 
     public ArrayList<History> getCompetitions() {
         return competitions;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(wca_id);
+        parcel.writeString(event);
+        parcel.writeString(single);
+        parcel.writeString(nr_single);
+        parcel.writeString(cr_single);
+        parcel.writeString(wr_single);
+        parcel.writeString(average);
+        parcel.writeString(nr_average);
+        parcel.writeString(cr_average);
+        parcel.writeString(wr_average);
+        parcel.writeTypedList(competitions);
     }
 }
