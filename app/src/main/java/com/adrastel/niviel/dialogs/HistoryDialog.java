@@ -23,7 +23,7 @@ public class HistoryDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         Bundle bundle = getArguments();
-        History history = (History) bundle.getSerializable(Constants.TAG.HISTORY);
+        History history = bundle.getParcelable(Constants.TAG.HISTORY);
 
         // on crée la vue
         LayoutInflater inflater = LayoutInflater.from(getActivity());

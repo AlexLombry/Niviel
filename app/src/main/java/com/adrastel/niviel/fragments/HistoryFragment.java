@@ -89,7 +89,17 @@ public class HistoryFragment extends GenericFragment<History, HistoryAdapter> {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(Assets.isConnected(connectivityManager)) {
+        if(savedInstanceState != null) {
+
+            ArrayList<History> histories = savedInstanceState.getParcelableArrayList(Constants.EXTRAS.HISTORY);
+
+            refreshData(histories);
+
+            closeLoaders();
+
+        }
+
+        else if(Assets.isConnected(connectivityManager)) {
 
             requestData();
         }
@@ -107,6 +117,14 @@ public class HistoryFragment extends GenericFragment<History, HistoryAdapter> {
             }
         });
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        outState.putParcelableArrayList(Constants.EXTRAS.HISTORY, getDatas());
+
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -154,8 +172,7 @@ public class HistoryFragment extends GenericFragment<History, HistoryAdapter> {
 
             @Override
             public void postRequest() {
-                progressBar.setVisibility(View.GONE);
-                swipeRefresh.setRefreshing(false);
+                closeLoaders();
             }
         });
     }
@@ -171,6 +188,11 @@ public class HistoryFragment extends GenericFragment<History, HistoryAdapter> {
             }
         });
 
+        closeLoaders();
+
+    }
+
+    private void closeLoaders() {
         progressBar.setVisibility(View.GONE);
         swipeRefresh.setRefreshing(false);
     }

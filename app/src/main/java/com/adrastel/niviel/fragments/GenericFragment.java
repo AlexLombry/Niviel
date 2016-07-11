@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import com.adrastel.niviel.HTTP.EncodedRequest;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.BaseAdapter;
 import com.adrastel.niviel.assets.Assets;
@@ -70,9 +71,12 @@ public abstract class GenericFragment<M extends BaseModel, A extends BaseAdapter
         RequestQueue requestQueue = Volley.newRequestQueue(activity);
 
 
-        StringRequest request = new StringRequest(Request.Method.GET, getUrl(), new Response.Listener<String>() {
+        //StringRequest request = new StringRequest(Request.Method.GET, getUrl(), new Response.Listener<String>() {
+        EncodedRequest request = new EncodedRequest(Request.Method.GET, getUrl(), new Response.Listener<String>() {
             @Override
             public void onResponse(final String response) {
+
+
 
                 new Thread(new Runnable() {
                     @Override

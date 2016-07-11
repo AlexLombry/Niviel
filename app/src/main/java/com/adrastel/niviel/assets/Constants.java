@@ -6,6 +6,8 @@ public class Constants {
         String RECORDS = "records";
         String HISTORY = "history";
         String RANKING = "ranking";
+        String POSITION = "position";
+        String ISSINGLE = "issingle";
     }
 
     public interface TAG {

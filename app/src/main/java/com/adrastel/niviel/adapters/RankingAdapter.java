@@ -1,6 +1,9 @@
 package com.adrastel.niviel.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +15,9 @@ import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
+import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
+import com.adrastel.niviel.dialogs.RankingDetailsDialog;
 import com.adrastel.niviel.models.Ranking;
 import com.adrastel.niviel.views.CircleView;
 
@@ -20,10 +26,14 @@ import java.util.ArrayList;
 public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
 
     private ArrayList<Ranking> rankings;
+    private boolean isSingle = true;
+    private FragmentManager fragmentManager;
 
     public RankingAdapter(ArrayList<Ranking> rankings){
         this.rankings = rankings;
     }
+
+
 
     // Le view holder qui contient toutes les infos
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -44,6 +54,9 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
         }
     }
 
+    public void setFragmentManager(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
+    }
 
     @Override
     public RankingAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -56,6 +69,7 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onBindViewHolder(RankingAdapter.ViewHolder holder, int position) {
 
         Ranking ranking = rankings.get(position);
@@ -63,10 +77,20 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
         String rank = ranking.getRank();
         String person = ranking.getPerson();
         String result = ranking.getResult();
+        String details = ranking.getDetails();
 
         holder.rank.setText(rank);
         holder.person.setText(person);
-        holder.result.setText(result);
+
+        if(isSingle) {
+            holder.result.setText(result);
+        }
+
+        else {
+
+            Assets.formatHtmlAverageDetails(result, details);
+
+        }
 
         loadMenu(holder, ranking);
 
@@ -75,6 +99,10 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return rankings.size();
+    }
+
+    public void setSingle(boolean single) {
+        isSingle = single;
     }
 
     private void loadMenu(RankingAdapter.ViewHolder holder, final Ranking ranking) {
@@ -90,11 +118,12 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
 
                         switch (item.getItemId()) {
 
-                            case R.id.menu_pop_history_details:
-                                //onDetails(fragmentManager, ranking);
+                            case R.id.menu_pop_list_details:
+                                Log.d("je suis la");
+                                onDetails(fragmentManager, ranking);
                                 return true;
 
-                            case R.id.menu_pop_history_share:
+                            case R.id.menu_pop_list_share:
                                 onShare(view.getContext(), ranking);
                                 return true;
                         }
@@ -106,6 +135,24 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
 
             }
         });
+    }
+
+    private void onDetails(FragmentManager fragmentManager, Ranking ranking) {
+
+        if(fragmentManager != null) {
+
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(Constants.EXTRAS.RANKING, ranking);
+
+            DialogFragment rankingDialog = new RankingDetailsDialog();
+
+            rankingDialog.setArguments(bundle);
+
+            rankingDialog.show(fragmentManager, "grqejcnrekqj");
+
+
+        }
+
     }
 
     private void onShare(Context context, Ranking ranking) {

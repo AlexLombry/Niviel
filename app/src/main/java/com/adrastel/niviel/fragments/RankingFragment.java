@@ -3,33 +3,40 @@ package com.adrastel.niviel.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.WCA.RankingProvider;
 import com.adrastel.niviel.adapters.RankingAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.event.SpinnerListener;
+import com.adrastel.niviel.assets.Log;
+import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
 import com.adrastel.niviel.models.BaseModel;
+import com.adrastel.niviel.models.BufferRanking;
 import com.adrastel.niviel.models.Ranking;
 import com.android.volley.VolleyError;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.Gson;
 
 import org.jsoup.nodes.Document;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class RankingFragment extends GenericFragment<Ranking, RankingAdapter> implements SpinnerListener {
+public class RankingFragment extends GenericFragment<Ranking, RankingAdapter> implements RankingSwitchCubeDialog.RankingSwitchCubeListener {
 
     private Activity activity;
     private ConnectivityManager connectivityManager;
@@ -37,6 +44,12 @@ public class RankingFragment extends GenericFragment<Ranking, RankingAdapter> im
 
     private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    // cubePosition est une variable qui permet d'identifier sur quelle rubrique on est
+    private int cubePosition = 0;
+
+    // issingle permet de savoir si on veut les single ou average
+    private boolean isSingle = true;
 
     /**
      * Lors de la creation de l'app
@@ -46,8 +59,12 @@ public class RankingFragment extends GenericFragment<Ranking, RankingAdapter> im
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setHasOptionsMenu(true);
+
         activity = getActivity();
         connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        adapter.setFragmentManager(getFragmentManager());
     }
 
     /**
@@ -86,12 +103,42 @@ public class RankingFragment extends GenericFragment<Ranking, RankingAdapter> im
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(Assets.isConnected(connectivityManager)) {
+        if(savedInstanceState != null) {
+            cubePosition = savedInstanceState.getInt(Constants.EXTRAS.POSITION, 0);
+            isSingle = savedInstanceState.getBoolean(Constants.EXTRAS.ISSINGLE, true);
+
+            ArrayList<Ranking> rankings = savedInstanceState.getParcelableArrayList(Constants.EXTRAS.RANKING);
+
+            getAdapter().setSingle(isSingle);
+
+            refreshData(rankings);
+
+            stopLoaders();
+
+        }
+
+
+        else if(Assets.isConnected(connectivityManager)) {
             requestData();
         }
 
-        else {
-            loadLocalData();
+        // todo: a supprimer
+        else if(BuildConfig.DEBUG) {
+
+            ArrayList<Ranking> rankings = new ArrayList<>();
+
+            BufferRanking ranking = new BufferRanking();
+            ranking.setDetails("59 12 12 48 12");
+            ranking.setCitizen("Herel Adrastel");
+            ranking.setCompetition("Lorem");
+            ranking.setPerson("Herel");
+            ranking.setResult("5.02");
+            ranking.setRank("12");
+
+            rankings.add(ranking);
+
+            refreshData(rankings);
+            stopLoaders();
         }
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -101,9 +148,50 @@ public class RankingFragment extends GenericFragment<Ranking, RankingAdapter> im
                 swipeRefreshLayout.setRefreshing(true);
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        outState.putInt(Constants.EXTRAS.POSITION, cubePosition);
+        outState.putBoolean(Constants.EXTRAS.ISSINGLE, isSingle);
+        outState.putParcelableArrayList(Constants.EXTRAS.RANKING, getDatas());
+
+        super.onSaveInstanceState(outState);
+    }
+
+    /**
+     * Ajoute le menu du fragment à celui de l'activité
+     * @param menu menu
+     * @param inflater inflater
+     */
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_ranking, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.action_ranking_swich:
 
 
+                Bundle bundle = new Bundle();
+                bundle.putInt(Constants.EXTRAS.POSITION, cubePosition);
 
+                DialogFragment dialog = new RankingSwitchCubeDialog();
+                dialog.setArguments(bundle);
+                dialog.setTargetFragment(this, 0);
+                dialog.show(getFragmentManager(), Constants.TAG.RANKING);
+
+                return true;
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -112,7 +200,23 @@ public class RankingFragment extends GenericFragment<Ranking, RankingAdapter> im
      */
     @Override
     protected String getUrl() {
-        return "https://www.worldcubeassociation.org/results/events.php?eventId=333&regionId=&years=&show=100%2BPersons&single=Single";
+
+        Uri.Builder builder = new Uri.Builder();
+
+        builder.scheme("https");
+        builder.authority("www.worldcubeassociation.org");
+        builder.appendEncodedPath("results/events.php");
+        builder.appendQueryParameter("eventId", Assets.getCubeId(cubePosition));
+
+        if(!isSingle) {
+            builder.appendQueryParameter("average", "Average");
+        }
+
+        else {
+            builder.appendQueryParameter("single", "Single");
+        }
+
+        return builder.build().toString();
     }
 
     /**
@@ -143,14 +247,22 @@ public class RankingFragment extends GenericFragment<Ranking, RankingAdapter> im
     }
 
     @Override
-    public void onSpinnerChanged() {
+    public void onClick(int cubePosition, boolean isSingle) {
+
+        this.cubePosition = cubePosition;
+        this.isSingle = isSingle;
+
+        requestData();
 
     }
+
 
     /**
      * Fait une requete HTTP
      */
     private void requestData() {
+
+        getAdapter().setSingle(isSingle);
 
         super.requestData(activity, new requestDataCallback() {
             @Override
@@ -160,7 +272,7 @@ public class RankingFragment extends GenericFragment<Ranking, RankingAdapter> im
 
             @Override
             public void onSuccess(ArrayList<? extends BaseModel> datas) {
-                refreshAndSaveData((ArrayList<Ranking>) datas);
+                refreshData((ArrayList<Ranking>) datas);
             }
 
             @Override
@@ -170,26 +282,14 @@ public class RankingFragment extends GenericFragment<Ranking, RankingAdapter> im
 
             @Override
             public void postRequest() {
-                progressBar.setVisibility(View.GONE);
-                swipeRefreshLayout.setRefreshing(false);
+                stopLoaders();
             }
         });
     }
 
-    /**
-     * Recupère les données dans l'appareil
-     */
-    private void loadLocalData() {
-        loadLocalData(new loadLocalDataCallback() {
-            @Override
-            public Type getType() {
-                return new TypeToken<ArrayList<Ranking>>() {}.getType();
-            }
-        });
-
+    private void stopLoaders() {
         progressBar.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(false);
     }
-
 
 }

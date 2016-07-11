@@ -21,4 +21,8 @@ public class BufferRanking extends Ranking {
     public void setCompetition(String competition) {
         this.competition = competition;
     }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
 }

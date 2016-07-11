@@ -15,10 +15,33 @@
     <!-- CUBES -->
     <string name="cube_3x3">Rubik&#8216;s cube</string>
 
+    <string-array name="cubes">
+
+        <item>Rubik&#8216;s cube</item>
+        <item>4x4 Cube</item>
+        <item>5x5 Cube</item>
+        <item>2x2 Cube</item>
+        <item>3x3 blindfolded</item>
+        <item>3x3 one-handed</item>
+        <item>3x3 fewest moves</item>
+        <item>3x3 with feet</item>
+        <item>Megaminx</item>
+        <item>Pyraminx</item>
+        <item>Square-1</item>
+        <item>Rubik&#8216;s clock</item>
+        <item>Skewb</item>
+        <item>6x6 Cube</item>
+        <item>7x7 Cube</item>
+        <item>4x4 blindfolded</item>
+        <item>5x5 blindfolded</item>
+        <item>3x3 multi blind</item>
+
+    </string-array>
+
     <!-- Records -->
     <string name="personal_records">Records personnels</string>
-    <string name="single">Single :&#160;</string>
-    <string name="average">Moyenne :&#160;</string>
+    <string name="single">Single</string>
+    <string name="average">Moyenne</string>
     <string name="time">Temps :&#160;</string>
     <string name="nr">Classement national :&#160;</string>
     <string name="cr">Classement continental :&#160;</string>
@@ -30,10 +53,15 @@
     <string name="competition">Competition :&#160;</string>
     <string name="round">Round :&#160;</string>
     <string name="best">Meilleur :&#160;</string>
+    <string name="average_field">Moyenne :&#160;</string>
     <string name="result_details">Détails :&#160;</string>
 
     <!-- Ranking -->
     <string name="ranking">Classement</string>
+    <string name="rank">Place :&#160;</string>
+    <string name="person">Personne :&#160;</string>
+    <string name="result">Résultat :&#160;</string>
+    <string name="citizen">Nationnalité :&#160;</string>
 
     <!-- Fake records -->
     <string name="fake_single">5.89</string>
@@ -46,6 +74,9 @@
 
 
     <!-- Actions -->
+    <string name="ok">OK</string>
+    <string name="enter">Valider</string>
+    <string name="cancel">Annuler</string>
     <string name="settings">Réglages</string>
     <string name="profile">Profil</string>
     <string name="reload">Recharger</string>
@@ -53,8 +84,9 @@
     <string name="expend">Étendre</string>
     <string name="share">Partager</string>
     <string name="details">Détails</string>
+    <string name="switch_cube">Changer de cube</string>
+    <string name="my_account">Mon compte</string>
 
-    <string name="ok">OK</string>
 
     <!-- share strings -->
     <string name="share_history">J&#8216;ai obtenu la place n°%1$s à la compétition %2$s en faisant un temps moyen de %3$s</string>
@@ -65,5 +97,6 @@
     <string name="second">s</string>
     <string name="zero">0</string>
     <string name="lorem">Lorem Ipsum</string>
+
 
 </resources>

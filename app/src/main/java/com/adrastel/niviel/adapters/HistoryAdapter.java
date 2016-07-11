@@ -39,7 +39,7 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
 
         public CircleView place;
         public TextView competition;
-        public TextView result_details;
+        public TextView results;
         public ImageButton more;
 
 
@@ -48,7 +48,7 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
 
             place = (CircleView) itemView.findViewById(R.id.adapter_list_avatar_avatar);
             competition = (TextView) itemView.findViewById(R.id.adapter_list_avatar_first);
-            result_details = (TextView) itemView.findViewById(R.id.adapter_list_avatar_second);
+            results = (TextView) itemView.findViewById(R.id.adapter_list_avatar_second);
             more = (ImageButton) itemView.findViewById(R.id.adapter_list_avatar_more);
         }
     }
@@ -77,11 +77,12 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
 
         String competition = history.getCompetition();
         String place = history.getPlace();
+        String average = history.getAverage();
         String result_details = history.getResult_details();
 
         holder.competition.setText(competition);
         holder.place.setText(place);
-        holder.result_details.setText(result_details);
+        holder.results.setText(Assets.formatHtmlAverageDetails(average, result_details));
 
         loadMenu(holder, history);
 
@@ -111,11 +112,11 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
 
                         switch (item.getItemId()) {
 
-                            case R.id.menu_pop_history_details:
+                            case R.id.menu_pop_list_details:
                                 onDetails(fragmentManager, history);
                                 return true;
 
-                            case R.id.menu_pop_history_share:
+                            case R.id.menu_pop_list_share:
                                 onShare(view.getContext(), history);
                                 return true;
                         }
@@ -136,8 +137,7 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
 
 
             Bundle bundle = new Bundle();
-            bundle.putInt("test", 2);
-            bundle.putSerializable(Constants.EXTRAS.HISTORY, history);
+            bundle.putParcelable(Constants.EXTRAS.HISTORY, history);
 
             DialogFragment historyDialog = new HistoryDialog();
 

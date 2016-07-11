@@ -89,6 +89,8 @@ public class RankingProvider extends Provider {
                     bufferRanking.setCompetition(text);
                     break;
 
+                case 5:
+                    bufferRanking.setDetails(text);
             }
 
         }

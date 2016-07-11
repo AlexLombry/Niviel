@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
@@ -20,6 +22,8 @@ import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.HistoryFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.fragments.RecordFragment;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+
+
 
         fragmentManager = getSupportFragmentManager();
 

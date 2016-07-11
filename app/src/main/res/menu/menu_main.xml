@@ -2,13 +2,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.MainActivity">
+
     <item
         android:id="@+id/action_personal_records"
         android:title="@string/personal_records"
         android:icon="@drawable/ic_star"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
     <item
-        android:orderInCategory="100"
         android:title="@string/settings"
         app:showAsAction="never" />
 </menu>

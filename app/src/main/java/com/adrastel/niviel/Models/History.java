@@ -1,10 +1,13 @@
 package com.adrastel.niviel.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.Gson;
 
 import java.io.Serializable;
 
-public class History extends BaseModel implements Serializable {
+public class History extends BaseModel implements Parcelable {
 
     /**
      * Le type de cube
@@ -58,6 +61,28 @@ public class History extends BaseModel implements Serializable {
         result_details = history.getResult_details();
     }
 
+    protected History(Parcel in) {
+        event = in.readString();
+        competition = in.readString();
+        round = in.readString();
+        place = in.readString();
+        best = in.readString();
+        average = in.readString();
+        result_details = in.readString();
+    }
+
+    public static final Creator<History> CREATOR = new Creator<History>() {
+        @Override
+        public History createFromParcel(Parcel in) {
+            return new History(in);
+        }
+
+        @Override
+        public History[] newArray(int size) {
+            return new History[size];
+        }
+    };
+
     // Pour les logs
     @Override
     public String toString() {
@@ -65,6 +90,22 @@ public class History extends BaseModel implements Serializable {
         Gson gson = new Gson();
         return gson.toJson(this);
 
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(event);
+        parcel.writeString(competition);
+        parcel.writeString(round);
+        parcel.writeString(place);
+        parcel.writeString(best);
+        parcel.writeString(average);
+        parcel.writeString(result_details);
     }
 
     public String getEvent() {
@@ -94,6 +135,7 @@ public class History extends BaseModel implements Serializable {
     public String getResult_details() {
         return result_details;
     }
+
 
 
 }
