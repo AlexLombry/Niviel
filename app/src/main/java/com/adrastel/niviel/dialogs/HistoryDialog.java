@@ -9,8 +9,8 @@ import android.support.v7.app.AlertDialog;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.DetailsDialogMaker;
-import com.adrastel.niviel.models.History;
+import com.adrastel.niviel.assets.DetailsMaker;
+import com.adrastel.niviel.models.readable.History;
 
 public class HistoryDialog extends DialogFragment {
 
@@ -23,7 +23,7 @@ public class HistoryDialog extends DialogFragment {
         Bundle bundle = getArguments();
         History history = bundle.getParcelable(Constants.TAG.HISTORY);
 
-        DetailsDialogMaker dialogMaker = new DetailsDialogMaker(getContext());
+        DetailsMaker dialogMaker = new DetailsMaker(getContext());
 
         if(history != null) {
             dialogMaker.add(R.string.event, history.getEvent());
@@ -32,7 +32,7 @@ public class HistoryDialog extends DialogFragment {
             dialogMaker.add(R.string.rank, history.getPlace());
             dialogMaker.add(R.string.best, history.getBest());
             dialogMaker.add(R.string.average, history.getAverage());
-            dialogMaker.add(R.string.result_details, history.getResult_details());
+            dialogMaker.add(R.string.details, history.getResult_details());
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -42,12 +42,7 @@ public class HistoryDialog extends DialogFragment {
         builder.setMessage(dialogMaker.build());
 
 
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
+        builder.setPositiveButton(R.string.ok, null);
 
         return builder.create();
     }

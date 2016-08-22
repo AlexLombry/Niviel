@@ -16,8 +16,11 @@ import android.widget.TextView;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.IntentHelper;
 import com.adrastel.niviel.dialogs.RankingDetailsDialog;
-import com.adrastel.niviel.models.Ranking;
+import com.adrastel.niviel.fragments.html.HistoryFragment;
+import com.adrastel.niviel.fragments.html.RecordFragment;
+import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.views.CircleView;
 
 import java.util.ArrayList;
@@ -26,7 +29,6 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
 
     private ArrayList<Ranking> rankings;
     private boolean isSingle = true;
-    private FragmentManager fragmentManager;
 
     public RankingAdapter(ArrayList<Ranking> rankings){
         this.rankings = rankings;
@@ -47,14 +49,10 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
             super(itemView);
 
             rank = (CircleView) itemView.findViewById(R.id.adapter_list_avatar_avatar);
-            person = (TextView) itemView.findViewById(R.id.adapter_list_avatar_first);
-            result = (TextView) itemView.findViewById(R.id.adapter_list_avatar_second);
-            more = (ImageButton) itemView.findViewById(R.id.adapter_list_avatar_more);
+            person = (TextView) itemView.findViewById(R.id.first_line);
+            result = (TextView) itemView.findViewById(R.id.second_line);
+            more = (ImageButton) itemView.findViewById(R.id.more);
         }
-    }
-
-    public void setFragmentManager(FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
     }
 
     @Override
@@ -68,7 +66,6 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void onBindViewHolder(RankingAdapter.ViewHolder holder, int position) {
 
         Ranking ranking = rankings.get(position);
@@ -117,21 +114,22 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
 
                         switch (item.getItemId()) {
 
-                            case R.id.menu_pop_details:
-                                onDetails(fragmentManager, ranking);
+                            case R.id.details:
+                                onDetails(getActivity().getSupportFragmentManager(), ranking);
                                 return true;
 
-                            case R.id.menu_pop_goto_history:
-                                gotoHistory(view.getContext());
-                                return true;
-
-                            case R.id.menu_pop_goto_records:
-                                gotoRecords(view.getContext());
-                                return true;
-
-                            case R.id.menu_pop_share:
+                            case R.id.share:
                                 onShare(view.getContext(), ranking);
                                 return true;
+
+                            case R.id.goto_records:
+                                gotoRecords(ranking);
+                                return true;
+
+                            case R.id.goto_history:
+                                gotoHistory(ranking);
+                                return true;
+
                         }
 
                         return false;
@@ -143,12 +141,34 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
         });
     }
 
-    private void gotoHistory(Context context) {
+    private void onFollow(Context context, Ranking ranking) {
 
     }
 
-    private void gotoRecords(Context context) {
+    private void onUnfollow(Context context, Ranking ranking) {
 
+    }
+
+    private void gotoRecords(Ranking ranking) {
+
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.EXTRAS.WCA_ID, ranking.getWca_id());
+
+        RecordFragment fragment = new RecordFragment();
+        fragment.setArguments(bundle);
+
+        IntentHelper.switchFragment(getActivity(), fragment);
+
+    }
+
+    private void gotoHistory(Ranking ranking) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.EXTRAS.WCA_ID, ranking.getWca_id());
+
+        HistoryFragment fragment = new HistoryFragment();
+        fragment.setArguments(bundle);
+
+        IntentHelper.switchFragment(getActivity(), fragment);
     }
 
     private void onDetails(FragmentManager fragmentManager, Ranking ranking) {
@@ -162,7 +182,7 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
 
             rankingDialog.setArguments(bundle);
 
-            rankingDialog.show(fragmentManager, "grqejcnrekqj");
+            rankingDialog.show(fragmentManager, "details");
 
 
         }
@@ -178,7 +198,7 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
                 Assets.wrapStrong(ranking.getRank()), Assets.wrapStrong(ranking.getResult()));
 
 
-        Assets.shareIntent(context, text, html);
+        IntentHelper.shareIntent(context, text, html);
     }
 
 

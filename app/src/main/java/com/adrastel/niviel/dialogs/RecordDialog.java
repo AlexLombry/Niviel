@@ -1,7 +1,6 @@
 package com.adrastel.niviel.dialogs;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.models.Record;
+import com.adrastel.niviel.models.readable.Record;
 
 public class RecordDialog extends DialogFragment {
 
@@ -26,15 +25,15 @@ public class RecordDialog extends DialogFragment {
 
         View view = inflater.inflate(R.layout.dialog_record_info, null);
 
-        TextView single = (TextView) view.findViewById(R.id.dialog_personal_record_info_single);
-        TextView nr_single = (TextView) view.findViewById(R.id.dialog_personal_record_info_single_nr);
-        TextView cr_single = (TextView) view.findViewById(R.id.dialog_personal_record_info_single_cr);
-        TextView wr_single = (TextView) view.findViewById(R.id.dialog_personal_record_info_single_wr);
+        TextView single = (TextView) view.findViewById(R.id.single);
+        TextView nr_single = (TextView) view.findViewById(R.id.single_nr);
+        TextView cr_single = (TextView) view.findViewById(R.id.single_cr);
+        TextView wr_single = (TextView) view.findViewById(R.id.single_wr);
 
-        TextView average = (TextView) view.findViewById(R.id.dialog_personal_record_info_average);
-        TextView nr_average = (TextView) view.findViewById(R.id.dialog_personal_record_info_average_nr);
-        TextView cr_average = (TextView) view.findViewById(R.id.dialog_personal_record_info_average_cr);
-        TextView wr_average = (TextView) view.findViewById(R.id.dialog_personal_record_info_average_wr);
+        TextView average = (TextView) view.findViewById(R.id.average);
+        TextView nr_average = (TextView) view.findViewById(R.id.average_nr);
+        TextView cr_average = (TextView) view.findViewById(R.id.average_cr);
+        TextView wr_average = (TextView) view.findViewById(R.id.average_wr);
 
         if(record != null) {
             single.setText(record.getSingle());
@@ -54,12 +53,7 @@ public class RecordDialog extends DialogFragment {
 
         builder.setView(view);
 
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
+        builder.setPositiveButton(R.string.ok, null);
 
         return builder.create();
     }

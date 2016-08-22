@@ -26,31 +26,26 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/first_line"
+            android:text="@string/competition"
+            android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:paddingBottom="4dp"
-            android:id="@+id/adapter_list_avatar_first"
-            android:text="@string/competition"/>
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="4dp"
+            android:id="@+id/second_line"
             android:text="@string/zero"
-            android:textSize="12sp"
-            android:id="@+id/adapter_list_avatar_second"/>
+            android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     </LinearLayout>
 
 
 
     <ImageButton
-        android:id="@+id/adapter_list_avatar_more"
+        android:id="@+id/more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/p2"
@@ -60,8 +55,6 @@
         android:contentDescription="@string/more_info"
         android:clickable="true"
         android:layout_gravity="center_vertical"/>
-
-
 
 
 </LinearLayout>

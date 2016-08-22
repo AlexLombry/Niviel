@@ -4,11 +4,7 @@
     tools:context=".activities.MainActivity">
 
     <item
-        android:id="@+id/action_personal_records"
-        android:title="@string/personal_records"
-        android:icon="@drawable/ic_star"
-        app:showAsAction="never"/>
-    <item
         android:title="@string/settings"
+        android:orderInCategory="200"
         app:showAsAction="never" />
 </menu>

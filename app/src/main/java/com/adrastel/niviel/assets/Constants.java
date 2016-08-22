@@ -7,10 +7,12 @@ public class Constants {
         String HISTORY = "history";
         String RANKING = "ranking";
         String POSITION = "position";
+        String COMPETITIONS = "competitions";
         String ISSINGLE = "issingle";
         String ID = "id";
         String BUNDLE = "bundle";
         String WCA_ID = "wca_id";
+
     }
 
     public interface TAG {

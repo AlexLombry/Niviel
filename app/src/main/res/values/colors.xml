@@ -2,15 +2,27 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#0091ea</color>
+    <color name="colorAccent">#F50057</color>
+    <color name="textColorPrimary">#212121</color>
+    <color name="textColorSecondary">#757575</color>
 
     <color name="content">#424242</color>
 
-    <!-- 600 green -->
+    <color name="colorPrimaryPreferences">#607d8b</color>
+    <color name="colorPrimaryDarkPreferences">#455a64</color>
 
-    <!-- 700 cyan -->
+    <color name="green">#43A047</color>
+    <color name="greenDark">#2E7D32</color>
 
-    <!-- 800 orange -->
+    <color name="red">#F44336</color>
+    <color name="redDark">#D32F2F</color>
 
-    <!-- 900 red -->
+    <color name="orange">#FF5722</color>
+    <color name="orangeDark">#E64A19</color>
+
+    <color name="blue">#2196F3</color>
+    <color name="blueDark">#1976D2</color>
+
+    <color name="grey">#9E9E9E</color>
+    <color name="greyDark">#616161</color>
 </resources>

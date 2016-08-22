@@ -62,14 +62,14 @@ public class RankingSwitchCubeDialog extends DialogFragment {
             }
         });
 
-        builder.setNegativeButton(R.string.average, new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(R.string.average, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 listener.onClick(position, false);
             }
         });
 
-        builder.setNeutralButton(R.string.cancel, null);
+        builder.setNegativeButton(R.string.cancel, null);
 
         return builder.create();
     }

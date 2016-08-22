@@ -1,6 +1,5 @@
 package com.adrastel.niviel.adapters;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -12,13 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.BackgroundCards;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.IntentHelper;
 import com.adrastel.niviel.dialogs.HistoryDialog;
-import com.adrastel.niviel.models.History;
+import com.adrastel.niviel.fragments.html.RecordFragment;
+import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.views.CircleView;
 
 import java.util.ArrayList;
@@ -29,9 +30,7 @@ import java.util.ArrayList;
 public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
 
     private ArrayList<History> histories;
-    private BackgroundCards backgroundCards = new BackgroundCards(4164);
-    private ArrayList<Integer> colors = backgroundCards.shuffle();
-    private FragmentManager fragmentManager;
+    private String wca_id = null;
 
 
     // Le view holder qui contient toutes les infos
@@ -47,9 +46,9 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
             super(itemView);
 
             place = (CircleView) itemView.findViewById(R.id.adapter_list_avatar_avatar);
-            competition = (TextView) itemView.findViewById(R.id.adapter_list_avatar_first);
-            results = (TextView) itemView.findViewById(R.id.adapter_list_avatar_second);
-            more = (ImageButton) itemView.findViewById(R.id.adapter_list_avatar_more);
+            competition = (TextView) itemView.findViewById(R.id.first_line);
+            results = (TextView) itemView.findViewById(R.id.second_line);
+            more = (ImageButton) itemView.findViewById(R.id.more);
         }
     }
 
@@ -94,9 +93,8 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
         return histories.size();
     }
 
-
-    public void setFragmentManager(FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
+    public void setWca_id(String wca_id) {
+        this.wca_id = wca_id;
     }
 
     private void loadMenu(ViewHolder holder, final History history) {
@@ -112,13 +110,18 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
 
                         switch (item.getItemId()) {
 
-                            case R.id.menu_pop_details:
-                                onDetails(fragmentManager, history);
+                            case R.id.details:
+                                onDetails(getActivity().getSupportFragmentManager(), history);
                                 return true;
 
-                            case R.id.menu_pop_share:
-                                onShare(view.getContext(), history);
+                            case R.id.share:
+                                onShare(history);
                                 return true;
+
+                            case R.id.goto_records:
+                                gotoRecords();
+                                return true;
+
                         }
 
                         return false;
@@ -128,6 +131,25 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
 
             }
         });
+    }
+
+    private void gotoRecords() {
+
+        if(wca_id != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.EXTRAS.WCA_ID, wca_id);
+
+            RecordFragment fragment = new RecordFragment();
+            fragment.setArguments(bundle);
+
+            IntentHelper.switchFragment(getActivity(), fragment);
+
+        }
+
+        else {
+            Toast.makeText(getActivity(), getActivity().getString(R.string.wca_id_empty), Toast.LENGTH_LONG).show();
+        }
+
     }
 
     private void onDetails(FragmentManager fragmentManager, History history) {
@@ -149,10 +171,10 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
 
     }
 
-    private void onShare(Context context, History history) {
+    private void onShare(History history) {
 
 
-        String shareFormat = context.getString(R.string.share_history);
+        String shareFormat = getActivity().getString(R.string.share_history);
 
         String text = String.format(shareFormat, history.getPlace(), history.getCompetition(), history.getAverage());
 
@@ -160,7 +182,7 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
                 Assets.wrapStrong(history.getCompetition()), Assets.wrapStrong(history.getAverage()));
 
 
-        Assets.shareIntent(context, text, html);
+        IntentHelper.shareIntent(getActivity(), text, html);
     }
 
 }

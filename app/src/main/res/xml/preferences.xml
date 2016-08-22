@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/profile">
+
+        <EditTextPreference
+            android:key="@string/pref_wca_id"
+            android:title="@string/wca_id"
+            android:summary="Votre id WCA"
+            android:singleLine="true"
+            android:textAllCaps="true"
+            android:capitalize="characters"
+            android:hint="0000AAAA00"
+            android:defaultValue=""/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about">
+
+        <Preference android:title="@string/report_bug"/>
+        <Preference android:title="@string/report_err_trad"/>
+        <Preference android:title="@string/rate"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>

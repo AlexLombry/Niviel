@@ -8,8 +8,8 @@ import android.support.v7.app.AlertDialog;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.DetailsDialogMaker;
-import com.adrastel.niviel.models.Ranking;
+import com.adrastel.niviel.assets.DetailsMaker;
+import com.adrastel.niviel.models.readable.Ranking;
 
 public class RankingDetailsDialog extends DialogFragment {
 
@@ -20,23 +20,22 @@ public class RankingDetailsDialog extends DialogFragment {
         Ranking ranking = getArguments().getParcelable(Constants.EXTRAS.RANKING);
 
 
-        DetailsDialogMaker detailsDialogMaker = new DetailsDialogMaker(getContext());
+        DetailsMaker detailsMaker = new DetailsMaker(getContext());
 
         if(ranking != null) {
 
-            detailsDialogMaker.add(R.string.rank, ranking.getRank());
-            detailsDialogMaker.add(R.string.person, ranking.getPerson());
-            detailsDialogMaker.add(R.string.result, ranking.getResult());
-            detailsDialogMaker.add(R.string.citizen, ranking.getCitizen());
-            detailsDialogMaker.add(R.string.competition, ranking.getCompetition());
-            detailsDialogMaker.add(R.string.details, ranking.getDetails());
+            detailsMaker.add(R.string.rank, ranking.getRank());
+            detailsMaker.add(R.string.person, ranking.getPerson());
+            detailsMaker.add(R.string.result, ranking.getResult());
+            detailsMaker.add(R.string.citizen, ranking.getCitizen());
+            detailsMaker.add(R.string.competition, ranking.getCompetition());
+            detailsMaker.add(R.string.details, ranking.getDetails());
 
         }
-        // todo: ajouter le layout dialog_ranking_details
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle(R.string.ranking);
-        builder.setMessage(detailsDialogMaker.build());
+        builder.setMessage(detailsMaker.build());
 
         builder.setPositiveButton(R.string.ok, null);
 

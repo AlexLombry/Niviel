@@ -1,7 +1,11 @@
 package com.adrastel.niviel.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -12,18 +16,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.fragments.BaseFragment;
-import com.adrastel.niviel.fragments.RecordFragment;
+import com.adrastel.niviel.fragments.html.HistoryFragment;
+import com.adrastel.niviel.fragments.html.ProfileFragment;
+import com.adrastel.niviel.fragments.html.RankingFragment;
+import com.adrastel.niviel.fragments.html.RecordFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ActivityTunnelInterface {
 
     private DrawerLayout drawerLayout;
     private FragmentManager fragmentManager;
     private BaseFragment fragment;
+    private Toolbar toolbar;
+    private FloatingActionButton fab;
 
 
     /**
@@ -34,15 +46,30 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(fragment != null) {
+                    fragment.onFabClick(view);
+                }
+            }
+        });
+
         final ActionBar actionBar = getSupportActionBar();
+
 
         if(actionBar != null) {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
 
 
 
@@ -64,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         switchFragment(fragment);
 
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -73,8 +101,10 @@ public class MainActivity extends AppCompatActivity {
 
                 // On choisit le fragment
                 BaseFragment fragment = selectDrawerItem(item);
-                switchFragment(fragment);
 
+                if(fragment != null) {
+                    switchFragment(fragment);
+                }
 
                 return true;
             }
@@ -106,20 +136,6 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 openDrawer();
                 return true;
-
-//            case R.id.action_personal_records:
-//
-//                Intent intent = new Intent(this, RecordActivity.class);
-//                startActivity(intent);
-//                return true;
-
-            case R.id.action_personal_records:
-
-                Intent intent = new Intent(this, FragmentActivity.class);
-
-                intent.putExtra(Constants.EXTRAS.ID, R.id.nav_profile);
-
-                startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -146,8 +162,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if(fragment != null) {
-            fragmentManager.putFragment(outState, Constants.STORAGE.FRAGMENT, fragment);
+        try {
+            if (fragment != null) {
+                fragmentManager.putFragment(outState, Constants.STORAGE.FRAGMENT, fragment);
+            }
+        }
+
+        catch (IllegalStateException e) {
+            e.printStackTrace();
         }
     }
 
@@ -155,22 +177,78 @@ public class MainActivity extends AppCompatActivity {
      * Choisit le fragment à prendre
      * @param item item
      */
+    @Nullable
     private BaseFragment selectDrawerItem(MenuItem item) {
-        fragment = Assets.getFragmentFromId(item.getItemId());
-        return fragment;
+
+        switch(item.getItemId()) {
+            case R.id.profile:
+                return new ProfileFragment();
+
+            case R.id.records:
+                return new RecordFragment();
+
+            case R.id.history:
+                return new HistoryFragment();
+
+            case R.id.ranking:
+                return new RankingFragment();
+
+            case R.id.settings:
+
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return null;
+
+            default:
+                return new RecordFragment();
+
+        }
     }
 
     /**
      * Change de fragment
      * @param fragment fragment
      */
-    private void switchFragment(BaseFragment fragment) {
+    public void switchFragment(BaseFragment fragment) {
 
+        // Remplace le fragment
         fragmentManager.beginTransaction()
                 .replace(R.id.frame_layout, fragment)
+                .addToBackStack(null)
                 .commit();
 
-        setTitle(getString(fragment.getTitle()));
+
+        // Modifie le titre et les couleurs des barres
+        String fragmentTitle = getString(fragment.getTitle());
+        setTitle(fragmentTitle);
+        setSubtitle(null);
+
+        try {
+            // colors
+            int primaryColor = Assets.getColor(this, fragment.getPrimaryColor());
+            setToolbarColor(primaryColor);
+
+
+            int primaryColorDark = Assets.getColor(this, fragment.getPrimaryDarkColor());
+            setStatusBar(primaryColorDark);
+
+
+            // fab
+            if(fragment.getFabVisibility() == View.VISIBLE) {
+                fab.show();
+            }
+
+            else {
+                fab.hide();
+            }
+
+            fab.setImageResource(fragment.getFabIcon());
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -198,4 +276,48 @@ public class MainActivity extends AppCompatActivity {
     private boolean isDrawerOpen() {
         return drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START);
     }
+
+    /**
+     * Change la couleur de l'action bar
+     * @param color couleur
+     */
+    private void setToolbarColor(int color) {
+        if(toolbar != null && color != 0) {
+            toolbar.setBackgroundColor(color);
+        }
+    }
+
+    /**
+     * Change la couleur de la bar de status
+     * Prendre des couleurs MD 700 si possible
+     * @param color couleur
+     */
+    private void setStatusBar(int color) {
+        Window window = getWindow();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && color != 0) {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(color);
+        }
+
+    }
+
+    /**
+     * Edite le sous titre de l'action bar
+     * Disponible dans les fragments
+     * @param subtitle sous titre
+     */
+    @Override
+    public void setSubtitle(String subtitle) {
+
+        ActionBar actionBar = getSupportActionBar();
+
+        if(actionBar != null) {
+            actionBar.setSubtitle(subtitle);
+        }
+    }
+
+
+
 }

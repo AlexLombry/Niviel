@@ -1,25 +1,17 @@
 package com.adrastel.niviel.assets;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.support.annotation.IdRes;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.text.Html;
 import android.text.Spanned;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.fragments.BaseFragment;
-import com.adrastel.niviel.fragments.HistoryFragment;
-import com.adrastel.niviel.fragments.RankingFragment;
-import com.adrastel.niviel.fragments.RecordFragment;
-import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.Random;
 
 public class Assets {
 
@@ -29,51 +21,12 @@ public class Assets {
 
     }
 
-    public static int random(int min, int max) {
-        Random random = new Random();
-
-        return random.nextInt(max - min + 1) + min;
-    }
-
     public static SharedPreferences getSharedPreferences(Context context) {
-        return context.getSharedPreferences(Constants.SECRETS.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-    }
-
-    public static void checkArrayList(ArrayList<?> arrayList) {
-        if(arrayList != null) {
-
-            if(arrayList.size() > 0) {
-                Gson gson = new Gson();
-
-                Log.d(gson.toJson(arrayList.get(0)));
-            }
-
-            else {
-                Log.d("L'array est vide");
-            }
-
-        }
-
-        else {
-            Log.d("L'array est nul");
-        }
+        return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     public static String wrapStrong(String text) {
         return "<strong>" + text + "</strong>";
-    }
-
-    public static void shareIntent(Context context, String text, String html) {
-        Intent intent = new Intent();
-
-        intent.setType("text/plain");
-        intent.setAction(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, text);
-        intent.putExtra(Intent.EXTRA_HTML_TEXT, html);
-
-        Intent chooser = Intent.createChooser(intent, context.getString(R.string.share));
-
-        context.startActivity(chooser);
     }
 
     /**
@@ -152,6 +105,16 @@ public class Assets {
         }
     }
 
+    @SuppressWarnings("deprecation")
+    public static int getColor(Context context, int id) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return context.getColor(id);
+        } else {
+            return context.getResources().getColor(id);
+        }
+    }
+
     public static Spanned formatHtmlAverageDetails(String average, String details) {
 
         String html = "<strong>" + average + "</strong>" + " (" + details + ")";
@@ -159,23 +122,28 @@ public class Assets {
         return fromHtml(html);
     }
 
-    public static BaseFragment getFragmentFromId(@IdRes int id) {
+
+    public static @StringRes int onHttpError(int intStatusCode) {
+
+        String statusCode = String.valueOf(intStatusCode);
+
+        if(statusCode.length() == 3) {
+
+            switch (statusCode.charAt(0)) {
+
+                case '4':
+                    return R.string.error_connection;
+
+                case '5':
+                    return R.string.err_server;
 
 
-        switch(id) {
-            case R.id.nav_profile:
-                return new RecordFragment();
+            }
 
-            case R.id.nav_history:
-                return new HistoryFragment();
-
-            case R.id.nav_ranking:
-                return new RankingFragment();
-
-            default:
-                return new RecordFragment();
         }
-    }
 
+        return R.string.error_loading;
+
+    }
 
 }

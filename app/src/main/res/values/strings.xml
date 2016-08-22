@@ -3,21 +3,27 @@
     <!--
         Référence:
             &#160; espace
+            0144: É
+            0200: È
+            0203: Ë
+            0192: À
     -->
 
-    <string name="app_name">Niviel</string>
-
+    <string name="app_name" translatable="false">Niviel</string>
+    <string name="author_name" translatable="false">Herel</string>
+    <string name="email_name" translatable="false">herel.dev@gmail.com</string>
 
     <!-- Activities -->
-    <string name="title_activity_record">@string/personal_records</string>
-    <string name="title_activity_history">@string/history</string>
+    <string name="title_activity_record" translatable="false">@string/personal_records</string>
+    <string name="title_activity_history" translatable="false">@string/history</string>
+    <string name="title_activity_fragment" translatable="false">FragmentActivity</string>
 
     <!-- CUBES -->
-    <string name="cube_3x3">Rubik&#8216;s cube</string>
+    <string name="cube_3x3" translatable="false">Rubik\'s cube</string>
 
     <string-array name="cubes">
 
-        <item>Rubik&#8216;s cube</item>
+        <item>Rubik\'s cube</item>
         <item>4x4 Cube</item>
         <item>5x5 Cube</item>
         <item>2x2 Cube</item>
@@ -28,7 +34,7 @@
         <item>Megaminx</item>
         <item>Pyraminx</item>
         <item>Square-1</item>
-        <item>Rubik&#8216;s clock</item>
+        <item>Rubik\'s clock</item>
         <item>Skewb</item>
         <item>6x6 Cube</item>
         <item>7x7 Cube</item>
@@ -41,6 +47,7 @@
     <!-- Records -->
 
     <string name="personal_records">Records personnels</string>
+    <string name="records">Records</string>
     <string name="single">Single</string>
     <string name="single_format">Single :&#160;</string>
     <string name="average">Moyenne</string>
@@ -51,13 +58,11 @@
     <string name="wr">Classement mondial :&#160;</string>
 
     <!-- History -->
-    <string name="event">Evenement</string>
+    <string name="event">Évenement</string>
     <string name="history">Historique</string>
     <string name="competition">Competition</string>
     <string name="round">Round</string>
     <string name="best">Meilleur</string>
-    <string name="average_field">Moyenne</string>
-    <string name="result_details">Détails</string>
 
     <!-- Ranking -->
     <string name="ranking">Classement</string>
@@ -65,11 +70,17 @@
     <string name="person">Personne</string>
     <string name="result">Résultat</string>
     <string name="citizen">Nationnalité</string>
+    <string name="world">Monde</string>
+    <string name="ranking_subtitle">%1$s (%2$s)</string>
 
     <!-- Errors -->
+    <string name="no_internet">Pas de connexion internet</string>
     <string name="error_connection">Erreur de connexion</string>
-    <string name="error_interpretation_html">Erreur d&#8216;interpretation du code HTML</string>
+    <string name="err_server">Erreur interne du serveur</string>
+    <string name="error_loading">Erreur de chargement</string>
+    <string name="error_interpretation_html">Erreur d\'interpretation du code HTML</string>
     <string name="error_no_local_data">Pas de données locales</string>
+    <string name="wca_id_empty">Identifiant WCA vide</string>
 
 
     <!-- Actions -->
@@ -79,28 +90,39 @@
     <string name="settings">Réglages</string>
     <string name="profile">Profil</string>
     <string name="reload">Recharger</string>
-    <string name="more_info">Plus d&#8216;infos</string>
-    <string name="expend">Étendre</string>
+    <string name="refresh">Rafraichir</string>
+    <string name="more_info">Plus d\'infos</string>
     <string name="share">Partager</string>
     <string name="details">Détails</string>
     <string name="switch_cube">Changer de cube</string>
     <string name="my_account">Mon compte</string>
+    <string name="about">À propos</string>
+    <string name="report_bug">Signaler un bug</string>
+    <string name="report_err_trad">Signaler une erreur de traduction</string>
+    <string name="rate">Évaluer</string>
+    <string name="follow">Suivre</string>
+    <string name="unfollow">Ne plus suivre</string>
+    <string name="followers">Followers</string>
+    <string name="goto_internet">Voir le site web</string>
+    <string name="open_with">Ouvrir avec</string>
+
+    <!-- Preferences -->
+    <string name="wca_id">Identifiant WCA</string>
 
     <!-- see -->
     <string name="goto_history">Aller à l\'historique</string>
     <string name="goto_records">Aller à ses records</string>
 
     <!-- share strings -->
-    <string name="share_history">J&#8216;ai obtenu la place n°%1$s à la compétition %2$s en faisant un temps moyen de %3$s</string>
+    <string name="share_history">J\'ai obtenu la place n°%1$s à la compétition %2$s en faisant un temps moyen de %3$s</string>
     <string name="share_ranking">%1$s est classé n°%2$s avec un temps de %3$s</string>
 
 
     <!-- Others -->
-    <string name="second">s</string>
-    <string name="zero">0</string>
-    <string name="lorem">Lorem Ipsum</string>
-    <string name="title_activity_fragment">FragmentActivity</string>
-    <string name="action_settings">Settings</string>
+    <string name="second" translatable="false">s</string>
+    <string name="zero" translatable="false">0</string>
+    <string name="lorem" translatable="false">Lorem Ipsum</string>
+
 
 
 </resources>
