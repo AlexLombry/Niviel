@@ -244,6 +244,7 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
     }
 
     private void setSubtitle(String subtitle) {
+        
         if(activityTunnelInterface != null) {
             activityTunnelInterface.setSubtitle(subtitle);
         }
