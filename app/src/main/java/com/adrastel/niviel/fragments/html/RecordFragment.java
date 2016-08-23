@@ -19,6 +19,7 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RecordAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.models.BaseModel;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.providers.RecordProvider;
@@ -126,6 +127,8 @@ public class RecordFragment extends HtmlFragment<Record, RecordAdapter> {
             loadLocalData();
         }
 
+        closeLoaders();
+
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -226,8 +229,8 @@ public class RecordFragment extends HtmlFragment<Record, RecordAdapter> {
 
             @Override
             public void postRequest() {
-                progressBar.setVisibility(View.GONE);
-                swipeRefresh.setRefreshing(false);
+                Log.d("post request");
+                closeLoaders();
             }
         });
     }
@@ -243,6 +246,14 @@ public class RecordFragment extends HtmlFragment<Record, RecordAdapter> {
                 }.getType();
             }
         });
+    }
+
+    /**
+     * Ferme les loaders
+     */
+    private void closeLoaders() {
+        progressBar.setVisibility(View.GONE);
+        swipeRefresh.setRefreshing(false);
     }
 
 }
