@@ -30,16 +30,22 @@ import org.jsoup.nodes.Document;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class RecordFragment extends HtmlFragment<Record, RecordAdapter> {
+
+    @BindView(R.id.progress) ProgressBar progressBar;
+    @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     private Activity activity;
     private RecordAdapter adapter = new RecordAdapter(getDatas());
+    private Unbinder unbinder;
     private ConnectivityManager connectivityManager;
-    private SwipeRefreshLayout swipeRefresh;
 
     private String url;
-
-    private ProgressBar progressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,13 +91,10 @@ public class RecordFragment extends HtmlFragment<Record, RecordAdapter> {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_list, container, false);
+        unbinder = ButterKnife.bind(this, view);
 
-        progressBar = (ProgressBar) view.findViewById(R.id.progress);
         progressBar.setVisibility(View.VISIBLE);
 
-        swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_list_recycler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(true);
@@ -130,6 +133,12 @@ public class RecordFragment extends HtmlFragment<Record, RecordAdapter> {
             }
         });
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override

@@ -31,13 +31,20 @@ import org.jsoup.nodes.Document;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class HistoryFragment extends HtmlFragment<History, HistoryAdapter> {
 
+    @BindView(R.id.progress) ProgressBar progressBar;
+    @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+
+    private Unbinder unbinder;
     private Activity activity;
     private ConnectivityManager connectivityManager;
     private HistoryAdapter adapter = new HistoryAdapter(getDatas());
-    private ProgressBar progressBar;
-    private SwipeRefreshLayout swipeRefresh;
     private String url;
 
     @Override
@@ -87,13 +94,11 @@ public class HistoryFragment extends HtmlFragment<History, HistoryAdapter> {
 
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-        progressBar = (ProgressBar) view.findViewById(R.id.progress);
+        unbinder = ButterKnife.bind(this, view);
+
         progressBar.setVisibility(View.VISIBLE);
 
-        swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         swipeRefresh.setEnabled(false);
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_list_recycler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(true);
@@ -139,6 +144,12 @@ public class HistoryFragment extends HtmlFragment<History, HistoryAdapter> {
 
         closeLoaders();
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override

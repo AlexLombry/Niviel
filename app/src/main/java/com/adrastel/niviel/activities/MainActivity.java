@@ -31,13 +31,19 @@ import com.adrastel.niviel.fragments.html.ProfileFragment;
 import com.adrastel.niviel.fragments.html.RankingFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements ActivityTunnelInterface {
 
-    private DrawerLayout drawerLayout;
+    @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.navigation_view) NavigationView navigationView;
+
     private FragmentManager fragmentManager;
     private BaseFragment fragment;
-    private Toolbar toolbar;
-    private FloatingActionButton fab;
+
 
 
     /**
@@ -48,13 +54,13 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
+        ButterKnife.bind(this);
 
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        setSupportActionBar(toolbar);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,20 +78,11 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-
-
-
-
         fragmentManager = getSupportFragmentManager();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 
         if(savedInstanceState != null && fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT) != null) {
             this.fragment = (BaseFragment) fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT);
-            Log.d("oy");
-
         }
         else {
             this.fragment = new RecordFragment();

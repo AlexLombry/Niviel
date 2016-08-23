@@ -48,7 +48,7 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
 
-            rank = (CircleView) itemView.findViewById(R.id.adapter_list_avatar_avatar);
+            rank = (CircleView) itemView.findViewById(R.id.list_place);
             person = (TextView) itemView.findViewById(R.id.first_line);
             result = (TextView) itemView.findViewById(R.id.second_line);
             more = (ImageButton) itemView.findViewById(R.id.more);

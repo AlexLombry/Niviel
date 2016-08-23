@@ -9,7 +9,7 @@
 
 
     <com.adrastel.niviel.views.CircleView
-        android:id="@+id/adapter_list_avatar_avatar"
+        android:id="@+id/list_place"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="@dimen/p2"

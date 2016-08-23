@@ -24,6 +24,9 @@ import com.adrastel.niviel.views.CircleView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * HistoryAdapter organise les donnes données par un objet histor
  */
@@ -36,19 +39,15 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
     // Le view holder qui contient toutes les infos
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public CircleView place;
-        public TextView competition;
-        public TextView results;
-        public ImageButton more;
+        @BindView(R.id.list_place) CircleView place;
+        @BindView(R.id.first_line) TextView competition;
+        @BindView(R.id.second_line) TextView results;
+        @BindView(R.id.more) ImageButton more;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-
-            place = (CircleView) itemView.findViewById(R.id.adapter_list_avatar_avatar);
-            competition = (TextView) itemView.findViewById(R.id.first_line);
-            results = (TextView) itemView.findViewById(R.id.second_line);
-            more = (ImageButton) itemView.findViewById(R.id.more);
+            ButterKnife.bind(this, itemView);
         }
     }
 

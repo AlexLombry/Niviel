@@ -18,13 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.ActivityTunnelInterface;
 import com.adrastel.niviel.adapters.RankingAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
 import com.adrastel.niviel.models.BaseModel;
 import com.adrastel.niviel.models.readable.Ranking;
@@ -35,16 +33,22 @@ import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> implements RankingSwitchCubeDialog.RankingSwitchCubeListener {
+
+    @BindView(R.id.progress) ProgressBar progressBar;
+    @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     private Activity activity;
     private ConnectivityManager connectivityManager;
+    private Unbinder unbinder;
     private RankingAdapter adapter = new RankingAdapter(getDatas());
 
     private ActivityTunnelInterface activityTunnelInterface;
-
-    private ProgressBar progressBar;
-    private SwipeRefreshLayout swipeRefreshLayout;
 
     // cubePosition est une variable qui permet d'identifier sur quelle rubrique on est
     private int cubePosition = 0;
@@ -86,13 +90,9 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_list, container, false);
+        unbinder = ButterKnife.bind(this, view);
 
-        progressBar = (ProgressBar) view.findViewById(R.id.progress);
         progressBar.setVisibility(View.VISIBLE);
-
-        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
-
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.fragment_list_recycler);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(true);
@@ -136,6 +136,12 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
                 swipeRefreshLayout.setRefreshing(true);
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
