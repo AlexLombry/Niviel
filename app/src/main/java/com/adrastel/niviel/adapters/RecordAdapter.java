@@ -27,6 +27,10 @@ import com.squareup.picasso.RequestCreator;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
 
     private ArrayList<Record> records;
@@ -37,25 +41,18 @@ public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView event;
-        public TextView single;
-        public ImageView image;
-        public Button more_info;
-        public Button history;
-        public CardView card;
+        @BindView(R.id.event) TextView event;
+        @BindView(R.id.record) TextView single;
+        @BindView(R.id.cube_image) ImageView image;
+        @BindView(R.id.more_info) Button more_info;
+        @BindView(R.id.goto_history) Button history;
+        @BindView(R.id.card) CardView card;
 
 
         // view holder
         public ViewHolder(View itemView) {
             super(itemView);
-
-            event = (TextView) itemView.findViewById(R.id.event);
-            single = (TextView) itemView.findViewById(R.id.record);
-            image = (ImageView) itemView.findViewById(R.id.cube_image);
-            more_info = (Button) itemView.findViewById(R.id.more_info);
-            history = (Button) itemView.findViewById(R.id.goto_history);
-            card = (CardView) itemView.findViewById(R.id.card);
-
+            ButterKnife.bind(this, itemView);
         }
     }
 
@@ -134,13 +131,14 @@ public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
         holder.card.setCardBackgroundColor(color);
 
 
-        // listener
+        //listener
         holder.more_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showMoreInfoDialog(getActivity().getSupportFragmentManager(), record);
             }
         });
+
 
         if(record.getCompetitions() != null && record.getCompetitions().size() >= 0) {
             holder.history.setVisibility(View.VISIBLE);

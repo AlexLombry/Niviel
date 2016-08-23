@@ -25,6 +25,9 @@ import com.adrastel.niviel.views.CircleView;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
 
     private ArrayList<Ranking> rankings;
@@ -39,19 +42,15 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
     // Le view holder qui contient toutes les infos
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        public CircleView rank;
-        public TextView person;
-        public TextView result;
-        public ImageButton more;
+        @BindView(R.id.list_place) CircleView rank;
+        @BindView(R.id.first_line) TextView person;
+        @BindView(R.id.second_line) TextView result;
+        @BindView(R.id.more) ImageButton more;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-
-            rank = (CircleView) itemView.findViewById(R.id.list_place);
-            person = (TextView) itemView.findViewById(R.id.first_line);
-            result = (TextView) itemView.findViewById(R.id.second_line);
-            more = (ImageButton) itemView.findViewById(R.id.more);
+            ButterKnife.bind(this, itemView);
         }
     }
 
