@@ -20,6 +20,7 @@ import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.models.BaseModel;
+import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.volley.EncodedRequest;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -216,6 +217,7 @@ public abstract class HtmlFragment<M extends BaseModel, A extends BaseAdapter> e
 
             this.datas.clear();
             this.datas.addAll(datas);
+
             getAdapter().notifyDataSetChanged();
 
         }

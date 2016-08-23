@@ -84,7 +84,7 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
 
         else {
 
-            Assets.formatHtmlAverageDetails(result, details);
+            holder.result.setText(Assets.formatHtmlAverageDetails(result, details));
 
         }
 

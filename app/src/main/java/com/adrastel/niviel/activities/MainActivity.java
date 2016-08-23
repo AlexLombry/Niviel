@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -23,6 +24,7 @@ import android.view.WindowManager;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.ProfileFragment;
@@ -82,11 +84,11 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
 
         if(savedInstanceState != null && fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT) != null) {
             this.fragment = (BaseFragment) fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT);
+            Log.d("oy");
 
         }
         else {
             this.fragment = new RecordFragment();
-
         }
 
         switchFragment(fragment);
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 item.setChecked(true);
                 closeDrawer();
@@ -211,19 +213,18 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
      */
     public void switchFragment(BaseFragment fragment) {
 
-        // Remplace le fragment
-        fragmentManager.beginTransaction()
-                .replace(R.id.frame_layout, fragment)
-                .addToBackStack(null)
-                .commit();
-
-
-        // Modifie le titre et les couleurs des barres
-        String fragmentTitle = getString(fragment.getTitle());
-        setTitle(fragmentTitle);
-        setSubtitle(null);
-
         try {
+            // Remplace le fragment
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frame_layout, fragment)
+                    .addToBackStack(null)
+                    .commit();
+
+
+            // Modifie le titre et les couleurs des barres
+            String fragmentTitle = getString(fragment.getTitle());
+            setTitle(fragmentTitle);
+            setSubtitle(null);
             // colors
             int primaryColor = Assets.getColor(this, fragment.getPrimaryColor());
             setToolbarColor(primaryColor);
@@ -243,6 +244,8 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
             }
 
             fab.setImageResource(fragment.getFabIcon());
+
+            this.fragment = fragment;
 
         }
         catch (Exception e) {
@@ -316,6 +319,8 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
         if(actionBar != null) {
             actionBar.setSubtitle(subtitle);
         }
+
+
     }
 
 

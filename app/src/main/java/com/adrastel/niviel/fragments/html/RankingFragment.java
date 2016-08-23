@@ -24,6 +24,7 @@ import com.adrastel.niviel.activities.ActivityTunnelInterface;
 import com.adrastel.niviel.adapters.RankingAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
 import com.adrastel.niviel.models.BaseModel;
 import com.adrastel.niviel.models.readable.Ranking;
@@ -65,7 +66,7 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
         connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         try {
-            ActivityTunnelInterface activityTunnelInterface = (ActivityTunnelInterface) getActivity();
+            activityTunnelInterface = (ActivityTunnelInterface) getActivity();
         }
 
         catch (ClassCastException e) {
@@ -244,7 +245,7 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
     }
 
     private void setSubtitle(String subtitle) {
-        
+
         if(activityTunnelInterface != null) {
             activityTunnelInterface.setSubtitle(subtitle);
         }
@@ -269,6 +270,10 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
         getAdapter().setSingle(isSingle);
 
         String[] cubes = getResources().getStringArray(R.array.cubes);
+        String mode = isSingle ? getString(R.string.single) : getString(R.string.average);
+        String subtitle = String.format(getString(R.string.ranking_subtitle), cubes[cubePosition], mode);
+
+        setSubtitle(subtitle);
 
         super.requestData(activity, new requestDataCallback() {
             @Override
