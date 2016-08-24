@@ -26,6 +26,7 @@ import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.BaseFragment;
+import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.ProfileFragment;
 import com.adrastel.niviel.fragments.html.RankingFragment;
@@ -191,6 +192,9 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
 
             case R.id.ranking:
                 return new RankingFragment();
+
+            case R.id.followers:
+                return new FollowerFragment();
 
             case R.id.settings:
 
