@@ -113,17 +113,15 @@ public class RecordFragment extends HtmlFragment<Record, RecordAdapter> {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             ArrayList<Record> records = savedInstanceState.getParcelableArrayList(Constants.EXTRAS.RECORDS);
             refreshData(records);
         }
         // Si on est connecté, on fait une requete HTTP, sinon on lit les données locales
-        else if(Assets.isConnected(connectivityManager)) {
+        else if (Assets.isConnected(connectivityManager)) {
 
             requestData();
-        }
-
-        else {
+        } else {
             loadLocalData();
         }
 
@@ -135,6 +133,7 @@ public class RecordFragment extends HtmlFragment<Record, RecordAdapter> {
                 requestData();
             }
         });
+
 
     }
 

@@ -1,43 +1,21 @@
 package com.adrastel.niviel.database;
 
+import android.support.annotation.NonNull;
 
-public class Follower {
+import com.adrastel.niviel.FollowerModel;
+import com.google.auto.value.AutoValue;
+import com.squareup.sqldelight.RowMapper;
 
-    private Long id;
+@AutoValue
+public abstract class Follower implements FollowerModel {
 
-    private String name;
+    public static final Factory<Follower> FACTORY = new Factory<>(new Creator<Follower>() {
+        @Override
+        public Follower create(long _id, @NonNull String name, @NonNull String wca_id, long created_at) {
+            return new AutoValue_Follower(_id, name, wca_id, created_at);
+        }
+    });
 
-    private String wca_id;
+    public static final RowMapper<Follower> SELECT_ALL_MAPPER = FACTORY.select_allMapper();
 
-    private long addedDate;
-
-    public Follower(String name, String wca_id, long addedDate) {
-        this.name = name;
-        this.wca_id = wca_id;
-        this.addedDate = addedDate;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getWca_id() {
-        return wca_id;
-    }
-
-    public void setWca_id(String wca_id) {
-        this.wca_id = wca_id;
-    }
-
-    public long getAddedDate() {
-        return addedDate;
-    }
-
-    public void setAddedDate(long addedDate) {
-        this.addedDate = addedDate;
-    }
 }

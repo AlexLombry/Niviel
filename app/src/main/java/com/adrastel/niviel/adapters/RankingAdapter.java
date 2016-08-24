@@ -1,6 +1,7 @@
 package com.adrastel.niviel.adapters;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +18,9 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.IntentHelper;
+import com.adrastel.niviel.assets.Log;
+import com.adrastel.niviel.database.DatabaseHelper;
+import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.RankingDetailsDialog;
 import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
@@ -129,6 +133,9 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
                                 gotoHistory(ranking);
                                 return true;
 
+                            case R.id.follow:
+                                onFollow(view.getContext(), ranking);
+
                         }
 
                         return false;
@@ -141,6 +148,17 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
     }
 
     private void onFollow(Context context, Ranking ranking) {
+
+        try {
+
+            DatabaseHelper helper = DatabaseHelper.getInstance(context);
+
+            helper.insertFollower(ranking.getPerson(), ranking.getWca_id(), System.currentTimeMillis());
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
