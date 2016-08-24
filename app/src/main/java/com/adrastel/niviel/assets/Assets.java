@@ -12,6 +12,10 @@ import android.text.Html;
 import android.text.Spanned;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.database.DatabaseHelper;
+import com.adrastel.niviel.database.Follower;
+
+import java.util.ArrayList;
 
 public class Assets {
 
@@ -143,6 +147,22 @@ public class Assets {
         }
 
         return R.string.error_loading;
+
+    }
+
+    public static boolean isFollowing(Context context, String wca_id) {
+
+        DatabaseHelper db = new DatabaseHelper(context);
+
+        ArrayList<Follower> followers = db.selectAllFollowers();
+
+        for(Follower follower : followers) {
+            if(follower.wca_id().equals(wca_id)) {
+                return true;
+            }
+        }
+
+        return false;
 
     }
 

@@ -111,6 +111,13 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
 
                 PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
                 popupMenu.inflate(R.menu.menu_pop_ranking);
+
+                final boolean isFollowing = Assets.isFollowing(view.getContext(), ranking.getWca_id());
+                String followTitle = isFollowing ? view.getContext().getString(R.string.unfollow) : view.getContext().getString(R.string.follow);
+
+                MenuItem followButton = popupMenu.getMenu().findItem(R.id.follow);
+                followButton.setTitle(followTitle);
+
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -134,7 +141,15 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
                                 return true;
 
                             case R.id.follow:
-                                onFollow(view.getContext(), ranking);
+                                if(isFollowing) {
+                                    onUnfollow(view.getContext(), ranking);
+                                }
+
+                                else {
+                                    item.setTitle(view.getContext().getString(R.string.unfollow));
+                                    onFollow(view.getContext(), ranking);
+                                }
+                                return true;
 
                         }
 

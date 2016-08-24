@@ -105,6 +105,8 @@
     <string name="followers">Followers</string>
     <string name="goto_internet">Voir le site web</string>
     <string name="open_with">Ouvrir avec</string>
+    <string name="toast_follow_confirmation">Vous suivez %1$s</string>
+    <string name="toast_unfollow_confirmation">Vous ne suivez plus %1$s</string>
 
     <!-- Preferences -->
     <string name="wca_id">Identifiant WCA</string>
