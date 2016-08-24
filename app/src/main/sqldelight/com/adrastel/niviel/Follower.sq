@@ -5,8 +5,11 @@ CREATE TABLE follower (
     created_at INTEGER NOT NULL
 );
 
-delete_database:
+delete_table:
 DROP TABLE IF EXISTS follower;
 
 select_all:
 SELECT * FROM follower;
+
+delete_follower:
+DELETE FROM follower WHERE wca_id = ?;

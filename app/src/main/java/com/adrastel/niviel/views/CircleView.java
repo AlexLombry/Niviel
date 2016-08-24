@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.assets.Log;
 
 public class CircleView extends View {
 
@@ -33,6 +34,10 @@ public class CircleView extends View {
             textSize = array.getDimension(R.styleable.CircleView_textSize, 0);
         }
 
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
         finally {
             array.recycle();
         }
@@ -45,7 +50,6 @@ public class CircleView extends View {
         textPaint.setTextAlign(Paint.Align.CENTER);
 
         backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        backgroundPaint.setColor(background);
         backgroundPaint.setStyle(Paint.Style.FILL);
     }
 
@@ -76,7 +80,7 @@ public class CircleView extends View {
         // On centre le texte
         int textY = (int) ((useableHeight / 2) - ((textPaint.descent() + textPaint.ascent()) / 2));
 
-
+        backgroundPaint.setColor(background);
 
         canvas.drawCircle(circleX, circleY, radius, backgroundPaint);
 

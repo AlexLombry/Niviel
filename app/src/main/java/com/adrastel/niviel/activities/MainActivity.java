@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
             e.printStackTrace();
         }
     }
+    //todo: refaire les couleurs des toolbars + couleur circle view ranking faire correspondre avec toolbar foollowers
 
     /**
      * Choisit le fragment à prendre

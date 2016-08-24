@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.adrastel.niviel.FollowerModel;
+import com.adrastel.niviel.assets.Log;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -57,21 +58,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        db.execSQL(Follower.DELETE_DATABASE);
+        db.execSQL(Follower.DELETE_TABLE);
 
         onCreate(db);
     }
 
-    public boolean insertFollower(String name, String wca_id, long created_at) {
-        SQLiteDatabase db = openDatabase();
+    public void insertFollower(String name, String wca_id, long created_at) {
 
-        db.insert(Follower.TABLE_NAME, null, Follower.FACTORY.marshal()
-            .name(name)
-            .wca_id(wca_id)
-            .created_at(created_at)
-            .asContentValues());
+        try {
+            SQLiteDatabase db = openDatabase();
 
-        return true;
+            db.insert(Follower.TABLE_NAME, null, Follower.FACTORY.marshal()
+                    .name(name)
+                    .wca_id(wca_id)
+                    .created_at(created_at)
+                    .asContentValues());
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        finally {
+            closeDatabase();
+        }
+    }
+
+    public void deleteFollower(String wca_id) {
+
+        try {
+            SQLiteDatabase db = openDatabase();
+
+            db.execSQL(Follower.DELETE_FOLLOWER, new String[] {wca_id});
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        finally {
+            closeDatabase();
+        }
+
     }
 
     public ArrayList<Follower> selectAllFollowers() {
@@ -92,7 +120,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
 
+        finally {
+            closeDatabase();
+        }
+
         return followers;
 
     }
+
 }

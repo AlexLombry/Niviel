@@ -2,6 +2,7 @@ package com.adrastel.niviel.adapters;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -72,12 +73,12 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(RankingAdapter.ViewHolder holder, int position) {
 
-        Ranking ranking = rankings.get(position);
+        final Ranking ranking = rankings.get(position);
 
-        String rank = ranking.getRank();
-        String person = ranking.getPerson();
-        String result = ranking.getResult();
-        String details = ranking.getDetails();
+        final String rank = ranking.getRank();
+        final String person = ranking.getPerson();
+        final String result = ranking.getResult();
+        final String details = ranking.getDetails();
 
         holder.rank.setText(rank);
         holder.person.setText(person);
@@ -92,8 +93,13 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
 
         }
 
-        loadMenu(holder, ranking);
+        final boolean isFollowing = Assets.isFollowing(getActivity(), ranking.getWca_id());
 
+        // Actualise le circle view
+        invalidateCircleView(holder.rank, isFollowing);
+
+        // charge le menu
+        loadMenu(holder, ranking);
     }
 
     @Override
@@ -105,15 +111,17 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
         isSingle = single;
     }
 
-    private void loadMenu(RankingAdapter.ViewHolder holder, final Ranking ranking) {
+    private void loadMenu(final RankingAdapter.ViewHolder holder, final Ranking ranking) {
         holder.more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
 
+                final boolean isFollowing = Assets.isFollowing(getActivity(), ranking.getWca_id());
+
                 PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
                 popupMenu.inflate(R.menu.menu_pop_ranking);
 
-                final boolean isFollowing = Assets.isFollowing(view.getContext(), ranking.getWca_id());
+
                 String followTitle = isFollowing ? view.getContext().getString(R.string.unfollow) : view.getContext().getString(R.string.follow);
 
                 MenuItem followButton = popupMenu.getMenu().findItem(R.id.follow);
@@ -143,12 +151,15 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
 
                             case R.id.follow:
                                 if(isFollowing) {
+                                    item.setTitle(view.getContext().getString(R.string.follow));
                                     onUnfollow(view.getContext(), ranking);
+                                    invalidateCircleView(holder.rank, false);
                                 }
 
                                 else {
                                     item.setTitle(view.getContext().getString(R.string.unfollow));
                                     onFollow(view.getContext(), ranking);
+                                    invalidateCircleView(holder.rank, true);
                                 }
                                 return true;
 
@@ -174,8 +185,23 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
     }
 
     private void onUnfollow(Context context, Ranking ranking) {
+
+        DatabaseHelper helper = DatabaseHelper.getInstance(context);
+        helper.deleteFollower(ranking.getWca_id());
+
+        ArrayList<Follower> followers = helper.selectAllFollowers();
+        Log.d(ranking.getWca_id());
+        for(Follower follower : followers) {
+            Log.d(follower.wca_id());
+        }
+
         String confirmation = String.format(context.getString(R.string.toast_unfollow_confirmation), ranking.getPerson());
         Toast.makeText(context, confirmation, Toast.LENGTH_LONG).show();
+    }
+
+    private void invalidateCircleView(CircleView circleView, boolean isFollowing) {
+        int color = isFollowing ? Assets.getColor(getActivity(), R.color.green) : Assets.getColor(getActivity(), R.color.colorAccent);
+        circleView.setBackground(color);
     }
 
     private void gotoRecords(Ranking ranking) {
