@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
@@ -164,21 +165,17 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
 
     private void onFollow(Context context, Ranking ranking) {
 
-        try {
+        DatabaseHelper helper = DatabaseHelper.getInstance(context);
+        helper.insertFollower(ranking.getPerson(), ranking.getWca_id(), System.currentTimeMillis());
 
-            DatabaseHelper helper = DatabaseHelper.getInstance(context);
-
-            helper.insertFollower(ranking.getPerson(), ranking.getWca_id(), System.currentTimeMillis());
-        }
-
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        String confirmation = String.format(context.getString(R.string.toast_follow_confirmation), ranking.getPerson());
+        Toast.makeText(context, confirmation, Toast.LENGTH_LONG).show();
 
     }
 
     private void onUnfollow(Context context, Ranking ranking) {
-
+        String confirmation = String.format(context.getString(R.string.toast_unfollow_confirmation), ranking.getPerson());
+        Toast.makeText(context, confirmation, Toast.LENGTH_LONG).show();
     }
 
     private void gotoRecords(Ranking ranking) {
