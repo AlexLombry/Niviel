@@ -80,7 +80,8 @@
     <string name="error_loading">Erreur de chargement</string>
     <string name="error_interpretation_html">Erreur d\'interpretation du code HTML</string>
     <string name="error_no_local_data">Pas de données locales</string>
-    <string name="wca_id_empty">Identifiant WCA vide</string>
+    <string name="wrong_wca_id">Identifiant WCA erroné</string>
+
     <string name="no_followers">Vous ne suivez personne</string>
 
 

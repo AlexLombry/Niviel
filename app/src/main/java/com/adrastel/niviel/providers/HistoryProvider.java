@@ -122,7 +122,7 @@ public class HistoryProvider extends Provider{
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(activity, activity.getString(R.string.error_loading), Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, activity.getString(R.string.wrong_wca_id), Toast.LENGTH_LONG).show();
                 }
             });
         }

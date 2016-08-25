@@ -146,7 +146,7 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
         }
 
         else {
-            Toast.makeText(getActivity(), getActivity().getString(R.string.wca_id_empty), Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), getActivity().getString(R.string.wrong_wca_id), Toast.LENGTH_LONG).show();
         }
 
     }

@@ -1,14 +1,10 @@
 package com.adrastel.niviel.fragments.html.account;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,12 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.activities.SettingsActivity;
 import com.adrastel.niviel.adapters.RecordAdapter;
-import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Log;
-import com.adrastel.niviel.fragments.html.HtmlFragment;
 import com.adrastel.niviel.models.BaseModel;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.providers.RecordProvider;
@@ -48,9 +41,8 @@ public class RecordFragment extends AccountFragment<Record, RecordAdapter> {
     private Activity activity;
     private RecordAdapter adapter = new RecordAdapter(getDatas());
     private Unbinder unbinder;
-    private ConnectivityManager connectivityManager;
 
-    private String url;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +50,6 @@ public class RecordFragment extends AccountFragment<Record, RecordAdapter> {
 
         activity = getActivity();
 
-        connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 
         String wca_id = null;
@@ -78,18 +69,7 @@ public class RecordFragment extends AccountFragment<Record, RecordAdapter> {
             // On recupere l'id wca
             wca_id = preferences.getString(getString(R.string.pref_wca_id), null);
 
-            if(wca_id != null) {
-                makeSnackbar(R.string.wca_id_empty, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.settings, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(view.getContext(), SettingsActivity.class);
-                                startActivity(intent);
-                            }
-                        })
-                        .show();
 
-            }
 
         }
         // On modifie l'url en fonction de l'id wca
@@ -135,7 +115,7 @@ public class RecordFragment extends AccountFragment<Record, RecordAdapter> {
             refreshData(records);
         }
         // Si on est connecté, on fait une requete HTTP, sinon on lit les données locales
-        else if (Assets.isConnected(connectivityManager)) {
+        else if (isConnected()) {
 
             requestData();
         } else {
@@ -155,6 +135,14 @@ public class RecordFragment extends AccountFragment<Record, RecordAdapter> {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(needToRefresh) {
+            requestData();
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
@@ -167,21 +155,6 @@ public class RecordFragment extends AccountFragment<Record, RecordAdapter> {
 
         super.onSaveInstanceState(outState);
     }
-
-
-    /**
-     * Retourne l'url de requete
-     * @return url
-     */
-    @Override
-    protected String getUrl() {
-        return url;
-    }
-
-    private void setUrl(String wca_id) {
-        url = "https://www.worldcubeassociation.org/results/p.php?i=" + wca_id;
-    }
-
     /**
      * Retourne l'adapter utilisé
      * @return adapter
@@ -233,8 +206,8 @@ public class RecordFragment extends AccountFragment<Record, RecordAdapter> {
             @Override
             public void onSuccess(ArrayList<? extends BaseModel> datas) {
 
-                    // On sauvegarde et raffrechie la liste
-                    refreshAndSaveData((ArrayList<Record>) datas);
+                // On sauvegarde et raffrechie la liste
+                refreshAndSaveData((ArrayList<Record>) datas);
 
             }
 

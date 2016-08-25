@@ -114,7 +114,7 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
         }
 
 
-        else if(Assets.isConnected(connectivityManager)) {
+        else if(isConnected()) {
             requestData();
         }
 

@@ -213,7 +213,7 @@ public abstract class HtmlFragment<M extends BaseModel, A extends BaseAdapter> e
      */
     protected void refreshData(ArrayList<M> datas) {
 
-        if(Assets.isConnected(connectivityManager)) {
+        if(isConnected()) {
 
             this.datas.clear();
             this.datas.addAll(datas);

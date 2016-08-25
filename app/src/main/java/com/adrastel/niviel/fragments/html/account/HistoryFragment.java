@@ -20,10 +20,8 @@ import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.SettingsActivity;
-import com.adrastel.niviel.fragments.html.HtmlFragment;
 import com.adrastel.niviel.providers.HistoryProvider;
 import com.adrastel.niviel.adapters.HistoryAdapter;
-import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.models.BaseModel;
 import com.adrastel.niviel.models.readable.History;
@@ -49,7 +47,6 @@ public class HistoryFragment extends AccountFragment<History, HistoryAdapter> {
     private Activity activity;
     private ConnectivityManager connectivityManager;
     private HistoryAdapter adapter = new HistoryAdapter(getDatas());
-    private String url;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,12 +68,11 @@ public class HistoryFragment extends AccountFragment<History, HistoryAdapter> {
         if(wca_id == null) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 
-            // todo: faire une classe abstraite qui regroupe les fragments de mon compte
             // On recupere l'id wca
             wca_id = preferences.getString(getString(R.string.pref_wca_id), null);
 
             if(wca_id == null) {
-                makeSnackbar(R.string.wca_id_empty, Snackbar.LENGTH_INDEFINITE)
+                makeSnackbar(R.string.wrong_wca_id, Snackbar.LENGTH_INDEFINITE)
                         .setAction(R.string.settings, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -90,7 +86,7 @@ public class HistoryFragment extends AccountFragment<History, HistoryAdapter> {
         }
 
         else {
-            Toast.makeText(getContext(), R.string.wca_id_empty, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.wrong_wca_id, Toast.LENGTH_LONG).show();
         }
         // On modifie l'url en fonction de l'id wca
         setUrl(wca_id);
@@ -155,13 +151,22 @@ public class HistoryFragment extends AccountFragment<History, HistoryAdapter> {
             }
         }
 
-        else if(Assets.isConnected(connectivityManager)) {
+        else if(isConnected()) {
             requestData();
         }
 
         closeLoaders();
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(needToRefresh) {
+            requestData();
+        }
+    }
+
 
     @Override
     public void onDestroyView() {
@@ -175,15 +180,6 @@ public class HistoryFragment extends AccountFragment<History, HistoryAdapter> {
         outState.putParcelableArrayList(Constants.EXTRAS.HISTORY, getDatas());
 
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected String getUrl() {
-        return url;
-    }
-
-    private void setUrl(String wca_id) {
-        url = "https://www.worldcubeassociation.org/results/p.php?i=" + wca_id;
     }
 
     @Override
