@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.activities.ActivityTunnelInterface;
 import com.adrastel.niviel.adapters.RankingAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
@@ -48,8 +47,6 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
     private Unbinder unbinder;
     private RankingAdapter adapter = new RankingAdapter(getDatas());
 
-    private ActivityTunnelInterface activityTunnelInterface;
-
     // cubePosition est une variable qui permet d'identifier sur quelle rubrique on est
     private int cubePosition = 0;
 
@@ -68,14 +65,6 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
 
         activity = getActivity();
         connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        try {
-            activityTunnelInterface = (ActivityTunnelInterface) getActivity();
-        }
-
-        catch (ClassCastException e) {
-            e.printStackTrace();
-        }
     }
 
     /**

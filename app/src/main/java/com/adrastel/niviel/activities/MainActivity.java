@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -24,13 +25,12 @@ import android.view.WindowManager;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
-import com.adrastel.niviel.fragments.html.HistoryFragment;
+import com.adrastel.niviel.fragments.html.account.HistoryFragment;
 import com.adrastel.niviel.fragments.html.ProfileFragment;
 import com.adrastel.niviel.fragments.html.RankingFragment;
-import com.adrastel.niviel.fragments.html.RecordFragment;
+import com.adrastel.niviel.fragments.html.account.RecordFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.navigation_view) NavigationView navigationView;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
 
     private FragmentManager fragmentManager;
     private BaseFragment fragment;
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
 
         switchFragment(fragment);
 
+        // todo: regarder le probleme back pas actualisation toolbar
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -109,6 +111,10 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
                 return true;
             }
         });
+
+        // todo: gere id wca incorrecte
+
+
 
     }
 
@@ -152,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
         } else {
             super.onBackPressed();
         }
+
     }
 
     /**
@@ -321,10 +328,10 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
         if(actionBar != null) {
             actionBar.setSubtitle(subtitle);
         }
-
-
     }
 
-
-
+    @Override
+    public CoordinatorLayout getCoordinatorLayout() {
+        return coordinatorLayout;
+    }
 }

@@ -1,8 +1,6 @@
 package com.adrastel.niviel.adapters;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
@@ -24,8 +22,8 @@ import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.RankingDetailsDialog;
-import com.adrastel.niviel.fragments.html.HistoryFragment;
-import com.adrastel.niviel.fragments.html.RecordFragment;
+import com.adrastel.niviel.fragments.html.account.HistoryFragment;
+import com.adrastel.niviel.fragments.html.account.RecordFragment;
 import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.views.CircleView;
 

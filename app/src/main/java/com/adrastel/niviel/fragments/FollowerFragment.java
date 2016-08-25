@@ -2,6 +2,7 @@ package com.adrastel.niviel.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -83,15 +84,17 @@ public class FollowerFragment extends BaseFragment {
         DatabaseHelper db = DatabaseHelper.getInstance(getContext());
         ArrayList<Follower> followers = db.selectAllFollowers();
 
-        for(Follower follower : followers) {
-            Log.d(follower.name());
-        }
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         FollowerAdapter adapter = new FollowerAdapter(followers);
         recyclerView.setAdapter(adapter);
+
+        if(followers.size() == 0) {
+            // todo: intent to fragment
+            makeSnackbar(R.string.no_followers, Snackbar.LENGTH_INDEFINITE).show();
+        }
 
     }
 

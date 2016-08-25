@@ -18,7 +18,7 @@ import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.IntentHelper;
 import com.adrastel.niviel.dialogs.HistoryDialog;
-import com.adrastel.niviel.fragments.html.RecordFragment;
+import com.adrastel.niviel.fragments.html.account.RecordFragment;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.views.CircleView;
 
