@@ -33,8 +33,6 @@ import butterknife.ButterKnife;
 public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
 
     private ArrayList<Record> records;
-    private BackgroundCards backgroundCards = new BackgroundCards(4865);
-    private ArrayList<Integer> colors = backgroundCards.shuffle();
     private String wca_id = null;
 
 
@@ -113,7 +111,7 @@ public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
                     });
                 }
                 catch (Exception e) {
-                    Log.e(e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -123,12 +121,15 @@ public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
 //                .centerInside()
 //                .into(holder.image);
 
+        try {
+            int[] colors = getActivity().getResources().getIntArray(R.array.colors_md_100);
+            int color_position = position % colors.length;
 
-        // background
-        int color_position = backgroundCards.get(position);
-        int color = colors.get(color_position);
-        holder.card.setCardBackgroundColor(color);
-
+            holder.card.setCardBackgroundColor(colors[color_position]);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //listener
         holder.more_info.setOnClickListener(new View.OnClickListener() {

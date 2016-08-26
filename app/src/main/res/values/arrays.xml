@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cubes">
+
+        <item>Rubik\'s cube</item>
+        <item>4x4 Cube</item>
+        <item>5x5 Cube</item>
+        <item>2x2 Cube</item>
+        <item>3x3 blindfolded</item>
+        <item>3x3 one-handed</item>
+        <item>3x3 fewest moves</item>
+        <item>3x3 with feet</item>
+        <item>Megaminx</item>
+        <item>Pyraminx</item>
+        <item>Square-1</item>
+        <item>Rubik\'s clock</item>
+        <item>Skewb</item>
+        <item>6x6 Cube</item>
+        <item>7x7 Cube</item>
+        <item>4x4 blindfolded</item>
+        <item>5x5 blindfolded</item>
+        <item>3x3 multi blind</item>
+
+    </string-array>
+
+    <array name="colors_md_100">
+        <item>#d1c4e9</item>
+        <item>#c5cae9</item>
+        <item>#bbdefb</item>
+        <item>#b3e5fc</item>
+        <item>#b2ebf2</item>
+        <item>#b2dfdb</item>
+        <item>#c8e6c9</item>
+        <item>#dcedc8</item>
+        <item>#f0f4c3</item>
+        <item>#fff9c4</item>
+        <item>#ffecb3</item>
+        <item>#ffe0b2</item>
+        <item>#ffccbc</item>
+        <item>#d7ccc8</item>
+        <item>#cfd8dc</item>
+        <item>#f5f5f5</item>
+        <item>#ffcdd2</item>
+        <item>#f8bbd0</item>
+        <item>#e1bee7</item>
+    </array>
+</resources>
