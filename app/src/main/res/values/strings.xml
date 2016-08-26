@@ -87,6 +87,7 @@
     <string name="open_with">Ouvrir avec</string>
     <string name="toast_follow_confirmation">Vous suivez %1$s</string>
     <string name="toast_unfollow_confirmation">Vous ne suivez plus %1$s</string>
+    <string name="search">Rechercher</string>
 
     <!-- Preferences -->
     <string name="wca_id">Identifiant WCA</string>
@@ -104,7 +105,6 @@
     <string name="second" translatable="false">s</string>
     <string name="zero" translatable="false">0</string>
     <string name="lorem" translatable="false">Lorem Ipsum</string>
-
 
 
 </resources>

@@ -4,6 +4,11 @@
     tools:context=".activities.MainActivity">
 
     <item
+        android:id="@+id/search"
+        android:title="@string/search"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="ifRoom"/>
+    <item
         android:title="@string/settings"
         android:orderInCategory="200"
         app:showAsAction="never" />

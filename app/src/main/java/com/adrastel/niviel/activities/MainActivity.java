@@ -142,6 +142,16 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
             case android.R.id.home:
                 openDrawer();
                 return true;
+
+            case R.id.settings:
+                Intent settings = new Intent(this, SettingsActivity.class);
+                startActivity(settings);
+                return true;
+
+            case R.id.search:
+                Intent search = new Intent(this, SearchActivity.class);
+                startActivity(search);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

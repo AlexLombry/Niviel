@@ -166,4 +166,8 @@ public class Assets {
 
     }
 
+    public static String getWcaId() {
+        return null;
+    }
+
 }

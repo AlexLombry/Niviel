@@ -52,7 +52,7 @@ public abstract class AccountFragment<M extends BaseModel, A extends BaseAdapter
 
             wca_id = preferences.getString(getString(R.string.pref_wca_id), null);
 
-            // Si àa ne marche toujours pas, affiche une erreur
+            // Si ça ne marche toujours pas, affiche une erreur
             if (wca_id == null || wca_id.equals("")) {
 
                 needToRefresh = true;
