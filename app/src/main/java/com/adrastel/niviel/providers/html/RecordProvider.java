@@ -1,7 +1,6 @@
-package com.adrastel.niviel.providers;
+package com.adrastel.niviel.providers.html;
 
 import android.app.Activity;
-import android.content.Context;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Personal Record decode a partir du code HTML les record du joueur
  */
-public class RecordProvider extends Provider{
+public class RecordProvider extends HtmlProvider {
 
 
     /**

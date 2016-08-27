@@ -1,10 +1,8 @@
-package com.adrastel.niviel.providers;
+package com.adrastel.niviel.providers.html;
 
 import android.app.Activity;
 import android.net.Uri;
 
-import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.models.writeable.BufferRanking;
 import com.adrastel.niviel.models.readable.Ranking;
 
@@ -14,7 +12,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class RankingProvider extends Provider {
+public class RankingProvider extends HtmlProvider {
 
     private static String rank_buffer = null;
 

@@ -9,8 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.adrastel.niviel.R;
-import com.adrastel.niviel.activities.ActivityTunnelInterface;
+import com.adrastel.niviel.interfaces.ActivityTunnelInterface;
 import com.adrastel.niviel.assets.Assets;
 
 public abstract class BaseFragment extends Fragment {

@@ -5,22 +5,33 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.BaseFragment;
-import com.adrastel.niviel.models.readable.Profile;
-import com.adrastel.niviel.volley.EncodedRequest;
-import com.android.volley.Request;
+import com.adrastel.niviel.models.readable.User;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONException;
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 
 public class ProfileFragment extends BaseFragment {
 
@@ -34,7 +45,7 @@ public class ProfileFragment extends BaseFragment {
 
         requestData(new RequestDataCallback() {
             @Override
-            public void onSuccess(Profile profile) {
+            public void onSuccess(User user) {
 
             }
 
@@ -90,45 +101,64 @@ public class ProfileFragment extends BaseFragment {
 
     private void requestData(final RequestDataCallback callback) {
 
-        EncodedRequest request = new EncodedRequest(getActivity(), Request.Method.GET, "https://www.worldcubeassociation.org/api/v0/users/2016DERO01", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
+        try {
+            OkHttpClient client = new OkHttpClient();
 
-                try {
+            Request request = new Request.Builder()
+                    .url("https://www.worldcubeassociation.org/api/v0/search/users?q=Mathias%20Deroubaix")
+                    .build();
 
-                    JSONObject root = new JSONObject(response);
-
-                    // On serialise l'objet
-                    JSONObject user = root.getJSONObject("user");
-
-                    Gson gson = new Gson();
-
-                    Profile profile = gson.fromJson(user.toString(), Profile.class);
-                    Log.d(profile.getUrl());
-
-                    callback.onSuccess(profile);
-                    callback.postRequest();
-                } catch (JSONException e) {
-                    Toast.makeText(getContext(), getString(R.string.error_loading), Toast.LENGTH_LONG).show();
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
                 }
 
-            }
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
 
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+                    try {
+                        if (!response.isSuccessful()) {
+                            Log.e("Error");
+                        } else {
 
-                callback.onError(error);
-                callback.postRequest();
-            }
-        });
+                            String data = response.body().string();
 
-        requestQueue.add(request);
+                            JSONObject jsonTree = new JSONObject(data);
+
+
+                            JSONArray results = jsonTree.getJSONArray("result");
+                            Log.d(results.toString());
+                            Gson gson = new Gson();
+                            ArrayList<User> users = gson.fromJson(results.toString(), new TypeToken<ArrayList<User>>() {
+                            }.getType());
+
+                            for (User user : users) {
+                                Log.d(user.getWca_id());
+                            }
+
+
+
+                        }
+
+                    }
+
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 
     private interface RequestDataCallback {
-        void onSuccess(Profile profile);
+        void onSuccess(User user);
         void onError(VolleyError error);
         void postRequest();
     }

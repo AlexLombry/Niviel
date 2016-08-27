@@ -1,0 +1,24 @@
+{
+  "result": [
+    {
+      "class": "user",
+      "url": "/results/p.php?i=2016DERO01",
+      "id": 14874,
+      "wca_id": "2016DERO01",
+      "name": "Mathias Deroubaix",
+      "gender": "m",
+      "country_iso2": "FR",
+      "delegate_status": null,
+      "created_at": "2016-03-20T15:31:02.000Z",
+      "updated_at": "2016-06-05T19:38:20.000Z",
+      "teams": [
+
+      ],
+      "avatar": {
+        "url": "https://d1qsrrpnlo9sni.cloudfront.net/assets/missing_avatar_thumb-f0ea801c804765a22892b57636af829edbef25260a65d90aaffbd7873bde74fc.png",
+        "thumb_url": "https://d1qsrrpnlo9sni.cloudfront.net/assets/missing_avatar_thumb-f0ea801c804765a22892b57636af829edbef25260a65d90aaffbd7873bde74fc.png",
+        "is_default": true
+      }
+    }
+  ]
+}

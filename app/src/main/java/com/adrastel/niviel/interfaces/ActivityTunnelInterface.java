@@ -1,4 +1,4 @@
-package com.adrastel.niviel.activities;
+package com.adrastel.niviel.interfaces;
 
 import android.support.design.widget.CoordinatorLayout;
 

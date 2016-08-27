@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.SettingsActivity;
-import com.adrastel.niviel.providers.HistoryProvider;
+import com.adrastel.niviel.providers.html.HistoryProvider;
 import com.adrastel.niviel.adapters.HistoryAdapter;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.models.BaseModel;

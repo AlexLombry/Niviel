@@ -88,6 +88,7 @@
     <string name="toast_follow_confirmation">Vous suivez %1$s</string>
     <string name="toast_unfollow_confirmation">Vous ne suivez plus %1$s</string>
     <string name="search">Rechercher</string>
+    <string name="search_hint_users">Rechercher des joueurs...</string>
 
     <!-- Preferences -->
     <string name="wca_id">Identifiant WCA</string>

@@ -19,7 +19,7 @@ import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.models.BaseModel;
 import com.adrastel.niviel.models.readable.Record;
-import com.adrastel.niviel.providers.RecordProvider;
+import com.adrastel.niviel.providers.html.RecordProvider;
 import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 

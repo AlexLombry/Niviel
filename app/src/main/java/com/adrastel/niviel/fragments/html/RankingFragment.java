@@ -25,7 +25,7 @@ import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
 import com.adrastel.niviel.models.BaseModel;
 import com.adrastel.niviel.models.readable.Ranking;
-import com.adrastel.niviel.providers.RankingProvider;
+import com.adrastel.niviel.providers.html.RankingProvider;
 import com.android.volley.VolleyError;
 
 import org.jsoup.nodes.Document;

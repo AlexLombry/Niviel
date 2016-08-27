@@ -13,15 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.BackgroundCards;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.DetailsMaker;
 import com.adrastel.niviel.assets.IntentHelper;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.RecordDialog;
 import com.adrastel.niviel.fragments.html.account.HistoryFragment;
 import com.adrastel.niviel.models.readable.Record;
-import com.adrastel.niviel.providers.RecordProvider;
+import com.adrastel.niviel.providers.html.RecordProvider;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 

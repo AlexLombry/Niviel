@@ -1,5 +1,6 @@
 package com.adrastel.niviel.activities;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,9 +12,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +34,7 @@ import com.adrastel.niviel.fragments.html.account.HistoryFragment;
 import com.adrastel.niviel.fragments.html.ProfileFragment;
 import com.adrastel.niviel.fragments.html.RankingFragment;
 import com.adrastel.niviel.fragments.html.account.RecordFragment;
+import com.adrastel.niviel.interfaces.ActivityTunnelInterface;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -127,6 +131,18 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+
+        try {
+            MenuItem itemSearch = menu.findItem(R.id.search);
+            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(itemSearch);
+
+            SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         return true;
     }
 
@@ -150,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
 
             case R.id.search:
                 Intent search = new Intent(this, SearchActivity.class);
-                startActivity(search);
+                //startActivity(search);
                 return true;
         }
 
