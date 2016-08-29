@@ -146,7 +146,7 @@ public class Assets {
 
         }
 
-        return R.string.error_loading;
+        return R.string.cannot_load;
 
     }
 

@@ -28,16 +28,31 @@ import android.view.WindowManager;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.html.account.HistoryFragment;
 import com.adrastel.niviel.fragments.html.ProfileFragment;
 import com.adrastel.niviel.fragments.html.RankingFragment;
 import com.adrastel.niviel.fragments.html.account.RecordFragment;
+import com.adrastel.niviel.http.HttpCallback;
 import com.adrastel.niviel.interfaces.ActivityTunnelInterface;
+import com.adrastel.niviel.models.readable.User;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.Call;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 public class MainActivity extends AppCompatActivity implements ActivityTunnelInterface {
 
@@ -66,6 +81,11 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         setSupportActionBar(toolbar);
+
+        Intent intent = getIntent();
+        handleIntent(intent);
+
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,6 +205,12 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
             super.onBackPressed();
         }
 
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
     }
 
     /**
@@ -359,5 +385,61 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
     @Override
     public CoordinatorLayout getCoordinatorLayout() {
         return coordinatorLayout;
+    }
+
+    private void handleIntent(Intent intent) {
+        if(intent.getAction().equals(Intent.ACTION_SEARCH)) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            searchUser(query);
+        }
+    }
+
+    private void searchUser(String query) {
+
+        OkHttpClient client = new OkHttpClient();
+
+        HttpUrl url = new HttpUrl.Builder()
+                .scheme("https")
+                .host("www.worldcubeassociation.org")
+                .addEncodedPathSegments("api/v0/search/users")
+                .addEncodedQueryParameter("q", "Mathias Deroubaix")
+                .build();
+
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        Call call = client.newCall(request);
+
+
+        call.enqueue(new HttpCallback(this) {
+            @Override
+            public void onResponse(String response){
+
+
+                JsonParser jsonParser = new JsonParser();
+                JsonElement jsonTree = jsonParser.parse(response);
+
+                JsonObject jsonObject = jsonTree.getAsJsonObject();
+
+                JsonArray result = jsonObject.getAsJsonArray("result");
+
+                Gson gson = new Gson();
+                ArrayList<User> users = gson.fromJson(result, new TypeToken<ArrayList<User>>() {
+                }.getType());
+
+                for (User user : users) {
+                    Log.d(user.getWca_id());
+
+                }
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+
+        });
     }
 }

@@ -7,7 +7,7 @@ public class User {
     @SerializedName("class")
     private String type;
 
-    private int id;
+    private String id;
 
     private String wca_id;
 
@@ -19,6 +19,8 @@ public class User {
     private String gender;
 
     private String created_at;
+
+    private String url;
 
     public User() {
 
@@ -33,7 +35,7 @@ public class User {
         return type;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -55,5 +57,9 @@ public class User {
 
     public String getCreated_at() {
         return created_at;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

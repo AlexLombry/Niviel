@@ -55,7 +55,7 @@
     <string name="no_internet">Pas de connexion internet</string>
     <string name="error_connection">Erreur de connexion</string>
     <string name="err_server">Erreur interne du serveur</string>
-    <string name="error_loading">Erreur de chargement</string>
+    <string name="cannot_load">Impossible de charger le contenu</string>
     <string name="error_interpretation_html">Erreur d\'interpretation du code HTML</string>
     <string name="error_no_local_data">Pas de données locales</string>
     <string name="wrong_wca_id">Identifiant WCA erroné</string>
