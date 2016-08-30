@@ -16,32 +16,40 @@ import android.widget.ProgressBar;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RecordAdapter;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Log;
-import com.adrastel.niviel.models.BaseModel;
+import com.adrastel.niviel.fragments.BaseFragment;
+import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.providers.html.RecordProvider;
-import com.android.volley.VolleyError;
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.HttpUrl;
 
-public class RecordFragment extends AccountFragment<Record, RecordAdapter> {
+public class RecordFragment extends BaseFragment {
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     private Activity activity;
-    private RecordAdapter adapter = new RecordAdapter(getDatas());
     private Unbinder unbinder;
 
+    private HttpManager httpManager;
+
+    private RecordAdapter adapter;
+
+    private SharedPreferences preferences;
+
+    private static final String WCA_ID = Constants.EXTRAS.WCA_ID;
+    private static final String RECORD = Constants.EXTRAS.RECORDS;
 
 
     @Override
@@ -50,6 +58,7 @@ public class RecordFragment extends AccountFragment<Record, RecordAdapter> {
 
         activity = getActivity();
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
 
         String wca_id = null;
@@ -72,8 +81,6 @@ public class RecordFragment extends AccountFragment<Record, RecordAdapter> {
 
 
         }
-        // On modifie l'url en fonction de l'id wca
-        setUrl(wca_id);
 
     }
 
@@ -93,11 +100,12 @@ public class RecordFragment extends AccountFragment<Record, RecordAdapter> {
 
         progressBar.setVisibility(View.VISIBLE);
 
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.setAdapter(getAdapter());
+        adapter = new RecordAdapter();
+        adapter.setActivity(getActivity());
+        recyclerView.setAdapter(adapter);
 
         return view;
     }
@@ -110,19 +118,19 @@ public class RecordFragment extends AccountFragment<Record, RecordAdapter> {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        httpManager = new HttpManager(getActivity(), swipeRefresh, progressBar);
+
         if (savedInstanceState != null) {
-            ArrayList<Record> records = savedInstanceState.getParcelableArrayList(Constants.EXTRAS.RECORDS);
-            refreshData(records);
+            adapter.refreshData(loadLocalData(savedInstanceState));
+            httpManager.stopLoaders();
         }
         // Si on est connecté, on fait une requete HTTP, sinon on lit les données locales
         else if (isConnected()) {
-
             requestData();
         } else {
-            loadLocalData();
+            adapter.refreshData(loadLocalData());
+            httpManager.stopLoaders();
         }
-
-        closeLoaders();
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -135,14 +143,6 @@ public class RecordFragment extends AccountFragment<Record, RecordAdapter> {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if(needToRefresh) {
-            requestData();
-        }
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
@@ -151,26 +151,9 @@ public class RecordFragment extends AccountFragment<Record, RecordAdapter> {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        outState.putParcelableArrayList(Constants.EXTRAS.RECORDS, getDatas());
+        saveDatas(outState, adapter.getDatas());
 
         super.onSaveInstanceState(outState);
-    }
-    /**
-     * Retourne l'adapter utilisé
-     * @return adapter
-     */
-    @Override
-    protected RecordAdapter getAdapter() {
-        return adapter;
-    }
-
-    /**
-     * Retourne l'emplacement de stockage utilisé
-     * @return stockage
-     */
-    @Override
-    protected String getStorage() {
-        return Constants.STORAGE.RECORDS;
     }
 
     /**
@@ -192,57 +175,86 @@ public class RecordFragment extends AccountFragment<Record, RecordAdapter> {
         return R.color.blueDark;
     }
 
-    /**
-     * Fait une requete HTTP
-     */
+    @Override
+    public int getFabVisibility() {
+        return View.VISIBLE;
+    }
+
+    @Override
+    public int getFabIcon() {
+        return R.drawable.ic_followers;
+    }
+
+    @Override
+    public void onFabClick(View view) {
+
+    }
+
     private void requestData() {
+        HttpUrl url = new HttpUrl.Builder()
 
-        super.requestData(activity, new requestDataCallback() {
+                // https://www.worldcubeassociation.org/results/p.php?i=
+                .scheme("https")
+                .host("www.worldcubeassociation.org")
+                .addPathSegments("results/p.php")
+                .addEncodedQueryParameter("i", "2016DERO01")
+                .build();
+        httpManager.callData(url, new HttpManager.SuccessCallback() {
             @Override
-            public ArrayList<? extends BaseModel> parseDatas(Document document) {
-                return RecordProvider.getRecord(activity, document, true);
-            }
+            public void onSuccess(String response) {
+                Document document = Jsoup.parse(response);
+                final ArrayList<Record> records = RecordProvider.getRecord(getActivity(), document);
 
-            @Override
-            public void onSuccess(ArrayList<? extends BaseModel> datas) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.refreshData(records);
+                    }
+                });
 
-                // On sauvegarde et raffrechie la liste
-                refreshAndSaveData((ArrayList<Record>) datas);
+                saveDatas(records);
 
-            }
-
-            @Override
-            public void onError(VolleyError error) {
-                loadLocalData();
-            }
-
-            @Override
-            public void postRequest() {
-                Log.d("post request");
-                closeLoaders();
-            }
-        });
-    }
-
-    /**
-     * Recupère les données dans l'appareil si il s'agit du bon profil
-     */
-    private void loadLocalData() {
-        loadLocalData(new loadLocalDataCallback() {
-            @Override
-            public Type getType() {
-                return new TypeToken<ArrayList<Record>>() {
-                }.getType();
             }
         });
     }
 
-    /**
-     * Ferme les loaders
-     */
-    private void closeLoaders() {
-        progressBar.setVisibility(View.GONE);
-        swipeRefresh.setRefreshing(false);
+    private ArrayList<Record> loadLocalData() {
+
+        String json = preferences.getString(RECORD, null);
+
+        return loadFromJson(json);
+    }
+
+    private ArrayList<Record> loadLocalData(Bundle savedInstanceState) {
+        if(savedInstanceState != null) {
+            return savedInstanceState.getParcelableArrayList(RECORD);
+        }
+
+        return new ArrayList<>();
+    }
+
+    private void saveDatas(ArrayList<Record> records) {
+        Gson gson = new Gson();
+
+        String json = gson.toJson(records);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(RECORD, json);
+        editor.apply();
+    }
+
+    private void saveDatas(Bundle savedInstanceState, ArrayList<Record> records) {
+        savedInstanceState.putParcelableArrayList(RECORD, records);
+    }
+    private ArrayList<Record> loadFromJson(String json) {
+        if(json != null) {
+            Gson gson = new Gson();
+            return gson.fromJson(json, new TypeToken<ArrayList<Record>>(){}.getType());
+        }
+
+        else {
+            return new ArrayList<>();
+        }
     }
 
 }

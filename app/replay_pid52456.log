@@ -1,0 +1,22 @@
+JvmtiExport can_access_local_variables 0
+JvmtiExport can_hotswap_or_post_breakpoint 0
+JvmtiExport can_post_on_exceptions 0
+# 229 ciObject found
+ciMethod java/lang/Object getClass ()Ljava/lang/Class; 3073 1 384 0 -1
+ciMethod java/lang/Object hashCode ()I 2049 1 256 0 -1
+ciMethod java/lang/Object equals (Ljava/lang/Object;)Z 3489 1 2396 0 -1
+ciMethod java/lang/String compareTo (Ljava/lang/String;)I 1713 11081 590 0 -1
+ciMethod java/lang/String hashCode ()I 2761 32769 1426 0 320
+ciMethod java/lang/Class getName ()Ljava/lang/String; 177 1 26 0 -1
+ciMethod java/util/ArrayList size ()I 1097 1 137 0 0
+ciMethod java/util/ArrayList elementData (I)Ljava/lang/Object; 2081 1 30578 0 0
+ciMethod java/util/ArrayList get (I)Ljava/lang/Object; 2081 1 25746 0 128
+ciMethod java/util/ArrayList rangeCheck (I)V 2081 1 30544 0 64
+ciMethod java/util/HashMap hash (Ljava/lang/Object;)I 2201 1 15580 0 0
+ciMethod java/util/HashMap get (Ljava/lang/Object;)Ljava/lang/Object; 2065 1 7147 0 1888
+ciMethod java/util/HashMap getNode (ILjava/lang/Object;)Ljava/util/HashMap$Node; 2089 97 6283 0 1024
+ciMethod java/util/HashMap put (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; 2049 1 2422 0 -1
+ciMethod java/util/HashMap$TreeNode getTreeNode (ILjava/lang/Object;)Ljava/util/HashMap$TreeNode; 0 0 1 0 -1
+ciMethodData java/lang/String hashCode ()I 2 20254 orig 264 184 158 17 115 0 0 0 0 128 79 252 19 0 0 0 0 152 1 0 0 32 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 16 0 0 201 33 0 0 241 248 1 0 0 0 0 0 0 0 0 0 2 0 0 0 1 0 11 0 4 0 1 0 120 0 0 0 255 255 255 255 7 0 6 0 0 0 0 0 data 15 0x60007 0x179 0x78 0x2c0 0xe0007 0x1 0x58 0x2bf 0x1e0007 0x2bf 0x38 0x3ee4 0x2d0003 0x3ee4 0xffffffffffffffe0 oops 0
+ciMethod java/util/HashSet add (Ljava/lang/Object;)Z 4097 1 1005 0 -1
+ciMethodData java/util/HashMap hash (Ljava/lang/Object;)I 2 15580 orig 264 184 158 17 115 0 0 0 0 184 127 10 20 0 0 0 0 176 1 0 0 32 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 77 68 79 32 101 120 116 114 97 32 100 97 116 97 32 108 111 99 107 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 18 1 0 0 73 222 1 0 1 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 6 0 3 0 1 0 104 0 0 0 255 255 255 255 7 0 1 0 0 0 0 0 data 13 0x10007 0x3bc9 0x38 0x0 0x50003 0x0 0x48 0x90005 0x232b 0x2199bd0 0x602 0x16e7b800 0x1c4 oops 2

@@ -64,15 +64,19 @@ public class HttpManager {
         void onError();
     }
 
-    private void stopLoaders() {
+    public void stopLoaders() {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(swipeRefreshLayout != null) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
 
-        if(swipeRefreshLayout != null) {
-            swipeRefreshLayout.setRefreshing(false);
-        }
-
-        if(progressBar != null) {
-            progressBar.setVisibility(View.GONE);
-        }
+                if(progressBar != null) {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
 
     }
 

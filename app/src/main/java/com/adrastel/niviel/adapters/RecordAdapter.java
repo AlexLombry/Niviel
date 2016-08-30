@@ -28,9 +28,8 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
+public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> {
 
-    private ArrayList<Record> records;
     private String wca_id = null;
 
 
@@ -52,9 +51,7 @@ public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
     }
 
     // constructeur
-    public RecordAdapter(ArrayList<Record> records) {
-        this.records = records;
-    }
+
 
     // lors de la creation de la vue
     @Override
@@ -71,7 +68,7 @@ public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        final Record record = records.get(position);
+        final Record record = getDatas().get(position);
 
 
 
@@ -92,32 +89,11 @@ public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
 
         holder.single.setText(detailsMaker.build("#404040"), TextView.BufferType.SPANNABLE);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final RequestCreator image = Picasso.with(holder.image.getContext())
-                            .load(image_resource)
-                            .fit()
-                            .centerInside();
-
-                    holder.image.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            image.into(holder.image);
-                        }
-                    });
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-//        Picasso.with(holder.image.getContext())
-//                .load(image_resource)
-//                .fit()
-//                .centerInside()
-//                .into(holder.image);
+        Picasso.with(holder.image.getContext())
+                .load(image_resource)
+                .fit()
+                .centerInside()
+                .into(holder.image);
 
         try {
             int[] colors = getActivity().getResources().getIntArray(R.array.colors_md_100);
@@ -153,7 +129,7 @@ public class RecordAdapter extends BaseAdapter<RecordAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return records.size();
+        return getDatas().size();
     }
 
     public void setWca_id(String wca_id) {

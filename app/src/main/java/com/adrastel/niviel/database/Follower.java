@@ -3,11 +3,12 @@ package com.adrastel.niviel.database;
 import android.support.annotation.NonNull;
 
 import com.adrastel.niviel.FollowerModel;
+import com.adrastel.niviel.models.BaseModel;
 import com.google.auto.value.AutoValue;
 import com.squareup.sqldelight.RowMapper;
 
 @AutoValue
-public abstract class Follower implements FollowerModel {
+public abstract class Follower extends BaseModel implements FollowerModel {
 
     public static final Factory<Follower> FACTORY = new Factory<>(new Creator<Follower>() {
         @Override

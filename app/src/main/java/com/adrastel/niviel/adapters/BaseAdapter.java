@@ -7,6 +7,8 @@ public abstract class BaseAdapter<T extends RecyclerView.ViewHolder> extends Rec
 
     private FragmentActivity activity;
 
+
+
     protected FragmentActivity getActivity() {
         return activity;
     }
