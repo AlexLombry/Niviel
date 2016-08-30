@@ -42,8 +42,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.SearchActivity">
-        </activity>
+
         <provider
             android:name=".providers.content.SuggestionProvider"
             android:authorities="com.niviel.adrastel.suggestionProvider"

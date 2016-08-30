@@ -14,7 +14,7 @@ import okhttp3.Response;
 
 public abstract class HttpCallback implements okhttp3.Callback {
 
-    private Activity activity;
+    protected Activity activity;
 
     public HttpCallback(Activity activity) {
         this.activity = activity;

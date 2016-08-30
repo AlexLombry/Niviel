@@ -40,6 +40,7 @@ public class SuggestionProvider extends ContentProvider {
 
     private static final String[] COLUMNS = {
             BaseColumns._ID,
+            SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID,
             SearchManager.SUGGEST_COLUMN_TEXT_1,
             SearchManager.SUGGEST_COLUMN_TEXT_2
     };
@@ -119,7 +120,7 @@ public class SuggestionProvider extends ContentProvider {
                 // verifie que l'utilisateur a un id wca
                 if ((user.getType().equals("person") || user.getType().equals("user")) && user.getWca_id() != null) {
                     Log.d("name: " + user.getName());
-                    cursor.addRow(new Object[]{i, user.getName(), user.getWca_id()});
+                    cursor.addRow(new Object[]{i, user.getWca_id(), user.getName(), user.getWca_id()});
                     i++;
                 }
             }
