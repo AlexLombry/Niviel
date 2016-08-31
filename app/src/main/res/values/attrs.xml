@@ -5,4 +5,8 @@
         <attr name="backgroundColor" format="color"/>
         <attr name="textSize" format="dimension"/>
     </declare-styleable>
+
+    <attr name="colorPrimaryLight" format="color"/>
+    <attr name="fab_enabled" format="boolean"/>
+    <attr name="fab_visible" format="boolean"/>
 </resources>

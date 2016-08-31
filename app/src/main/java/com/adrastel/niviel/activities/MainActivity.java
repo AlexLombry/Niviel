@@ -2,6 +2,8 @@ package com.adrastel.niviel.activities;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -31,9 +33,9 @@ import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
-import com.adrastel.niviel.fragments.html.account.HistoryFragment;
 import com.adrastel.niviel.fragments.html.ProfileFragment;
 import com.adrastel.niviel.fragments.html.RankingFragment;
+import com.adrastel.niviel.fragments.html.account.HistoryFragment;
 import com.adrastel.niviel.fragments.html.account.RecordFragment;
 import com.adrastel.niviel.http.HttpCallback;
 import com.adrastel.niviel.interfaces.ActivityTunnelInterface;
@@ -289,7 +291,14 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
             int primaryColorDark = Assets.getColor(this, fragment.getPrimaryDarkColor());
             setStatusBar(primaryColorDark);
 
+            int[] attrs = { R.attr.colorPrimary, R.attr.colorPrimaryDark};
 
+            TypedArray typedArray = obtainStyledAttributes(R.style.AppTheme_Preferences, attrs);
+            Log.d("Primary ", Integer.toHexString(typedArray.getColor(0, Color.BLACK)));
+            Log.d("primary dark ", Integer.toHexString(typedArray.getColor(1, Color.BLACK)));
+
+
+            typedArray.recycle();
             // fab
             if(fragment.getFabVisibility() == View.VISIBLE) {
                 fab.show();

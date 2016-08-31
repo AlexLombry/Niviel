@@ -116,9 +116,7 @@ public class HistoryFragment extends HtmlFragment<History> {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        swipeRefresh.setEnabled(false);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setAdapter(adapter);
@@ -138,6 +136,7 @@ public class HistoryFragment extends HtmlFragment<History> {
 
         if(savedInstanceState != null) {
             adapter.refreshData(loadLocalData(savedInstanceState));
+            httpManager.stopLoaders();
         }
 
         else if(getArguments() != null){
@@ -148,6 +147,7 @@ public class HistoryFragment extends HtmlFragment<History> {
 
             if(histories != null) {
                 adapter.refreshData(histories);
+                httpManager.stopLoaders();
             }
 
             else {
@@ -158,8 +158,6 @@ public class HistoryFragment extends HtmlFragment<History> {
         else if(isConnected()) {
             callData();
         }
-
-        httpManager.stopLoaders();
 
     }
 

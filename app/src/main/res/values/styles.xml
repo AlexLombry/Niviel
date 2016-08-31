@@ -5,7 +5,10 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryLight">@color/colorPrimaryLight</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="fab_enabled">false</item>
+        <item name="fab_visible">false</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -13,11 +16,34 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.NoActionBar.Preferences" parent="AppTheme.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimaryPreferences</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDarkPreferences</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppTheme.Preferences" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/blue_grey_500</item>
+        <item name="colorPrimaryDark">@color/blue_grey_700</item>
+    </style>
 
+    <style name="AppTheme.Records" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/blue_500</item>
+        <item name="colorPrimaryDark">@color/blue_700</item>
+    </style>
+    
+    <style name="AppTheme.History" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorPrimaryDark">@color/green_700</item>
+    </style>
+
+    <style name="AppTheme.Ranking" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/red_500</item>
+        <item name="colorPrimaryDark">@color/red_700</item>
+    </style>
+
+    <style name="AppTheme.Followers" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/lime_500</item>
+        <item name="colorPrimaryDark">@color/lime_700</item>
+    </style>
+
+    <style name="AppTheme.Profile" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/deep_orange_500</item>
+        <item name="colorPrimaryDark">@color/deep_orange_700</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
