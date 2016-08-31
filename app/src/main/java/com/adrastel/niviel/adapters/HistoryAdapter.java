@@ -30,9 +30,8 @@ import butterknife.ButterKnife;
 /**
  * HistoryAdapter organise les donnes données par un objet histor
  */
-public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
+public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, History> {
 
-    private ArrayList<History> histories;
     private String wca_id = null;
 
 
@@ -51,11 +50,6 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
         }
     }
 
-    // Constructeur
-    public HistoryAdapter(ArrayList<History> histories) {
-        this.histories = histories;
-    }
-
     // Lors de la creation de la vue
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -71,7 +65,7 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
-        final History history = histories.get(position);
+        final History history = getDatas().get(position);
 
         String competition = history.getCompetition();
         String place = history.getPlace();
@@ -89,7 +83,7 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return histories.size();
+        return getDatas().size();
     }
 
     public void setWca_id(String wca_id) {

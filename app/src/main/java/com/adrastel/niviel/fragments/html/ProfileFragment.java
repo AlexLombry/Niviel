@@ -34,6 +34,7 @@ public class ProfileFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d("onCreate");
         requestData();
     }
 
@@ -113,7 +114,7 @@ public class ProfileFragment extends BaseFragment {
                 }.getType());
 
                 for (User user : users) {
-                    Log.d(user.getWca_id());
+                    Log.d("Profile " + user.getWca_id());
 
                 }
             }

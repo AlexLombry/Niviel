@@ -3,6 +3,7 @@ package com.adrastel.niviel.fragments.html.account;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -60,6 +61,8 @@ public class RecordFragment extends BaseFragment {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
+        adapter = new RecordAdapter();
+        adapter.setActivity(getActivity());
 
         String wca_id = null;
 
@@ -103,8 +106,7 @@ public class RecordFragment extends BaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
 
-        adapter = new RecordAdapter();
-        adapter.setActivity(getActivity());
+
         recyclerView.setAdapter(adapter);
 
         return view;
@@ -150,10 +152,13 @@ public class RecordFragment extends BaseFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
-        saveDatas(outState, adapter.getDatas());
-
         super.onSaveInstanceState(outState);
+        try {
+            outState.putParcelableArrayList(Constants.EXTRAS.RECORDS, adapter.getDatas());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -245,6 +250,7 @@ public class RecordFragment extends BaseFragment {
 
     private void saveDatas(Bundle savedInstanceState, ArrayList<Record> records) {
         savedInstanceState.putParcelableArrayList(RECORD, records);
+
     }
     private ArrayList<Record> loadFromJson(String json) {
         if(json != null) {

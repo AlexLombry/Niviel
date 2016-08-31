@@ -1,10 +1,8 @@
 package com.adrastel.niviel.fragments.html.account;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -20,14 +18,15 @@ import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.SettingsActivity;
-import com.adrastel.niviel.providers.html.HistoryProvider;
 import com.adrastel.niviel.adapters.HistoryAdapter;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.models.BaseModel;
+import com.adrastel.niviel.fragments.html.HtmlFragment;
+import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.History;
-import com.android.volley.VolleyError;
+import com.adrastel.niviel.providers.html.HistoryProvider;
 import com.google.gson.reflect.TypeToken;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.lang.reflect.Type;
@@ -36,8 +35,9 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.HttpUrl;
 
-public class HistoryFragment extends AccountFragment<History, HistoryAdapter> {
+public class HistoryFragment extends HtmlFragment<History> {
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
@@ -45,16 +45,19 @@ public class HistoryFragment extends AccountFragment<History, HistoryAdapter> {
 
     private Unbinder unbinder;
     private Activity activity;
-    private ConnectivityManager connectivityManager;
-    private HistoryAdapter adapter = new HistoryAdapter(getDatas());
+    private HistoryAdapter adapter;
+    private HttpManager httpManager;
+    private HttpUrl.Builder urlBuilder = new HttpUrl.Builder();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         activity = getActivity();
-        connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
 
+
+        adapter = new HistoryAdapter();
+        adapter.setActivity(getActivity());
 
         String wca_id = null;
 
@@ -89,11 +92,13 @@ public class HistoryFragment extends AccountFragment<History, HistoryAdapter> {
             Toast.makeText(getContext(), R.string.wrong_wca_id, Toast.LENGTH_LONG).show();
         }
         // On modifie l'url en fonction de l'id wca
-        setUrl(wca_id);
+        // todo: get wca_id adapter from history fragment
+        urlBuilder.addEncodedQueryParameter("i", wca_id);
         adapter.setWca_id(wca_id);
 
     }
 
+    // todo: supprimer volley
     /**
      * Lors de la creation de la vue
      * @param inflater inflater
@@ -116,7 +121,7 @@ public class HistoryFragment extends AccountFragment<History, HistoryAdapter> {
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.setAdapter(getAdapter());
+        recyclerView.setAdapter(adapter);
 
         return view;
     }
@@ -129,11 +134,10 @@ public class HistoryFragment extends AccountFragment<History, HistoryAdapter> {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        httpManager = new HttpManager(getActivity(), swipeRefresh, progressBar);
+
         if(savedInstanceState != null) {
-
-            ArrayList<History> histories = savedInstanceState.getParcelableArrayList(Constants.EXTRAS.HISTORY);
-
-            refreshData(histories);
+            adapter.refreshData(loadLocalData(savedInstanceState));
         }
 
         else if(getArguments() != null){
@@ -143,28 +147,20 @@ public class HistoryFragment extends AccountFragment<History, HistoryAdapter> {
 
 
             if(histories != null) {
-                refreshData(histories);
+                adapter.refreshData(histories);
             }
 
             else {
-                requestData();
+                callData();
             }
         }
 
         else if(isConnected()) {
-            requestData();
+            callData();
         }
 
-        closeLoaders();
+        httpManager.stopLoaders();
 
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if(needToRefresh) {
-            requestData();
-        }
     }
 
 
@@ -177,19 +173,49 @@ public class HistoryFragment extends AccountFragment<History, HistoryAdapter> {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        outState.putParcelableArrayList(Constants.EXTRAS.HISTORY, getDatas());
+        outState.putParcelableArrayList(Constants.EXTRAS.HISTORY, adapter.getDatas());
 
         super.onSaveInstanceState(outState);
     }
 
     @Override
-    protected HistoryAdapter getAdapter() {
-        return adapter;
+    public String getStorageLocation() {
+        return Constants.EXTRAS.HISTORY;
     }
 
     @Override
-    protected String getStorage() {
-        return Constants.STORAGE.HISTORY;
+    public Type getStorageType() {
+        return new TypeToken<ArrayList<History>>(){}.getType();
+    }
+
+    @Override
+    public void callData() {
+
+        HttpUrl url = urlBuilder
+                .scheme("https")
+                .host(Constants.WCA.HOST)
+                .addEncodedPathSegments("results/p.php")
+                .build();
+
+
+        httpManager.callData(url, new HttpManager.SuccessCallback() {
+            @Override
+            public void onSuccess(String response) {
+                Document document = Jsoup.parse(response);
+
+                final ArrayList<History> histories = HistoryProvider.getHistory(activity, document);
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.refreshData(histories);
+                    }
+                });
+
+                saveDatas(histories);
+            }
+        });
+
     }
 
     @Override
@@ -205,56 +231,6 @@ public class HistoryFragment extends AccountFragment<History, HistoryAdapter> {
     @Override
     public int getPrimaryDarkColor() {
         return R.color.greenDark;
-    }
-
-    /**
-     * Fait une requete HTTP
-     */
-    private void requestData() {
-
-        super.requestData(activity, new requestDataCallback() {
-            @Override
-            public ArrayList<? extends BaseModel> parseDatas(Document document) {
-                return HistoryProvider.getHistory(activity, document);
-            }
-
-            @Override
-            public void onSuccess(ArrayList<? extends BaseModel> datas) {
-
-                // On sauvegarde et raffrechie la liste
-                refreshAndSaveData((ArrayList<History>) datas);
-            }
-
-            @Override
-            public void onError(VolleyError error) {
-                loadLocalData();
-            }
-
-            @Override
-            public void postRequest() {
-                closeLoaders();
-            }
-        });
-    }
-
-    /**
-     * Recupère les données dans l'appareil
-     */
-    private void loadLocalData() {
-        loadLocalData(new loadLocalDataCallback() {
-            @Override
-            public Type getType() {
-                return new TypeToken<ArrayList<History>>() {}.getType();
-            }
-        });
-
-        closeLoaders();
-
-    }
-
-    private void closeLoaders() {
-        progressBar.setVisibility(View.GONE);
-        swipeRefresh.setRefreshing(false);
     }
 
 }

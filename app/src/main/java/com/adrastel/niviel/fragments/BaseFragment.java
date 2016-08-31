@@ -1,8 +1,10 @@
 package com.adrastel.niviel.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
@@ -23,12 +25,14 @@ public abstract class BaseFragment extends Fragment {
     protected ActivityTunnelInterface activityTunnelInterface;
     protected Snackbar snackbar;
     protected ConnectivityManager connectivityManager;
+    protected SharedPreferences preferences;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         connectivityManager = (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         try {
             activityTunnelInterface = (ActivityTunnelInterface) getActivity();

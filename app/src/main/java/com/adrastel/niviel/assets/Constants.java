@@ -28,13 +28,8 @@ public class Constants {
         String FRAGMENT = "fragment";
     }
 
-    public interface PREFERENCES {
-        String WCA_ID = "2016DERO01";
-    }
-
-    public interface SECRETS {
-        // note: (Herel Adrastel in SHA-1)
-        String SHARED_PREFERENCES = "34e6f3b80f73857fde0b31d8acedcc8a5bb84a48";
+    public interface WCA {
+        String HOST = "www.worldcubeassociation.org";
     }
 
 }

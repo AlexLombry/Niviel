@@ -1,9 +1,6 @@
 package com.adrastel.niviel.fragments.html;
 
 import android.app.Activity;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -23,29 +20,32 @@ import com.adrastel.niviel.adapters.RankingAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
-import com.adrastel.niviel.models.BaseModel;
+import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.providers.html.RankingProvider;
-import com.android.volley.VolleyError;
+import com.google.gson.reflect.TypeToken;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.HttpUrl;
 
-public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> implements RankingSwitchCubeDialog.RankingSwitchCubeListener {
+public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwitchCubeDialog.RankingSwitchCubeListener {
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     private Activity activity;
-    private ConnectivityManager connectivityManager;
     private Unbinder unbinder;
-    private RankingAdapter adapter = new RankingAdapter(getDatas());
+    private RankingAdapter adapter;
+    private HttpManager httpManager;
 
     // cubePosition est une variable qui permet d'identifier sur quelle rubrique on est
     private int cubePosition = 0;
@@ -64,7 +64,9 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
         setHasOptionsMenu(true);
 
         activity = getActivity();
-        connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        adapter = new RankingAdapter();
+        adapter.setActivity(getActivity());
     }
 
     /**
@@ -86,7 +88,7 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.setAdapter(getAdapter());
+        recyclerView.setAdapter(adapter);
 
         return view;
     }
@@ -99,15 +101,17 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        httpManager = new HttpManager(activity, swipeRefreshLayout, progressBar);
+
         if(savedInstanceState != null) {
             cubePosition = savedInstanceState.getInt(Constants.EXTRAS.POSITION, 0);
             isSingle = savedInstanceState.getBoolean(Constants.EXTRAS.ISSINGLE, true);
 
             ArrayList<Ranking> rankings = savedInstanceState.getParcelableArrayList(Constants.EXTRAS.RANKING);
 
-            getAdapter().setSingle(isSingle);
+            adapter.setSingle(isSingle);
 
-            refreshData(rankings);
+            adapter.refreshData(rankings);
 
             stopLoaders();
 
@@ -115,13 +119,13 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
 
 
         else if(isConnected()) {
-            requestData();
+            callData();
         }
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                requestData();
+                callData();
                 swipeRefreshLayout.setRefreshing(true);
             }
         });
@@ -138,7 +142,7 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
 
         outState.putInt(Constants.EXTRAS.POSITION, cubePosition);
         outState.putBoolean(Constants.EXTRAS.ISSINGLE, isSingle);
-        outState.putParcelableArrayList(Constants.EXTRAS.RANKING, getDatas());
+        outState.putParcelableArrayList(Constants.EXTRAS.RANKING, adapter.getDatas());
 
         super.onSaveInstanceState(outState);
     }
@@ -181,34 +185,23 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
      * Retourne l'url de requete
      * @return url
      */
-    @Override
-    protected String getUrl() {
+    protected HttpUrl getUrl() {
 
-        Uri.Builder builder = new Uri.Builder();
-
-        builder.scheme("https");
-        builder.authority("www.worldcubeassociation.org");
-        builder.appendEncodedPath("results/events.php");
-        builder.appendQueryParameter("eventId", Assets.getCubeId(cubePosition));
+        HttpUrl.Builder builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host("www.worldcubeassociation.org")
+                .addEncodedPathSegments("results/events.php")
+                .addEncodedQueryParameter("eventId", Assets.getCubeId(cubePosition));
 
         if(!isSingle) {
-            builder.appendQueryParameter("average", "Average");
+            builder.addEncodedQueryParameter("average", "Average");
         }
 
         else {
-            builder.appendQueryParameter("single", "Single");
+            builder.addEncodedQueryParameter("single", "Single");
         }
 
-        return builder.build().toString();
-    }
-
-    /**
-     * Retourne l'adapter utilisé
-     * @return adapter
-     */
-    @Override
-    protected RankingAdapter getAdapter() {
-        return adapter;
+        return builder.build();
     }
 
     /**
@@ -216,8 +209,39 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
      * @return stockage
      */
     @Override
-    protected String getStorage() {
+    public String getStorageLocation() {
         return Constants.STORAGE.RANKING;
+    }
+
+    @Override
+    public Type getStorageType() {
+        return new TypeToken<ArrayList<Ranking>>(){}.getType();
+    }
+
+    @Override
+    public void callData() {
+        adapter.setSingle(isSingle);
+
+        String[] cubes = getResources().getStringArray(R.array.cubes);
+        String mode = isSingle ? getString(R.string.single) : getString(R.string.average);
+        String subtitle = String.format(getString(R.string.ranking_subtitle), cubes[cubePosition], mode);
+
+        setSubtitle(subtitle);
+
+        httpManager.callData(getUrl(), new HttpManager.SuccessCallback() {
+            @Override
+            public void onSuccess(String response) {
+                Document document = Jsoup.parse(response);
+                final ArrayList<Ranking> rankings = RankingProvider.getRanking(getActivity(), document);
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.refreshData(rankings);
+                    }
+                });
+            }
+        });
     }
 
     /**
@@ -252,47 +276,9 @@ public class RankingFragment extends HtmlFragment<Ranking, RankingAdapter> imple
         this.cubePosition = cubePosition;
         this.isSingle = isSingle;
 
-        requestData();
+        callData();
 
     }
-
-
-    /**
-     * Fait une requete HTTP
-     */
-    private void requestData() {
-
-        getAdapter().setSingle(isSingle);
-
-        String[] cubes = getResources().getStringArray(R.array.cubes);
-        String mode = isSingle ? getString(R.string.single) : getString(R.string.average);
-        String subtitle = String.format(getString(R.string.ranking_subtitle), cubes[cubePosition], mode);
-
-        setSubtitle(subtitle);
-
-        super.requestData(activity, new requestDataCallback() {
-            @Override
-            public ArrayList<? extends BaseModel> parseDatas(Document document) {
-                return RankingProvider.getRanking(activity, document);
-            }
-
-            @Override
-            public void onSuccess(ArrayList<? extends BaseModel> datas) {
-                refreshData((ArrayList<Ranking>) datas);
-            }
-
-            @Override
-            public void onError(VolleyError error) {
-
-            }
-
-            @Override
-            public void postRequest() {
-                stopLoaders();
-            }
-        });
-    }
-
     private void stopLoaders() {
         progressBar.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(false);

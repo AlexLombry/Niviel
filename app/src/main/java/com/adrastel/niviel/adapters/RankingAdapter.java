@@ -32,14 +32,10 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
+public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Ranking> {
 
-    private ArrayList<Ranking> rankings;
     private boolean isSingle = true;
 
-    public RankingAdapter(ArrayList<Ranking> rankings){
-        this.rankings = rankings;
-    }
 
 
 
@@ -71,7 +67,7 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(RankingAdapter.ViewHolder holder, int position) {
 
-        final Ranking ranking = rankings.get(position);
+        final Ranking ranking = getDatas().get(position);
 
         final String rank = ranking.getRank();
         final String person = ranking.getPerson();
@@ -102,7 +98,7 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return rankings.size();
+        return getDatas().size();
     }
 
     public void setSingle(boolean single) {
@@ -188,9 +184,9 @@ public class RankingAdapter extends BaseAdapter<RankingAdapter.ViewHolder> {
         helper.deleteFollower(ranking.getWca_id());
 
         ArrayList<Follower> followers = helper.selectAllFollowers();
-        Log.d(ranking.getWca_id());
+        Log.d("Follower: " + ranking.getWca_id());
         for(Follower follower : followers) {
-            Log.d(follower.wca_id());
+            Log.d("Follower1: " + follower.wca_id());
         }
 
         String confirmation = String.format(context.getString(R.string.toast_unfollow_confirmation), ranking.getPerson());

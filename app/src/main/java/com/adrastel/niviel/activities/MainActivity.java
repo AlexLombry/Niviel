@@ -425,7 +425,7 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
                 }.getType());
 
                 for (User user : users) {
-                    Log.d(user.getWca_id());
+                    Log.d("MainActivity: " + user.getWca_id());
 
                 }
             }

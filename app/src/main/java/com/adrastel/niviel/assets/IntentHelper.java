@@ -3,6 +3,7 @@ package com.adrastel.niviel.assets;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 
 import com.adrastel.niviel.R;
@@ -41,5 +42,12 @@ public class IntentHelper {
             e.printStackTrace();
         }
 
+    }
+
+    public static Intent gotoInternet(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+
+        return intent;
     }
 }
