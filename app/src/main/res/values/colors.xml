@@ -5,9 +5,9 @@
     <color name="colorPrimaryLight">@color/indigo_200</color>
     <color name="colorAccent">@color/amber_500</color>
 
-    <!-- todo: supprimer premieres couleurs -->
-    <color name="green">#43A047</color>
+    <color name="white">#ffffff</color>
 
+    <color name="green_600">#43A047</color>
 
     <color name="red_500">#f44336</color>
     <color name="red_700">#d32f2f</color>
