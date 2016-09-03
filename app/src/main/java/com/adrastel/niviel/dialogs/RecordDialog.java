@@ -32,6 +32,7 @@ public class RecordDialog extends DialogFragment {
 
     @NonNull
     @Override
+    @SuppressWarnings("InflateParams")
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         Record record = getArguments().getParcelable(Constants.EXTRAS.RECORDS);
@@ -43,15 +44,15 @@ public class RecordDialog extends DialogFragment {
 
 
         if(record != null) {
-            single.setText(record.getSingle());
-            nr_single.setText(record.getNr_single());
-            cr_single.setText(record.getCr_single());
-            wr_single.setText(record.getWr_single());
+            single.setText(String.format(getString(R.string.record_time), record.getSingle()));
+            nr_single.setText(String.format(getString(R.string.record_nr), record.getNr_single()));
+            cr_single.setText(String.format(getString(R.string.record_cr), record.getCr_single()));
+            wr_single.setText(String.format(getString(R.string.record_wr), record.getWr_single()));
 
-            average.setText(record.getAverage());
-            nr_average.setText(record.getNr_average());
-            cr_average.setText(record.getCr_average());
-            wr_average.setText(record.getWr_average());
+            average.setText(String.format(getString(R.string.record_time), record.getAverage()));
+            nr_average.setText(String.format(getString(R.string.record_nr), record.getNr_average()));
+            cr_average.setText(String.format(getString(R.string.record_cr), record.getCr_average()));
+            wr_average.setText(String.format(getString(R.string.record_wr), record.getWr_average()));
         }
 
         AlertDialog.Builder builder =  new AlertDialog.Builder(getActivity());

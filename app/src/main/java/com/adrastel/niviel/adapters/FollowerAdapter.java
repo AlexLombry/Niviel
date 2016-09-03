@@ -1,6 +1,7 @@
 package com.adrastel.niviel.adapters;
 
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,7 +26,8 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
 
     private ArrayList<Follower> followers;
 
-    public FollowerAdapter(ArrayList<Follower> followers) {
+    public FollowerAdapter(FragmentActivity activity, ArrayList<Follower> followers) {
+        super(activity);
         this.followers = followers;
     }
 

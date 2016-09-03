@@ -7,8 +7,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorPrimaryLight">@color/colorPrimaryLight</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="fab_enabled">false</item>
-        <item name="fab_visible">false</item>
+        <item name="fabVisible">false</item>
+        <item name="fabIcon">@drawable/ic_star</item>
+        <item name="toolbarTitle">@string/app_name</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -17,31 +18,40 @@
     </style>
 
     <style name="AppTheme.Preferences" parent="AppTheme.NoActionBar">
+        <item name="toolbarTitle">@string/settings</item>
+        <item name="fabVisible">true</item>
         <item name="colorPrimary">@color/blue_grey_500</item>
         <item name="colorPrimaryDark">@color/blue_grey_700</item>
     </style>
 
     <style name="AppTheme.Records" parent="AppTheme.NoActionBar">
+        <item name="fabVisible">true</item>
+        <item name="fabIcon">@drawable/ic_history</item>
+        <item name="toolbarTitle">@string/records</item>
         <item name="colorPrimary">@color/blue_500</item>
         <item name="colorPrimaryDark">@color/blue_700</item>
     </style>
     
     <style name="AppTheme.History" parent="AppTheme.NoActionBar">
+        <item name="toolbarTitle">@string/history</item>
         <item name="colorPrimary">@color/green_500</item>
         <item name="colorPrimaryDark">@color/green_700</item>
     </style>
 
     <style name="AppTheme.Ranking" parent="AppTheme.NoActionBar">
+        <item name="toolbarTitle">@string/ranking</item>
         <item name="colorPrimary">@color/red_500</item>
         <item name="colorPrimaryDark">@color/red_700</item>
     </style>
 
     <style name="AppTheme.Followers" parent="AppTheme.NoActionBar">
+        <item name="toolbarTitle">@string/followers</item>
         <item name="colorPrimary">@color/lime_500</item>
         <item name="colorPrimaryDark">@color/lime_700</item>
     </style>
 
     <style name="AppTheme.Profile" parent="AppTheme.NoActionBar">
+        <item name="toolbarTitle">@string/profile</item>
         <item name="colorPrimary">@color/deep_orange_500</item>
         <item name="colorPrimaryDark">@color/deep_orange_700</item>
     </style>

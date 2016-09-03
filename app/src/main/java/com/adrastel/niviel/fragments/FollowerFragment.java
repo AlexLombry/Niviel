@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.FollowerAdapter;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 
@@ -30,35 +29,9 @@ public class FollowerFragment extends BaseFragment {
 
     private Unbinder unbinder;
 
-
     @Override
-    public int getTitle() {
-        return R.string.followers;
-    }
-
-    @Override
-    public int getPrimaryColor() {
-        return R.color.green;
-    }
-
-    @Override
-    public int getPrimaryDarkColor() {
-        return R.color.greenDark;
-    }
-
-    @Override
-    public int getFabVisibility() {
-        return View.GONE;
-    }
-
-    @Override
-    public int getFabIcon() {
-        return R.drawable.ic_followers;
-    }
-
-    @Override
-    public void onFabClick(View view) {
-
+    public int getStyle() {
+        return R.style.AppTheme_Followers;
     }
 
     @Override
@@ -88,7 +61,7 @@ public class FollowerFragment extends BaseFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        FollowerAdapter adapter = new FollowerAdapter(followers);
+        FollowerAdapter adapter = new FollowerAdapter(getActivity(), followers);
         recyclerView.setAdapter(adapter);
 
         if(followers.size() == 0) {

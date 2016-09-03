@@ -45,6 +45,8 @@ public class RecyclerCompatView extends RecyclerView {
         }
     };
 
+
+
     @Override
     public void setAdapter(Adapter adapter) {
         super.setAdapter(adapter);

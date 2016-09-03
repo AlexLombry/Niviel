@@ -1,4 +1,4 @@
-package com.adrastel.niviel.fragments.html;
+package com.adrastel.niviel.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import com.adrastel.niviel.adapters.RankingAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
+import com.adrastel.niviel.fragments.html.HtmlFragment;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.providers.html.RankingProvider;
@@ -65,8 +66,7 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
 
         activity = getActivity();
 
-        adapter = new RankingAdapter();
-        adapter.setActivity(getActivity());
+        adapter = new RankingAdapter(getActivity());
     }
 
     /**
@@ -244,23 +244,9 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
         });
     }
 
-    /**
-     * Retoune le titre du fragment
-     * @return titre
-     */
     @Override
-    public int getTitle() {
-        return R.string.ranking;
-    }
-
-    @Override
-    public int getPrimaryColor() {
-        return R.color.red;
-    }
-
-    @Override
-    public int getPrimaryDarkColor() {
-        return R.color.redDark;
+    public int getStyle() {
+        return R.style.AppTheme_Ranking;
     }
 
     private void setSubtitle(String subtitle) {

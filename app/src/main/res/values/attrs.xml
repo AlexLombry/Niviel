@@ -6,7 +6,10 @@
         <attr name="textSize" format="dimension"/>
     </declare-styleable>
 
-    <attr name="colorPrimaryLight" format="color"/>
-    <attr name="fab_enabled" format="boolean"/>
-    <attr name="fab_visible" format="boolean"/>
+    <declare-styleable name="AppThemeStyle">
+        <attr name="colorPrimaryLight" format="reference"/>
+        <attr name="toolbarTitle" format="reference"/>
+        <attr name="fabVisible" format="boolean"/>
+        <attr name="fabIcon" format="reference"/>
+    </declare-styleable>
 </resources>

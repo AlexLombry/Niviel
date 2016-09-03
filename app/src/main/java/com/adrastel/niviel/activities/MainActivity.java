@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -28,15 +29,14 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
-import com.adrastel.niviel.fragments.html.ProfileFragment;
-import com.adrastel.niviel.fragments.html.RankingFragment;
-import com.adrastel.niviel.fragments.html.account.HistoryFragment;
-import com.adrastel.niviel.fragments.html.account.RecordFragment;
+import com.adrastel.niviel.fragments.ProfileFragment;
+import com.adrastel.niviel.fragments.RankingFragment;
+import com.adrastel.niviel.fragments.html.HistoryFragment;
+import com.adrastel.niviel.fragments.html.RecordFragment;
 import com.adrastel.niviel.http.HttpCallback;
 import com.adrastel.niviel.interfaces.ActivityTunnelInterface;
 import com.adrastel.niviel.models.readable.User;
@@ -269,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
      * Change de fragment
      * @param fragment fragment
      */
+    @SuppressWarnings("ResourceType")
     public void switchFragment(BaseFragment fragment) {
 
         try {
@@ -278,37 +279,46 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
                     .addToBackStack(null)
                     .commit();
 
-
-            // Modifie le titre et les couleurs des barres
-            String fragmentTitle = getString(fragment.getTitle());
-            setTitle(fragmentTitle);
             setSubtitle(null);
-            // colors
-            int primaryColor = Assets.getColor(this, fragment.getPrimaryColor());
+
+
+            int style = fragment.getStyle();
+
+            int[] attrs = { R.attr.colorPrimary, R.attr.colorPrimaryDark, R.attr.toolbarTitle, R.attr.fabVisible, R.attr.fabIcon};
+
+
+
+            TypedArray typedArray = obtainStyledAttributes(style, attrs);
+
+            Log.d("title", String.valueOf(typedArray.getString(2)));
+
+            String title = typedArray.getString(2);
+            setTitle(title);
+
+            int primaryColor = typedArray.getColor(0, Color.WHITE);
             setToolbarColor(primaryColor);
 
-
-            int primaryColorDark = Assets.getColor(this, fragment.getPrimaryDarkColor());
+            int primaryColorDark = typedArray.getColor(1, Color.WHITE);
             setStatusBar(primaryColorDark);
 
-            int[] attrs = { R.attr.colorPrimary, R.attr.colorPrimaryDark};
 
-            TypedArray typedArray = obtainStyledAttributes(R.style.AppTheme_Preferences, attrs);
-            Log.d("Primary ", Integer.toHexString(typedArray.getColor(0, Color.BLACK)));
-            Log.d("primary dark ", Integer.toHexString(typedArray.getColor(1, Color.BLACK)));
+            boolean fabVisible = typedArray.getBoolean(3, false);
 
+            Log.d("fabVisible", String.valueOf(fabVisible));
 
-            typedArray.recycle();
-            // fab
-            if(fragment.getFabVisibility() == View.VISIBLE) {
+            if(fabVisible) {
                 fab.show();
+
+                Drawable fabIcon = typedArray.getDrawable(4);
+                fab.setImageDrawable(fabIcon);
             }
 
             else {
                 fab.hide();
             }
 
-            fab.setImageResource(fragment.getFabIcon());
+            typedArray.recycle();
+
 
             this.fragment = fragment;
 

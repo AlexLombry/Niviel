@@ -15,12 +15,7 @@ import com.adrastel.niviel.interfaces.ActivityTunnelInterface;
 import com.adrastel.niviel.assets.Assets;
 
 public abstract class BaseFragment extends Fragment {
-    public abstract int getTitle();
-    public abstract int getPrimaryColor();
-    public abstract int getPrimaryDarkColor();
-    public abstract int getFabVisibility();
-    public abstract int getFabIcon();
-    public abstract void onFabClick(View view);
+    public abstract int getStyle();
 
     protected ActivityTunnelInterface activityTunnelInterface;
     protected Snackbar snackbar;
@@ -63,4 +58,6 @@ public abstract class BaseFragment extends Fragment {
     protected boolean isConnected() {
         return Assets.isConnected(connectivityManager);
     }
+
+    public void onFabClick(View view) {}
 }

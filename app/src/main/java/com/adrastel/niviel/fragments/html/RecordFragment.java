@@ -1,9 +1,8 @@
-package com.adrastel.niviel.fragments.html.account;
+package com.adrastel.niviel.fragments.html;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,16 +16,15 @@ import android.widget.ProgressBar;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RecordAdapter;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.providers.html.RecordProvider;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -34,7 +32,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import okhttp3.HttpUrl;
 
-public class RecordFragment extends BaseFragment {
+public class RecordFragment extends HtmlFragment<Record> {
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
@@ -47,10 +45,7 @@ public class RecordFragment extends BaseFragment {
 
     private RecordAdapter adapter;
 
-    private SharedPreferences preferences;
-
-    private static final String WCA_ID = Constants.EXTRAS.WCA_ID;
-    private static final String RECORD = Constants.EXTRAS.RECORDS;
+    private String wca_id;
 
 
     @Override
@@ -61,10 +56,9 @@ public class RecordFragment extends BaseFragment {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        adapter = new RecordAdapter();
-        adapter.setActivity(getActivity());
+        adapter = new RecordAdapter(getActivity());
 
-        String wca_id = null;
+        wca_id = null;
 
         // On recupere l'id wca
 
@@ -128,7 +122,7 @@ public class RecordFragment extends BaseFragment {
         }
         // Si on est connecté, on fait une requete HTTP, sinon on lit les données locales
         else if (isConnected()) {
-            requestData();
+            callData();
         } else {
             adapter.refreshData(loadLocalData());
             httpManager.stopLoaders();
@@ -137,7 +131,7 @@ public class RecordFragment extends BaseFragment {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                requestData();
+                callData();
             }
         });
 
@@ -161,48 +155,32 @@ public class RecordFragment extends BaseFragment {
         }
     }
 
-    /**
-     * Retoune le titre du fragment
-     * @return titre
-     */
     @Override
-    public int getTitle() {
-        return R.string.personal_records;
+    public String getStorageLocation() {
+        return Constants.EXTRAS.RECORDS;
     }
 
     @Override
-    public int getPrimaryColor() {
-        return R.color.blue;
+    public Type getStorageType() {
+        return new TypeToken<ArrayList<Record>>(){}.getType();
+    }
+
+
+
+    @Override
+    public int getStyle() {
+        return R.style.AppTheme_Records;
     }
 
     @Override
-    public int getPrimaryDarkColor() {
-        return R.color.blueDark;
-    }
-
-    @Override
-    public int getFabVisibility() {
-        return View.VISIBLE;
-    }
-
-    @Override
-    public int getFabIcon() {
-        return R.drawable.ic_followers;
-    }
-
-    @Override
-    public void onFabClick(View view) {
-
-    }
-
-    private void requestData() {
+    public void callData() {
         HttpUrl url = new HttpUrl.Builder()
 
                 // https://www.worldcubeassociation.org/results/p.php?i=
                 .scheme("https")
                 .host("www.worldcubeassociation.org")
                 .addPathSegments("results/p.php")
-                .addEncodedQueryParameter("i", "2016DERO01")
+                .addEncodedQueryParameter("i", wca_id)
                 .build();
         httpManager.callData(url, new HttpManager.SuccessCallback() {
             @Override
@@ -222,15 +200,16 @@ public class RecordFragment extends BaseFragment {
             }
         });
     }
+/*
 
-    private ArrayList<Record> loadLocalData() {
+    protected ArrayList<Record> loadLocalData() {
 
         String json = preferences.getString(RECORD, null);
 
         return loadFromJson(json);
     }
 
-    private ArrayList<Record> loadLocalData(Bundle savedInstanceState) {
+    protected ArrayList<Record> loadLocalData(Bundle savedInstanceState) {
         if(savedInstanceState != null) {
             return savedInstanceState.getParcelableArrayList(RECORD);
         }
@@ -248,10 +227,6 @@ public class RecordFragment extends BaseFragment {
         editor.apply();
     }
 
-    private void saveDatas(Bundle savedInstanceState, ArrayList<Record> records) {
-        savedInstanceState.putParcelableArrayList(RECORD, records);
-
-    }
     private ArrayList<Record> loadFromJson(String json) {
         if(json != null) {
             Gson gson = new Gson();
@@ -262,5 +237,6 @@ public class RecordFragment extends BaseFragment {
             return new ArrayList<>();
         }
     }
+*/
 
 }

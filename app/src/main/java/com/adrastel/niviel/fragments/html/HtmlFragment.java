@@ -13,10 +13,7 @@ import android.view.View;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.BaseFragment;
-import com.adrastel.niviel.models.BaseModel;
-import com.adrastel.niviel.models.readable.Record;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -66,20 +63,6 @@ public abstract class HtmlFragment<M extends Parcelable> extends BaseFragment {
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public int getFabVisibility() {
-        return View.VISIBLE;
-    }
-
-    @Override
-    public int getFabIcon() {
-        return R.drawable.ic_internet;
-    }
-
-    @Override
-    public void onFabClick(View view) {
-        //gotoInternet();
-    }
 
     public abstract String getStorageLocation();
     public abstract Type getStorageType();

@@ -1,4 +1,4 @@
-package com.adrastel.niviel.fragments.html.account;
+package com.adrastel.niviel.fragments.html;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,7 +20,6 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.SettingsActivity;
 import com.adrastel.niviel.adapters.HistoryAdapter;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.fragments.html.HtmlFragment;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.providers.html.HistoryProvider;
@@ -55,10 +54,6 @@ public class HistoryFragment extends HtmlFragment<History> {
 
         activity = getActivity();
 
-
-        adapter = new HistoryAdapter();
-        adapter.setActivity(getActivity());
-
         String wca_id = null;
 
         Bundle arguments = getArguments();
@@ -91,14 +86,14 @@ public class HistoryFragment extends HtmlFragment<History> {
         else {
             Toast.makeText(getContext(), R.string.wrong_wca_id, Toast.LENGTH_LONG).show();
         }
-        // On modifie l'url en fonction de l'id wca
-        // todo: get wca_id adapter from history fragment
+        // modifie l'url en fonction de l'id wca
         urlBuilder.addEncodedQueryParameter("i", wca_id);
-        adapter.setWca_id(wca_id);
+
+        // cree l'adapter
+        adapter = new HistoryAdapter(getActivity(), wca_id);
 
     }
 
-    // todo: supprimer volley
     /**
      * Lors de la creation de la vue
      * @param inflater inflater
@@ -191,7 +186,7 @@ public class HistoryFragment extends HtmlFragment<History> {
 
         HttpUrl url = urlBuilder
                 .scheme("https")
-                .host(Constants.WCA.HOST)
+                .host("www.worldcubeassociation.org")
                 .addEncodedPathSegments("results/p.php")
                 .build();
 
@@ -217,18 +212,8 @@ public class HistoryFragment extends HtmlFragment<History> {
     }
 
     @Override
-    public int getTitle() {
-        return R.string.title_activity_history;
-    }
-
-    @Override
-    public int getPrimaryColor() {
-        return R.color.green;
-    }
-
-    @Override
-    public int getPrimaryDarkColor() {
-        return R.color.greenDark;
+    public int getStyle() {
+        return R.style.AppTheme_History;
     }
 
 }

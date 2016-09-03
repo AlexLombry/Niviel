@@ -2,6 +2,7 @@ package com.adrastel.niviel.adapters;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -17,13 +18,10 @@ import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.DetailsMaker;
 import com.adrastel.niviel.assets.IntentHelper;
 import com.adrastel.niviel.dialogs.RecordDialog;
-import com.adrastel.niviel.fragments.html.account.HistoryFragment;
+import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.providers.html.RecordProvider;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RequestCreator;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +30,9 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
     private String wca_id = null;
 
+    public RecordAdapter(FragmentActivity activity) {
+        super(activity);
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 

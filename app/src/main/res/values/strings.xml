@@ -10,13 +10,8 @@
     -->
 
     <string name="app_name" translatable="false">Niviel</string>
-    <string name="author_name" translatable="false">Herel</string>
-    <string name="email_name" translatable="false">herel.dev@gmail.com</string>
 
     <!-- Activities -->
-    <string name="title_activity_record" translatable="false">@string/personal_records</string>
-    <string name="title_activity_history" translatable="false">@string/history</string>
-    <string name="title_activity_fragment" translatable="false">FragmentActivity</string>
 
     <!-- CUBES -->
     <string name="cube_3x3" translatable="false">Rubik\'s cube</string>
@@ -27,13 +22,12 @@
     <string name="personal_records">Records personnels</string>
     <string name="records">Records</string>
     <string name="single">Single</string>
-    <string name="single_format">Single :&#160;</string>
     <string name="average">Moyenne</string>
-    <string name="average_format">Moyenne :&#160;</string>
-    <string name="time">Temps :&#160;</string>
-    <string name="nr">Classement national :&#160;</string>
-    <string name="cr">Classement continental :&#160;</string>
-    <string name="wr">Classement mondial :&#160;</string>
+
+    <string name="record_time">Temps: %1$ss</string>
+    <string name="record_nr">Classement national: %1$ss</string>
+    <string name="record_cr">Classement continental: %1$ss</string>
+    <string name="record_wr">Classement mondial: %1$ss</string>
 
     <!-- History -->
     <string name="event">Évenement</string>
@@ -52,12 +46,10 @@
     <string name="ranking_subtitle">%1$s (%2$s)</string>
 
     <!-- Errors -->
-    <string name="no_internet">Pas de connexion internet</string>
     <string name="error_connection">Erreur de connexion</string>
     <string name="err_server">Erreur interne du serveur</string>
     <string name="cannot_load">Impossible de charger le contenu</string>
     <string name="error_interpretation_html">Erreur d\'interpretation du code HTML</string>
-    <string name="error_no_local_data">Pas de données locales</string>
     <string name="wrong_wca_id">Identifiant WCA erroné</string>
 
     <string name="no_followers">Vous ne suivez personne</string>
@@ -65,11 +57,9 @@
 
     <!-- Actions -->
     <string name="ok">OK</string>
-    <string name="enter">Valider</string>
     <string name="cancel">Annuler</string>
     <string name="settings">Réglages</string>
     <string name="profile">Profil</string>
-    <string name="reload">Recharger</string>
     <string name="refresh">Rafraichir</string>
     <string name="more_info">Plus d\'infos</string>
     <string name="share">Partager</string>
@@ -84,18 +74,15 @@
     <string name="unfollow">Ne plus suivre</string>
     <string name="followers">Followers</string>
     <string name="goto_internet">Voir le site web</string>
-    <string name="open_with">Ouvrir avec</string>
     <string name="toast_follow_confirmation">Vous suivez %1$s</string>
     <string name="toast_unfollow_confirmation">Vous ne suivez plus %1$s</string>
     <string name="search">Rechercher</string>
-    <string name="search_hint_users">Rechercher des joueurs...</string>
+    <string name="search_hint_users">Rechercher des joueurs…</string>
 
     <!-- Preferences -->
     <string name="wca_id">Identifiant WCA</string>
 
     <!-- see -->
-    <string name="goto_history">Aller à l\'historique</string>
-    <string name="goto_records">Aller à ses records</string>
 
     <!-- share strings -->
     <string name="share_history">J\'ai obtenu la place n°%1$s à la compétition %2$s en faisant un temps moyen de %3$s</string>
@@ -103,9 +90,7 @@
 
 
     <!-- Others -->
-    <string name="second" translatable="false">s</string>
     <string name="zero" translatable="false">0</string>
-    <string name="lorem" translatable="false">Lorem Ipsum</string>
 
 
 </resources>

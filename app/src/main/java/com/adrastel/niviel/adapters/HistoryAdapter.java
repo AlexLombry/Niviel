@@ -2,6 +2,7 @@ package com.adrastel.niviel.adapters;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -18,11 +19,9 @@ import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.IntentHelper;
 import com.adrastel.niviel.dialogs.HistoryDialog;
-import com.adrastel.niviel.fragments.html.account.RecordFragment;
+import com.adrastel.niviel.fragments.html.RecordFragment;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.views.CircleView;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +32,15 @@ import butterknife.ButterKnife;
 public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, History> {
 
     private String wca_id = null;
+
+    public HistoryAdapter(FragmentActivity activity) {
+        super(activity);
+    }
+
+    public HistoryAdapter(FragmentActivity activity, String wca_id) {
+        super(activity);
+        this.wca_id = wca_id;
+    }
 
 
     // Le view holder qui contient toutes les infos
@@ -86,10 +94,6 @@ public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, Histor
         return getDatas().size();
     }
 
-    public void setWca_id(String wca_id) {
-        this.wca_id = wca_id;
-    }
-
     private void loadMenu(ViewHolder holder, final History history) {
         holder.more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,11 +142,6 @@ public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, Histor
             IntentHelper.switchFragment(getActivity(), fragment);
 
         }
-
-        else {
-            Toast.makeText(getActivity(), getActivity().getString(R.string.wrong_wca_id), Toast.LENGTH_LONG).show();
-        }
-
     }
 
     private void onDetails(FragmentManager fragmentManager, History history) {

@@ -3,6 +3,7 @@ package com.adrastel.niviel.adapters;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -22,8 +23,8 @@ import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.RankingDetailsDialog;
-import com.adrastel.niviel.fragments.html.account.HistoryFragment;
-import com.adrastel.niviel.fragments.html.account.RecordFragment;
+import com.adrastel.niviel.fragments.html.HistoryFragment;
+import com.adrastel.niviel.fragments.html.RecordFragment;
 import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.views.CircleView;
 
@@ -36,7 +37,9 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
 
     private boolean isSingle = true;
 
-
+    public RankingAdapter(FragmentActivity activity) {
+        super(activity);
+    }
 
 
     // Le view holder qui contient toutes les infos
