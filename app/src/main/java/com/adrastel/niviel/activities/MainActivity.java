@@ -13,7 +13,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -35,6 +38,7 @@ import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
+import com.adrastel.niviel.fragments.ViewPagerFragment;
 import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
 import com.adrastel.niviel.http.HttpCallback;
@@ -63,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.navigation_view) NavigationView navigationView;
     @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.tab_layout) TabLayout tabLayout;
 
     private FragmentManager fragmentManager;
     private BaseFragment fragment;
@@ -239,7 +244,8 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
 
         switch(item.getItemId()) {
             case R.id.profile:
-                return new ProfileFragment();
+                //return new ProfileFragment();
+                return new ViewPagerFragment();
 
             case R.id.records:
                 return new RecordFragment();

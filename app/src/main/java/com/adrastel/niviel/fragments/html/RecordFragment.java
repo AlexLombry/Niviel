@@ -48,6 +48,15 @@ public class RecordFragment extends HtmlFragment<Record> {
     private String wca_id;
 
 
+    private static RecordFragment instance;
+
+    public static RecordFragment newInstance() {
+        if(instance == null) {
+            instance = new RecordFragment();
+        }
+        return instance;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

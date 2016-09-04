@@ -48,6 +48,15 @@ public class HistoryFragment extends HtmlFragment<History> {
     private HttpManager httpManager;
     private HttpUrl.Builder urlBuilder = new HttpUrl.Builder();
 
+    private static HistoryFragment instance;
+
+    public static HistoryFragment newInstance() {
+        if(instance == null) {
+            instance = new HistoryFragment();
+        }
+        return instance;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

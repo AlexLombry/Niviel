@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.assets.Log;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -16,6 +17,15 @@ public class ProfileFragment extends BaseFragment {
 
     Unbinder unbinder;
 
+    private static ProfileFragment instance;
+
+    public static ProfileFragment newInstance() {
+        if(instance == null) {
+            Log.d("oui");
+            instance = new ProfileFragment();
+        }
+        return instance;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
