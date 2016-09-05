@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tab_layout"
                 app:tabBackground="@color/blue_500"
+                android:visibility="gone"
                 app:tabMode="fixed"
                 app:tabGravity="fill"/>
         </android.support.design.widget.AppBarLayout>

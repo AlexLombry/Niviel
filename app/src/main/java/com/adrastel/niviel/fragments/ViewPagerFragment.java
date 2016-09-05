@@ -46,13 +46,10 @@ public class ViewPagerFragment extends BaseFragment {
 
             try {
                 ViewPager viewPager = (ViewPager) view.findViewById(R.id.view_pager);
-                setupViewPager(viewPager);
-
-
 
                 tabLayout = (TabLayout) activity.findViewById(R.id.tab_layout);
-
                 tabLayout.setupWithViewPager(viewPager);
+                setupViewPager(viewPager);
 
             }
 
@@ -65,11 +62,15 @@ public class ViewPagerFragment extends BaseFragment {
         return view;
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void setupViewPager(ViewPager viewPager) {
 
         adapter = new ViewPagerAdapter(getFragmentManager());
-
         viewPager.setAdapter(adapter);
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_profile);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_star);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_history);
 
     }
 
@@ -93,7 +94,7 @@ public class ViewPagerFragment extends BaseFragment {
                     return new ProfileFragment();
 
                 case 1:
-                    return new HistoryFragment();
+                    return new RecordFragment();
 
                 case 2:
                     return new HistoryFragment();
@@ -106,7 +107,7 @@ public class ViewPagerFragment extends BaseFragment {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
+            /*switch (position) {
                 case 0:
                     return getString(R.string.profile);
 
@@ -118,7 +119,8 @@ public class ViewPagerFragment extends BaseFragment {
 
                 default:
                     return null;
-            }
+            }*/
+            return null;
         }
 
         @Override

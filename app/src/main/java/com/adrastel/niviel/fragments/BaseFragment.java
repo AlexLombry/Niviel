@@ -23,8 +23,6 @@ public abstract class BaseFragment extends Fragment {
     protected ConnectivityManager connectivityManager;
     protected SharedPreferences preferences;
 
-    protected boolean alreadySelected = false;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,10 +54,6 @@ public abstract class BaseFragment extends Fragment {
         if(snackbar != null && snackbar.isShownOrQueued()) {
             snackbar.dismiss();
         }
-    }
-
-    public void onTabSelectedFirst() {
-        Log.d("FIRST");
     }
 
     protected boolean isConnected() {

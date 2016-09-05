@@ -48,7 +48,19 @@ public class RecordFragment extends HtmlFragment<Record> {
 
     private String wca_id;
 
-    private boolean needToCallDatas = false;
+    // todo: utiliser les get instance
+    public static RecordFragment newInstance(String wca_id) {
+
+        RecordFragment instance = new RecordFragment();
+
+        Bundle args = new Bundle();
+        args.putString(Constants.EXTRAS.WCA_ID ,wca_id);
+
+        instance.setArguments(args);
+
+        return instance;
+
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -127,8 +139,7 @@ public class RecordFragment extends HtmlFragment<Record> {
         }
         // Si on est connecté, on fait une requete HTTP, sinon on lit les données locales
         else if (isConnected()) {
-            needToCallDatas = true;
-            //callData();
+            callData();
         } else {
             adapter.refreshData(loadLocalData());
             httpManager.stopLoaders();
@@ -171,14 +182,6 @@ public class RecordFragment extends HtmlFragment<Record> {
         return new TypeToken<ArrayList<Record>>(){}.getType();
     }
 
-    @Override
-    public void onTabSelectedFirst() {
-        super.onTabSelectedFirst();
-        if(needToCallDatas) {
-            callData();
-            needToCallDatas = false;
-        }
-    }
 
     @Override
     public int getStyle() {

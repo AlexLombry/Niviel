@@ -133,14 +133,8 @@ public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, Histor
     private void gotoRecords() {
 
         if(wca_id != null) {
-            Bundle bundle = new Bundle();
-            bundle.putString(Constants.EXTRAS.WCA_ID, wca_id);
-
-            RecordFragment fragment = new RecordFragment();
-            fragment.setArguments(bundle);
-
+            RecordFragment fragment = RecordFragment.newInstance(wca_id);
             IntentHelper.switchFragment(getActivity(), fragment);
-
         }
     }
 
