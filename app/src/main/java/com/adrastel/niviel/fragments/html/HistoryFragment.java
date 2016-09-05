@@ -49,7 +49,17 @@ public class HistoryFragment extends HtmlFragment<History> {
     private HttpManager httpManager;
     private HttpUrl.Builder urlBuilder = new HttpUrl.Builder();
 
-    private boolean needToCallDatas = false;
+
+    // todo: tout changer en new instance
+    public static HistoryFragment newInstance(String wca_id) {
+        HistoryFragment instance = new HistoryFragment();
+
+        Bundle args = new Bundle();
+        args.putString(Constants.EXTRAS.WCA_ID, wca_id);
+
+        instance.setArguments(args);
+        return instance;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

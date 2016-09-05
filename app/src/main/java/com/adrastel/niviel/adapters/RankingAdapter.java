@@ -202,24 +202,13 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
     }
 
     private void gotoRecords(Ranking ranking) {
-
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.EXTRAS.WCA_ID, ranking.getWca_id());
-
-        RecordFragment fragment = new RecordFragment();
-        fragment.setArguments(bundle);
-
+        RecordFragment fragment = RecordFragment.newInstance(ranking.getWca_id());
         IntentHelper.switchFragment(getActivity(), fragment);
 
     }
 
     private void gotoHistory(Ranking ranking) {
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.EXTRAS.WCA_ID, ranking.getWca_id());
-
-        HistoryFragment fragment = new HistoryFragment();
-        fragment.setArguments(bundle);
-
+        HistoryFragment fragment = HistoryFragment.newInstance(ranking.getWca_id());
         IntentHelper.switchFragment(getActivity(), fragment);
     }
 

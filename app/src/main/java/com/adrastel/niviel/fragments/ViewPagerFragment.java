@@ -22,7 +22,6 @@ public class ViewPagerFragment extends BaseFragment {
 
     private MainActivity activity;
     private TabLayout tabLayout;
-    private ViewPagerAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,7 +64,7 @@ public class ViewPagerFragment extends BaseFragment {
     @SuppressWarnings("ConstantConditions")
     private void setupViewPager(ViewPager viewPager) {
 
-        adapter = new ViewPagerAdapter(getFragmentManager());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
         viewPager.setAdapter(adapter);
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_profile);

@@ -147,7 +147,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
         HistoryFragment fragment = new HistoryFragment();
         fragment.setArguments(bundle);
-
+        // todo voir l'histoire des compets
         IntentHelper.switchFragment(getActivity(), fragment);
     }
 
