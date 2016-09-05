@@ -21,7 +21,6 @@
 
     <!-- Records -->
 
-    <string name="personal_records">Records personnels</string>
     <string name="records">Records</string>
     <string name="single">Single</string>
     <string name="average">Moyenne</string>

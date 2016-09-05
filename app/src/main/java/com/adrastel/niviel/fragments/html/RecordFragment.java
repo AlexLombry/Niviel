@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RecordAdapter;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.providers.html.RecordProvider;
@@ -47,20 +48,13 @@ public class RecordFragment extends HtmlFragment<Record> {
 
     private String wca_id;
 
-
-    private static RecordFragment instance;
-
-    public static RecordFragment newInstance() {
-        if(instance == null) {
-            instance = new RecordFragment();
-        }
-        return instance;
-    }
+    private boolean needToCallDatas = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d("onCreate");
         activity = getActivity();
 
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -101,6 +95,7 @@ public class RecordFragment extends HtmlFragment<Record> {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        Log.d("onCreateView");
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         unbinder = ButterKnife.bind(this, view);
 
@@ -123,6 +118,7 @@ public class RecordFragment extends HtmlFragment<Record> {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        Log.d("onActivityCreated");
         httpManager = new HttpManager(getActivity(), swipeRefresh, progressBar);
 
         if (savedInstanceState != null) {
@@ -131,7 +127,8 @@ public class RecordFragment extends HtmlFragment<Record> {
         }
         // Si on est connecté, on fait une requete HTTP, sinon on lit les données locales
         else if (isConnected()) {
-            callData();
+            needToCallDatas = true;
+            //callData();
         } else {
             adapter.refreshData(loadLocalData());
             httpManager.stopLoaders();
@@ -174,7 +171,14 @@ public class RecordFragment extends HtmlFragment<Record> {
         return new TypeToken<ArrayList<Record>>(){}.getType();
     }
 
-
+    @Override
+    public void onTabSelectedFirst() {
+        super.onTabSelectedFirst();
+        if(needToCallDatas) {
+            callData();
+            needToCallDatas = false;
+        }
+    }
 
     @Override
     public int getStyle() {

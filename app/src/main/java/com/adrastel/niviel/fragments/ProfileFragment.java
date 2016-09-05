@@ -17,22 +17,13 @@ public class ProfileFragment extends BaseFragment {
 
     Unbinder unbinder;
 
-    private static ProfileFragment instance;
-
-    public static ProfileFragment newInstance() {
-        if(instance == null) {
-            Log.d("oui");
-            instance = new ProfileFragment();
-        }
-        return instance;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
-        requestData();
+        //requestData();
     }
 
     @Nullable

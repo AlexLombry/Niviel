@@ -20,6 +20,7 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.SettingsActivity;
 import com.adrastel.niviel.adapters.HistoryAdapter;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.providers.html.HistoryProvider;
@@ -48,17 +49,11 @@ public class HistoryFragment extends HtmlFragment<History> {
     private HttpManager httpManager;
     private HttpUrl.Builder urlBuilder = new HttpUrl.Builder();
 
-    private static HistoryFragment instance;
-
-    public static HistoryFragment newInstance() {
-        if(instance == null) {
-            instance = new HistoryFragment();
-        }
-        return instance;
-    }
+    private boolean needToCallDatas = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d("onCreate");
         super.onCreate(savedInstanceState);
 
         activity = getActivity();
@@ -155,16 +150,26 @@ public class HistoryFragment extends HtmlFragment<History> {
             }
 
             else {
+                //needToCallDatas = true;
                 callData();
             }
         }
 
         else if(isConnected()) {
+            //needToCallDatas = true;
             callData();
         }
 
     }
 
+    /*@Override
+    public void onTabSelectedFirst() {
+        super.onTabSelectedFirst();
+        if(needToCallDatas) {
+            callData();
+            needToCallDatas = false;
+        }
+    }*/
 
     @Override
     public void onDestroyView() {

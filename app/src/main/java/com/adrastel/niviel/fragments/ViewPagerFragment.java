@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +18,11 @@ import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
 
-import java.util.ArrayList;
-
-public class ViewPagerFragment extends BaseFragment{
+public class ViewPagerFragment extends BaseFragment {
 
     private MainActivity activity;
     private TabLayout tabLayout;
+    private ViewPagerAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,8 +51,8 @@ public class ViewPagerFragment extends BaseFragment{
 
 
                 tabLayout = (TabLayout) activity.findViewById(R.id.tab_layout);
-                tabLayout.setupWithViewPager(viewPager);
 
+                tabLayout.setupWithViewPager(viewPager);
 
             }
 
@@ -67,10 +67,7 @@ public class ViewPagerFragment extends BaseFragment{
 
     private void setupViewPager(ViewPager viewPager) {
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
-        adapter.add(ProfileFragment.newInstance(), "Profil");
-        adapter.add(RecordFragment.newInstance(), "Records");
-        adapter.add(HistoryFragment.newInstance(), "Historique");
+        adapter = new ViewPagerAdapter(getFragmentManager());
 
         viewPager.setAdapter(adapter);
 
@@ -81,17 +78,8 @@ public class ViewPagerFragment extends BaseFragment{
         return R.style.AppTheme_Records;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        tabLayout.removeAllTabs();
-    }
-
     // todo: utiliser les onrestorinstancestate
-    public class ViewPagerAdapter extends FragmentPagerAdapter {
-
-        private ArrayList<Fragment> fragments = new ArrayList<>();
-        private ArrayList<String> titles = new ArrayList<>();
+    public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -99,23 +87,43 @@ public class ViewPagerFragment extends BaseFragment{
 
         @Override
         public Fragment getItem(int position) {
-            Log.d("test");
-            return fragments.get(position);
+
+            switch (position) {
+                case 0:
+                    return new ProfileFragment();
+
+                case 1:
+                    return new HistoryFragment();
+
+                case 2:
+                    return new HistoryFragment();
+
+                default:
+                    return new ProfileFragment();
+            }
+
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return titles.get(position);
+            switch (position) {
+                case 0:
+                    return getString(R.string.profile);
+
+                case 1:
+                    return getString(R.string.records);
+
+                case 2:
+                    return getString(R.string.history);
+
+                default:
+                    return null;
+            }
         }
 
         @Override
         public int getCount() {
-            return fragments.size();
-        }
-
-        public void add(Fragment fragment, String title) {
-            fragments.add(fragment);
-            titles.add(title);
+            return 3;
         }
     }
 }

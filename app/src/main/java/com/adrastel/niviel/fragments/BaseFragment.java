@@ -11,8 +11,9 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.adrastel.niviel.interfaces.ActivityTunnelInterface;
 import com.adrastel.niviel.assets.Assets;
+import com.adrastel.niviel.assets.Log;
+import com.adrastel.niviel.interfaces.ActivityTunnelInterface;
 
 public abstract class BaseFragment extends Fragment {
     public abstract int getStyle();
@@ -21,6 +22,8 @@ public abstract class BaseFragment extends Fragment {
     protected Snackbar snackbar;
     protected ConnectivityManager connectivityManager;
     protected SharedPreferences preferences;
+
+    protected boolean alreadySelected = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,9 +58,14 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    public void onTabSelectedFirst() {
+        Log.d("FIRST");
+    }
+
     protected boolean isConnected() {
         return Assets.isConnected(connectivityManager);
     }
 
     public void onFabClick(View view) {}
+
 }
