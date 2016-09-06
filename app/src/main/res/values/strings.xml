@@ -92,6 +92,7 @@
 
     <!-- Others -->
     <string name="zero" translatable="false">0</string>
+    <string name="no_title" translatable="false"/>
 
 
 </resources>

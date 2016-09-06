@@ -2,6 +2,7 @@ package com.adrastel.niviel.activities;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -35,7 +36,7 @@ import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
-import com.adrastel.niviel.fragments.ViewPagerFragment;
+import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
 import com.adrastel.niviel.http.HttpCallback;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
 
     private FragmentManager fragmentManager;
     private BaseFragment fragment;
+    private String wca_id = null;
 
 
 
@@ -89,7 +91,8 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
         Intent intent = getIntent();
         handleIntent(intent);
 
-
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        wca_id = preferences.getString(getString(R.string.pref_wca_id), null);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,9 +247,7 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
 
         switch(item.getItemId()) {
             case R.id.profile:
-                //return new ProfileFragment();
-                tabLayout.setVisibility(View.VISIBLE);
-                return new ViewPagerFragment();
+                return ProfileFragment.newInstance(wca_id);
 
             case R.id.records:
                 return new RecordFragment();
@@ -286,14 +287,13 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
                     .addToBackStack(null)
                     .commit();
 
+            Log.d("backStackEntryCount", String.valueOf(fragmentManager.getBackStackEntryCount()));
             setSubtitle(null);
 
 
             int style = fragment.getStyle();
 
             int[] attrs = { R.attr.colorPrimary, R.attr.colorPrimaryDark, R.attr.toolbarTitle, R.attr.fabVisible, R.attr.fabIcon};
-
-
 
             TypedArray typedArray = obtainStyledAttributes(style, attrs);
 
@@ -310,8 +310,6 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
 
 
             boolean fabVisible = typedArray.getBoolean(3, false);
-
-            Log.d("fabVisible", String.valueOf(fabVisible));
 
             if(fabVisible) {
                 fab.show();
@@ -411,7 +409,8 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
     private void handleIntent(Intent intent) {
         if(intent.getAction().equals(Intent.ACTION_SEARCH)) {
             String query = intent.getStringExtra(SearchManager.QUERY);
-            searchUser(query);
+            Log.d(query);
+            //searchUser(query);
         }
     }
 

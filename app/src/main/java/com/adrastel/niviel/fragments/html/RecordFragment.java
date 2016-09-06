@@ -66,7 +66,6 @@ public class RecordFragment extends HtmlFragment<Record> {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("onCreate");
         activity = getActivity();
 
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -107,7 +106,6 @@ public class RecordFragment extends HtmlFragment<Record> {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        Log.d("onCreateView");
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         unbinder = ButterKnife.bind(this, view);
 
@@ -130,7 +128,6 @@ public class RecordFragment extends HtmlFragment<Record> {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        Log.d("onActivityCreated");
         httpManager = new HttpManager(getActivity(), swipeRefresh, progressBar);
 
         if (savedInstanceState != null) {

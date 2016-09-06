@@ -2,30 +2,11 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="4dp">
+    android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/author"
-            android:layout_centerHorizontal="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
-
-        <TextView
-            android:layout_centerHorizontal="true"
-            android:id="@+id/country"
-            android:layout_below="@id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="FR"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="25/05/2016"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"/>
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/view_pager"/>
 
 </RelativeLayout>

@@ -9,8 +9,7 @@ public class Constants {
         String POSITION = "position";
         String COMPETITIONS = "competitions";
         String ISSINGLE = "issingle";
-        String ID = "id";
-        String BUNDLE = "bundle";
+        String TAB = "tab";
         String WCA_ID = "wca_id";
 
     }

@@ -63,7 +63,6 @@ public class HistoryFragment extends HtmlFragment<History> {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        Log.d("onCreate");
         super.onCreate(savedInstanceState);
 
         activity = getActivity();
@@ -159,27 +158,26 @@ public class HistoryFragment extends HtmlFragment<History> {
                 httpManager.stopLoaders();
             }
 
-            else {
-                //needToCallDatas = true;
+            else if(isConnected()){
                 callData();
+            }
+
+            else {
+                adapter.refreshData(loadLocalData());
+                httpManager.stopLoaders();
             }
         }
 
         else if(isConnected()) {
-            //needToCallDatas = true;
             callData();
+        }
+
+        else {
+            adapter.refreshData(loadLocalData());
+            httpManager.stopLoaders();
         }
 
     }
-
-    /*@Override
-    public void onTabSelectedFirst() {
-        super.onTabSelectedFirst();
-        if(needToCallDatas) {
-            callData();
-            needToCallDatas = false;
-        }
-    }*/
 
     @Override
     public void onDestroyView() {
