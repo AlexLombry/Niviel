@@ -62,4 +62,8 @@ public class User {
     public String getUrl() {
         return url;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

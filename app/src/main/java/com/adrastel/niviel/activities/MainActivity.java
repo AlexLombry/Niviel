@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -209,6 +210,10 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
 
     }
 
+    public void goBack() {
+
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         setIntent(intent);
@@ -234,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
         }
     }
     //todo: refaire les couleurs des toolbars + couleur circle view ranking faire correspondre avec toolbar foollowers
-
+    // todo: ajouter un bouton "ne pas cliquer"
     /**
      * Choisit le fragment à prendre
      * @param item item
@@ -407,59 +412,22 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
     }
 
     private void handleIntent(Intent intent) {
-        if(intent.getAction().equals(Intent.ACTION_SEARCH)) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Log.d(query);
-            //searchUser(query);
+        if(intent.getAction().equals(Intent.ACTION_VIEW)) {
+
+            Uri query = intent.getData();
+
+            if(query.getAuthority().equals("com.adrastel.search")) {
+
+                String wca_id = query.getLastPathSegment();
+                searchUser(wca_id);
+            }
         }
     }
 
-    private void searchUser(String query) {
+    private void searchUser(String wca_id) {
 
-        OkHttpClient client = new OkHttpClient();
+        ProfileFragment profileFragment = ProfileFragment.newInstance(wca_id);
+        switchFragment(profileFragment);
 
-        HttpUrl url = new HttpUrl.Builder()
-                .scheme("https")
-                .host("www.worldcubeassociation.org")
-                .addEncodedPathSegments("api/v0/search/users")
-                .addEncodedQueryParameter("q", "Mathias Deroubaix")
-                .build();
-
-
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        Call call = client.newCall(request);
-
-
-        call.enqueue(new HttpCallback(this) {
-            @Override
-            public void onResponse(String response){
-
-
-                JsonParser jsonParser = new JsonParser();
-                JsonElement jsonTree = jsonParser.parse(response);
-
-                JsonObject jsonObject = jsonTree.getAsJsonObject();
-
-                JsonArray result = jsonObject.getAsJsonArray("result");
-
-                Gson gson = new Gson();
-                ArrayList<User> users = gson.fromJson(result, new TypeToken<ArrayList<User>>() {
-                }.getType());
-
-                for (User user : users) {
-                    Log.d("MainActivity: " + user.getWca_id());
-
-                }
-            }
-
-            @Override
-            public void onFailure() {
-
-            }
-
-        });
     }
 }

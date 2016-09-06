@@ -55,9 +55,10 @@ public class SuggestionProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
 
-
-
-        String query = uri.getLastPathSegment().replace(" ", "+");
+        String query = uri
+                .getLastPathSegment()
+                .trim()
+                .replace(" ", "+");
 
 
         HttpUrl url = new HttpUrl.Builder()
@@ -66,8 +67,6 @@ public class SuggestionProvider extends ContentProvider {
                 .addEncodedPathSegments("api/v0/search")
                 .addEncodedQueryParameter("q", query)
                 .build();
-
-        Log.d(url.toString());
 
         Request request = new Request.Builder()
                 .url(url)
@@ -119,13 +118,10 @@ public class SuggestionProvider extends ContentProvider {
 
                 // verifie que l'utilisateur a un id wca
                 if ((user.getType().equals("person") || user.getType().equals("user")) && user.getWca_id() != null) {
-                    Log.d("name: " + user.getName());
                     cursor.addRow(new Object[]{i, user.getWca_id(), user.getName(), user.getWca_id()});
                     i++;
                 }
             }
-
-            Log.d("cursor size: " + cursor.getCount());
 
         return cursor;
     }

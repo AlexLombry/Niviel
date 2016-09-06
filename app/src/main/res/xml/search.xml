@@ -5,4 +5,4 @@
     android:hint="@string/search_hint_users"
     android:searchSuggestAuthority="com.niviel.adrastel.suggestionProvider"
     android:searchSuggestIntentData="content://com.adrastel.search"
-    android:searchSuggestIntentAction="android.Intent.action.VIEW"/>
+    android:searchSuggestIntentAction="android.intent.action.VIEW"/>
