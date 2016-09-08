@@ -35,6 +35,7 @@ public class RecordDialog extends DialogFragment {
     @SuppressWarnings("InflateParams")
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        // todo: utiliser les gets instances en arguments
         Record record = getArguments().getParcelable(Constants.EXTRAS.RECORDS);
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());

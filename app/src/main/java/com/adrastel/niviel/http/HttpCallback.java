@@ -5,6 +5,7 @@ import android.support.annotation.StringRes;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.assets.Log;
 
 import java.io.IOException;
 
@@ -26,6 +27,9 @@ public abstract class HttpCallback implements okhttp3.Callback {
         try {
             if (!response.isSuccessful()) {
 
+                Log.e("HTTP ERROR", String.valueOf(response.code()));
+                Log.d("Http url", call.request().url().toString());
+
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -43,10 +47,11 @@ public abstract class HttpCallback implements okhttp3.Callback {
 
             else {
                 String data = response.body().string();
-                response.close();
 
                 onResponse(data);
             }
+
+            response.close();
         }
 
         catch (Exception e) {

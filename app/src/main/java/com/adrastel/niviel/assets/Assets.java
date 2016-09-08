@@ -127,29 +127,6 @@ public class Assets {
     }
 
 
-    public static @StringRes int onHttpError(int intStatusCode) {
-
-        String statusCode = String.valueOf(intStatusCode);
-
-        if(statusCode.length() == 3) {
-
-            switch (statusCode.charAt(0)) {
-
-                case '4':
-                    return R.string.error_connection;
-
-                case '5':
-                    return R.string.err_server;
-
-
-            }
-
-        }
-
-        return R.string.cannot_load;
-
-    }
-
     public static boolean isFollowing(Context context, String wca_id) {
 
         DatabaseHelper db = new DatabaseHelper(context);
@@ -166,8 +143,15 @@ public class Assets {
 
     }
 
-    public static String getWcaId() {
-        return null;
+    public static boolean isPersonal(Context context, String wca_id) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String pers_wca_id = preferences.getString(context.getString(R.string.pref_wca_id), null);
+
+        Log.d(wca_id, pers_wca_id);
+
+        return wca_id.equals(pers_wca_id);
     }
+
 
 }

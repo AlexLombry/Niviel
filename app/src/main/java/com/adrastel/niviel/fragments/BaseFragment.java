@@ -9,19 +9,17 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.view.View;
 
+import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.Log;
-import com.adrastel.niviel.interfaces.ActivityTunnelInterface;
 
 public abstract class BaseFragment extends Fragment {
     public abstract int getStyle();
 
-    protected ActivityTunnelInterface activityTunnelInterface;
     protected Snackbar snackbar;
     protected ConnectivityManager connectivityManager;
     protected SharedPreferences preferences;
+    protected MainActivity activity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,7 +29,7 @@ public abstract class BaseFragment extends Fragment {
         preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         try {
-            activityTunnelInterface = (ActivityTunnelInterface) getActivity();
+            activity = (MainActivity) getActivity();
         }
 
         catch (ClassCastException e) {
@@ -40,8 +38,8 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected Snackbar makeSnackbar(@StringRes int resId, int duration) {
-        if(activityTunnelInterface != null && activityTunnelInterface.getCoordinatorLayout() != null) {
-            snackbar = Snackbar.make(activityTunnelInterface.getCoordinatorLayout(), resId, duration);
+        if(activity != null && activity.getCoordinatorLayout() != null) {
+            snackbar = Snackbar.make(activity.getCoordinatorLayout(), resId, duration);
             return snackbar;
         }
 
@@ -59,7 +57,5 @@ public abstract class BaseFragment extends Fragment {
     protected boolean isConnected() {
         return Assets.isConnected(connectivityManager);
     }
-
-    public void onFabClick(View view) {}
 
 }

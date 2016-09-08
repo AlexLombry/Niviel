@@ -1,10 +1,7 @@
 package com.adrastel.niviel.fragments.html;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,7 +17,6 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.SettingsActivity;
 import com.adrastel.niviel.adapters.HistoryAdapter;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.providers.html.HistoryProvider;
@@ -44,7 +40,6 @@ public class HistoryFragment extends HtmlFragment<History> {
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     private Unbinder unbinder;
-    private Activity activity;
     private HistoryAdapter adapter;
     private HttpManager httpManager;
     private HttpUrl.Builder urlBuilder = new HttpUrl.Builder();
@@ -65,8 +60,6 @@ public class HistoryFragment extends HtmlFragment<History> {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        activity = getActivity();
-
         String wca_id = null;
 
         Bundle arguments = getArguments();
@@ -77,8 +70,6 @@ public class HistoryFragment extends HtmlFragment<History> {
 
         // Si il est null on l'id wca est donc personel
         if(wca_id == null) {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-
             // On recupere l'id wca
             wca_id = preferences.getString(getString(R.string.pref_wca_id), null);
 
@@ -94,10 +85,6 @@ public class HistoryFragment extends HtmlFragment<History> {
                         .show();
             }
 
-        }
-
-        else {
-            Toast.makeText(getContext(), R.string.wrong_wca_id, Toast.LENGTH_LONG).show();
         }
         // modifie l'url en fonction de l'id wca
         urlBuilder.addEncodedQueryParameter("i", wca_id);

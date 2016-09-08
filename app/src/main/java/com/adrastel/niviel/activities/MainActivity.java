@@ -1,7 +1,10 @@
 package com.adrastel.niviel.activities;
 
 import android.app.SearchManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -17,6 +20,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -33,46 +37,52 @@ import android.view.WindowManager;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.IntentHelper;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
-import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.html.HistoryFragment;
+import com.adrastel.niviel.fragments.html.RankingFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
-import com.adrastel.niviel.http.HttpCallback;
-import com.adrastel.niviel.interfaces.ActivityTunnelInterface;
-import com.adrastel.niviel.models.readable.User;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.Call;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
-public class MainActivity extends AppCompatActivity implements ActivityTunnelInterface {
+public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.fab) FloatingActionButton fab;
+    public @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.navigation_view) NavigationView navigationView;
     @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
 
     private FragmentManager fragmentManager;
     private BaseFragment fragment;
-    private String wca_id = null;
+    private SharedPreferences preferences;
+    private String pers_wca_id = null;
+    private String pers_name = null;
+
+    public static final String ACTIVITY_RECEIVER = "activity_receiver";
+    public static final String ACTIVITY_RECEIVER_ACTION = "activity_receiver_action";
+    public static final String UPDATE_WCA_PROFILE = "update_wca_profile";
 
 
+    private BroadcastReceiver activityReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("intent received");
+            String action = intent.getStringExtra(ACTIVITY_RECEIVER_ACTION);
+
+            switch (action) {
+                case UPDATE_WCA_PROFILE:
+                    updateWcaProfile();
+                    break;
+            }
+
+        }
+    };
 
     /**
      * Lors de la creation de l'activité
@@ -92,17 +102,8 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
         Intent intent = getIntent();
         handleIntent(intent);
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        wca_id = preferences.getString(getString(R.string.pref_wca_id), null);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(fragment != null) {
-                    fragment.onFabClick(view);
-                }
-            }
-        });
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        updateWcaProfile();
 
         final ActionBar actionBar = getSupportActionBar();
 
@@ -210,8 +211,18 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
 
     }
 
-    public void goBack() {
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        LocalBroadcastManager.getInstance(this).registerReceiver(activityReceiver, new IntentFilter(ACTIVITY_RECEIVER));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(activityReceiver);
     }
 
     @Override
@@ -252,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
 
         switch(item.getItemId()) {
             case R.id.profile:
-                return ProfileFragment.newInstance(wca_id);
+                return ProfileFragment.newInstance(pers_wca_id, pers_name);
 
             case R.id.records:
                 return new RecordFragment();
@@ -276,6 +287,14 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
                 return new RecordFragment();
 
         }
+    }
+
+    public void showFab() {
+        fab.show();
+    }
+
+    public void hideFab() {
+        fab.hide();
     }
 
     /**
@@ -317,15 +336,15 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
             boolean fabVisible = typedArray.getBoolean(3, false);
 
             if(fabVisible) {
-                fab.show();
-
-                Drawable fabIcon = typedArray.getDrawable(4);
-                fab.setImageDrawable(fabIcon);
+                showFab();
             }
 
             else {
-                fab.hide();
+                hideFab();
             }
+
+            Drawable fabIcon = typedArray.getDrawable(4);
+            fab.setImageDrawable(fabIcon);
 
             typedArray.recycle();
 
@@ -396,7 +415,6 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
      * Disponible dans les fragments
      * @param subtitle sous titre
      */
-    @Override
     public void setSubtitle(String subtitle) {
 
         ActionBar actionBar = getSupportActionBar();
@@ -406,27 +424,39 @@ public class MainActivity extends AppCompatActivity implements ActivityTunnelInt
         }
     }
 
-    @Override
     public CoordinatorLayout getCoordinatorLayout() {
         return coordinatorLayout;
+    }
+
+    private void updateWcaProfile() {
+        pers_wca_id = preferences.getString(getString(R.string.pref_wca_id), null);
+        pers_name = preferences.getString(Constants.EXTRAS.USERNAME, null);
     }
 
     private void handleIntent(Intent intent) {
         if(intent.getAction().equals(Intent.ACTION_VIEW)) {
 
-            Uri query = intent.getData();
+            try {
+                Uri query = intent.getData();
 
-            if(query.getAuthority().equals("com.adrastel.search")) {
+                Log.d(query.toString());
 
-                String wca_id = query.getLastPathSegment();
-                searchUser(wca_id);
+                if (query.getAuthority().equals("com.adrastel.search")) {
+
+                    String wca_id = query.getLastPathSegment();
+                    String name = intent.getStringExtra(SearchManager.EXTRA_DATA_KEY);
+                    searchUser(wca_id, name);
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
 
-    private void searchUser(String wca_id) {
+    private void searchUser(String wca_id, String name) {
 
-        ProfileFragment profileFragment = ProfileFragment.newInstance(wca_id);
+        ProfileFragment profileFragment = ProfileFragment.newInstance(wca_id, name);
         switchFragment(profileFragment);
 
     }

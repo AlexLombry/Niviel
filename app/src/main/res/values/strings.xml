@@ -94,5 +94,12 @@
     <string name="zero" translatable="false">0</string>
     <string name="no_title" translatable="false"/>
 
+    <string name="dialog_edit_profile_title">Changement de profil</string>
+    <string name="dialog_edit_profile_message">Votre profil personnel sera au nom de %1$s</string>
+
+    <string name="confirm">Confirmer</string>
+    <string name="toast_edit_profile_success">Le changement de profil a bien été effectué</string>
+    <string name="toast_edit_profile_failure">Une erreur est survenue lors du changement de profil</string>
+
 
 </resources>

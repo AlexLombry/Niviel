@@ -50,4 +50,12 @@ public class IntentHelper {
 
         return intent;
     }
+
+    public static Intent sendBroadcast(String action) {
+        Intent intent = new Intent(MainActivity.ACTIVITY_RECEIVER);
+
+        intent.putExtra(MainActivity.ACTIVITY_RECEIVER_ACTION, action);
+
+        return intent;
+    }
 }

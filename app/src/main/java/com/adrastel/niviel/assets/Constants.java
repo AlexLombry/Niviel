@@ -11,8 +11,11 @@ public class Constants {
         String ISSINGLE = "issingle";
         String TAB = "tab";
         String WCA_ID = "wca_id";
+        String USERNAME = "username";
 
     }
+
+    public String BROADCAST = "broadcast";
 
     public interface TAG {
         String RECORDS = "records";

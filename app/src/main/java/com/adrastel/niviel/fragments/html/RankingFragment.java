@@ -1,6 +1,5 @@
-package com.adrastel.niviel.fragments;
+package com.adrastel.niviel.fragments.html;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -20,7 +19,6 @@ import com.adrastel.niviel.adapters.RankingAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
-import com.adrastel.niviel.fragments.html.HtmlFragment;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.providers.html.RankingProvider;
@@ -43,7 +41,6 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
-    private Activity activity;
     private Unbinder unbinder;
     private RankingAdapter adapter;
     private HttpManager httpManager;
@@ -63,10 +60,8 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
-
-        activity = getActivity();
-
         adapter = new RankingAdapter(getActivity());
+
     }
 
     /**
@@ -226,7 +221,7 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
         String mode = isSingle ? getString(R.string.single) : getString(R.string.average);
         String subtitle = String.format(getString(R.string.ranking_subtitle), cubes[cubePosition], mode);
 
-        setSubtitle(subtitle);
+        activity.setSubtitle(subtitle);
 
         httpManager.callData(getUrl(), new HttpManager.SuccessCallback() {
             @Override
@@ -247,13 +242,6 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
     @Override
     public int getStyle() {
         return R.style.AppTheme_Ranking;
-    }
-
-    private void setSubtitle(String subtitle) {
-
-        if(activityTunnelInterface != null) {
-            activityTunnelInterface.setSubtitle(subtitle);
-        }
     }
 
     @Override
