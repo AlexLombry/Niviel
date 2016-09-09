@@ -122,8 +122,17 @@ public class Assets {
     public static Spanned formatHtmlAverageDetails(String average, String details) {
 
         String html = "<strong>" + average + "</strong>" + " (" + details + ")";
+        html = html.replace("DNF", "<font color=\"#CC0000\">DNF</font>");
+        html = html.trim();
+        return fromHtml(html);
+    }
+
+    public static Spanned formatHtmltitle(String event, String competition) {
+
+        String html = "<i>" + event + "</i>: " + competition;
 
         return fromHtml(html);
+
     }
 
 

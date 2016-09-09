@@ -46,11 +46,12 @@ public class HistoryFragment extends HtmlFragment<History> {
 
 
     // todo: tout changer en new instance
-    public static HistoryFragment newInstance(String wca_id) {
+    public static HistoryFragment newInstance(String wca_id, String username) {
         HistoryFragment instance = new HistoryFragment();
 
         Bundle args = new Bundle();
         args.putString(Constants.EXTRAS.WCA_ID, wca_id);
+        args.putString(Constants.EXTRAS.USERNAME, username);
 
         instance.setArguments(args);
         return instance;
@@ -61,11 +62,13 @@ public class HistoryFragment extends HtmlFragment<History> {
         super.onCreate(savedInstanceState);
 
         String wca_id = null;
+        String username = null;
 
         Bundle arguments = getArguments();
 
         if(arguments != null) {
             wca_id = arguments.getString(Constants.EXTRAS.WCA_ID, null);
+            username = arguments.getString(Constants.EXTRAS.USERNAME, null);
         }
 
         // Si il est null on l'id wca est donc personel
@@ -90,7 +93,7 @@ public class HistoryFragment extends HtmlFragment<History> {
         urlBuilder.addEncodedQueryParameter("i", wca_id);
 
         // cree l'adapter
-        adapter = new HistoryAdapter(getActivity(), wca_id);
+        adapter = new HistoryAdapter(getActivity(), wca_id, username);
 
     }
 
@@ -163,6 +166,13 @@ public class HistoryFragment extends HtmlFragment<History> {
             adapter.refreshData(loadLocalData());
             httpManager.stopLoaders();
         }
+
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                callData();
+            }
+        });
 
     }
 

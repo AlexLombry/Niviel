@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,41 +35,50 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.IntentHelper;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
-import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.RankingFragment;
-import com.adrastel.niviel.fragments.html.RecordFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DrawerLayout.DrawerListener {
 
+
+    // Les vues
+    public @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
-    public @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.navigation_view) NavigationView navigationView;
     @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
 
+    // Les core-objects
     private FragmentManager fragmentManager;
     private BaseFragment fragment;
     private SharedPreferences preferences;
-    private String pers_wca_id = null;
-    private String pers_name = null;
 
+    // Les preferences
+    private String prefWcaId = null;
+    private String prefWcaName = null;
+    private boolean prefDoubleClickToExit = true;
+    private boolean doubleClickToExit = false;
+
+    // Le runnable qui est executé après que le drawer soit fermé
+    private Runnable fragmentToRun;
+
+    // Les constantes du receiver
     public static final String ACTIVITY_RECEIVER = "activity_receiver";
     public static final String ACTIVITY_RECEIVER_ACTION = "activity_receiver_action";
     public static final String UPDATE_WCA_PROFILE = "update_wca_profile";
 
-
+    // Le reciever
     private BroadcastReceiver activityReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -84,6 +94,8 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
+
     /**
      * Lors de la creation de l'activité
      * @param savedInstanceState bundle
@@ -92,58 +104,71 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        ButterKnife.bind(this);
-
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
         setSupportActionBar(toolbar);
 
+        // Initialisation des objets
+        ButterKnife.bind(this);
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        fragmentManager = getSupportFragmentManager();
+
+        // Gere l'intent (si il s'agit d'une requete...)
         Intent intent = getIntent();
         handleIntent(intent);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        // Actualise l'ID WCA
         updateWcaProfile();
 
-        final ActionBar actionBar = getSupportActionBar();
+        // Recupère les près
+        prefDoubleClickToExit = preferences.getBoolean(getString(R.string.pref_double_back), true);
 
+
+        final ActionBar actionBar = getSupportActionBar();
 
         if(actionBar != null) {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        fragmentManager = getSupportFragmentManager();
 
-
+        /*
+        Si il y a un fragment en mémiore, l'execute
+        Sinon lance profileFragment
+         */
         if(savedInstanceState != null && fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT) != null) {
             this.fragment = (BaseFragment) fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT);
         }
         else {
-            this.fragment = new RecordFragment();
+            this.fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, prefWcaId, prefWcaName);
         }
 
         switchFragment(fragment);
 
-        // todo: regarder le probleme back pas actualisation toolbar
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
 
                 item.setChecked(true);
                 closeDrawer();
 
                 // On choisit le fragment
-                BaseFragment fragment = selectDrawerItem(item);
+                final BaseFragment fragment = selectDrawerItem(item);
 
-                if(fragment != null) {
-                    switchFragment(fragment);
+                if(fragment != null ) {
+                    runWhenDrawerClose(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            switchFragment(fragment);
+                        }
+                    });
                 }
 
                 return true;
             }
         });
+
+        drawerLayout.addDrawerListener(this);
 
         // todo: gere id wca incorrecte
 
@@ -206,7 +231,23 @@ public class MainActivity extends AppCompatActivity {
         if(isDrawerOpen()) {
             closeDrawer();
         } else {
-            super.onBackPressed();
+
+            if(prefDoubleClickToExit) {
+
+                if (doubleClickToExit) {
+                    super.onBackPressed();
+                } else {
+                    doubleClickToExit = true;
+                    Toast.makeText(this, R.string.toast_click_double_back, Toast.LENGTH_LONG).show();
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            doubleClickToExit = false;
+                        }
+                    }, 3000);
+                }
+            }
         }
 
     }
@@ -249,7 +290,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    //todo: refaire les couleurs des toolbars + couleur circle view ranking faire correspondre avec toolbar foollowers
     // todo: ajouter un bouton "ne pas cliquer"
     /**
      * Choisit le fragment à prendre
@@ -263,13 +303,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch(item.getItemId()) {
             case R.id.profile:
-                return ProfileFragment.newInstance(pers_wca_id, pers_name);
-
-            case R.id.records:
-                return new RecordFragment();
-
-            case R.id.history:
-                return new HistoryFragment();
+                return ProfileFragment.newInstance(prefWcaId, prefWcaName);
 
             case R.id.ranking:
                 return new RankingFragment();
@@ -279,14 +313,25 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.settings:
 
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
+                runWhenDrawerClose(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 return null;
 
             default:
-                return new RecordFragment();
+                return ProfileFragment.newInstance(prefWcaId, prefWcaName);
 
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        drawerLayout.removeDrawerListener(this);
     }
 
     public void showFab() {
@@ -308,47 +353,9 @@ public class MainActivity extends AppCompatActivity {
             // Remplace le fragment
             fragmentManager.beginTransaction()
                     .replace(R.id.frame_layout, fragment)
-                    .addToBackStack(null)
                     .commit();
 
-            Log.d("backStackEntryCount", String.valueOf(fragmentManager.getBackStackEntryCount()));
-            setSubtitle(null);
-
-
-            int style = fragment.getStyle();
-
-            int[] attrs = { R.attr.colorPrimary, R.attr.colorPrimaryDark, R.attr.toolbarTitle, R.attr.fabVisible, R.attr.fabIcon};
-
-            TypedArray typedArray = obtainStyledAttributes(style, attrs);
-
-            Log.d("title", String.valueOf(typedArray.getString(2)));
-
-            String title = typedArray.getString(2);
-            setTitle(title);
-
-            int primaryColor = typedArray.getColor(0, Color.WHITE);
-            setToolbarColor(primaryColor);
-
-            int primaryColorDark = typedArray.getColor(1, Color.WHITE);
-            setStatusBar(primaryColorDark);
-
-
-            boolean fabVisible = typedArray.getBoolean(3, false);
-
-            if(fabVisible) {
-                showFab();
-            }
-
-            else {
-                hideFab();
-            }
-
-            Drawable fabIcon = typedArray.getDrawable(4);
-            fab.setImageDrawable(fabIcon);
-
-            typedArray.recycle();
-
-
+            updateUi(fragment);
             this.fragment = fragment;
 
         }
@@ -429,8 +436,47 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateWcaProfile() {
-        pers_wca_id = preferences.getString(getString(R.string.pref_wca_id), null);
-        pers_name = preferences.getString(Constants.EXTRAS.USERNAME, null);
+        prefWcaId = preferences.getString(getString(R.string.pref_wca_id), null);
+        prefWcaName = preferences.getString(Constants.EXTRAS.USERNAME, null);
+    }
+
+    @SuppressWarnings("ResourceType")
+    private void updateUi(BaseFragment fragment) {
+
+        setSubtitle(null);
+
+        int style = fragment.getStyle();
+
+        int[] attrs = { R.attr.colorPrimary, R.attr.colorPrimaryDark, R.attr.toolbarTitle, R.attr.fabVisible, R.attr.fabIcon};
+
+        TypedArray typedArray = obtainStyledAttributes(style, attrs);
+
+        Log.d("title", String.valueOf(typedArray.getString(2)));
+
+        String title = typedArray.getString(2);
+        setTitle(title);
+
+        int primaryColor = typedArray.getColor(0, Color.WHITE);
+        setToolbarColor(primaryColor);
+
+        int primaryColorDark = typedArray.getColor(1, Color.WHITE);
+        setStatusBar(primaryColorDark);
+
+
+        boolean fabVisible = typedArray.getBoolean(3, false);
+
+        if(fabVisible) {
+            showFab();
+        }
+
+        else {
+            hideFab();
+        }
+
+        Drawable fabIcon = typedArray.getDrawable(4);
+        fab.setImageDrawable(fabIcon);
+
+        typedArray.recycle();
     }
 
     private void handleIntent(Intent intent) {
@@ -460,4 +506,25 @@ public class MainActivity extends AppCompatActivity {
         switchFragment(profileFragment);
 
     }
+
+    private void runWhenDrawerClose(Runnable runnable) {
+        this.fragmentToRun = runnable;
+    }
+
+
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {}
+
+    @Override
+    public void onDrawerOpened(View drawerView) {}
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+        if(fragmentToRun != null) {
+            fragmentToRun.run();
+        }
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {}
 }

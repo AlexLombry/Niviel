@@ -95,16 +95,13 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                 .fit()
                 .centerInside()
                 .into(holder.image);
+/*
+        int[] colors = getActivity().getResources().getIntArray(R.array.colors_md_100);
+        int color_position = position % colors.length;*/
 
-        try {
-            int[] colors = getActivity().getResources().getIntArray(R.array.colors_md_100);
-            int color_position = position % colors.length;
 
-            holder.card.setCardBackgroundColor(colors[color_position]);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        holder.card.setCardBackgroundColor(0xFFFF8A65);
 
         //listener
         holder.more_info.setOnClickListener(new View.OnClickListener() {

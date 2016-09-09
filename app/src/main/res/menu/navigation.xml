@@ -11,14 +11,6 @@
                         android:title="@string/profile"
                         android:icon="@drawable/ic_profile"/>
                     <item
-                        android:id="@+id/records"
-                        android:title="@string/records"
-                        android:icon="@drawable/ic_star"/>
-                    <item
-                        android:id="@+id/history"
-                        android:title="@string/history"
-                        android:icon="@drawable/ic_history"/>
-                    <item
                         android:id="@+id/followers"
                         android:title="@string/followers"
                         android:icon="@drawable/ic_followers"/>

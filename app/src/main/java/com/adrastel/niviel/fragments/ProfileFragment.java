@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.MainActivity;
+import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.IntentHelper;
 import com.adrastel.niviel.assets.Log;
@@ -34,6 +35,9 @@ public class ProfileFragment extends BaseFragment implements SetProfileDialog.Di
     private String wca_id = null;
     private String username = null;
     private int tab = RECORD_TAB;
+
+    private ViewPager viewPager;
+    private ViewPagerAdapter adapter;
 
     public static ProfileFragment newInstance(int tab, String wca_id, String name) {
         ProfileFragment instance = new ProfileFragment();
@@ -80,7 +84,7 @@ public class ProfileFragment extends BaseFragment implements SetProfileDialog.Di
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.view_pager);
+        viewPager = (ViewPager) view.findViewById(R.id.view_pager);
 
         tabLayout = (TabLayout) activity.findViewById(R.id.tab_layout);
         tabLayout.setVisibility(View.VISIBLE);
@@ -95,7 +99,8 @@ public class ProfileFragment extends BaseFragment implements SetProfileDialog.Di
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(preferences.getString(Constants.EXTRAS.WCA_ID, null) == null) {
+        if(!Assets.isPersonal(getContext(), wca_id)) {
+            Log.d("wca null");
             activity.showFab();
 
             activity.fab.setOnClickListener(new View.OnClickListener() {
@@ -110,13 +115,18 @@ public class ProfileFragment extends BaseFragment implements SetProfileDialog.Di
             });
         }
 
+        else {
+            Log.d("wca pas null ", wca_id);
+        }
+
     }
 
     @SuppressWarnings("ConstantConditions")
     private void setupViewPager(ViewPager viewPager) {
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
+        adapter = new ViewPagerAdapter(getFragmentManager());
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(tab);
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_star);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_history);
@@ -147,7 +157,6 @@ public class ProfileFragment extends BaseFragment implements SetProfileDialog.Di
         }
     }
 
-    // todo: utiliser les onrestorinstancestate
     public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         public ViewPagerAdapter(FragmentManager fm) {
@@ -162,7 +171,7 @@ public class ProfileFragment extends BaseFragment implements SetProfileDialog.Di
                     return RecordFragment.newInstance(wca_id);
 
                 case 1:
-                    return HistoryFragment.newInstance(wca_id);
+                    return HistoryFragment.newInstance(wca_id, username);
 
                 default:
                     return RecordFragment.newInstance(wca_id);
@@ -188,6 +197,8 @@ public class ProfileFragment extends BaseFragment implements SetProfileDialog.Di
         public int getCount() {
             return 2;
         }
+
+
     }
 
     private void getProfileInfos() {
@@ -207,4 +218,5 @@ public class ProfileFragment extends BaseFragment implements SetProfileDialog.Di
         }
         super.onDestroyView();
     }
+
 }

@@ -79,6 +79,9 @@
     <string name="toast_unfollow_confirmation">Vous ne suivez plus %1$s</string>
     <string name="search">Rechercher</string>
     <string name="search_hint_users">Rechercher des joueurs…</string>
+    <string name="toast_click_double_back">Cliquez encore sur Retour pour quitter</string>
+    <string name="pref_double_back_title">Confirmation pour quitter l\'application</string>
+    <string name="pref_double_back_description">Cliquez 2 fois sur le bouton Retour pour quitter l\'application</string>
 
     <!-- Preferences -->
     <string name="wca_id">Identifiant WCA</string>

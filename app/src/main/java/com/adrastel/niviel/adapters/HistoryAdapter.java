@@ -12,13 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.IntentHelper;
 import com.adrastel.niviel.dialogs.HistoryDialog;
+import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.views.CircleView;
@@ -31,15 +31,13 @@ import butterknife.ButterKnife;
  */
 public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, History> {
 
+    private final String username;
     private String wca_id = null;
 
-    public HistoryAdapter(FragmentActivity activity) {
-        super(activity);
-    }
-
-    public HistoryAdapter(FragmentActivity activity, String wca_id) {
+    public HistoryAdapter(FragmentActivity activity, String wca_id, String username) {
         super(activity);
         this.wca_id = wca_id;
+        this.username = username;
     }
 
 
@@ -75,12 +73,13 @@ public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, Histor
 
         final History history = getDatas().get(position);
 
+        String event = history.getEvent();
         String competition = history.getCompetition();
         String place = history.getPlace();
         String average = history.getAverage();
         String result_details = history.getResult_details();
 
-        holder.competition.setText(competition);
+        holder.competition.setText(Assets.formatHtmltitle(event, competition));
         holder.place.setText(place);
         holder.results.setText(Assets.formatHtmlAverageDetails(average, result_details));
 
@@ -133,7 +132,7 @@ public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, Histor
     private void gotoRecords() {
 
         if(wca_id != null) {
-            RecordFragment fragment = RecordFragment.newInstance(wca_id);
+            ProfileFragment fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, wca_id, username);
             IntentHelper.switchFragment(getActivity(), fragment);
         }
     }

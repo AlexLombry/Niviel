@@ -23,6 +23,7 @@ import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.RankingDetailsDialog;
+import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
 import com.adrastel.niviel.models.readable.Ranking;
@@ -202,13 +203,13 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
     }
 
     private void gotoRecords(Ranking ranking) {
-        RecordFragment fragment = RecordFragment.newInstance(ranking.getWca_id());
+        ProfileFragment fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, ranking.getWca_id(), ranking.getPerson());
         IntentHelper.switchFragment(getActivity(), fragment);
 
     }
 
     private void gotoHistory(Ranking ranking) {
-        HistoryFragment fragment = HistoryFragment.newInstance(ranking.getWca_id());
+        ProfileFragment fragment = ProfileFragment.newInstance(ProfileFragment.HISTORY_TAB, ranking.getWca_id(), ranking.getPerson());
         IntentHelper.switchFragment(getActivity(), fragment);
     }
 

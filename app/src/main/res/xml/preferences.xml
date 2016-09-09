@@ -12,6 +12,12 @@
             android:hint="0000AAAA00"
             android:defaultValue=""/>
 
+        <CheckBoxPreference
+            android:key="@string/pref_double_back"
+            android:title="@string/pref_double_back_title"
+            android:summary="@string/pref_double_back_description"
+            android:defaultValue="true"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/about">
