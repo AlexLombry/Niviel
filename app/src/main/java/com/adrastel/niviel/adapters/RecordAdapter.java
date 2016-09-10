@@ -16,9 +16,7 @@ import android.widget.TextView;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.DetailsMaker;
-import com.adrastel.niviel.assets.IntentHelper;
 import com.adrastel.niviel.dialogs.RecordDialog;
-import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.providers.html.RecordProvider;
 import com.squareup.picasso.Picasso;
@@ -27,8 +25,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> {
-
-    private String wca_id = null;
 
     public RecordAdapter(FragmentActivity activity) {
         super(activity);
@@ -40,7 +36,6 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
         @BindView(R.id.record) TextView single;
         @BindView(R.id.cube_image) ImageView image;
         @BindView(R.id.more_info) Button more_info;
-        @BindView(R.id.goto_history) Button history;
         @BindView(R.id.card) CardView card;
 
 
@@ -71,8 +66,6 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
         final Record record = getDatas().get(position);
 
-
-
         final String event = record.getEvent();
         final String single = record.getSingle();
         final String average = record.getAverage();
@@ -95,11 +88,6 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                 .fit()
                 .centerInside()
                 .into(holder.image);
-/*
-        int[] colors = getActivity().getResources().getIntArray(R.array.colors_md_100);
-        int color_position = position % colors.length;*/
-
-
 
         holder.card.setCardBackgroundColor(0xFFFF8A65);
 
@@ -111,41 +99,11 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
             }
         });
 
-
-        if(record.getCompetitions() != null && record.getCompetitions().size() >= 0) {
-            holder.history.setVisibility(View.VISIBLE);
-        }
-
-        holder.history.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showHistory(record);
-            }
-        });
-
     }
 
     @Override
     public int getItemCount() {
         return getDatas().size();
-    }
-
-    public void setWca_id(String wca_id) {
-        this.wca_id = wca_id;
-    }
-
-    private void showHistory(Record record) {
-
-        // Les parametres du fragment
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(Constants.EXTRAS.COMPETITIONS, record.getCompetitions());
-        bundle.putString(Constants.EXTRAS.WCA_ID, wca_id);
-
-
-        HistoryFragment fragment = new HistoryFragment();
-        fragment.setArguments(bundle);
-        // todo voir l'histoire des compets
-        IntentHelper.switchFragment(getActivity(), fragment);
     }
 
     private void showMoreInfoDialog(FragmentManager manager, Record record) {
@@ -164,6 +122,4 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
         }
 
     }
-
-
 }

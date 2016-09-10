@@ -2,6 +2,7 @@
 <resources>
 
     <string name="pref_wca_id" translatable="false">pref_wca_id</string>
+    <string name="pref_wca_username" translatable="false">pref_wca_username</string>
     <string name="pref_double_back" translatable="false">pref_double_back</string>
 
 </resources>

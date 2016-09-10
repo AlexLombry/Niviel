@@ -12,6 +12,7 @@ public class Constants {
         String TAB = "tab";
         String WCA_ID = "wca_id";
         String USERNAME = "username";
+        String SUBTITLE = "subtitle";
 
     }
 

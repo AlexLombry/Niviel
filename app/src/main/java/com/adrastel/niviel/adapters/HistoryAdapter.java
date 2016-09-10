@@ -18,8 +18,6 @@ import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.IntentHelper;
 import com.adrastel.niviel.dialogs.HistoryDialog;
-import com.adrastel.niviel.fragments.ProfileFragment;
-import com.adrastel.niviel.fragments.html.RecordFragment;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.views.CircleView;
 
@@ -31,13 +29,8 @@ import butterknife.ButterKnife;
  */
 public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, History> {
 
-    private final String username;
-    private String wca_id = null;
-
-    public HistoryAdapter(FragmentActivity activity, String wca_id, String username) {
+    public HistoryAdapter(FragmentActivity activity) {
         super(activity);
-        this.wca_id = wca_id;
-        this.username = username;
     }
 
 
@@ -113,11 +106,6 @@ public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, Histor
                             case R.id.share:
                                 onShare(history);
                                 return true;
-
-                            case R.id.goto_records:
-                                gotoRecords();
-                                return true;
-
                         }
 
                         return false;
@@ -127,14 +115,6 @@ public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, Histor
 
             }
         });
-    }
-
-    private void gotoRecords() {
-
-        if(wca_id != null) {
-            ProfileFragment fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, wca_id, username);
-            IntentHelper.switchFragment(getActivity(), fragment);
-        }
     }
 
     private void onDetails(FragmentManager fragmentManager, History history) {

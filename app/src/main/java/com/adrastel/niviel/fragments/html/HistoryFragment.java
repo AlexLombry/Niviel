@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.SettingsActivity;
@@ -93,7 +92,7 @@ public class HistoryFragment extends HtmlFragment<History> {
         urlBuilder.addEncodedQueryParameter("i", wca_id);
 
         // cree l'adapter
-        adapter = new HistoryAdapter(getActivity(), wca_id, username);
+        adapter = new HistoryAdapter(getActivity());
 
     }
 

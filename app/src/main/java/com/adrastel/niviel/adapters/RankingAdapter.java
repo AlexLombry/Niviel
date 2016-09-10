@@ -139,13 +139,10 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
                                 onShare(view.getContext(), ranking);
                                 return true;
 
-                            case R.id.goto_records:
-                                gotoRecords(ranking);
-                                return true;
+                            case R.id.goto_profile:
+                                gotoProfile(ranking);
+                                break;
 
-                            case R.id.goto_history:
-                                gotoHistory(ranking);
-                                return true;
 
                             case R.id.follow:
                                 if(isFollowing) {
@@ -202,15 +199,10 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         circleView.setBackground(color);
     }
 
-    private void gotoRecords(Ranking ranking) {
+    private void gotoProfile(Ranking ranking) {
         ProfileFragment fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, ranking.getWca_id(), ranking.getPerson());
         IntentHelper.switchFragment(getActivity(), fragment);
 
-    }
-
-    private void gotoHistory(Ranking ranking) {
-        ProfileFragment fragment = ProfileFragment.newInstance(ProfileFragment.HISTORY_TAB, ranking.getWca_id(), ranking.getPerson());
-        IntentHelper.switchFragment(getActivity(), fragment);
     }
 
     private void onDetails(FragmentManager fragmentManager, Ranking ranking) {

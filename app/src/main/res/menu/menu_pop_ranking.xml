@@ -10,12 +10,8 @@
         android:title="@string/share"/>
 
     <item
-        android:id="@+id/goto_records"
-        android:title="@string/records"/>
-
-    <item
-        android:id="@+id/goto_history"
-        android:title="@string/history"/>
+        android:id="@+id/goto_profile"
+        android:title="@string/profile"/>
 
     <item
         android:id="@+id/follow"

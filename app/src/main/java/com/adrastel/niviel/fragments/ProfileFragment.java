@@ -26,8 +26,8 @@ import com.adrastel.niviel.fragments.html.RecordFragment;
 
 public class ProfileFragment extends BaseFragment implements SetProfileDialog.DialogProfileListener {
 
-    public static final int RECORD_TAB = 1;
-    public static final int HISTORY_TAB = 2;
+    public static final int RECORD_TAB = 0;
+    public static final int HISTORY_TAB = 1;
 
     private MainActivity activity;
     private TabLayout tabLayout;
@@ -143,7 +143,7 @@ public class ProfileFragment extends BaseFragment implements SetProfileDialog.Di
         boolean saved = preferences
                 .edit()
                 .putString(getString(R.string.pref_wca_id), wca_id)
-                .putString(Constants.EXTRAS.USERNAME, username)
+                .putString(getString(R.string.pref_wca_username), username)
                 .commit();
 
         if (saved) {
@@ -205,10 +205,6 @@ public class ProfileFragment extends BaseFragment implements SetProfileDialog.Di
 
         activity.setTitle(username);
         activity.setSubtitle(wca_id);
-    }
-
-    private String getPersonalName() {
-        return preferences.getString(Constants.EXTRAS.USERNAME, null);
     }
 
     @Override

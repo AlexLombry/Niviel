@@ -50,6 +50,7 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
 
     // issingle permet de savoir si on veut les single ou average
     private boolean isSingle = true;
+    private String subtitle = null;
 
     /**
      * Lors de la creation de l'app
@@ -102,6 +103,9 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
             cubePosition = savedInstanceState.getInt(Constants.EXTRAS.POSITION, 0);
             isSingle = savedInstanceState.getBoolean(Constants.EXTRAS.ISSINGLE, true);
 
+            subtitle = savedInstanceState.getString(Constants.EXTRAS.SUBTITLE, null);
+            activity.setSubtitle(subtitle);
+
             ArrayList<Ranking> rankings = savedInstanceState.getParcelableArrayList(Constants.EXTRAS.RANKING);
 
             adapter.setSingle(isSingle);
@@ -137,6 +141,7 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
 
         outState.putInt(Constants.EXTRAS.POSITION, cubePosition);
         outState.putBoolean(Constants.EXTRAS.ISSINGLE, isSingle);
+        outState.putString(Constants.EXTRAS.SUBTITLE, subtitle);
         outState.putParcelableArrayList(Constants.EXTRAS.RANKING, adapter.getDatas());
 
         super.onSaveInstanceState(outState);
@@ -219,7 +224,7 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
 
         String[] cubes = getResources().getStringArray(R.array.cubes);
         String mode = isSingle ? getString(R.string.single) : getString(R.string.average);
-        String subtitle = String.format(getString(R.string.ranking_subtitle), cubes[cubePosition], mode);
+        subtitle = String.format(getString(R.string.ranking_subtitle), cubes[cubePosition], mode);
 
         activity.setSubtitle(subtitle);
 

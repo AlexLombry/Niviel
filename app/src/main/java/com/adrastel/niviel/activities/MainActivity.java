@@ -51,32 +51,36 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity implements DrawerLayout.DrawerListener {
 
 
+    // Les constantes du receiver
+    public static final String ACTIVITY_RECEIVER = "activity_receiver";
+    public static final String ACTIVITY_RECEIVER_ACTION = "activity_receiver_action";
+    public static final String UPDATE_WCA_PROFILE = "update_wca_profile";
     // Les vues
-    public @BindView(R.id.fab) FloatingActionButton fab;
-    @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.navigation_view) NavigationView navigationView;
-    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
-    @BindView(R.id.tab_layout) TabLayout tabLayout;
-
+    public
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.navigation_view)
+    NavigationView navigationView;
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.tab_layout)
+    TabLayout tabLayout;
     // Les core-objects
     private FragmentManager fragmentManager;
     private BaseFragment fragment;
     private SharedPreferences preferences;
-
     // Les preferences
     private String prefWcaId = null;
     private String prefWcaName = null;
     private boolean prefDoubleClickToExit = true;
     private boolean doubleClickToExit = false;
-
     // Le runnable qui est executé après que le drawer soit fermé
     private Runnable fragmentToRun;
 
-    // Les constantes du receiver
-    public static final String ACTIVITY_RECEIVER = "activity_receiver";
-    public static final String ACTIVITY_RECEIVER_ACTION = "activity_receiver_action";
-    public static final String UPDATE_WCA_PROFILE = "update_wca_profile";
 
     // Le reciever
     private BroadcastReceiver activityReceiver = new BroadcastReceiver() {
@@ -95,19 +99,19 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     };
 
 
-
     /**
      * Lors de la creation de l'activité
+     *
      * @param savedInstanceState bundle
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
         // Initialisation des objets
-        ButterKnife.bind(this);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         fragmentManager = getSupportFragmentManager();
@@ -125,7 +129,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
         final ActionBar actionBar = getSupportActionBar();
 
-        if(actionBar != null) {
+        if (actionBar != null) {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -135,10 +139,9 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         Si il y a un fragment en mémiore, l'execute
         Sinon lance profileFragment
          */
-        if(savedInstanceState != null && fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT) != null) {
+        if (savedInstanceState != null && fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT) != null) {
             this.fragment = (BaseFragment) fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT);
-        }
-        else {
+        } else {
             this.fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, prefWcaId, prefWcaName);
         }
 
@@ -154,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
                 // On choisit le fragment
                 final BaseFragment fragment = selectDrawerItem(item);
 
-                if(fragment != null ) {
+                if (fragment != null) {
                     runWhenDrawerClose(new Runnable() {
                         @Override
                         public void run() {
@@ -173,11 +176,35 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         // todo: gere id wca incorrecte
 
 
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        drawerLayout.removeDrawerListener(this);
+    }
+
+    /**
+     * On sauvegarde le fragment actuel
+     *
+     * @param outState bundle
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        try {
+            if (fragment != null) {
+                fragmentManager.putFragment(outState, Constants.STORAGE.FRAGMENT, fragment);
+            }
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * On inflate le menu
+     *
      * @param menu menu
      * @return true pour l'instancier
      */
@@ -192,9 +219,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
             SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        }
-
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return true;
@@ -202,6 +227,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
     /**
      * Lors d'un clique de la toolbar
+     *
      * @param item item
      * @return true pour arreter l'execution
      */
@@ -228,11 +254,11 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     @Override
     public void onBackPressed() {
 
-        if(isDrawerOpen()) {
+        if (isDrawerOpen()) {
             closeDrawer();
         } else {
 
-            if(prefDoubleClickToExit) {
+            if (prefDoubleClickToExit) {
 
                 if (doubleClickToExit) {
                     super.onBackPressed();
@@ -253,13 +279,6 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(activityReceiver, new IntentFilter(ACTIVITY_RECEIVER));
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
 
@@ -271,28 +290,43 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         setIntent(intent);
         handleIntent(intent);
     }
+    // todo: ajouter un bouton "ne pas cliquer"
 
-    /**
-     * On sauvegarde le fragment actuel
-     * @param outState bundle
-     */
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
+    protected void onResume() {
+        super.onResume();
 
-        try {
-            if (fragment != null) {
-                fragmentManager.putFragment(outState, Constants.STORAGE.FRAGMENT, fragment);
-            }
-        }
+        LocalBroadcastManager.getInstance(this).registerReceiver(activityReceiver, new IntentFilter(ACTIVITY_RECEIVER));
+    }
 
-        catch (IllegalStateException e) {
-            e.printStackTrace();
+    //<editor-fold desc="Drawer events">
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+
+    }
+    @Override
+    public void onDrawerStateChanged(int newState) {
+
+    }
+    //</editor-fold>
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+        if (fragmentToRun != null) {
+            fragmentToRun.run();
         }
     }
-    // todo: ajouter un bouton "ne pas cliquer"
+
+
+
     /**
      * Choisit le fragment à prendre
+     *
      * @param item item
      */
     @Nullable
@@ -301,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         // todo: changer le drawer
         tabLayout.setVisibility(View.GONE);
 
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.profile:
                 return ProfileFragment.newInstance(prefWcaId, prefWcaName);
 
@@ -328,12 +362,6 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        drawerLayout.removeDrawerListener(this);
-    }
-
     public void showFab() {
         fab.show();
     }
@@ -344,6 +372,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
     /**
      * Change de fragment
+     *
      * @param fragment fragment
      */
     @SuppressWarnings("ResourceType")
@@ -358,8 +387,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
             updateUi(fragment);
             this.fragment = fragment;
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -369,7 +397,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
      * Ouvre le menu
      */
     private void openDrawer() {
-        if(drawerLayout != null) {
+        if (drawerLayout != null) {
             drawerLayout.openDrawer(GravityCompat.START);
         }
     }
@@ -378,13 +406,14 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
      * Ferme le menu
      */
     private void closeDrawer() {
-        if(drawerLayout != null) {
+        if (drawerLayout != null) {
             drawerLayout.closeDrawers();
         }
     }
 
     /**
      * Regarde si le menu est ouvert
+     *
      * @return true si il est ouver
      */
     private boolean isDrawerOpen() {
@@ -393,10 +422,11 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
     /**
      * Change la couleur de l'action bar
+     *
      * @param color couleur
      */
     private void setToolbarColor(int color) {
-        if(toolbar != null && color != 0) {
+        if (toolbar != null && color != 0) {
             toolbar.setBackgroundColor(color);
         }
     }
@@ -404,6 +434,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     /**
      * Change la couleur de la bar de status
      * Prendre des couleurs MD 700 si possible
+     *
      * @param color couleur
      */
     private void setStatusBar(int color) {
@@ -420,13 +451,14 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     /**
      * Edite le sous titre de l'action bar
      * Disponible dans les fragments
+     *
      * @param subtitle sous titre
      */
     public void setSubtitle(String subtitle) {
 
         ActionBar actionBar = getSupportActionBar();
 
-        if(actionBar != null) {
+        if (actionBar != null) {
             actionBar.setSubtitle(subtitle);
         }
     }
@@ -437,7 +469,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
     private void updateWcaProfile() {
         prefWcaId = preferences.getString(getString(R.string.pref_wca_id), null);
-        prefWcaName = preferences.getString(Constants.EXTRAS.USERNAME, null);
+        prefWcaName = preferences.getString(getString(R.string.pref_wca_username), null);
     }
 
     @SuppressWarnings("ResourceType")
@@ -447,7 +479,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
         int style = fragment.getStyle();
 
-        int[] attrs = { R.attr.colorPrimary, R.attr.colorPrimaryDark, R.attr.toolbarTitle, R.attr.fabVisible, R.attr.fabIcon};
+        int[] attrs = {R.attr.colorPrimary, R.attr.colorPrimaryDark, R.attr.toolbarTitle, R.attr.fabVisible, R.attr.fabIcon};
 
         TypedArray typedArray = obtainStyledAttributes(style, attrs);
 
@@ -465,11 +497,9 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
         boolean fabVisible = typedArray.getBoolean(3, false);
 
-        if(fabVisible) {
+        if (fabVisible) {
             showFab();
-        }
-
-        else {
+        } else {
             hideFab();
         }
 
@@ -480,7 +510,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     }
 
     private void handleIntent(Intent intent) {
-        if(intent.getAction().equals(Intent.ACTION_VIEW)) {
+        if (intent.getAction().equals(Intent.ACTION_VIEW)) {
 
             try {
                 Uri query = intent.getData();
@@ -493,8 +523,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
                     String name = intent.getStringExtra(SearchManager.EXTRA_DATA_KEY);
                     searchUser(wca_id, name);
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -510,21 +539,4 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     private void runWhenDrawerClose(Runnable runnable) {
         this.fragmentToRun = runnable;
     }
-
-
-    @Override
-    public void onDrawerSlide(View drawerView, float slideOffset) {}
-
-    @Override
-    public void onDrawerOpened(View drawerView) {}
-
-    @Override
-    public void onDrawerClosed(View drawerView) {
-        if(fragmentToRun != null) {
-            fragmentToRun.run();
-        }
-    }
-
-    @Override
-    public void onDrawerStateChanged(int newState) {}
 }
