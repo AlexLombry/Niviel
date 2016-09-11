@@ -100,7 +100,6 @@ public class ProfileFragment extends BaseFragment implements SetProfileDialog.Di
         super.onActivityCreated(savedInstanceState);
 
         if(!Assets.isPersonal(getContext(), wca_id)) {
-            Log.d("wca null");
             activity.showFab();
 
             activity.fab.setOnClickListener(new View.OnClickListener() {

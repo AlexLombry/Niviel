@@ -48,7 +48,6 @@ public class RankingSwitchCubeDialog extends DialogFragment {
         builder.setSingleChoiceItems(R.array.cubes, position, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d(String.valueOf(i));
                 position = i;
             }
         });

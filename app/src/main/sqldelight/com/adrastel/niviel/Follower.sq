@@ -11,5 +11,8 @@ DROP TABLE IF EXISTS follower;
 select_all:
 SELECT * FROM follower;
 
+select_id_from_wca:
+SELECT _id FROM follower WHERE wca_id = ?;
+
 delete_follower:
 DELETE FROM follower WHERE wca_id = ?;

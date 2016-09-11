@@ -46,8 +46,12 @@
             android:name=".providers.content.SuggestionProvider"
             android:authorities="com.niviel.adrastel.suggestionProvider"
             android:enabled="true"
-            android:exported="false">
-        </provider>
+            android:exported="false"/>
+
+        <service
+            android:name=".services.EditRecordService"
+            android:enabled="true"
+            android:exported="false"/>
     </application>
 
 </manifest>

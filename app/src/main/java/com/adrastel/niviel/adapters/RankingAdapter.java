@@ -1,10 +1,14 @@
 package com.adrastel.niviel.adapters;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,9 +28,9 @@ import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.RankingDetailsDialog;
 import com.adrastel.niviel.fragments.ProfileFragment;
-import com.adrastel.niviel.fragments.html.HistoryFragment;
-import com.adrastel.niviel.fragments.html.RecordFragment;
+import com.adrastel.niviel.interfaces.PauseResumeInterface;
 import com.adrastel.niviel.models.readable.Ranking;
+import com.adrastel.niviel.services.EditRecordService;
 import com.adrastel.niviel.views.CircleView;
 
 import java.util.ArrayList;
@@ -34,28 +38,39 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Ranking> {
+public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Ranking> implements PauseResumeInterface {
 
+    final BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            switch (intent.getIntExtra(EditRecordService.ACTION, EditRecordService.ADD_RECORD_FAILURE)) {
+
+                case EditRecordService.ADD_RECORD_SUCCESS:
+                    notifyDataSetChanged();
+                    break;
+
+                case EditRecordService.ADD_RECORD_FAILURE:
+                    notifyDataSetChanged();
+                    break;
+            }
+
+        }
+    };
     private boolean isSingle = true;
 
     public RankingAdapter(FragmentActivity activity) {
         super(activity);
     }
 
+    @Override
+    public void onResume() {
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(EditRecordService.INTENT_FILTER));
+    }
 
-    // Le view holder qui contient toutes les infos
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.list_place) CircleView rank;
-        @BindView(R.id.first_line) TextView person;
-        @BindView(R.id.second_line) TextView result;
-        @BindView(R.id.more) ImageButton more;
-
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            ButterKnife.bind(this, itemView);
-        }
+    @Override
+    public void onPause() {
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
     }
 
     @Override
@@ -147,14 +162,14 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
                             case R.id.follow:
                                 if(isFollowing) {
                                     item.setTitle(view.getContext().getString(R.string.follow));
-                                    onUnfollow(view.getContext(), ranking);
+                                    onUnfollow(ranking);
                                     invalidateCircleView(holder.rank, false);
                                 }
 
                                 else {
                                     item.setTitle(view.getContext().getString(R.string.unfollow));
-                                    onFollow(view.getContext(), ranking);
-                                    invalidateCircleView(holder.rank, true);
+                                    onFollow(holder, ranking);
+                                    //invalidateCircleView(holder.rank, true);
                                 }
                                 return true;
 
@@ -169,19 +184,32 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         });
     }
 
-    private void onFollow(Context context, Ranking ranking) {
+    private void onFollow(final ViewHolder holder, Ranking ranking) {
 
-        DatabaseHelper helper = DatabaseHelper.getInstance(context);
+        Intent intent = new Intent(getActivity(), EditRecordService.class);
+        intent.putExtra(EditRecordService.WCA_ID, ranking.getWca_id());
+        intent.putExtra(EditRecordService.USERNAME, ranking.getPerson());
+        getActivity().startService(intent);
+
+
+/*        DatabaseHelper helper = DatabaseHelper.getInstance(context);
         helper.insertFollower(ranking.getPerson(), ranking.getWca_id(), System.currentTimeMillis());
 
         String confirmation = String.format(context.getString(R.string.toast_follow_confirmation), ranking.getPerson());
-        Toast.makeText(context, confirmation, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, confirmation, Toast.LENGTH_LONG).show();*/
 
     }
 
-    private void onUnfollow(Context context, Ranking ranking) {
+    private void onUnfollow(Ranking ranking) {
 
-        DatabaseHelper helper = DatabaseHelper.getInstance(context);
+        Intent intent = new Intent(getActivity(), EditRecordService.class);
+        intent.putExtra(EditRecordService.ACTION, EditRecordService.DELETE_RECORD);
+        intent.putExtra(EditRecordService.WCA_ID, ranking.getWca_id());
+        intent.putExtra(EditRecordService.USERNAME, ranking.getPerson());
+
+        getActivity().startService(intent);
+
+        /*DatabaseHelper helper = DatabaseHelper.getInstance(getActivity());
         helper.deleteFollower(ranking.getWca_id());
 
         ArrayList<Follower> followers = helper.selectAllFollowers();
@@ -190,8 +218,9 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
             Log.d("Follower1: " + follower.wca_id());
         }
 
-        String confirmation = String.format(context.getString(R.string.toast_unfollow_confirmation), ranking.getPerson());
-        Toast.makeText(context, confirmation, Toast.LENGTH_LONG).show();
+        String confirmation = String.format(getActivity().getString(R.string.toast_unfollow_confirmation), ranking.getPerson());
+        Toast.makeText(getActivity(), confirmation, Toast.LENGTH_LONG).show();*/
+
     }
 
     private void invalidateCircleView(CircleView circleView, boolean isFollowing) {
@@ -233,6 +262,21 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
 
 
         IntentHelper.shareIntent(context, text, html);
+    }
+
+    // Le view holder qui contient toutes les infos
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.list_place) CircleView rank;
+        @BindView(R.id.first_line) TextView person;
+        @BindView(R.id.second_line) TextView result;
+        @BindView(R.id.more) ImageButton more;
+
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
     }
 
 

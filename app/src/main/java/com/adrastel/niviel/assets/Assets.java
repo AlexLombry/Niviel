@@ -138,7 +138,7 @@ public class Assets {
 
     public static boolean isFollowing(Context context, String wca_id) {
 
-        DatabaseHelper db = new DatabaseHelper(context);
+        DatabaseHelper db = DatabaseHelper.getInstance(context);
 
         ArrayList<Follower> followers = db.selectAllFollowers();
 
@@ -160,6 +160,49 @@ public class Assets {
         Log.d(wca_id, pers_wca_id);
 
         return wca_id.equals(pers_wca_id);
+    }
+
+    public static long minSecToSec(String time) {
+
+        int millis = 0;
+        int seconds = 0;
+        int minutes = 0;
+
+        try {
+
+            if(time.contains(".")) {
+
+                String[] secMillisArray = time.split("\\.");
+
+                String minSec = secMillisArray[0];
+                millis = Integer.parseInt(secMillisArray[1] + "0");
+
+                if(minSec.contains(":")) {
+
+                    String[] minSecArray = minSec.split(":");
+
+                    minutes = Integer.parseInt(minSecArray[0]);
+                    seconds = Integer.parseInt(minSecArray[1]);
+                }
+
+                else {
+                    seconds = Integer.parseInt(minSec);
+                }
+            }
+
+            Log.d(String.valueOf(millis));
+            Log.d(String.valueOf(seconds));
+            Log.d(String.valueOf(minutes));
+
+            long result = minutes * 60000 + seconds * 1000 + millis;
+
+            Log.d(String.valueOf(result));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return minutes * 60000 + seconds + 1000 + millis;
     }
 
 

@@ -1,6 +1,7 @@
 package com.adrastel.niviel.providers.html;
 
 import android.app.Activity;
+import android.content.Context;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
@@ -27,11 +28,21 @@ public class RecordProvider extends HtmlProvider {
      * @param document le code serialisé
      * @return les records
      */
-    public static ArrayList<Record> getRecord(final Activity activity, Document document, boolean addCompetitions) {
+    public static ArrayList<Record> getRecord(final Context context, Document document, boolean addCompetitions) {
 
         ArrayList<Record> arrayList = new ArrayList<>();
 
         // On récupère la table
+
+        Activity activity = null;
+
+        try {
+            activity = (Activity) context;
+        }
+
+        catch (ClassCastException e) {
+            e.printStackTrace();
+        }
 
         try {
             Element table = document.select("table").get(1);
@@ -56,7 +67,7 @@ public class RecordProvider extends HtmlProvider {
                 /**
                  * Si on veux ajouter les competitions, on les recupere, on les filtres avec l'event et on les ajouter au buffer
                  */
-                if (addCompetitions) {
+                if (addCompetitions && activity != null) {
 
                     ArrayList<History> history = HistoryProvider.getHistory(activity, document, bufferRecord.getEvent());
 
@@ -71,7 +82,7 @@ public class RecordProvider extends HtmlProvider {
                  */
                 if (i == 2) {
                     if (!checkHTML(bufferRecord)) {
-                        Toast.makeText(activity, activity.getString(R.string.error_interpretation_html), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getString(R.string.error_interpretation_html), Toast.LENGTH_LONG).show();
                     }
                 } else {
                     arrayList.add(bufferRecord);
@@ -83,20 +94,22 @@ public class RecordProvider extends HtmlProvider {
 
         catch (Exception exception) {
 
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(activity, activity.getString(R.string.wrong_wca_id), Toast.LENGTH_LONG).show();
-                }
-            });
+            if(activity != null) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, context.getString(R.string.unknown_error), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
 
         }
 
         return arrayList;
     }
 
-    public static ArrayList<Record> getRecord(Activity activity, Document document) {
-        return getRecord(activity, document, false);
+    public static ArrayList<Record> getRecord(Context context, Document document) {
+        return getRecord(context, document, false);
     }
 
     /**

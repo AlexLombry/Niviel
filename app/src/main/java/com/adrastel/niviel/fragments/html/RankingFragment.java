@@ -2,6 +2,7 @@ package com.adrastel.niviel.fragments.html;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,12 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RankingAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
+import com.adrastel.niviel.interfaces.PauseResumeInterface;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.providers.html.RankingProvider;
@@ -121,6 +124,11 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
             callData();
         }
 
+        else {
+            stopLoaders();
+            makeSnackbar(R.string.error_connection, Snackbar.LENGTH_INDEFINITE).show();
+        }
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -128,6 +136,20 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
                 swipeRefreshLayout.setRefreshing(true);
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        adapter.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        adapter.onResume();
     }
 
     @Override

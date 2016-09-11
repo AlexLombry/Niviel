@@ -52,6 +52,7 @@
     <string name="cannot_load">Impossible de charger le contenu</string>
     <string name="error_interpretation_html">Erreur d\'interpretation du code HTML</string>
     <string name="wrong_wca_id">Identifiant WCA erroné</string>
+    <string name="unknown_error">Erreur inconnue</string>
 
     <string name="no_followers">Vous ne suivez personne</string>
 
@@ -103,6 +104,7 @@
     <string name="confirm">Confirmer</string>
     <string name="toast_edit_profile_success">Le changement de profil a bien été effectué</string>
     <string name="toast_edit_profile_failure">Une erreur est survenue lors du changement de profil</string>
+    <string name="toast_adding">Ajout en cours</string>
 
 
 </resources>
