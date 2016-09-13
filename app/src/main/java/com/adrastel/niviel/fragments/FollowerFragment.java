@@ -37,51 +37,6 @@ public class FollowerFragment extends BaseFragment {
     public int getStyle() {
         return R.style.AppTheme_Followers;
     }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        try {
-            String time = "3.50";
-
-            int millis = 0;
-            int seconds = 0;
-            int minutes = 0;
-
-            if(time.contains(".")) {
-
-                String[] secMillisArray = time.split("\\.");
-
-                String minSec = secMillisArray[0];
-                millis = Integer.parseInt(secMillisArray[1] + "0");
-
-                if(minSec.contains(":")) {
-
-                    String[] minSecArray = minSec.split(":");
-
-                    minutes = Integer.parseInt(minSecArray[0]);
-                    seconds = Integer.parseInt(minSecArray[1]);
-                }
-
-                else {
-                    seconds = Integer.parseInt(minSec);
-                }
-            }
-
-            Log.d(String.valueOf(millis));
-            Log.d(String.valueOf(seconds));
-            Log.d(String.valueOf(minutes));
-
-            long result = minutes * 60000 + seconds * 1000 + millis;
-
-            Log.d(String.valueOf(result));
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -109,7 +64,6 @@ public class FollowerFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
 
         if(followers.size() == 0) {
-            // todo: intent to fragment
             makeSnackbar(R.string.no_followers, Snackbar.LENGTH_INDEFINITE).show();
         }
 

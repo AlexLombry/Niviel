@@ -44,6 +44,7 @@ import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.html.RankingFragment;
+import com.adrastel.niviel.services.CheckRecordService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,19 +57,12 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     public static final String ACTIVITY_RECEIVER_ACTION = "activity_receiver_action";
     public static final String UPDATE_WCA_PROFILE = "update_wca_profile";
     // Les vues
-    public
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.navigation_view)
-    NavigationView navigationView;
-    @BindView(R.id.coordinatorLayout)
-    CoordinatorLayout coordinatorLayout;
-    @BindView(R.id.tab_layout)
-    TabLayout tabLayout;
+    public @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.navigation_view) NavigationView navigationView;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.tab_layout) TabLayout tabLayout;
     // Les core-objects
     private FragmentManager fragmentManager;
     private BaseFragment fragment;
@@ -123,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         // Actualise l'ID WCA
         updateWcaProfile();
 
-        // Recupère les près
+        // Recupère les pref
         prefDoubleClickToExit = preferences.getBoolean(getString(R.string.pref_double_back), true);
 
 
@@ -319,6 +313,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     public void onDrawerClosed(View drawerView) {
         if (fragmentToRun != null) {
             fragmentToRun.run();
+            fragmentToRun = null;
         }
     }
 

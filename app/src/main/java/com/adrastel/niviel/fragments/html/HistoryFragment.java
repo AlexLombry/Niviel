@@ -1,9 +1,7 @@
 package com.adrastel.niviel.fragments.html;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,9 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.activities.SettingsActivity;
 import com.adrastel.niviel.adapters.HistoryAdapter;
+import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.providers.html.HistoryProvider;
@@ -43,6 +42,8 @@ public class HistoryFragment extends HtmlFragment<History> {
     private HttpManager httpManager;
     private HttpUrl.Builder urlBuilder = new HttpUrl.Builder();
 
+    private String wca_id = null;
+
 
     // todo: tout changer en new instance
     public static HistoryFragment newInstance(String wca_id, String username) {
@@ -60,7 +61,6 @@ public class HistoryFragment extends HtmlFragment<History> {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String wca_id = null;
         String username = null;
 
         Bundle arguments = getArguments();
@@ -74,19 +74,6 @@ public class HistoryFragment extends HtmlFragment<History> {
         if(wca_id == null) {
             // On recupere l'id wca
             wca_id = preferences.getString(getString(R.string.pref_wca_id), null);
-
-            if(wca_id == null) {
-                makeSnackbar(R.string.wrong_wca_id, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.settings, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent intent = new Intent(view.getContext(), SettingsActivity.class);
-                                startActivity(intent);
-                            }
-                        })
-                        .show();
-            }
-
         }
         // modifie l'url en fonction de l'id wca
         urlBuilder.addEncodedQueryParameter("i", wca_id);
@@ -161,7 +148,7 @@ public class HistoryFragment extends HtmlFragment<History> {
             callData();
         }
 
-        else {
+        else if(Assets.isPersonal(getContext(), wca_id  )){
             adapter.refreshData(loadLocalData());
             httpManager.stopLoaders();
         }
@@ -223,7 +210,9 @@ public class HistoryFragment extends HtmlFragment<History> {
                     }
                 });
 
-                saveDatas(histories);
+                if(Assets.isPersonal(getContext(), wca_id)) {
+                    saveDatas(histories);
+                }
             }
         });
 

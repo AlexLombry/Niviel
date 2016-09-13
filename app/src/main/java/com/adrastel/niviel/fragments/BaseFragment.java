@@ -12,11 +12,12 @@ import android.support.v4.app.Fragment;
 
 import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.assets.Assets;
+import com.adrastel.niviel.assets.Log;
 
 public abstract class BaseFragment extends Fragment {
     public abstract int getStyle();
 
-    protected Snackbar snackbar;
+    private Snackbar snackbar;
     protected ConnectivityManager connectivityManager;
     protected SharedPreferences preferences;
     protected MainActivity activity;
@@ -49,7 +50,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(snackbar != null && snackbar.isShownOrQueued()) {
+        if(snackbar != null) {
             snackbar.dismiss();
         }
     }

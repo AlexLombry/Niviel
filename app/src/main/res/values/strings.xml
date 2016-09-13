@@ -26,9 +26,9 @@
     <string name="average">Moyenne</string>
 
     <string name="record_time">Temps: %1$ss</string>
-    <string name="record_nr">Classement national: %1$ss</string>
-    <string name="record_cr">Classement continental: %1$ss</string>
-    <string name="record_wr">Classement mondial: %1$ss</string>
+    <string name="record_nr">Classement national: %1$s</string>
+    <string name="record_cr">Classement continental: %1$s</string>
+    <string name="record_wr">Classement mondial: %1$s</string>
 
     <!-- History -->
     <string name="event">Évenement</string>
@@ -106,5 +106,14 @@
     <string name="toast_edit_profile_failure">Une erreur est survenue lors du changement de profil</string>
     <string name="toast_adding">Ajout en cours</string>
 
+    <!-- notofication -->
+    <string name="notif_single">single</string>
+    <string name="notif_average">average</string>
+    <string name="notif_country">national</string>
+    <string name="notif_continent">continental</string>
+    <string name="notif_world">mondial</string>
+
+    <string name="notif_new_rank">n°%1$d %2$s (%3$s)</string>
+    <string name="share_new_rank">%1$s est passé n°%2$d %3$s (%4$s)</string>
 
 </resources>

@@ -157,8 +157,6 @@ public class Assets {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String pers_wca_id = preferences.getString(context.getString(R.string.pref_wca_id), null);
 
-        Log.d(wca_id, pers_wca_id);
-
         return wca_id.equals(pers_wca_id);
     }
 
@@ -189,14 +187,6 @@ public class Assets {
                     seconds = Integer.parseInt(minSec);
                 }
             }
-
-            Log.d(String.valueOf(millis));
-            Log.d(String.valueOf(seconds));
-            Log.d(String.valueOf(minutes));
-
-            long result = minutes * 60000 + seconds * 1000 + millis;
-
-            Log.d(String.valueOf(result));
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -2,6 +2,7 @@ package com.adrastel.niviel.fragments.html;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,10 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RecordAdapter;
+import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.providers.html.RecordProvider;
@@ -78,9 +82,6 @@ public class RecordFragment extends HtmlFragment<Record> {
 
             // On recupere l'id wca
             wca_id = preferences.getString(getString(R.string.pref_wca_id), null);
-
-
-
         }
 
     }
@@ -127,9 +128,13 @@ public class RecordFragment extends HtmlFragment<Record> {
         // Si on est connecté, on fait une requete HTTP, sinon on lit les données locales
         else if (isConnected()) {
             callData();
-        } else {
+        } else if(Assets.isPersonal(getContext(), wca_id)){
             adapter.refreshData(loadLocalData());
             httpManager.stopLoaders();
+        }
+
+        else {
+            Toast.makeText(getContext(), R.string.error_connection, Toast.LENGTH_LONG).show();
         }
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -198,48 +203,12 @@ public class RecordFragment extends HtmlFragment<Record> {
                     }
                 });
 
-                saveDatas(records);
+                if(Assets.isPersonal(getContext(), wca_id)) {
+                    saveDatas(records);
+                }
 
             }
         });
     }
-/*
-
-    protected ArrayList<Record> loadLocalData() {
-
-        String json = preferences.getString(RECORD, null);
-
-        return loadFromJson(json);
-    }
-
-    protected ArrayList<Record> loadLocalData(Bundle savedInstanceState) {
-        if(savedInstanceState != null) {
-            return savedInstanceState.getParcelableArrayList(RECORD);
-        }
-
-        return new ArrayList<>();
-    }
-
-    private void saveDatas(ArrayList<Record> records) {
-        Gson gson = new Gson();
-
-        String json = gson.toJson(records);
-
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(RECORD, json);
-        editor.apply();
-    }
-
-    private ArrayList<Record> loadFromJson(String json) {
-        if(json != null) {
-            Gson gson = new Gson();
-            return gson.fromJson(json, new TypeToken<ArrayList<Record>>(){}.getType());
-        }
-
-        else {
-            return new ArrayList<>();
-        }
-    }
-*/
 
 }

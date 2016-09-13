@@ -146,6 +146,10 @@ public class Record extends BaseModel implements Parcelable {
         return wr_average;
     }
 
+    public void setWr_average(String wr_average) {
+        this.wr_average = wr_average;
+    }
+
     public ArrayList<History> getCompetitions() {
         return competitions;
     }

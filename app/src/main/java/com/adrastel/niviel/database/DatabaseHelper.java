@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
 import com.adrastel.niviel.FollowerModel;
+import com.adrastel.niviel.RecordModel;
 import com.adrastel.niviel.assets.Log;
 
 import java.util.ArrayList;
@@ -136,13 +137,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public ArrayList<Record> selectRecordsFromFollower(long follower_id) {
+
+        ArrayList<Record> records = new ArrayList<>();
+
+        try {
+            Cursor cursor = openDatabase().rawQuery(RecordModel.SELECT_FROM_FOLLOWER, new String[] {String.valueOf(follower_id)});
+
+            while (cursor.moveToNext()) {
+                records.add(Record.SELECT_FROM_FOLLOWER_MAPPER.map(cursor));
+            }
+
+            cursor.close();
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        finally {
+            closeDatabase();
+        }
+
+        return records;
+
+    }
+
     public long getFollowerIdFromWca(String wca_id) {
 
         try {
             SQLiteDatabase db = openDatabase();
 
             Cursor cursor = db.rawQuery(Follower.SELECT_ID_FROM_WCA, new String[] {wca_id});
-
             cursor.moveToFirst();
 
             long id = Follower.SELECT_ID_FROM_WCA_MAPPER.map(cursor);
@@ -179,6 +205,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 .nr_average(nr_average)
                 .cr_average(cr_average)
                 .wr_average(wr_average).asContentValues());
+
         }
 
         catch (Exception e) {
@@ -191,7 +218,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void deleteRecords(long follower_id) {
-
         try {
             SQLiteDatabase db = openDatabase();
             db.execSQL(Record.DELETE_RECORDS, new Long[] {follower_id});

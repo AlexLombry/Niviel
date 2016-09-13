@@ -1,5 +1,6 @@
 package com.adrastel.niviel.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.SetProfileDialog;
 import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
+import com.adrastel.niviel.services.CheckRecordService;
 
 public class ProfileFragment extends BaseFragment implements SetProfileDialog.DialogProfileListener {
 
@@ -74,9 +76,12 @@ public class ProfileFragment extends BaseFragment implements SetProfileDialog.Di
 
             wca_id = args.getString(Constants.EXTRAS.WCA_ID, null);
             username = args.getString(Constants.EXTRAS.USERNAME, null);
-            Log.d("ICI", wca_id);
             tab = args.getInt(Constants.EXTRAS.TAB, RECORD_TAB);
         }
+
+        Log.d("demarrage du service checkrecourdservice");
+        Intent service = new Intent(getContext(), CheckRecordService.class);
+        getContext().startService(service);
     }
 
     @Nullable

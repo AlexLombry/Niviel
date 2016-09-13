@@ -52,6 +52,11 @@
             android:name=".services.EditRecordService"
             android:enabled="true"
             android:exported="false"/>
+
+        <service
+            android:name=".services.CheckRecordService"
+            android:enabled="true"
+            android:exported="false"/>
     </application>
 
 </manifest>

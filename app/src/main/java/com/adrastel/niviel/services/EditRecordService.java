@@ -71,15 +71,14 @@ public class EditRecordService extends IntentService {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getApplicationContext(), R.string.toast_adding, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.toast_adding, Toast.LENGTH_LONG).show();
                 }
             });
-
-            final long follower = db.insertFollower(username, wca_id, System.currentTimeMillis());
 
             getRecords(new recordsCallback() {
                 @Override
                 public void onSuccess(ArrayList<Record> records) {
+                    final long follower = db.insertFollower(username, wca_id, System.currentTimeMillis());
                     insertRecords(follower, records);
                 }
             });
@@ -196,7 +195,6 @@ public class EditRecordService extends IntentService {
             // Event
             try {
                 events[i] = record.getEvent();
-                Log.d(record.getEvent());
             }
 
             catch (Exception e) {
@@ -240,7 +238,11 @@ public class EditRecordService extends IntentService {
                     singles[i], nr_singles[i], cr_singles[i], wr_singles[i],
                     averages[i], nr_average[i], cr_average[i], wr_average[i]
             );
+
+
+
         }
+
 
         handler.post(new Runnable() {
             @Override
