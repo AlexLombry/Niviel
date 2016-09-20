@@ -193,7 +193,9 @@ public class RecordFragment extends HtmlFragment<Record> {
         httpManager.callData(url, new HttpManager.SuccessCallback() {
             @Override
             public void onSuccess(String response) {
+
                 Document document = Jsoup.parse(response);
+
                 final ArrayList<Record> records = RecordProvider.getRecord(getActivity(), document);
 
                 activity.runOnUiThread(new Runnable() {

@@ -24,12 +24,14 @@ import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.SetProfileDialog;
 import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
+import com.adrastel.niviel.receivers.CheckRecordsReceiver;
 import com.adrastel.niviel.services.CheckRecordService;
 
 public class ProfileFragment extends BaseFragment implements SetProfileDialog.DialogProfileListener {
 
     public static final int RECORD_TAB = 0;
     public static final int HISTORY_TAB = 1;
+    public static final String FRAGMENT_TAG = "profileFragment";
 
     private MainActivity activity;
     private TabLayout tabLayout;
@@ -79,9 +81,8 @@ public class ProfileFragment extends BaseFragment implements SetProfileDialog.Di
             tab = args.getInt(Constants.EXTRAS.TAB, RECORD_TAB);
         }
 
-        Log.d("demarrage du service checkrecourdservice");
-        Intent service = new Intent(getContext(), CheckRecordService.class);
-        getContext().startService(service);
+        Intent service = new Intent(getContext(), CheckRecordsReceiver.class);
+        getContext().sendBroadcast(service);
     }
 
     @Nullable

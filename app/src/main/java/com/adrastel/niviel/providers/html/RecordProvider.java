@@ -199,6 +199,22 @@ public class RecordProvider extends HtmlProvider {
         return hydrate(bufferRecord, tr);
     }
 
+
+    /**
+     * Retourne une image en fonction d'un nombre
+     * @param i type du cube
+     * @return drawable
+     */
+    public static int getImage(int i) {
+
+        String[] cubes = {"2x2 cube", "4x4 cube", "5x5 cube", "6x6 cube", "megaminx", "pyraminx", "square-1", "skewb"};
+
+        int position = i % cubes.length;
+        String event = cubes[position];
+
+        return getImage(event);
+    }
+
     /**
      * Retourne une image en fonction du type du cube
      *

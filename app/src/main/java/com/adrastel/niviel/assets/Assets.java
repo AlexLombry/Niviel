@@ -123,6 +123,7 @@ public class Assets {
 
         String html = "<strong>" + average + "</strong>" + " (" + details + ")";
         html = html.replace("DNF", "<font color=\"#CC0000\">DNF</font>");
+        html = html.replace("DNS", "<font color=\"#FF8800\">DNS</font>");
         html = html.trim();
         return fromHtml(html);
     }
@@ -194,6 +195,4 @@ public class Assets {
 
         return minutes * 60000 + seconds + 1000 + millis;
     }
-
-
 }

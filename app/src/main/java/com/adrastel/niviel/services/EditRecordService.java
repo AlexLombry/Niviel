@@ -79,6 +79,7 @@ public class EditRecordService extends IntentService {
                 @Override
                 public void onSuccess(ArrayList<Record> records) {
                     final long follower = db.insertFollower(username, wca_id, System.currentTimeMillis());
+                    Log.d(String.valueOf(follower));
                     insertRecords(follower, records);
                 }
             });
@@ -88,7 +89,11 @@ public class EditRecordService extends IntentService {
 
             long follower = db.getFollowerIdFromWca(wca_id);
 
+            Log.d("Number before", String.valueOf(db.selectRecordsFromFollower(follower).size()));
+
             db.deleteRecords(follower);
+
+            Log.d("Number after", String.valueOf(db.selectRecordsFromFollower(follower).size()));
             db.deleteFollower(wca_id);
 
             handler.post(new Runnable() {
@@ -209,6 +214,7 @@ public class EditRecordService extends IntentService {
             }
 
             catch (Exception e) {
+                Log.e(events[i]);
                 singles[i] = 0;
                 nr_singles[i] = 0;
                 cr_singles[i] = 0;
@@ -225,6 +231,7 @@ public class EditRecordService extends IntentService {
             }
 
             catch (Exception e) {
+                Log.e(events[i]);
                 averages[i] = 0;
                 nr_average[i] = 0;
                 nr_average[i] = 0;

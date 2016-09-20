@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/tab_layout"
-                app:tabBackground="@color/deep_orange_500"
+                app:tabBackground="@color/colorPrimary"
                 android:visibility="gone"
                 app:tabMaxWidth="0dp"
                 app:tabMode="fixed"

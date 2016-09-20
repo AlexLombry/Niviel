@@ -13,6 +13,7 @@ public class Constants {
         String WCA_ID = "wca_id";
         String USERNAME = "username";
         String SUBTITLE = "subtitle";
+        String FRAGMENT = "fragment";
 
     }
 

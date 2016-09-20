@@ -113,7 +113,6 @@
     <string name="notif_continent">continental</string>
     <string name="notif_world">mondial</string>
 
-    <string name="notif_new_rank">n°%1$d %2$s (%3$s)</string>
-    <string name="share_new_rank">%1$s est passé n°%2$d %3$s (%4$s)</string>
-
+    <string name="notif_new_rank_message">Passé de n°%1$d à n°%2$d %3$s (%4$s) en %5$s avec un score de %6$s</string>
+    <string name="share_new_rank">%1$s est passé de n°%2$d à n°%3$d %4$s (%5$s) en %6$s avec un score de %7$s</string>
 </resources>

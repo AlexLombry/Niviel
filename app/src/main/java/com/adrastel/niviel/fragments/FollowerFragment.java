@@ -16,6 +16,7 @@ import com.adrastel.niviel.adapters.FollowerAdapter;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
+import com.adrastel.niviel.database.Record;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,6 +66,20 @@ public class FollowerFragment extends BaseFragment {
 
         if(followers.size() == 0) {
             makeSnackbar(R.string.no_followers, Snackbar.LENGTH_INDEFINITE).show();
+        }
+
+        else {
+
+            Follower lucas = followers.get(0);
+
+            ArrayList<Record> records = db.selectRecordsFromFollower(lucas._id());
+
+            for(Record record : records) {
+
+                Log.d(String.valueOf(record));
+
+            }
+
         }
 
     }

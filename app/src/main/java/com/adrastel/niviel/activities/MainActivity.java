@@ -133,11 +133,41 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         Si il y a un fragment en mémiore, l'execute
         Sinon lance profileFragment
          */
-        if (savedInstanceState != null && fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT) != null) {
-            this.fragment = (BaseFragment) fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT);
-        } else {
-            this.fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, prefWcaId, prefWcaName);
+        if (this.fragment == null) {
+            if (savedInstanceState != null && fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT) != null) {
+                this.fragment = (BaseFragment) fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT);
+            }
+
+            else {
+                this.fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, prefWcaId, prefWcaName);
+            }
         }
+
+        /*else {
+
+            String fragment_tag = intent.getStringExtra(Constants.EXTRAS.FRAGMENT);
+
+            if(fragment_tag != null) {
+
+                switch(fragment_tag) {
+
+                    case ProfileFragment.FRAGMENT_TAG:
+                        String wca_id = intent.getStringExtra(Constants.EXTRAS.WCA_ID);
+                        String username = intent.getStringExtra(Constants.EXTRAS.USERNAME);
+                        this.fragment = ProfileFragment.newInstance(wca_id, username);
+                        break;
+
+                    default:
+                        this.fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, prefWcaId, prefWcaName);
+                        break;
+                }
+
+            }
+            else {
+
+                this.fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, prefWcaId, prefWcaName);
+            }
+        }*/
 
         switchFragment(fragment);
 
@@ -505,7 +535,8 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     }
 
     private void handleIntent(Intent intent) {
-        if (intent.getAction().equals(Intent.ACTION_VIEW)) {
+        Log.d("handle intent");
+        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_VIEW)) {
 
             try {
                 Uri query = intent.getData();
@@ -520,6 +551,26 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        }
+
+        else {
+
+            String fragment_tag = intent.getStringExtra(Constants.EXTRAS.FRAGMENT);
+
+            if(fragment_tag != null) {
+
+                switch(fragment_tag) {
+
+                    case ProfileFragment.FRAGMENT_TAG:
+                        String wca_id = intent.getStringExtra(Constants.EXTRAS.WCA_ID);
+                        String username = intent.getStringExtra(Constants.EXTRAS.USERNAME);
+
+                        BaseFragment fragment = ProfileFragment.newInstance(wca_id, username);
+                        switchFragment(fragment);
+                        break;
+                }
+
             }
         }
     }

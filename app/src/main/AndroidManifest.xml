@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <!-- todo: intent view -->
     <application
@@ -20,7 +21,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
             <intent-filter>
@@ -57,6 +57,20 @@
             android:name=".services.CheckRecordService"
             android:enabled="true"
             android:exported="false"/>
+
+        <receiver
+            android:name=".receivers.CheckRecordsReceiver"
+            android:enabled="true"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="com.adrastel.niviel.action.CHECK_RECORDS"/>
+            </intent-filter><!--
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>-->
+
+        </receiver>
     </application>
 
 </manifest>

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.DetailsMaker;
 import com.adrastel.niviel.dialogs.RecordDialog;
@@ -89,7 +90,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                 .centerInside()
                 .into(holder.image);
 
-        holder.card.setCardBackgroundColor(0xFFFF8A65);
+        holder.card.setCardBackgroundColor(Assets.getColor(getActivity(), R.color.indigo_200));
 
         //listener
         holder.more_info.setOnClickListener(new View.OnClickListener() {

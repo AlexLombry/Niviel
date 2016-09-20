@@ -26,6 +26,7 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
 
     private ArrayList<Follower> followers;
 
+
     public FollowerAdapter(FragmentActivity activity, ArrayList<Follower> followers) {
         super(activity);
         this.followers = followers;
@@ -49,20 +50,6 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         View view = inflater.inflate(R.layout.adapter_list_avatar, parent, false);
-
-        if(followers.size() == 0) {
-            try {
-                TextView textView = new TextView(view.getContext());
-                textView.setText("salut les potos");
-                parent.addView(textView);
-            }
-
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-        }
 
         return new ViewHolder(view);
     }

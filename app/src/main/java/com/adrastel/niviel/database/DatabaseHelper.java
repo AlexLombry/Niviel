@@ -1,5 +1,6 @@
 package com.adrastel.niviel.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -19,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static SQLiteDatabase database;
 
     public static final String DATABASE_NAME = "database.db";
-    public static final int DATABASE_VERSION = 3;
+    public static final int DATABASE_VERSION = 4;
 
     private static DatabaseHelper instance;
 
@@ -206,6 +207,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 .cr_average(cr_average)
                 .wr_average(wr_average).asContentValues());
 
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        finally {
+            closeDatabase();
+        }
+    }
+
+    public void updateRecord(long follower_id, String event, ContentValues contentValues) {
+
+        try {
+            SQLiteDatabase db = openDatabase();
+
+            int lines = db.update(
+                    Record.TABLE_NAME, contentValues,
+                    Record.FOLLOWER + "= ? AND " + Record.EVENT + "= ?",
+                    new String[]{String.valueOf(follower_id), event});
         }
 
         catch (Exception e) {
