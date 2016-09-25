@@ -1,8 +1,6 @@
 package com.adrastel.niviel.services;
 
 import android.app.IntentService;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
@@ -78,9 +76,22 @@ public class EditRecordService extends IntentService {
             getRecords(new recordsCallback() {
                 @Override
                 public void onSuccess(ArrayList<Record> records) {
-                    final long follower = db.insertFollower(username, wca_id, System.currentTimeMillis());
-                    Log.d(String.valueOf(follower));
+
+                    final long follower = db.insertFollower(username, wca_id);
                     insertRecords(follower, records);
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            String confirmation = String.format(getString(R.string.toast_follow_confirmation), username);
+                            Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
+
+
+                            Intent intent = new Intent(INTENT_FILTER);
+                            intent.putExtra(ACTION, ADD_RECORD_SUCCESS);
+                            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+                        }
+                    });
                 }
             });
         }
@@ -88,12 +99,8 @@ public class EditRecordService extends IntentService {
         else if(action == DELETE_RECORD) {
 
             long follower = db.getFollowerIdFromWca(wca_id);
-
-            Log.d("Number before", String.valueOf(db.selectRecordsFromFollower(follower).size()));
-
             db.deleteRecords(follower);
 
-            Log.d("Number after", String.valueOf(db.selectRecordsFromFollower(follower).size()));
             db.deleteFollower(wca_id);
 
             handler.post(new Runnable() {
@@ -110,7 +117,7 @@ public class EditRecordService extends IntentService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("destroy service");
+        Log.i("Destroy EditRecordService");
     }
 
     private void getRecords(final recordsCallback callback) {
@@ -183,11 +190,11 @@ public class EditRecordService extends IntentService {
         int s = records.size();
 
         String[] events = new String[s];
-        long[] singles = new long[s];
+        String[] singles = new String[s];
         long[] nr_singles = new long[s];
         long[] cr_singles = new long[s];
         long[] wr_singles = new long[s];
-        long[] averages = new long[s];
+        String[] averages = new String[s];
         long[] nr_average = new long[s];
         long[] cr_average = new long[s];
         long[] wr_average = new long[s];
@@ -207,15 +214,14 @@ public class EditRecordService extends IntentService {
             }
 
             try {
-                singles[i] = Assets.minSecToSec(record.getSingle());
+                singles[i] = record.getSingle();
                 nr_singles[i] = Long.parseLong(record.getNr_single());
                 cr_singles[i] = Long.parseLong(record.getCr_single());
                 wr_singles[i] = Long.parseLong(record.getWr_single());
             }
 
             catch (Exception e) {
-                Log.e(events[i]);
-                singles[i] = 0;
+                singles[i] = null;
                 nr_singles[i] = 0;
                 cr_singles[i] = 0;
                 wr_singles[i] = 0;
@@ -224,15 +230,14 @@ public class EditRecordService extends IntentService {
             }
 
             try {
-                averages[i] = Assets.minSecToSec(record.getAverage());
+                averages[i] = record.getAverage();
                 nr_average[i] = Long.parseLong(record.getNr_average());
                 cr_average[i] = Long.parseLong(record.getCr_average());
                 wr_average[i] = Long.parseLong(record.getWr_average());
             }
 
             catch (Exception e) {
-                Log.e(events[i]);
-                averages[i] = 0;
+                averages[i] = null;
                 nr_average[i] = 0;
                 nr_average[i] = 0;
                 nr_average[i] = 0;
@@ -249,19 +254,5 @@ public class EditRecordService extends IntentService {
 
 
         }
-
-
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                String confirmation = String.format(getString(R.string.toast_follow_confirmation), username);
-                Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
-
-
-                Intent intent = new Intent(INTENT_FILTER);
-                intent.putExtra(ACTION, ADD_RECORD_SUCCESS);
-                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
-            }
-        });
     }
 }

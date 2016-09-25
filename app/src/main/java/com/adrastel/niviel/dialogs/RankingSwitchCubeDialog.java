@@ -1,8 +1,6 @@
 package com.adrastel.niviel.dialogs;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Log;
 
 public class RankingSwitchCubeDialog extends DialogFragment {
 

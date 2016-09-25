@@ -1,8 +1,7 @@
 CREATE TABLE follower (
     _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    wca_id TEXT NOT NULL,
-    created_at INTEGER NOT NULL
+    wca_id TEXT NOT NULL
 );
 
 delete_table:

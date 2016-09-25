@@ -5,6 +5,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.models.writeable.BufferRecord;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.models.readable.Record;
@@ -41,7 +42,7 @@ public class RecordProvider extends HtmlProvider {
         }
 
         catch (ClassCastException e) {
-            e.printStackTrace();
+            Log.e("Application cannot be cast to Activity");
         }
 
         try {
@@ -200,63 +201,4 @@ public class RecordProvider extends HtmlProvider {
     }
 
 
-    /**
-     * Retourne une image en fonction d'un nombre
-     * @param i type du cube
-     * @return drawable
-     */
-    public static int getImage(int i) {
-
-        String[] cubes = {"2x2 cube", "4x4 cube", "5x5 cube", "6x6 cube", "megaminx", "pyraminx", "square-1", "skewb"};
-
-        int position = i % cubes.length;
-        String event = cubes[position];
-
-        return getImage(event);
-    }
-
-    /**
-     * Retourne une image en fonction du type du cube
-     *
-     * @param event type du cube
-     * @return drawable
-     */
-    public static int getImage(String event) {
-
-        switch(event.toLowerCase()) {
-            case "2x2 cube":
-                return R.drawable.cube_2x2;
-
-            case "4x4 cube":
-                return R.drawable.cube_4x4;
-
-            case "5x5 cube":
-                return R.drawable.cube_5x5;
-
-            case "6x6 cube":
-                return R.drawable.cube_6x6;
-
-            case "7x7 cube":
-                return R.drawable.cube_7x7;
-
-            case "megaminx":
-                return R.drawable.megaminx;
-
-            case "pyraminx":
-                return R.drawable.piraminx;
-
-            case "square-1":
-                return R.drawable.square_1;
-
-            case "rubik's clock":
-                return R.drawable.cube_clock;
-
-            case "skewb":
-                return R.drawable.skewb;
-
-            default:
-                return R.drawable.cube_3x3;
-
-        }
-    }
 }

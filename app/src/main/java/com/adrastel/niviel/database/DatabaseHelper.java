@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 
 import com.adrastel.niviel.FollowerModel;
 import com.adrastel.niviel.RecordModel;
-import com.adrastel.niviel.assets.Log;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static SQLiteDatabase database;
 
     public static final String DATABASE_NAME = "database.db";
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 2;
 
     private static DatabaseHelper instance;
 
@@ -68,18 +67,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        onUpgrade(db, oldVersion, newVersion);
+    }
 
     //<editor-fold desc="Followers">
-    public long insertFollower(String name, String wca_id, long created_at) {
+    public long insertFollower(String name, String wca_id) {
 
         try {
             SQLiteDatabase db = openDatabase();
+            long follower = -1;
 
-            return db.insert(Follower.TABLE_NAME, null, Follower.FACTORY.marshal()
+            follower =  db.insertOrThrow(Follower.TABLE_NAME, null, Follower.FACTORY.marshal()
                     .name(name)
                     .wca_id(wca_id)
-                    .created_at(created_at)
                     .asContentValues());
+
+            return follower;
         }
 
         catch (Exception e) {
@@ -90,7 +95,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             closeDatabase();
         }
 
-        return 0;
+        return -1;
     }
 
     public void deleteFollower(String wca_id) {
@@ -117,7 +122,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         try {
             Cursor cursor = openDatabase().rawQuery(FollowerModel.SELECT_ALL, null);
-            cursor.moveToFirst();
 
             while (cursor.moveToNext()) {
                 followers.add(Follower.SELECT_ALL_MAPPER.map(cursor));
@@ -190,7 +194,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     //</editor-fold>
 
-    public void insertRecord(long follower_id, @NonNull String event, long single, long nr_single, long cr_single, long wr_single, long average, long nr_average, long cr_average, long wr_average) {
+    public void insertRecord(long follower_id, @NonNull String event, String single, long nr_single, long cr_single, long wr_single, String average, long nr_average, long cr_average, long wr_average) {
 
         try {
             SQLiteDatabase db = openDatabase();
@@ -206,6 +210,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 .nr_average(nr_average)
                 .cr_average(cr_average)
                 .wr_average(wr_average).asContentValues());
+
 
         }
 

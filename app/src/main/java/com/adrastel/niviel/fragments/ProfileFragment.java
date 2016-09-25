@@ -2,7 +2,6 @@ package com.adrastel.niviel.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -20,12 +19,10 @@ import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.IntentHelper;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.SetProfileDialog;
 import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
 import com.adrastel.niviel.receivers.CheckRecordsReceiver;
-import com.adrastel.niviel.services.CheckRecordService;
 
 public class ProfileFragment extends BaseFragment implements SetProfileDialog.DialogProfileListener {
 
@@ -120,9 +117,6 @@ public class ProfileFragment extends BaseFragment implements SetProfileDialog.Di
             });
         }
 
-        else {
-            Log.d("wca pas null ", wca_id);
-        }
 
     }
 

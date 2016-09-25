@@ -1,5 +1,6 @@
 package com.adrastel.niviel.assets;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -7,7 +8,6 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.text.Html;
 import android.text.Spanned;
 
@@ -15,7 +15,11 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Assets {
 
@@ -153,46 +157,53 @@ public class Assets {
 
     }
 
+    @SuppressWarnings("StringEquality")
     public static boolean isPersonal(Context context, String wca_id) {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         String pers_wca_id = preferences.getString(context.getString(R.string.pref_wca_id), null);
 
-        return wca_id.equals(pers_wca_id);
+        return wca_id == pers_wca_id;
     }
 
-    public static long minSecToSec(String time) {
 
-        int millis = 0;
-        int seconds = 0;
-        int minutes = 0;
+    public static long dateToMillis(String time) {
+
+        Calendar calendar = GregorianCalendar.getInstance();
 
         try {
 
-            if(time.contains(".")) {
+            Date date = tryDateFormats(time);
 
-                String[] secMillisArray = time.split("\\.");
 
-                String minSec = secMillisArray[0];
-                millis = Integer.parseInt(secMillisArray[1] + "0");
+            calendar.setTime(date);
 
-                if(minSec.contains(":")) {
+            Log.d("date", calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE) + "." + calendar.get(Calendar.SECOND) + ":" + calendar.get(Calendar.MILLISECOND));
 
-                    String[] minSecArray = minSec.split(":");
-
-                    minutes = Integer.parseInt(minSecArray[0]);
-                    seconds = Integer.parseInt(minSecArray[1]);
-                }
-
-                else {
-                    seconds = Integer.parseInt(minSec);
-                }
-            }
         }
         catch (Exception e) {
             e.printStackTrace();
         }
 
-        return minutes * 60000 + seconds + 1000 + millis;
+        return calendar.getTimeInMillis();
     }
+
+    @SuppressLint("SimpleDateFormat")
+    public static Date tryDateFormats(String date) {
+
+        String[] dateFormats = {"s.SS", "m:s.SS", "m:s"};
+
+        for (String dateFormat : dateFormats) {
+            try {
+
+                return new SimpleDateFormat(dateFormat).parse(date);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+
 }

@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Log;
 
 public class CircleView extends View {
 

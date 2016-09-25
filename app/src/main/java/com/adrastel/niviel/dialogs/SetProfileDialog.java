@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Log;
 
 public class SetProfileDialog extends DialogFragment {
 

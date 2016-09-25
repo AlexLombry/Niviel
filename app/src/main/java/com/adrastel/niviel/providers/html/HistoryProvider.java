@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Log;
-import com.adrastel.niviel.models.writeable.BufferHistory;
 import com.adrastel.niviel.models.readable.History;
+import com.adrastel.niviel.models.writeable.BufferHistory;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -88,7 +87,6 @@ public class HistoryProvider extends HtmlProvider {
                         //Log.d("mock test");
                         if (!checkHtml(hydrate(tr))) {
                             Toast.makeText(activity, activity.getString(R.string.error_interpretation_html), Toast.LENGTH_LONG).show();
-                            Log.e("Error HTML history");
                         }
                     }
 

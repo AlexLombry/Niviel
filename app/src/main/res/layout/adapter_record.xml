@@ -11,8 +11,10 @@
         android:id="@+id/card"
         android:layout_margin="5dp"
         app:cardCornerRadius="2dp"
-        app:cardElevation="2dp">
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@color/indigo_200">
 
+        <!-- todo: resourdre l'hint -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

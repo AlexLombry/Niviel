@@ -11,21 +11,19 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.IntentHelper;
-import com.adrastel.niviel.assets.Log;
-import com.adrastel.niviel.database.DatabaseHelper;
-import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.RankingDetailsDialog;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.interfaces.PauseResumeInterface;
@@ -33,14 +31,13 @@ import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.services.EditRecordService;
 import com.adrastel.niviel.views.CircleView;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Ranking> implements PauseResumeInterface {
+public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Ranking> implements PauseResumeInterface, RecyclerView.OnItemTouchListener {
 
-    final BroadcastReceiver receiver = new BroadcastReceiver() {
+
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
 
@@ -57,10 +54,21 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
 
         }
     };
-    private boolean isSingle = true;
 
-    public RankingAdapter(FragmentActivity activity) {
+    private boolean isSingle = true;
+    private OnItemClickListener onItemClickListener;
+    private GestureDetector gestureDetector;
+
+    public RankingAdapter(FragmentActivity activity, OnItemClickListener listener) {
         super(activity);
+
+        this.onItemClickListener = listener;
+        gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                return true;
+            }
+        });
     }
 
     @Override
@@ -209,18 +217,6 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
 
         getActivity().startService(intent);
 
-        /*DatabaseHelper helper = DatabaseHelper.getInstance(getActivity());
-        helper.deleteFollower(ranking.getWca_id());
-
-        ArrayList<Follower> followers = helper.selectAllFollowers();
-        Log.d("Follower: " + ranking.getWca_id());
-        for(Follower follower : followers) {
-            Log.d("Follower1: " + follower.wca_id());
-        }
-
-        String confirmation = String.format(getActivity().getString(R.string.toast_unfollow_confirmation), ranking.getPerson());
-        Toast.makeText(getActivity(), confirmation, Toast.LENGTH_LONG).show();*/
-
     }
 
     private void invalidateCircleView(CircleView circleView, boolean isFollowing) {
@@ -264,6 +260,26 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         IntentHelper.shareIntent(context, text, html);
     }
 
+    @Override
+    public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent e) {
+        View view = recyclerView.findChildViewUnder(e.getX(), e.getY());
+
+        int position = recyclerView.getChildAdapterPosition(view);
+
+        Ranking ranking = getDatas().get(position);
+
+        if(view != null && onItemClickListener != null && gestureDetector.onTouchEvent(e)) {
+            onItemClickListener.onClick(view, ranking);
+        }
+        return false;
+    }
+
+    @Override
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {}
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
+
     // Le view holder qui contient toutes les infos
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -277,6 +293,11 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+
+    }
+
+    public interface OnItemClickListener {
+        void onClick(View view, Ranking ranking);
     }
 
 

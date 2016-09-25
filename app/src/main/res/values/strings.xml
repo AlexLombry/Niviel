@@ -25,7 +25,7 @@
     <string name="single">Single</string>
     <string name="average">Moyenne</string>
 
-    <string name="record_time">Temps: %1$ss</string>
+    <string name="record_time">Temps: %1$s</string>
     <string name="record_nr">Classement national: %1$s</string>
     <string name="record_cr">Classement continental: %1$s</string>
     <string name="record_wr">Classement mondial: %1$s</string>

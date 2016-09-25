@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 
 import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.Log;
 
 public abstract class BaseFragment extends Fragment {
     public abstract int getStyle();

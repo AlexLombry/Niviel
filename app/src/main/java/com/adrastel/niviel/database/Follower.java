@@ -12,8 +12,8 @@ public abstract class Follower extends BaseModel implements FollowerModel {
 
     public static final Factory<Follower> FACTORY = new Factory<>(new Creator<Follower>() {
         @Override
-        public Follower create(long _id, @NonNull String name, @NonNull String wca_id, long created_at) {
-            return new AutoValue_Follower(_id, name, wca_id, created_at);
+        public Follower create(long _id, @NonNull String name, @NonNull String wca_id) {
+            return new AutoValue_Follower(_id, name, wca_id);
         }
     });
 

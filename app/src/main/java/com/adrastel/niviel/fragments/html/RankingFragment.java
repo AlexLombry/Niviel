@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -20,6 +21,7 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RankingAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
 import com.adrastel.niviel.interfaces.PauseResumeInterface;
 import com.adrastel.niviel.managers.HttpManager;
@@ -64,7 +66,12 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
-        adapter = new RankingAdapter(getActivity());
+        adapter = new RankingAdapter(getActivity(), new RankingAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(View view, Ranking ranking) {
+                Log.d(ranking.getPerson());
+            }
+        });
 
     }
 
@@ -88,6 +95,7 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setAdapter(adapter);
+
 
         return view;
     }

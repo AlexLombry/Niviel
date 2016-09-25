@@ -14,12 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Cubes;
 import com.adrastel.niviel.assets.DetailsMaker;
 import com.adrastel.niviel.dialogs.RecordDialog;
 import com.adrastel.niviel.models.readable.Record;
-import com.adrastel.niviel.providers.html.RecordProvider;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -70,7 +69,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
         final String event = record.getEvent();
         final String single = record.getSingle();
         final String average = record.getAverage();
-        final int image_resource = RecordProvider.getImage(event);
+        final int image_resource = Cubes.getImage(event);
 
         holder.event.setText(event);
 
@@ -89,8 +88,6 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                 .fit()
                 .centerInside()
                 .into(holder.image);
-
-        holder.card.setCardBackgroundColor(Assets.getColor(getActivity(), R.color.indigo_200));
 
         //listener
         holder.more_info.setOnClickListener(new View.OnClickListener() {

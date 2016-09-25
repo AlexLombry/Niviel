@@ -38,13 +38,12 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.html.RankingFragment;
-import com.adrastel.niviel.services.CheckRecordService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -80,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     private BroadcastReceiver activityReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d("intent received");
             String action = intent.getStringExtra(ACTIVITY_RECEIVER_ACTION);
 
             switch (action) {
@@ -102,24 +100,9 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
-        // Initialisation des objets
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        fragmentManager = getSupportFragmentManager();
-
-        // Gere l'intent (si il s'agit d'une requete...)
-        Intent intent = getIntent();
-        handleIntent(intent);
-
-        // Actualise l'ID WCA
-        updateWcaProfile();
-
-        // Recupère les pref
-        prefDoubleClickToExit = preferences.getBoolean(getString(R.string.pref_double_back), true);
-
 
         final ActionBar actionBar = getSupportActionBar();
 
@@ -128,6 +111,12 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        fragmentManager = getSupportFragmentManager();
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Actualise l'ID WCA
+        updateWcaProfile();
 
         /*
         Si il y a un fragment en mémiore, l'execute
@@ -143,33 +132,18 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
             }
         }
 
-        /*else {
-
-            String fragment_tag = intent.getStringExtra(Constants.EXTRAS.FRAGMENT);
-
-            if(fragment_tag != null) {
-
-                switch(fragment_tag) {
-
-                    case ProfileFragment.FRAGMENT_TAG:
-                        String wca_id = intent.getStringExtra(Constants.EXTRAS.WCA_ID);
-                        String username = intent.getStringExtra(Constants.EXTRAS.USERNAME);
-                        this.fragment = ProfileFragment.newInstance(wca_id, username);
-                        break;
-
-                    default:
-                        this.fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, prefWcaId, prefWcaName);
-                        break;
-                }
-
-            }
-            else {
-
-                this.fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, prefWcaId, prefWcaName);
-            }
-        }*/
-
         switchFragment(fragment);
+
+        // Initialisation des objets
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+
+        // Gere l'intent (si il s'agit d'une requete...)
+        Intent intent = getIntent();
+        handleIntent(intent);
+
+        // Recupère les pref
+        prefDoubleClickToExit = preferences.getBoolean(getString(R.string.pref_double_back), true);
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -195,18 +169,12 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
             }
         });
 
-        drawerLayout.addDrawerListener(this);
-
         // todo: gere id wca incorrecte
 
+        Assets.dateToMillis("2:44.37");
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        drawerLayout.removeDrawerListener(this);
-    }
 
     /**
      * On sauvegarde le fragment actuel
@@ -280,23 +248,20 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
         if (isDrawerOpen()) {
             closeDrawer();
-        } else {
+        } else if (prefDoubleClickToExit) {
 
-            if (prefDoubleClickToExit) {
+            if (doubleClickToExit) {
+                super.onBackPressed();
+            } else {
+                doubleClickToExit = true;
+                Toast.makeText(this, R.string.toast_click_double_back, Toast.LENGTH_LONG).show();
 
-                if (doubleClickToExit) {
-                    super.onBackPressed();
-                } else {
-                    doubleClickToExit = true;
-                    Toast.makeText(this, R.string.toast_click_double_back, Toast.LENGTH_LONG).show();
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            doubleClickToExit = false;
-                        }
-                    }, 3000);
-                }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        doubleClickToExit = false;
+                    }
+                }, 3000);
             }
         }
 
@@ -305,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     @Override
     protected void onPause() {
         super.onPause();
-
+        drawerLayout.removeDrawerListener(this);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(activityReceiver);
     }
 
@@ -319,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     @Override
     protected void onResume() {
         super.onResume();
-
+        drawerLayout.addDrawerListener(this);
         LocalBroadcastManager.getInstance(this).registerReceiver(activityReceiver, new IntentFilter(ACTIVITY_RECEIVER));
     }
 
@@ -403,18 +368,14 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     @SuppressWarnings("ResourceType")
     public void switchFragment(BaseFragment fragment) {
 
-        try {
-            // Remplace le fragment
-            fragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, fragment)
-                    .commit();
+        // Remplace le fragment
+        fragmentManager.beginTransaction()
+                .replace(R.id.frame_layout, fragment)
+                .commit();
 
-            updateUi(fragment);
-            this.fragment = fragment;
+        updateUi(fragment);
+        this.fragment = fragment;
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 
@@ -508,7 +469,6 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
         TypedArray typedArray = obtainStyledAttributes(style, attrs);
 
-        Log.d("title", String.valueOf(typedArray.getString(2)));
 
         String title = typedArray.getString(2);
         setTitle(title);
@@ -535,22 +495,15 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     }
 
     private void handleIntent(Intent intent) {
-        Log.d("handle intent");
         if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_VIEW)) {
 
-            try {
-                Uri query = intent.getData();
+            Uri query = intent.getData();
 
-                Log.d(query.toString());
+            if (query.getAuthority().equals("com.adrastel.search")) {
 
-                if (query.getAuthority().equals("com.adrastel.search")) {
-
-                    String wca_id = query.getLastPathSegment();
-                    String name = intent.getStringExtra(SearchManager.EXTRA_DATA_KEY);
-                    searchUser(wca_id, name);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                String wca_id = query.getLastPathSegment();
+                String name = intent.getStringExtra(SearchManager.EXTRA_DATA_KEY);
+                searchUser(wca_id, name);
             }
         }
 

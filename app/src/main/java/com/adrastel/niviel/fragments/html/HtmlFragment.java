@@ -5,13 +5,9 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.google.gson.Gson;
 
@@ -88,10 +84,6 @@ public abstract class HtmlFragment<M extends Parcelable> extends BaseFragment {
             editor.putString(getStorageLocation(), json);
             editor.apply();
 
-        }
-
-        else {
-            Log.e("save datas null");
         }
     }
 
