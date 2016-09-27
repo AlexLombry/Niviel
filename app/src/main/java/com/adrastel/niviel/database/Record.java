@@ -7,6 +7,8 @@ import com.adrastel.niviel.RecordModel;
 import com.google.auto.value.AutoValue;
 import com.squareup.sqldelight.RowMapper;
 
+import java.util.Comparator;
+
 @AutoValue
 public abstract class Record implements RecordModel {
 
@@ -18,5 +20,13 @@ public abstract class Record implements RecordModel {
     });
 
     public static final RowMapper<Record> SELECT_FROM_FOLLOWER_MAPPER = FACTORY.select_from_followerMapper();
+
+    public static class Comparator implements java.util.Comparator<Record> {
+
+        @Override
+        public int compare(Record record, Record t1) {
+            return record.event().compareTo(t1.event());
+        }
+    }
 
 }

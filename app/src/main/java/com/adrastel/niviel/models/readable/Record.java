@@ -7,6 +7,7 @@ import com.adrastel.niviel.models.BaseModel;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Record est une classe regroupant les records personnels d'un joueur
@@ -18,8 +19,13 @@ import java.util.ArrayList;
 
 public class Record extends BaseModel implements Parcelable {
 
-    // Attributes
+    public static class Comparator implements java.util.Comparator<Record> {
 
+        @Override
+        public int compare(Record record, Record t1) {
+            return record.getEvent().compareTo(t1.getEvent());
+        }
+    }
 
     /**
      * Le type du cube

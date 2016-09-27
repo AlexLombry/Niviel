@@ -14,6 +14,7 @@ import android.text.Spanned;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
+import com.adrastel.niviel.database.Record;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -166,44 +167,47 @@ public class Assets {
         return wca_id == pers_wca_id;
     }
 
+    /**
+     * Compare les records et si il y a un nouveau record, l'ajoute dans un ArrayList
+     * La taille d'oldRecord est toujours inférieure ou égale à celle des newRecords
+     *
+     * @param oldRecords anciens records
+     * @param newRecords nouveaux records
+     * @return nouvels events
+     */
+    public static ArrayList<com.adrastel.niviel.models.readable.Record> getNewRecords(ArrayList<Record> oldRecords, ArrayList<com.adrastel.niviel.models.readable.Record> newRecords) {
 
-    public static long dateToMillis(String time) {
+        ArrayList<com.adrastel.niviel.models.readable.Record> newEvents = new ArrayList<>();
 
-        Calendar calendar = GregorianCalendar.getInstance();
+        // Indice utilisé pour se décaler
+        int i = 0;
 
         try {
 
-            Date date = tryDateFormats(time);
+            for(com.adrastel.niviel.models.readable.Record newRecord : newRecords) {
+
+                Record oldRecord = oldRecords.get(i);
+
+                if(!oldRecord.event().equals(newRecord.getEvent())) {
+
+                    newEvents.add(newRecord);
+
+                    // Reduit le rang pour ne pas se décaler par rapport à la nouvelle suite
+                    i--;
+                }
 
 
-            calendar.setTime(date);
+                i++;
 
-            Log.d("date", calendar.get(Calendar.HOUR) + ":" + calendar.get(Calendar.MINUTE) + "." + calendar.get(Calendar.SECOND) + ":" + calendar.get(Calendar.MILLISECOND));
+            }
 
         }
         catch (Exception e) {
             e.printStackTrace();
         }
 
-        return calendar.getTimeInMillis();
-    }
+        return newEvents;
 
-    @SuppressLint("SimpleDateFormat")
-    public static Date tryDateFormats(String date) {
-
-        String[] dateFormats = {"s.SS", "m:s.SS", "m:s"};
-
-        for (String dateFormat : dateFormats) {
-            try {
-
-                return new SimpleDateFormat(dateFormat).parse(date);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        return null;
     }
 
 }

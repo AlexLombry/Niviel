@@ -4,10 +4,7 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.util.LongSparseArray;
 import android.support.v7.app.NotificationCompat;
 
@@ -15,14 +12,15 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.RecordModel;
 import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.activities.SettingsActivity;
+import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Cubes;
 import com.adrastel.niviel.assets.InboxStyle;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.database.Record;
 import com.adrastel.niviel.fragments.ProfileFragment;
+import com.adrastel.niviel.models.writeable.BufferRecord;
 import com.adrastel.niviel.providers.html.RecordProvider;
 
 import org.jsoup.Jsoup;
@@ -30,6 +28,8 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -42,12 +42,7 @@ public class CheckRecordService extends IntentService {
 
     DatabaseHelper database;
 
-    public static final int SINGLE = 0;
-    public static final int AVERAGE = 1;
-    public static final int COUNTRY = 2;
-    public static final int CONTINENT = 3;
-    public static final int WORLD = 4;
-
+    private boolean hasToRestart = false;
     private static int notif_id = 0;
 
     /**
@@ -88,7 +83,18 @@ public class CheckRecordService extends IntentService {
             });
 
         }
+    }
 
+    @Override
+    public void onDestroy() {
+
+        if(hasToRestart) {
+
+            startService(new Intent(this, CheckRecordService.class));
+
+        }
+
+        super.onDestroy();
     }
 
     private void compareRecords(Follower follower, ArrayList<Record> oldRecords, ArrayList<com.adrastel.niviel.models.readable.Record> newRecords) {
@@ -96,6 +102,13 @@ public class CheckRecordService extends IntentService {
         // si la taille est la meme et que l'event est le meme
         Log.d(String.valueOf(oldRecords.size()), String.valueOf(newRecords.size()));
 
+        try {
+            Collections.sort(oldRecords, new Record.Comparator());
+            Collections.sort(newRecords, new com.adrastel.niviel.models.readable.Record.Comparator());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if(oldRecords.size() == newRecords.size()) {
 
@@ -108,14 +121,6 @@ public class CheckRecordService extends IntentService {
                 if(oldRecord.event().equals(newRecord.getEvent())) {
 
                     try {
-                        /*checkRank(newRecord, follower, SINGLE, COUNTRY, oldRecord.nr_single(), Long.parseLong(newRecord.getNr_single()));
-                        checkRank(newRecord, follower, SINGLE, CONTINENT, oldRecord.cr_single(), Long.parseLong(newRecord.getCr_single()));
-                        checkRank(newRecord, follower, SINGLE, WORLD, oldRecord.wr_single(), Long.parseLong(newRecord.getWr_single()));
-                        checkRank(newRecord, follower, AVERAGE, COUNTRY, oldRecord.nr_average(), Long.parseLong(newRecord.getNr_average()));
-                        checkRank(newRecord, follower, AVERAGE, CONTINENT, oldRecord.cr_average(), Long.parseLong(newRecord.getCr_average()));
-                        checkRank(newRecord, follower, AVERAGE, WORLD, oldRecord.wr_average(), Long.parseLong(newRecord.getWr_average()));*/
-
-                        //checkRecord(newRecord, follower, SINGLE, , Assets.dateToMillis(newRecord.getSingle()))
 
                         // Check for singles
 
@@ -194,7 +199,7 @@ public class CheckRecordService extends IntentService {
                             makeNotification(follower, follower.name(), content, inboxStyle);
 
                             // Update database
-                            //database.updateRecord(follower._id(), newRecord.getEvent(), values.asContentValues());
+                            database.updateRecord(follower._id(), newRecord.getEvent(), values.asContentValues());
                         }
                     }
 
@@ -205,6 +210,58 @@ public class CheckRecordService extends IntentService {
 
             }
 
+        }
+
+        // Si il y a un nouvel event
+        else if (oldRecords.size() < newRecords.size()) {
+
+            try {
+                ArrayList<com.adrastel.niviel.models.readable.Record> filtredNewRecords = Assets.getNewRecords(oldRecords, newRecords);
+
+
+                for (com.adrastel.niviel.models.readable.Record record : filtredNewRecords) {
+                    Log.d(record.getEvent());
+
+                    long Snr = 0;
+                    long Scr = 0;
+                    long Swr = 0;
+                    long Anr = 0;
+                    long Acr = 0;
+                    long Awr = 0;
+
+                    try {
+                        Snr = Long.parseLong(record.getNr_single());
+                        Scr = Long.parseLong(record.getCr_single());
+                        Swr = Long.parseLong(record.getWr_single());
+                    }
+
+                    catch (Exception e) {
+                        Snr = 0;
+                        Scr = 0;
+                        Swr = 0;
+                    }
+
+                    try {
+                        Anr = Long.parseLong(record.getNr_single());
+                        Acr = Long.parseLong(record.getCr_single());
+                        Awr = Long.parseLong(record.getWr_single());
+                    }
+
+                    catch (Exception e) {
+                        Anr = 0;
+                        Acr = 0;
+                        Awr = 0;
+                    }
+
+                    database.insertRecord(follower._id(), record.getEvent(), record.getSingle(), Snr, Scr, Swr, record.getAverage(), Anr, Acr, Awr);
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            hasToRestart = true;
+            stopSelf();
         }
 
     }
@@ -264,106 +321,6 @@ public class CheckRecordService extends IntentService {
     }
 
 
-    private boolean checkRank(com.adrastel.niviel.models.readable.Record record, Follower follower, int type, int region, long oldRank, long newRank) {
-
-        Log.v(type + " " + region, oldRank + "->" + newRank);
-
-        if (oldRank > newRank && oldRank != 0 && newRank != 0) {
-            notifyChangeRank(record, follower, type, region, oldRank, newRank);
-            return true;
-        }
-
-        return false;
-
-    }
-//<editor-fold desc="notifyCheckRank">
-    private void notifyChangeRank(com.adrastel.niviel.models.readable.Record record, Follower follower, int type, int region, long oldRank, long newRank){
-        // content values to update the record
-        RecordModel.Marshal marshal = Record.FACTORY.marshal();
-        // Fait la phrase de notification
-        String type_format = null;
-        String region_format = null;
-        String time = null;
-
-        switch (type) {
-            case SINGLE:
-                type_format = getString(R.string.notif_single);
-                marshal.single(record.getSingle());
-                marshal.nr_single(Long.parseLong(record.getNr_single()));
-                marshal.cr_single(Long.parseLong(record.getCr_single()));
-                marshal.wr_single(Long.parseLong(record.getWr_single()));
-                break;
-
-            case AVERAGE:
-                type_format = getString(R.string.notif_average);
-                time = record.getAverage();
-                marshal.average(record.getAverage());
-                marshal.nr_average(Long.parseLong(record.getNr_average()));
-                marshal.cr_average(Long.parseLong(record.getCr_average()));
-                marshal.wr_average(Long.parseLong(record.getWr_average()));
-                break;
-        }
-
-        switch (region) {
-            case COUNTRY:
-                region_format = getString(R.string.notif_country);
-                break;
-
-            case CONTINENT:
-                region_format = getString(R.string.notif_continent);
-                break;
-
-            case WORLD:
-                region_format = getString(R.string.notif_world);
-                break;
-        }
-
-        // notification
-        String notifMessage = String.format(getString(R.string.notif_new_rank_message), oldRank, newRank, region_format, type_format, record.getEvent(), time);
-        String shareMessage = String.format(getString(R.string.share_new_rank), follower.name(), oldRank, newRank, region_format, type_format, record.getEvent(), time);
-
-        String msg = notifMsgs.get(follower._id()) != null ? notifMsgs.get(follower._id()) : "";
-
-        notifMsgs.put(follower._id(), (msg + "\n" + notifMessage).trim());
-
-        Intent gotoMainActivity = new Intent(this, MainActivity.class);
-        gotoMainActivity.putExtra(Constants.EXTRAS.FRAGMENT, ProfileFragment.FRAGMENT_TAG);
-        gotoMainActivity.putExtra(Constants.EXTRAS.WCA_ID, follower.wca_id());
-        gotoMainActivity.putExtra(Constants.EXTRAS.USERNAME, follower.name());
-
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, gotoMainActivity, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("text/plain");
-        share.putExtra(Intent.EXTRA_TEXT, shareMessage);
-
-        Intent chooseAndShare = Intent.createChooser(share, getString(R.string.share));
-
-        PendingIntent mainAction = PendingIntent.getActivity(this, 0, chooseAndShare, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        NotificationCompat.Builder notification = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), Cubes.getImage((int) follower._id())))
-                .setContentTitle(follower.name())
-                .setContentText(notifMessage)
-                .setTicker(notifMessage)
-                .setPriority(Notification.PRIORITY_MAX)
-                .setDefaults(Notification.DEFAULT_SOUND|Notification.DEFAULT_VIBRATE)
-                .setWhen(System.currentTimeMillis())
-                .setAutoCancel(true)
-                .setContentIntent(contentIntent)
-                .addAction(R.drawable.ic_followers, "Partager", mainAction)
-                .setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(notifMsgs.get(follower._id())));
-
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-        manager.notify((int) follower._id(), notification.build());
-
-        database.updateRecord(follower._id(), record.getEvent(), marshal.asContentValues());
-    }
-    //</editor-fold>
-
-
 
     private void callData(String wca_id, final dataCallback callback) {
 
@@ -399,9 +356,18 @@ public class CheckRecordService extends IntentService {
                 ArrayList<com.adrastel.niviel.models.readable.Record> records = RecordProvider.getRecord(getApplicationContext(), document);
 
                 try {
-                    Log.d("nr", records.get(0).getNr_average());
-                    records.get(0).setSingle("3.60");
-                    records.get(0).setAverage("3.70");
+                    BufferRecord record = new BufferRecord();
+                    record.setEvent("Programmation");
+                    record.setSingle("2.01");
+                    record.setAverage("3.01");
+                    record.setNr_single("5");
+                    record.setCr_single("5");
+                    record.setWr_single("5");
+                    record.setNr_average("5");
+                    record.setCr_average("5");
+                    record.setWr_average("5");
+
+                    records.add(record);
                 }
                 catch (Exception e) {
                     e.printStackTrace();

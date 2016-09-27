@@ -171,8 +171,6 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
         // todo: gere id wca incorrecte
 
-        Assets.dateToMillis("2:44.37");
-
     }
 
 
