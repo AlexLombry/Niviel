@@ -23,6 +23,7 @@ import com.adrastel.niviel.dialogs.SetProfileDialog;
 import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
 import com.adrastel.niviel.receivers.CheckRecordsReceiver;
+import com.adrastel.niviel.services.CheckRecordService;
 
 public class ProfileFragment extends BaseFragment implements SetProfileDialog.DialogProfileListener {
 
@@ -78,8 +79,10 @@ public class ProfileFragment extends BaseFragment implements SetProfileDialog.Di
             tab = args.getInt(Constants.EXTRAS.TAB, RECORD_TAB);
         }
 
-        Intent service = new Intent(getContext(), CheckRecordsReceiver.class);
-        getContext().sendBroadcast(service);
+        /*Intent service = new Intent(getContext(), CheckRecordsReceiver.class);
+        getContext().sendBroadcast(service);*/
+
+        getContext().startService(new Intent(getContext(), CheckRecordService.class));
     }
 
     @Nullable

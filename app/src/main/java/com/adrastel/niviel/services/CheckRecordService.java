@@ -28,7 +28,6 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import okhttp3.Call;
@@ -42,8 +41,8 @@ public class CheckRecordService extends IntentService {
 
     DatabaseHelper database;
 
-    private boolean hasToRestart = false;
     private static int notif_id = 0;
+
 
     /**
      * Stocke les messages des records pour les afficher dans la notification
@@ -85,22 +84,10 @@ public class CheckRecordService extends IntentService {
         }
     }
 
-    @Override
-    public void onDestroy() {
-
-        if(hasToRestart) {
-
-            startService(new Intent(this, CheckRecordService.class));
-
-        }
-
-        super.onDestroy();
-    }
-
     private void compareRecords(Follower follower, ArrayList<Record> oldRecords, ArrayList<com.adrastel.niviel.models.readable.Record> newRecords) {
 
         // si la taille est la meme et que l'event est le meme
-        Log.d(String.valueOf(oldRecords.size()), String.valueOf(newRecords.size()));
+        Log.d(String.valueOf(oldRecords.size()) + "<->" + String.valueOf(newRecords.size()));
 
         try {
             Collections.sort(oldRecords, new Record.Comparator());
@@ -207,7 +194,6 @@ public class CheckRecordService extends IntentService {
                         Log.e("Invalid long");
                     }
                 }
-
             }
 
         }
@@ -215,19 +201,15 @@ public class CheckRecordService extends IntentService {
         // Si il y a un nouvel event
         else if (oldRecords.size() < newRecords.size()) {
 
+            ArrayList<com.adrastel.niviel.models.readable.Record> filtredNewRecords;
+
             try {
-                ArrayList<com.adrastel.niviel.models.readable.Record> filtredNewRecords = Assets.getNewRecords(oldRecords, newRecords);
+                filtredNewRecords = Assets.getNewRecords(oldRecords, newRecords);
 
 
                 for (com.adrastel.niviel.models.readable.Record record : filtredNewRecords) {
-                    Log.d(record.getEvent());
 
-                    long Snr = 0;
-                    long Scr = 0;
-                    long Swr = 0;
-                    long Anr = 0;
-                    long Acr = 0;
-                    long Awr = 0;
+                    long Snr, Scr, Swr, Anr, Acr, Awr;
 
                     try {
                         Snr = Long.parseLong(record.getNr_single());
@@ -260,8 +242,13 @@ public class CheckRecordService extends IntentService {
                 e.printStackTrace();
             }
 
-            hasToRestart = true;
-            stopSelf();
+            // Les nouveaux record en locals
+            ArrayList<Record> oldFollowersUpdated = database.selectRecordsFromFollower(follower._id());
+
+            // Si l'ajout a bien été effectué, appelle la fonction de nouveau
+            if(oldFollowersUpdated.size() == newRecords.size()) {
+                compareRecords(follower, oldFollowersUpdated, newRecords);
+            }
         }
 
     }
@@ -354,24 +341,6 @@ public class CheckRecordService extends IntentService {
                 response.close();
 
                 ArrayList<com.adrastel.niviel.models.readable.Record> records = RecordProvider.getRecord(getApplicationContext(), document);
-
-                try {
-                    BufferRecord record = new BufferRecord();
-                    record.setEvent("Programmation");
-                    record.setSingle("2.01");
-                    record.setAverage("3.01");
-                    record.setNr_single("5");
-                    record.setCr_single("5");
-                    record.setWr_single("5");
-                    record.setNr_average("5");
-                    record.setCr_average("5");
-                    record.setWr_average("5");
-
-                    records.add(record);
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
 
                 callback.onSuccess(records);
             }
