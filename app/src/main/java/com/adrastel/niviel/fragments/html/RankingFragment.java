@@ -22,7 +22,9 @@ import com.adrastel.niviel.adapters.RankingAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Log;
+import com.adrastel.niviel.assets.RecyclerOnItemClickListener;
 import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
+import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.interfaces.PauseResumeInterface;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Ranking;
@@ -136,6 +138,18 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
             stopLoaders();
             makeSnackbar(R.string.error_connection, Snackbar.LENGTH_INDEFINITE).show();
         }
+
+        recyclerView.addOnItemTouchListener(new RecyclerOnItemClickListener(getContext(), new RecyclerOnItemClickListener.OnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+                Ranking ranking = adapter.getDatas().get(position);
+
+                ProfileFragment profileFragment = ProfileFragment.newInstance(ranking.getWca_id(), ranking.getPerson());
+                activity.switchFragment(profileFragment);
+
+            }
+        }));
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
