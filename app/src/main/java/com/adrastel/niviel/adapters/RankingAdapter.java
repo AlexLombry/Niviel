@@ -18,12 +18,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.IntentHelper;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.RankingDetailsDialog;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.interfaces.PauseResumeInterface;
@@ -34,7 +36,7 @@ import com.adrastel.niviel.views.CircleView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Ranking> implements PauseResumeInterface, RecyclerView.OnItemTouchListener {
+public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Ranking> implements PauseResumeInterface {
 
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -57,18 +59,11 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
 
     private boolean isSingle = true;
     private OnItemClickListener onItemClickListener;
-    private GestureDetector gestureDetector;
 
     public RankingAdapter(FragmentActivity activity, OnItemClickListener listener) {
         super(activity);
 
         this.onItemClickListener = listener;
-        gestureDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-                return true;
-            }
-        });
     }
 
     @Override
@@ -92,7 +87,7 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
     }
 
     @Override
-    public void onBindViewHolder(RankingAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RankingAdapter.ViewHolder holder, int position) {
 
         final Ranking ranking = getDatas().get(position);
 
@@ -120,7 +115,29 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         invalidateCircleView(holder.rank, isFollowing);
 
         // charge le menu
-        loadMenu(holder, ranking);
+        holder.more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadMenu(view, holder, ranking);
+            }
+        });
+
+        holder.click_area.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ProfileFragment fragment = ProfileFragment.newInstance(ranking.getWca_id(), ranking.getPerson());
+                getActivity().switchFragment(fragment);
+            }
+        });
+
+        holder.click_area.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Log.d("onLongClick");
+                loadMenu(view, holder, ranking);
+                return true;
+            }
+        });
     }
 
     @Override
@@ -132,64 +149,57 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         isSingle = single;
     }
 
-    private void loadMenu(final RankingAdapter.ViewHolder holder, final Ranking ranking) {
-        holder.more.setOnClickListener(new View.OnClickListener() {
+    private void loadMenu(View view, final RankingAdapter.ViewHolder holder, final Ranking ranking) {
+        final boolean isFollowing = Assets.isFollowing(getActivity(), ranking.getWca_id());
+
+        PopupMenu popupMenu = new PopupMenu(getActivity(), view);
+        popupMenu.inflate(R.menu.menu_pop_ranking);
+
+
+        String followTitle = isFollowing ? getActivity().getString(R.string.unfollow) : getActivity().getString(R.string.follow);
+
+        MenuItem followButton = popupMenu.getMenu().findItem(R.id.follow);
+        followButton.setTitle(followTitle);
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
-            public void onClick(final View view) {
+            public boolean onMenuItemClick(MenuItem item) {
 
-                final boolean isFollowing = Assets.isFollowing(getActivity(), ranking.getWca_id());
+                switch (item.getItemId()) {
 
-                PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-                popupMenu.inflate(R.menu.menu_pop_ranking);
+                    case R.id.details:
+                        onDetails(getActivity().getSupportFragmentManager(), ranking);
+                        return true;
 
+                    case R.id.share:
+                        onShare(getActivity(), ranking);
+                        return true;
 
-                String followTitle = isFollowing ? view.getContext().getString(R.string.unfollow) : view.getContext().getString(R.string.follow);
-
-                MenuItem followButton = popupMenu.getMenu().findItem(R.id.follow);
-                followButton.setTitle(followTitle);
-
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-
-                        switch (item.getItemId()) {
-
-                            case R.id.details:
-                                onDetails(getActivity().getSupportFragmentManager(), ranking);
-                                return true;
-
-                            case R.id.share:
-                                onShare(view.getContext(), ranking);
-                                return true;
-
-                            case R.id.goto_profile:
-                                gotoProfile(ranking);
-                                break;
+                    case R.id.goto_profile:
+                        gotoProfile(ranking);
+                        break;
 
 
-                            case R.id.follow:
-                                if(isFollowing) {
-                                    item.setTitle(view.getContext().getString(R.string.follow));
-                                    onUnfollow(ranking);
-                                    invalidateCircleView(holder.rank, false);
-                                }
-
-                                else {
-                                    item.setTitle(view.getContext().getString(R.string.unfollow));
-                                    onFollow(holder, ranking);
-                                    //invalidateCircleView(holder.rank, true);
-                                }
-                                return true;
-
+                    case R.id.follow:
+                        if(isFollowing) {
+                            item.setTitle(getActivity().getString(R.string.follow));
+                            onUnfollow(ranking);
+                            invalidateCircleView(holder.rank, false);
                         }
 
-                        return false;
-                    }
-                });
-                popupMenu.show();
+                        else {
+                            item.setTitle(getActivity().getString(R.string.unfollow));
+                            onFollow(holder, ranking);
+                            //invalidateCircleView(holder.rank, true);
+                        }
+                        return true;
 
+                }
+
+                return false;
             }
         });
+        popupMenu.show();
     }
 
     private void onFollow(final ViewHolder holder, Ranking ranking) {
@@ -260,26 +270,6 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         IntentHelper.shareIntent(context, text, html);
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent e) {
-        View view = recyclerView.findChildViewUnder(e.getX(), e.getY());
-
-        int position = recyclerView.getChildAdapterPosition(view);
-
-        Ranking ranking = getDatas().get(position);
-
-        if(view != null && onItemClickListener != null && gestureDetector.onTouchEvent(e)) {
-            onItemClickListener.onClick(view, ranking);
-        }
-        return false;
-    }
-
-    @Override
-    public void onTouchEvent(RecyclerView rv, MotionEvent e) {}
-
-    @Override
-    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
-
     // Le view holder qui contient toutes les infos
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -287,6 +277,7 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         @BindView(R.id.first_line) TextView person;
         @BindView(R.id.second_line) TextView result;
         @BindView(R.id.more) ImageButton more;
+        @BindView(R.id.click_area) LinearLayout click_area;
 
 
         public ViewHolder(View itemView) {

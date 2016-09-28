@@ -11,6 +11,9 @@ import android.support.v7.app.AlertDialog;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
 
+/**
+ * Dialogue affiché pour savoir si l'uilisateur veux suivre la personne ou changer de profil à son nom
+ */
 public class EditProfileFollowDialog extends DialogFragment {
 
     DialogProfileListener listener;
@@ -35,14 +38,12 @@ public class EditProfileFollowDialog extends DialogFragment {
         if (args != null) {
             username = args.getString(Constants.EXTRAS.USERNAME, null);
         }
+    }
 
-        try {
-            listener = (DialogProfileListener) getTargetFragment();
-        }
-
-        catch (ClassCastException e) {
-            throw new ClassCastException("Error on EditProfileFollowDialog");
-        }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        setTargetFragment(null, -1);
+        super.onSaveInstanceState(outState);
     }
 
     @NonNull
@@ -51,13 +52,24 @@ public class EditProfileFollowDialog extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle(R.string.dialog_edit_profile_title);
-        builder.setMessage(String.format(getString(R.string.dialog_edit_profile_message), username));
+        builder.setTitle(R.string.dialog_edit_profile_follow_title);
+        builder.setMessage(String.format(getString(R.string.dialog_edit_profile_follow_message), username));
 
-        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.follow, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                listener.onConfirm();
+                if (listener != null) {
+                    listener.onFollow();
+                }
+            }
+        });
+
+        builder.setNeutralButton(R.string.edit_profile, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(listener != null) {
+                    listener.onEdit();
+                }
             }
         });
 
@@ -66,7 +78,12 @@ public class EditProfileFollowDialog extends DialogFragment {
         return builder.create();
     }
 
+    public void setOnDialogClickListener(DialogProfileListener listener) {
+        this.listener = listener;
+    }
+
     public interface DialogProfileListener {
-        void onConfirm();
+        void onFollow();
+        void onEdit();
     }
 }

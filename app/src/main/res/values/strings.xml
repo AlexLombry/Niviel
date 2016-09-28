@@ -47,7 +47,7 @@
     <string name="ranking_subtitle">%1$s (%2$s)</string>
 
     <!-- Errors -->
-    <string name="error_connection">Erreur de connexion</string>
+    <string name="error_connection">Veuillez vous connecter à internet</string>
     <string name="err_server">Erreur interne du serveur</string>
     <string name="cannot_load">Impossible de charger le contenu</string>
     <string name="error_interpretation_html">Erreur d\'interpretation du code HTML</string>
@@ -83,6 +83,7 @@
     <string name="toast_click_double_back">Cliquez encore sur Retour pour quitter</string>
     <string name="pref_double_back_title">Confirmation pour quitter l\'application</string>
     <string name="pref_double_back_description">Cliquez 2 fois sur le bouton Retour pour quitter l\'application</string>
+    <string name="edit_profile">Changer de profil</string>
 
     <!-- Preferences -->
     <string name="wca_id">Identifiant WCA</string>
@@ -98,8 +99,13 @@
     <string name="zero" translatable="false">0</string>
     <string name="no_title" translatable="false"/>
 
-    <string name="dialog_edit_profile_title">Changement de profil</string>
-    <string name="dialog_edit_profile_message">Votre profil personnel sera au nom de %1$s</string>
+    <string name="dialog_edit_profile_follow_title">Changement de profil/Suivre</string>
+    <!--<string name="dialog_edit_profile_follow_message">Votre profil personnel sera au nom de %1$s</string>-->
+    <string name="dialog_edit_profile_follow_message">
+        Vous pouvez :
+        \n\t-Suivre %1$s et être informé si il obtient de nouveaux records.
+        \n\t-Changer de profil et assigner votre profil personnel au nom de %1$s.
+    </string>
 
     <string name="confirm">Confirmer</string>
     <string name="toast_edit_profile_success">Le changement de profil a bien été effectué</string>
