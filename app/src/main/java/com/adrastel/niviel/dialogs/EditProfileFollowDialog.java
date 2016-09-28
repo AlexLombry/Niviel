@@ -11,13 +11,13 @@ import android.support.v7.app.AlertDialog;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
 
-public class SetProfileDialog extends DialogFragment {
+public class EditProfileFollowDialog extends DialogFragment {
 
     DialogProfileListener listener;
     String username = null;
 
-    public static SetProfileDialog getInstance(String name) {
-        SetProfileDialog instance = new SetProfileDialog();
+    public static EditProfileFollowDialog getInstance(String name) {
+        EditProfileFollowDialog instance = new EditProfileFollowDialog();
 
         Bundle args = new Bundle();
         args.putString(Constants.EXTRAS.USERNAME, name);
@@ -41,7 +41,7 @@ public class SetProfileDialog extends DialogFragment {
         }
 
         catch (ClassCastException e) {
-            throw new ClassCastException("Error on SetProfileDialog");
+            throw new ClassCastException("Error on EditProfileFollowDialog");
         }
     }
 
