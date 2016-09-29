@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rool_layout"
     android:layout_width="match_parent"
     android:layout_height="80dp"
     android:clickable="true"
@@ -25,9 +26,6 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:id="@+id/click_area"
-        android:clickable="true"
-        android:background="?attr/selectableItemBackground"
         android:paddingTop="20dp"
         android:orientation="vertical">
 

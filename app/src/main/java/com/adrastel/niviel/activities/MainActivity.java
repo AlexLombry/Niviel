@@ -21,6 +21,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -35,6 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
@@ -69,8 +71,6 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     // Les preferences
     private String prefWcaId = null;
     private String prefWcaName = null;
-    private boolean prefDoubleClickToExit = true;
-    private boolean doubleClickToExit = false;
     // Le runnable qui est executé après que le drawer soit fermé
     private Runnable fragmentToRun;
 
@@ -141,8 +141,6 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         Intent intent = getIntent();
         handleIntent(intent);
 
-        // Recupère les pref
-        prefDoubleClickToExit = preferences.getBoolean(getString(R.string.pref_double_back), true);
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -156,6 +154,9 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
                 final BaseFragment fragment = selectDrawerItem(item);
 
                 if (fragment != null) {
+
+                    popBackStack();
+
                     runWhenDrawerClose(new Runnable() {
                         @Override
                         public void run() {
@@ -169,10 +170,23 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
             }
         });
 
+        setNavigationText(prefWcaName, prefWcaId);
+
         // todo: gere id wca incorrecte
 
     }
 
+    private void setNavigationText(String name, String wca_id) {
+
+        View headerView = navigationView.getHeaderView(0);
+
+        TextView nameView =(TextView) headerView.findViewById(R.id.name);
+        TextView wca_idView =(TextView) headerView.findViewById(R.id.wca_id);
+
+        nameView.setText(name);
+        wca_idView.setText(wca_id);
+
+    }
 
     /**
      * On sauvegarde le fragment actuel
@@ -246,21 +260,9 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
         if (isDrawerOpen()) {
             closeDrawer();
-        } else if (prefDoubleClickToExit) {
-
-            if (doubleClickToExit) {
-                super.onBackPressed();
-            } else {
-                doubleClickToExit = true;
-                Toast.makeText(this, R.string.toast_click_double_back, Toast.LENGTH_LONG).show();
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        doubleClickToExit = false;
-                    }
-                }, 3000);
-            }
+        }
+        else {
+            super.onBackPressed();
         }
 
     }
@@ -363,11 +365,11 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
      *
      * @param fragment fragment
      */
-    @SuppressWarnings("ResourceType")
     public void switchFragment(BaseFragment fragment) {
 
         // Remplace le fragment
-        fragmentManager.beginTransaction()
+        fragmentManager
+                .beginTransaction()
                 .replace(R.id.frame_layout, fragment)
                 .commit();
 
@@ -376,6 +378,17 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
 
     }
+
+    public void popBackStack() {
+
+        FragmentManager manager = getSupportFragmentManager();
+
+        for(int i = 0; i < manager.getBackStackEntryCount(); i++) {
+            manager.popBackStack();
+        }
+
+    }
+
 
     /**
      * Ouvre le menu

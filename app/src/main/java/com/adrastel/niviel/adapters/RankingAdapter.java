@@ -11,10 +11,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -25,7 +23,6 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.IntentHelper;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.RankingDetailsDialog;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.interfaces.PauseResumeInterface;
@@ -58,12 +55,10 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
     };
 
     private boolean isSingle = true;
-    private OnItemClickListener onItemClickListener;
 
-    public RankingAdapter(FragmentActivity activity, OnItemClickListener listener) {
+    public RankingAdapter(FragmentActivity activity) {
         super(activity);
 
-        this.onItemClickListener = listener;
     }
 
     @Override
@@ -125,15 +120,13 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         holder.click_area.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ProfileFragment fragment = ProfileFragment.newInstance(ranking.getWca_id(), ranking.getPerson());
-                getActivity().switchFragment(fragment);
+                gotoProfile(ranking);
             }
         });
 
         holder.click_area.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                Log.d("onLongClick");
                 loadMenu(view, holder, ranking);
                 return true;
             }
@@ -236,7 +229,7 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
 
     private void gotoProfile(Ranking ranking) {
         ProfileFragment fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, ranking.getWca_id(), ranking.getPerson());
-        IntentHelper.switchFragment(getActivity(), fragment);
+        getActivity().switchFragment(fragment);
 
     }
 
@@ -277,7 +270,7 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         @BindView(R.id.first_line) TextView person;
         @BindView(R.id.second_line) TextView result;
         @BindView(R.id.more) ImageButton more;
-        @BindView(R.id.click_area) LinearLayout click_area;
+        @BindView(R.id.rool_layout) LinearLayout click_area;
 
 
         public ViewHolder(View itemView) {
@@ -286,10 +279,5 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         }
 
     }
-
-    public interface OnItemClickListener {
-        void onClick(View view, Ranking ranking);
-    }
-
 
 }
