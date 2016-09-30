@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     // Les preferences
     private String prefWcaId = null;
     private String prefWcaName = null;
+    private long prefId = -1;
     // Le runnable qui est executé après que le drawer soit fermé
     private Runnable fragmentToRun;
 
@@ -128,7 +129,8 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
             }
 
             else {
-                this.fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, prefWcaId, prefWcaName);
+                //this.fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, prefWcaId, prefWcaName);
+                this.fragment = ProfileFragment.newInstance(prefId);
             }
         }
 
@@ -327,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
         switch (item.getItemId()) {
             case R.id.profile:
-                return ProfileFragment.newInstance(prefWcaId, prefWcaName);
+                return ProfileFragment.newInstance(prefId);
 
             case R.id.ranking:
                 return new RankingFragment();
@@ -347,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
                 return null;
 
             default:
-                return ProfileFragment.newInstance(prefWcaId, prefWcaName);
+                return ProfileFragment.newInstance(prefId);
 
         }
     }
@@ -465,8 +467,9 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     }
 
     private void updateWcaProfile() {
-        prefWcaId = preferences.getString(getString(R.string.pref_wca_id), null);
-        prefWcaName = preferences.getString(getString(R.string.pref_wca_username), null);
+        /*prefWcaId = preferences.getString(getString(R.string.pref_wca_id), null);
+        prefWcaName = preferences.getString(getString(R.string.pref_wca_username), null);*/
+        prefId = preferences.getLong(getString(R.string.pref_personal_id), -1);
     }
 
     @SuppressWarnings("ResourceType")

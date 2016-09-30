@@ -22,6 +22,8 @@ import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.IntentHelper;
+import com.adrastel.niviel.database.DatabaseHelper;
+import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.EditProfileFollowDialog;
 import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
@@ -37,12 +39,26 @@ public class ProfileFragment extends BaseFragment{
     private MainActivity activity;
     private TabLayout tabLayout;
 
+    private long id = -1;
     private String wca_id = null;
     private String username = null;
     private int tab = RECORD_TAB;
 
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
+
+    public static ProfileFragment newInstance(long id) {
+        ProfileFragment instance = new ProfileFragment();
+
+        Bundle args = new Bundle();
+
+        args.putInt(Constants.EXTRAS.TAB, RECORD_TAB);
+        args.putLong(Constants.EXTRAS.ID, id);
+
+        instance.setArguments(args);
+
+        return instance;
+    }
 
     public static ProfileFragment newInstance(int tab, String wca_id, String name) {
         ProfileFragment instance = new ProfileFragment();
@@ -89,9 +105,22 @@ public class ProfileFragment extends BaseFragment{
         Bundle args = getArguments();
         if(args != null) {
 
-            wca_id = args.getString(Constants.EXTRAS.WCA_ID, null);
-            username = args.getString(Constants.EXTRAS.USERNAME, null);
             tab = args.getInt(Constants.EXTRAS.TAB, RECORD_TAB);
+
+            id = args.getLong(Constants.EXTRAS.ID, -1);
+
+            if(id != -1) {
+                DatabaseHelper database = DatabaseHelper.getInstance(getContext());
+
+                Follower follower = database.selectFollowerFromId(id);
+                username = follower.name();
+                wca_id = follower.wca_id();
+            }
+            else {
+                wca_id = args.getString(Constants.EXTRAS.WCA_ID, null);
+                username = args.getString(Constants.EXTRAS.USERNAME, null);
+            }
+
         }
 
         /*Intent service = new Intent(getContext(), CheckRecordsReceiver.class);
@@ -120,7 +149,7 @@ public class ProfileFragment extends BaseFragment{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(!Assets.isPersonal(activity, wca_id) && !Assets.isFollowing(activity, wca_id)) {
+        if(!Assets.isFollowing(activity, wca_id)) {
             activity.showFab();
 
             activity.fab.setOnClickListener(new View.OnClickListener() {
@@ -148,21 +177,14 @@ public class ProfileFragment extends BaseFragment{
                         @Override
                         public void onEdit() {
 
-                            boolean saved = preferences
-                                    .edit()
-                                    .putString(getString(R.string.pref_wca_id), wca_id)
-                                    .putString(getString(R.string.pref_wca_username), username)
-                                    .commit();
+                            Intent edit = new Intent(getContext(), EditRecordService.class);
 
-                            if (saved) {
-                                activity.hideFab();
-                                LocalBroadcastManager.getInstance(getContext()).sendBroadcast(IntentHelper.sendBroadcast(MainActivity.UPDATE_WCA_PROFILE));
-                                Toast.makeText(activity, R.string.toast_edit_profile_success, Toast.LENGTH_LONG).show();
-                            }
+                            edit.putExtra(EditRecordService.ACTION, EditRecordService.ADD_RECORD);
+                            edit.putExtra(EditRecordService.USERNAME, username);
+                            edit.putExtra(EditRecordService.WCA_ID, wca_id);
+                            edit.putExtra(EditRecordService.IS_PERSONAL, true);
 
-                            else {
-                                Toast.makeText(activity, R.string.toast_edit_profile_failure, Toast.LENGTH_LONG).show();
-                            }
+                            getContext().startService(edit);
                         }
                     });
 
@@ -202,13 +224,13 @@ public class ProfileFragment extends BaseFragment{
 
             switch (position) {
                 case 0:
-                    return RecordFragment.newInstance(wca_id);
+                    return id != -1 ? RecordFragment.newInstance(id) : RecordFragment.newInstance(wca_id);
 
                 case 1:
                     return HistoryFragment.newInstance(wca_id, username);
 
                 default:
-                    return RecordFragment.newInstance(wca_id);
+                    return id != -1 ? RecordFragment.newInstance(id) : RecordFragment.newInstance(wca_id);
             }
 
         }

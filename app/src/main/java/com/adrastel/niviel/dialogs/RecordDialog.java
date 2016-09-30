@@ -50,7 +50,7 @@ public class RecordDialog extends DialogFragment {
 
         if(record != null) {
 
-            if(!record.getAverage().trim().equals("")) {
+            if(record.getSingle() != null && !record.getSingle().trim().equals("")) {
                 layout_single.setVisibility(View.VISIBLE);
                 single.setText(String.format(getString(R.string.record_time), record.getSingle()));
                 nr_single.setText(String.format(getString(R.string.record_nr), record.getNr_single()));
@@ -58,7 +58,7 @@ public class RecordDialog extends DialogFragment {
                 wr_single.setText(String.format(getString(R.string.record_wr), record.getWr_single()));
             }
 
-            if(!record.getAverage().trim().equals("")) {
+            if(record.getAverage() != null && !record.getAverage().trim().equals("")) {
                 Log.d("average", record.getAverage());
                 layout_average.setVisibility(View.VISIBLE);
                 average.setText(String.format(getString(R.string.record_time), record.getAverage()));

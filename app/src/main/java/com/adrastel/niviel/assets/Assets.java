@@ -157,16 +157,6 @@ public class Assets {
         return false;
 
     }
-
-    @SuppressWarnings("StringEquality")
-    public static boolean isPersonal(Context context, String wca_id) {
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String pers_wca_id = preferences.getString(context.getString(R.string.pref_wca_id), null);
-
-        return wca_id == pers_wca_id;
-    }
-
     /**
      * Compare les records et si il y a un nouveau record, l'ajoute dans un ArrayList
      * La taille d'oldRecord est toujours inférieure ou égale à celle des newRecords

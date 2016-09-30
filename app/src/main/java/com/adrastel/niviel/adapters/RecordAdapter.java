@@ -77,7 +77,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
         detailsMaker.add(R.string.single, single);
 
-        if(!average.equals("")) {
+        if(average != null && !average.equals("")) {
             detailsMaker.add(R.string.average, average);
         }
 

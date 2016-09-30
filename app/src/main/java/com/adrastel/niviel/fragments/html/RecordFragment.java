@@ -13,17 +13,17 @@ import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RecordAdapter;
-import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.database.DatabaseHelper;
+import com.adrastel.niviel.database.Follower;
+import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.providers.html.RecordProvider;
-import com.google.gson.reflect.TypeToken;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import okhttp3.HttpUrl;
 
-public class RecordFragment extends HtmlFragment<Record> {
+public class RecordFragment extends BaseFragment {
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
@@ -44,8 +44,21 @@ public class RecordFragment extends HtmlFragment<Record> {
     private RecordAdapter adapter;
 
     private String wca_id;
+    private long id = -1;
 
-    // todo: utiliser les get instance
+    public static RecordFragment newInstance(long id) {
+
+        RecordFragment instance = new RecordFragment();
+
+        Bundle args = new Bundle();
+        args.putLong(Constants.EXTRAS.ID , id);
+
+        instance.setArguments(args);
+
+        return instance;
+
+    }
+
     public static RecordFragment newInstance(String wca_id) {
 
         RecordFragment instance = new RecordFragment();
@@ -72,16 +85,10 @@ public class RecordFragment extends HtmlFragment<Record> {
         Bundle arguments = getArguments();
 
         if(arguments != null) {
-            wca_id = arguments.getString(Constants.EXTRAS.WCA_ID, null);
+            id = arguments.getLong(Constants.EXTRAS.ID, -1);
+
+            wca_id = id != -1 ? null : arguments.getString(Constants.EXTRAS.WCA_ID, null);
         }
-
-        // Si il est null on l'id wca est donc personel
-        if(wca_id == null) {
-
-            // On recupere l'id wca
-            wca_id = preferences.getString(getString(R.string.pref_wca_id), null);
-        }
-
     }
 
     /**
@@ -124,15 +131,34 @@ public class RecordFragment extends HtmlFragment<Record> {
             httpManager.stopLoaders();
         }
         // Si on est connecté, on fait une requete HTTP, sinon on lit les données locales
+
+        else if(id != -1) {
+
+            DatabaseHelper database = DatabaseHelper.getInstance(getContext());
+
+            Follower follower = database.selectFollowerFromId(id);
+
+            this.wca_id = follower.wca_id();
+
+            ArrayList<com.adrastel.niviel.database.Record> localRecords = database.selectRecordsFromFollower(follower._id());
+            ArrayList<Record> records = new ArrayList<>();
+
+            for(com.adrastel.niviel.database.Record record : localRecords) {
+                records.add(record.toRecordModel());
+            }
+
+            adapter.refreshData(records);
+            httpManager.stopLoaders();
+
+
+        }
         else if (isConnected()) {
             callData();
-        } else if(Assets.isPersonal(getContext(), wca_id)){
-            adapter.refreshData(loadLocalData());
-            httpManager.stopLoaders();
         }
 
         else {
             Toast.makeText(getContext(), R.string.error_connection, Toast.LENGTH_LONG).show();
+            httpManager.stopLoaders();
         }
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -162,23 +188,19 @@ public class RecordFragment extends HtmlFragment<Record> {
         }
     }
 
-    @Override
-    public String getStorageLocation() {
-        return Constants.EXTRAS.RECORDS;
-    }
+    protected ArrayList<Record> loadLocalData(Bundle savedInstanceState) {
+        if(savedInstanceState != null) {
+            return savedInstanceState.getParcelableArrayList(Constants.EXTRAS.RECORDS);
+        }
 
-    @Override
-    public Type getStorageType() {
-        return new TypeToken<ArrayList<Record>>(){}.getType();
+        return new ArrayList<>();
     }
-
 
     @Override
     public int getStyle() {
         return R.style.AppTheme_Records;
     }
 
-    @Override
     public void callData() {
         HttpUrl url = new HttpUrl.Builder()
 
@@ -202,11 +224,6 @@ public class RecordFragment extends HtmlFragment<Record> {
                         adapter.refreshData(records);
                     }
                 });
-
-                if(Assets.isPersonal(getContext(), wca_id)) {
-                    saveDatas(records);
-                }
-
             }
         });
     }

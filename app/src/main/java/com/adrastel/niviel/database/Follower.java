@@ -19,5 +19,6 @@ public abstract class Follower extends BaseModel implements FollowerModel {
 
     public static final RowMapper<Follower> SELECT_ALL_MAPPER = FACTORY.select_allMapper();
     public static final RowMapper<Long> SELECT_ID_FROM_WCA_MAPPER = FACTORY.select_id_from_wcaMapper();
+    public static final RowMapper<Follower> SELECT_FOLLOWER_FROM_ID_MAPPER = FACTORY.select_follower_from_idMapper();
 
 }

@@ -116,6 +116,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public Follower selectFollowerFromId(long id) {
+
+        try {
+            SQLiteDatabase db = openDatabase();
+
+            Cursor cursor = db.rawQuery(Follower.SELECT_FOLLOWER_FROM_ID, new String[] {String.valueOf(id)});
+            cursor.moveToFirst();
+
+            Follower follower = Follower.SELECT_FOLLOWER_FROM_ID_MAPPER.map(cursor);
+
+            cursor.close();
+
+            return follower;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        finally {
+            closeDatabase();
+        }
+
+        return null;
+    }
+
     public ArrayList<Follower> selectAllFollowers() {
 
         ArrayList<Follower> followers = new ArrayList<>();

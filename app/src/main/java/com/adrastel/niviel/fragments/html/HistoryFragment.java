@@ -14,8 +14,10 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.HistoryAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.History;
+import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.providers.html.HistoryProvider;
 import com.google.gson.reflect.TypeToken;
 
@@ -30,7 +32,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import okhttp3.HttpUrl;
 
-public class HistoryFragment extends HtmlFragment<History> {
+public class HistoryFragment extends BaseFragment {
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
@@ -122,6 +124,8 @@ public class HistoryFragment extends HtmlFragment<History> {
             httpManager.stopLoaders();
         }
 
+
+
         else if(getArguments() != null){
             Bundle arguments = getArguments();
 
@@ -136,20 +140,10 @@ public class HistoryFragment extends HtmlFragment<History> {
             else if(isConnected()){
                 callData();
             }
-
-            else {
-                adapter.refreshData(loadLocalData());
-                httpManager.stopLoaders();
-            }
         }
 
         else if(isConnected()) {
             callData();
-        }
-
-        else if(Assets.isPersonal(getContext(), wca_id  )){
-            adapter.refreshData(loadLocalData());
-            httpManager.stopLoaders();
         }
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -175,17 +169,6 @@ public class HistoryFragment extends HtmlFragment<History> {
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public String getStorageLocation() {
-        return Constants.EXTRAS.HISTORY;
-    }
-
-    @Override
-    public Type getStorageType() {
-        return new TypeToken<ArrayList<History>>(){}.getType();
-    }
-
-    @Override
     public void callData() {
 
         HttpUrl url = urlBuilder
@@ -208,13 +191,17 @@ public class HistoryFragment extends HtmlFragment<History> {
                         adapter.refreshData(histories);
                     }
                 });
-
-                if(Assets.isPersonal(getContext(), wca_id)) {
-                    saveDatas(histories);
-                }
             }
         });
 
+    }
+
+    protected ArrayList<History> loadLocalData(Bundle savedInstanceState) {
+        if(savedInstanceState != null) {
+            return savedInstanceState.getParcelableArrayList(Constants.EXTRAS.HISTORY);
+        }
+
+        return new ArrayList<>();
     }
 
     @Override

@@ -11,6 +11,7 @@ public class Constants {
         String ISSINGLE = "issingle";
         String TAB = "tab";
         String WCA_ID = "wca_id";
+        String ID = "id";
         String USERNAME = "username";
         String SUBTITLE = "subtitle";
         String FRAGMENT = "fragment";
