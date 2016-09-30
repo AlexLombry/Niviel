@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.widget.Toast;
 
@@ -33,12 +34,14 @@ public class EditRecordService extends IntentService {
 
     public static final String WCA_ID = "wca_id";
     public static final String USERNAME = "username";
+    public static final String IS_PERSONAL = "is_personal";
     public static final String ACTION = "action";
     public static final int ADD_RECORD = 0;
     public static final int DELETE_RECORD = 1;
 
     private String wca_id = null;
     private String username = null;
+    private boolean isPersonal = false;
     private ArrayList<Record> records;
     private DatabaseHelper db;
     private Handler handler;
@@ -63,6 +66,7 @@ public class EditRecordService extends IntentService {
 
         wca_id = intent.getStringExtra(WCA_ID);
         username = intent.getStringExtra(USERNAME);
+        isPersonal = intent.getBooleanExtra(IS_PERSONAL, false);
 
         if(action == ADD_RECORD) {
 
@@ -79,6 +83,14 @@ public class EditRecordService extends IntentService {
 
                     final long follower = db.insertFollower(username, wca_id);
                     insertRecords(follower, records);
+
+                    if(isPersonal) {
+                        PreferenceManager
+                                .getDefaultSharedPreferences(EditRecordService.this)
+                                .edit()
+                                .putLong(getString(R.string.pref_personal_id), follower)
+                                .apply();
+                    }
 
                     handler.post(new Runnable() {
                         @Override
