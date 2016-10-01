@@ -19,10 +19,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static SQLiteDatabase database;
 
     public static final String DATABASE_NAME = "database.db";
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 6;
 
     private static DatabaseHelper instance;
 
+    //<editor-fold desc="Database init">
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -55,6 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(Follower.CREATE_TABLE);
         db.execSQL(Record.CREATE_TABLE);
+        db.execSQL(History.CREATE_TABLE);
 
     }
 
@@ -63,6 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL(Follower.DELETE_TABLE);
         db.execSQL(Record.DELETE_TABLE);
+        db.execSQL(History.DELETE_TABLE);
 
         onCreate(db);
     }
@@ -71,20 +74,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
     }
+    //</editor-fold>
 
     //<editor-fold desc="Followers">
     public long insertFollower(String name, String wca_id) {
 
         try {
             SQLiteDatabase db = openDatabase();
-            long follower = -1;
 
-            follower =  db.insertOrThrow(Follower.TABLE_NAME, null, Follower.FACTORY.marshal()
+            return db.insert(Follower.TABLE_NAME, null, Follower.FACTORY.marshal()
                     .name(name)
                     .wca_id(wca_id)
                     .asContentValues());
 
-            return follower;
         }
 
         catch (Exception e) {
@@ -98,12 +100,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public void deleteFollower(String wca_id) {
+    public void deleteFollower(long follower_id) {
 
         try {
             SQLiteDatabase db = openDatabase();
 
-            db.execSQL(Follower.DELETE_FOLLOWER, new String[] {wca_id});
+            db.execSQL(Follower.DELETE_FOLLOWER, new String[] {String.valueOf(follower_id)});
         }
 
         catch (Exception e) {
@@ -149,6 +151,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Cursor cursor = openDatabase().rawQuery(FollowerModel.SELECT_ALL, null);
 
             while (cursor.moveToNext()) {
+
                 followers.add(Follower.SELECT_ALL_MAPPER.map(cursor));
             }
 
@@ -215,16 +218,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             closeDatabase();
         }
 
-        return 0;
+        return -1;
     }
     //</editor-fold>
 
-    public void insertRecord(long follower_id, @NonNull String event, String single, long nr_single, long cr_single, long wr_single, String average, long nr_average, long cr_average, long wr_average) {
+    //<editor-fold desc="Records">
+    public long insertRecord(long follower_id, @NonNull String event, String single, long nr_single, long cr_single, long wr_single, String average, long nr_average, long cr_average, long wr_average) {
 
         try {
             SQLiteDatabase db = openDatabase();
 
-            db.insert(Record.TABLE_NAME, null, Record.FACTORY.marshal()
+            return db.insert(Record.TABLE_NAME, null, Record.FACTORY.marshal()
                 .follower(follower_id)
                 .event(event)
                 .single(single)
@@ -246,6 +250,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         finally {
             closeDatabase();
         }
+
+        return -1;
     }
 
     public void updateRecord(long follower_id, String event, ContentValues contentValues) {
@@ -253,10 +259,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db = openDatabase();
 
-            int lines = db.update(
-                    Record.TABLE_NAME, contentValues,
-                    Record.FOLLOWER + "= ? AND " + Record.EVENT + "= ?",
-                    new String[]{String.valueOf(follower_id), event});
+            db.update(
+                Record.TABLE_NAME, contentValues,
+                Record.FOLLOWER + "= ? AND " + Record.EVENT + "= ?",
+                new String[]{String.valueOf(follower_id), event});
         }
 
         catch (Exception e) {
@@ -283,5 +289,83 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
     }
+    //</editor-fold>
+
+    //<editor-fold desc="History">
+    public void insertHistory(long record_id, long follower_id, String event, String competition, String round, String place, String best, String average, String result_details) {
+        try {
+            SQLiteDatabase db = openDatabase();
+
+            db.insert(History.TABLE_NAME, null, History.FACTORY.marshal()
+                    .record(record_id)
+                    .follower(follower_id)
+                    .event(event)
+                    .competition(competition)
+                    .round(round)
+                    .place(place)
+                    .best(best)
+                    .average(average)
+                    .result_details(result_details)
+                    .asContentValues()
+            );
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        finally {
+            closeDatabase();
+        }
+    }
+
+    public void deleteHistories(long follower_id) {
+        try {
+            SQLiteDatabase db = openDatabase();
+
+            db.execSQL(History.DELETE_HISTORIES, new Long[] {follower_id});
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        finally {
+            closeDatabase();
+        }
+    }
+
+    public ArrayList<History> selectHistoriesFromFollower(long follower_id) {
+
+        ArrayList<History> histories = new ArrayList<>();
+
+        try {
+            SQLiteDatabase db = openDatabase();
+
+            Cursor cursor = db.rawQuery(History.SELECT_FROM_FOLLOWER, new String[] {String.valueOf(follower_id)});
+
+            while (cursor.moveToNext()) {
+
+                histories.add(History.SELECT_ALL_MAPPER.map(cursor));
+
+            }
+
+            cursor.close();
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        finally {
+            closeDatabase();
+        }
+
+        return histories;
+
+    }
+    //</editor-fold>
+
+
 
 }

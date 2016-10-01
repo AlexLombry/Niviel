@@ -9,10 +9,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
+import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.providers.html.RecordProvider;
 
@@ -33,15 +33,19 @@ public class EditRecordService extends IntentService {
 
 
     public static final String WCA_ID = "wca_id";
+    public static final String ID = "id";
     public static final String USERNAME = "username";
     public static final String IS_PERSONAL = "is_personal";
     public static final String ACTION = "action";
-    public static final int ADD_RECORD = 0;
-    public static final int DELETE_RECORD = 1;
+    public static final int ADD_FOLLOWER = 0;
+    public static final int DELETE_FOLLOWER = 1;
+    public static final String LOG = "log";
 
     private String wca_id = null;
     private String username = null;
+    private long follower_id = -1;
     private boolean isPersonal = false;
+    private boolean log = true;
     private ArrayList<Record> records;
     private DatabaseHelper db;
     private Handler handler;
@@ -62,13 +66,15 @@ public class EditRecordService extends IntentService {
         db = DatabaseHelper.getInstance(this);
         handler = new Handler(Looper.getMainLooper());
 
-        int action = intent.getIntExtra(ACTION, ADD_RECORD);
+        int action = intent.getIntExtra(ACTION, ADD_FOLLOWER);
 
+        follower_id = intent.getLongExtra(ID, -1);
         wca_id = intent.getStringExtra(WCA_ID);
         username = intent.getStringExtra(USERNAME);
         isPersonal = intent.getBooleanExtra(IS_PERSONAL, false);
+        log = intent.getBooleanExtra(LOG, true);
 
-        if(action == ADD_RECORD) {
+        if(action == ADD_FOLLOWER) {
 
             handler.post(new Runnable() {
                 @Override
@@ -96,7 +102,7 @@ public class EditRecordService extends IntentService {
                         @Override
                         public void run() {
                             String confirmation = String.format(getString(R.string.toast_follow_confirmation), username);
-                            Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
+                            if (log) Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
 
 
                             Intent intent = new Intent(INTENT_FILTER);
@@ -108,18 +114,23 @@ public class EditRecordService extends IntentService {
             });
         }
 
-        else if(action == DELETE_RECORD) {
+        else if(action == DELETE_FOLLOWER) {
 
-            long follower = db.getFollowerIdFromWca(wca_id);
-            db.deleteRecords(follower);
 
-            db.deleteFollower(wca_id);
+
+            if(follower_id == -1) {
+                follower_id = db.getFollowerIdFromWca(wca_id);
+            }
+            db.deleteHistories(follower_id);
+            db.deleteRecords(follower_id);
+            db.deleteFollower(follower_id);
+
 
             handler.post(new Runnable() {
                 @Override
                 public void run() {
                     String confirmation = String.format(getString(R.string.toast_unfollow_confirmation), username);
-                    Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
+                    if (log) Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -182,7 +193,7 @@ public class EditRecordService extends IntentService {
                 }
 
                 Document document = Jsoup.parse(response.body().string());
-                records = RecordProvider.getRecord(getApplicationContext(), document);
+                records = RecordProvider.getRecord(getApplicationContext(), document, true);
                 response.close();
 
                 callback.onSuccess(records);
@@ -257,14 +268,25 @@ public class EditRecordService extends IntentService {
                 e.printStackTrace();
             }
 
-            db.insertRecord(
+            long record_id = db.insertRecord(
                     follower, events[i],
                     singles[i], nr_singles[i], cr_singles[i], wr_singles[i],
                     averages[i], nr_average[i], cr_average[i], wr_average[i]
             );
 
+            // Insert Histories
 
+            ArrayList<History> histories = record.getCompetitions();
 
+            for(History history : histories) {
+
+                db.insertHistory(
+                        record_id, follower,
+                        history.getEvent(),
+                        history.getCompetition(), history.getRound(),
+                        history.getPlace(), history.getBest(), history.getAverage(), history.getResult_details());
+
+            }
         }
     }
 }

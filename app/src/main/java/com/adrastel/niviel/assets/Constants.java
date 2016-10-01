@@ -7,7 +7,6 @@ public class Constants {
         String HISTORY = "history";
         String RANKING = "ranking";
         String POSITION = "position";
-        String COMPETITIONS = "competitions";
         String ISSINGLE = "issingle";
         String TAB = "tab";
         String WCA_ID = "wca_id";

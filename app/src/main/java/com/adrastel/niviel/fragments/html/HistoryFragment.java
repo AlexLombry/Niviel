@@ -12,19 +12,17 @@ import android.widget.ProgressBar;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.HistoryAdapter;
-import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.providers.html.HistoryProvider;
-import com.google.gson.reflect.TypeToken;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -44,8 +42,18 @@ public class HistoryFragment extends BaseFragment {
     private HttpUrl.Builder urlBuilder = new HttpUrl.Builder();
 
     private String wca_id = null;
+    private long follower_id = -1;
 
 
+    public static HistoryFragment newInstance(long follower_id) {
+        HistoryFragment instance = new HistoryFragment();
+
+        Bundle args = new Bundle();
+        args.putLong(Constants.EXTRAS.ID, follower_id);
+
+        instance.setArguments(args);
+        return instance;
+    }
     // todo: tout changer en new instance
     public static HistoryFragment newInstance(String wca_id, String username) {
         HistoryFragment instance = new HistoryFragment();
@@ -67,15 +75,11 @@ public class HistoryFragment extends BaseFragment {
         Bundle arguments = getArguments();
 
         if(arguments != null) {
-            wca_id = arguments.getString(Constants.EXTRAS.WCA_ID, null);
-            username = arguments.getString(Constants.EXTRAS.USERNAME, null);
+            follower_id = arguments.getLong(Constants.EXTRAS.ID, -1);
+
+            wca_id = follower_id == -1 ? arguments.getString(Constants.EXTRAS.WCA_ID, null) : null;
         }
 
-        // Si il est null on l'id wca est donc personel
-        if(wca_id == null) {
-            // On recupere l'id wca
-            wca_id = preferences.getString(getString(R.string.pref_wca_id), null);
-        }
         // modifie l'url en fonction de l'id wca
         urlBuilder.addEncodedQueryParameter("i", wca_id);
 
@@ -124,26 +128,27 @@ public class HistoryFragment extends BaseFragment {
             httpManager.stopLoaders();
         }
 
+        else if(follower_id != -1) {
 
+            DatabaseHelper database = DatabaseHelper.getInstance(getContext());
 
-        else if(getArguments() != null){
-            Bundle arguments = getArguments();
+            ArrayList<com.adrastel.niviel.database.History> localHistories = database.selectHistoriesFromFollower(follower_id);
+            ArrayList<History> histories = new ArrayList<>();
 
-            ArrayList<History> histories = arguments.getParcelableArrayList(Constants.EXTRAS.COMPETITIONS);
-
-
-            if(histories != null) {
-                adapter.refreshData(histories);
-                httpManager.stopLoaders();
+            for(com.adrastel.niviel.database.History history : localHistories) {
+                histories.add(history.toHistoryModel());
             }
 
-            else if(isConnected()){
-                callData();
-            }
+            adapter.refreshData(histories);
+            httpManager.stopLoaders();
         }
 
         else if(isConnected()) {
             callData();
+        }
+
+        else {
+            httpManager.stopLoaders();
         }
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

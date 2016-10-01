@@ -214,7 +214,7 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
     private void onUnfollow(Ranking ranking) {
 
         Intent intent = new Intent(getActivity(), EditRecordService.class);
-        intent.putExtra(EditRecordService.ACTION, EditRecordService.DELETE_RECORD);
+        intent.putExtra(EditRecordService.ACTION, EditRecordService.DELETE_FOLLOWER);
         intent.putExtra(EditRecordService.WCA_ID, ranking.getWca_id());
         intent.putExtra(EditRecordService.USERNAME, ranking.getPerson());
 

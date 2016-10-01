@@ -68,9 +68,9 @@ public class RecordProvider extends HtmlProvider {
                 /**
                  * Si on veux ajouter les competitions, on les recupere, on les filtres avec l'event et on les ajouter au buffer
                  */
-                if (addCompetitions && activity != null) {
+                if (addCompetitions) {
 
-                    ArrayList<History> history = HistoryProvider.getHistory(activity, document, bufferRecord.getEvent());
+                    ArrayList<History> history = HistoryProvider.getHistory(context, document, bufferRecord.getEvent());
 
                     bufferRecord.setCompetitions(history);
 

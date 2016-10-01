@@ -42,10 +42,13 @@ import android.widget.Toast;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.database.DatabaseHelper;
+import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.html.RankingFragment;
+import com.adrastel.niviel.services.EditRecordService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -80,10 +83,10 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     private BroadcastReceiver activityReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getStringExtra(ACTIVITY_RECEIVER_ACTION);
 
-            switch (action) {
-                case UPDATE_WCA_PROFILE:
+            switch (intent.getIntExtra(EditRecordService.ACTION, EditRecordService.ADD_RECORD_FAILURE)) {
+
+                case EditRecordService.ADD_RECORD_SUCCESS:
                     updateWcaProfile();
                     break;
             }
@@ -172,21 +175,22 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
             }
         });
 
-        setNavigationText(prefWcaName, prefWcaId);
+        setNavigationText();
 
         // todo: gere id wca incorrecte
 
     }
 
-    private void setNavigationText(String name, String wca_id) {
+    private void setNavigationText() {
 
         View headerView = navigationView.getHeaderView(0);
 
         TextView nameView =(TextView) headerView.findViewById(R.id.name);
         TextView wca_idView =(TextView) headerView.findViewById(R.id.wca_id);
 
-        nameView.setText(name);
-        wca_idView.setText(wca_id);
+
+        nameView.setText(prefWcaName);
+        wca_idView.setText(prefWcaId);
 
     }
 
@@ -287,7 +291,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     protected void onResume() {
         super.onResume();
         drawerLayout.addDrawerListener(this);
-        LocalBroadcastManager.getInstance(this).registerReceiver(activityReceiver, new IntentFilter(ACTIVITY_RECEIVER));
+        LocalBroadcastManager.getInstance(this).registerReceiver(activityReceiver, new IntentFilter(EditRecordService.INTENT_FILTER));
     }
 
     //<editor-fold desc="Drawer events">
@@ -467,9 +471,15 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     }
 
     private void updateWcaProfile() {
-        /*prefWcaId = preferences.getString(getString(R.string.pref_wca_id), null);
-        prefWcaName = preferences.getString(getString(R.string.pref_wca_username), null);*/
         prefId = preferences.getLong(getString(R.string.pref_personal_id), -1);
+
+        if(prefId != -1) {
+            DatabaseHelper database = DatabaseHelper.getInstance(this);
+            Follower follower = database.selectFollowerFromId(prefId);
+
+            prefWcaId = follower.wca_id();
+            prefWcaName = follower.name();
+        }
     }
 
     @SuppressWarnings("ResourceType")

@@ -44,7 +44,7 @@ public class RecordFragment extends BaseFragment {
     private RecordAdapter adapter;
 
     private String wca_id;
-    private long id = -1;
+    private long follower_id = -1;
 
     public static RecordFragment newInstance(long id) {
 
@@ -80,14 +80,14 @@ public class RecordFragment extends BaseFragment {
 
         wca_id = null;
 
-        // On recupere l'id wca
+        // On recupere l'follower_id wca
 
         Bundle arguments = getArguments();
 
         if(arguments != null) {
-            id = arguments.getLong(Constants.EXTRAS.ID, -1);
+            follower_id = arguments.getLong(Constants.EXTRAS.ID, -1);
 
-            wca_id = id != -1 ? null : arguments.getString(Constants.EXTRAS.WCA_ID, null);
+            wca_id = follower_id == -1 ? arguments.getString(Constants.EXTRAS.WCA_ID, null) : null;
         }
     }
 
@@ -132,11 +132,11 @@ public class RecordFragment extends BaseFragment {
         }
         // Si on est connecté, on fait une requete HTTP, sinon on lit les données locales
 
-        else if(id != -1) {
+        else if(follower_id != -1) {
 
             DatabaseHelper database = DatabaseHelper.getInstance(getContext());
 
-            Follower follower = database.selectFollowerFromId(id);
+            Follower follower = database.selectFollowerFromId(follower_id);
 
             this.wca_id = follower.wca_id();
 
@@ -179,13 +179,15 @@ public class RecordFragment extends BaseFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         try {
+            adapter.getDatas();
             outState.putParcelableArrayList(Constants.EXTRAS.RECORDS, adapter.getDatas());
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+
+        super.onSaveInstanceState(outState);
     }
 
     protected ArrayList<Record> loadLocalData(Bundle savedInstanceState) {

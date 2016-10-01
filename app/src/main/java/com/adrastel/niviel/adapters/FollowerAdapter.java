@@ -96,7 +96,7 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
 
     private void onUnfollow(Context context, Follower follower) {
         DatabaseHelper helper = DatabaseHelper.getInstance(context);
-        helper.deleteFollower(follower.wca_id());
+        helper.deleteFollower(follower._id());
         followers.remove(follower);
         notifyDataSetChanged();
     }

@@ -1,6 +1,7 @@
 package com.adrastel.niviel.providers.html;
 
 import android.app.Activity;
+import android.content.Context;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
@@ -30,12 +31,12 @@ public class HistoryProvider extends HtmlProvider {
 
     /**
      * La fonction getAllHistory recupère toutes les competitions à l'aide du code HTML
-     * @param activity context
+     * @param context context
      * @param document document
      * @param filter filter
      * @return competitions
      */
-    public static ArrayList<History> getHistory(final Activity activity, Document document, String filter) {
+    public static ArrayList<History> getHistory(final Context context, Document document, String filter) {
 
 
         ArrayList<History> arrayList = new ArrayList<>();
@@ -86,7 +87,7 @@ public class HistoryProvider extends HtmlProvider {
                     if (isTitle(tr)) {
                         //Log.d("mock test");
                         if (!checkHtml(hydrate(tr))) {
-                            Toast.makeText(activity, activity.getString(R.string.error_interpretation_html), Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, context.getString(R.string.error_interpretation_html), Toast.LENGTH_LONG).show();
                         }
                     }
 
@@ -115,13 +116,8 @@ public class HistoryProvider extends HtmlProvider {
             }
         }
 
-        catch (Exception exception) {
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(activity, activity.getString(R.string.wrong_wca_id), Toast.LENGTH_LONG).show();
-                }
-            });
+        catch (Exception e) {
+            e.printStackTrace();
         }
 
         return arrayList;

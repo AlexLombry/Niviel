@@ -17,4 +17,4 @@ select_follower_from_id:
 SELECT * FROM follower WHERE _id = ?;
 
 delete_follower:
-DELETE FROM follower WHERE wca_id = ?;
+DELETE FROM follower WHERE _id = ?;

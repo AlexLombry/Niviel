@@ -15,13 +15,11 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.IntentHelper;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.EditProfileFollowDialog;
@@ -39,7 +37,7 @@ public class ProfileFragment extends BaseFragment{
     private MainActivity activity;
     private TabLayout tabLayout;
 
-    private long id = -1;
+    private long follower_id = -1;
     private String wca_id = null;
     private String username = null;
     private int tab = RECORD_TAB;
@@ -107,12 +105,12 @@ public class ProfileFragment extends BaseFragment{
 
             tab = args.getInt(Constants.EXTRAS.TAB, RECORD_TAB);
 
-            id = args.getLong(Constants.EXTRAS.ID, -1);
+            follower_id = args.getLong(Constants.EXTRAS.ID, -1);
 
-            if(id != -1) {
+            if(follower_id != -1) {
                 DatabaseHelper database = DatabaseHelper.getInstance(getContext());
 
-                Follower follower = database.selectFollowerFromId(id);
+                Follower follower = database.selectFollowerFromId(follower_id);
                 username = follower.name();
                 wca_id = follower.wca_id();
             }
@@ -166,7 +164,7 @@ public class ProfileFragment extends BaseFragment{
 
                             Intent follow = new Intent(getContext(), EditRecordService.class);
 
-                            follow.putExtra(EditRecordService.ACTION, EditRecordService.ADD_RECORD);
+                            follow.putExtra(EditRecordService.ACTION, EditRecordService.ADD_FOLLOWER);
                             follow.putExtra(EditRecordService.USERNAME, username);
                             follow.putExtra(EditRecordService.WCA_ID, wca_id);
 
@@ -177,14 +175,23 @@ public class ProfileFragment extends BaseFragment{
                         @Override
                         public void onEdit() {
 
-                            Intent edit = new Intent(getContext(), EditRecordService.class);
+                            Intent delete = new Intent(getContext(), EditRecordService.class);
+                            delete.putExtra(EditRecordService.ACTION, EditRecordService.DELETE_FOLLOWER);
+                            delete.putExtra(EditRecordService.ID, follower_id);
+                            delete.putExtra(EditRecordService.LOG, false);
 
-                            edit.putExtra(EditRecordService.ACTION, EditRecordService.ADD_RECORD);
-                            edit.putExtra(EditRecordService.USERNAME, username);
-                            edit.putExtra(EditRecordService.WCA_ID, wca_id);
-                            edit.putExtra(EditRecordService.IS_PERSONAL, true);
+                            getContext().startService(delete);
 
-                            getContext().startService(edit);
+
+                            Intent add = new Intent(getContext(), EditRecordService.class);
+
+                            add.putExtra(EditRecordService.ACTION, EditRecordService.ADD_FOLLOWER);
+                            add.putExtra(EditRecordService.USERNAME, username);
+                            add.putExtra(EditRecordService.WCA_ID, wca_id);
+                            add.putExtra(EditRecordService.IS_PERSONAL, true);
+                            add.putExtra(EditRecordService.LOG, false);
+
+                            getContext().startService(add);
                         }
                     });
 
@@ -224,13 +231,13 @@ public class ProfileFragment extends BaseFragment{
 
             switch (position) {
                 case 0:
-                    return id != -1 ? RecordFragment.newInstance(id) : RecordFragment.newInstance(wca_id);
+                    return follower_id != -1 ? RecordFragment.newInstance(follower_id) : RecordFragment.newInstance(wca_id);
 
                 case 1:
-                    return HistoryFragment.newInstance(wca_id, username);
+                    return follower_id != -1 ? HistoryFragment.newInstance(follower_id) : HistoryFragment.newInstance(wca_id, username);
 
                 default:
-                    return id != -1 ? RecordFragment.newInstance(id) : RecordFragment.newInstance(wca_id);
+                    return follower_id != -1 ? RecordFragment.newInstance(follower_id) : RecordFragment.newInstance(wca_id);
             }
 
         }

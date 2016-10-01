@@ -1,6 +1,8 @@
 package com.adrastel.niviel.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -51,10 +53,16 @@ public class FollowerFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        long personal_id = preferences.getLong(getString(R.string.pref_personal_id), -1);
+
         DatabaseHelper db = DatabaseHelper.getInstance(getContext());
         ArrayList<Follower> followers = db.selectAllFollowers();
 
-
+        for(Follower follower : followers) {
+            if(follower._id() == personal_id) {
+                followers.remove(follower);
+            }
+        }
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
