@@ -19,6 +19,8 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RankingAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
+import com.adrastel.niviel.dialogs.RankingSwitchCountryDialog;
 import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Ranking;
@@ -48,6 +50,7 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
 
     // cubePosition est une variable qui permet d'identifier sur quelle rubrique on est
     private int cubePosition = 0;
+    private int countryPosition = 0;
 
     // issingle permet de savoir si on veut les single ou average
     private boolean isSingle = true;
@@ -102,7 +105,7 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
         httpManager = new HttpManager(activity, swipeRefreshLayout, progressBar);
 
         if(savedInstanceState != null) {
-            cubePosition = savedInstanceState.getInt(Constants.EXTRAS.POSITION, 0);
+            cubePosition = savedInstanceState.getInt(Constants.EXTRAS.CUBE_POSITION, 0);
             isSingle = savedInstanceState.getBoolean(Constants.EXTRAS.ISSINGLE, true);
 
             subtitle = savedInstanceState.getString(Constants.EXTRAS.SUBTITLE, null);
@@ -172,7 +175,7 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        outState.putInt(Constants.EXTRAS.POSITION, cubePosition);
+        outState.putInt(Constants.EXTRAS.CUBE_POSITION, cubePosition);
         outState.putBoolean(Constants.EXTRAS.ISSINGLE, isSingle);
         outState.putString(Constants.EXTRAS.SUBTITLE, subtitle);
         outState.putParcelableArrayList(Constants.EXTRAS.RANKING, adapter.getDatas());
@@ -200,41 +203,34 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
 
 
                 Bundle bundle = new Bundle();
-                bundle.putInt(Constants.EXTRAS.POSITION, cubePosition);
+                bundle.putInt(Constants.EXTRAS.CUBE_POSITION, cubePosition);
 
-                DialogFragment dialog = new RankingSwitchCubeDialog();
-                dialog.setArguments(bundle);
-                dialog.setTargetFragment(this, 0);
-                dialog.show(getFragmentManager(), Constants.TAG.RANKING);
+                DialogFragment cubeSwitch = new RankingSwitchCubeDialog();
+                cubeSwitch.setArguments(bundle);
+                cubeSwitch.setTargetFragment(this, 0);
+                cubeSwitch.show(getFragmentManager(), "cubeSwitch");
 
                 return true;
+
+            case R.id.switch_country:
+
+                RankingSwitchCountryDialog countrySwitch = RankingSwitchCountryDialog.newInstance(countryPosition);
+                countrySwitch.show(getFragmentManager(), "countrySwitch");
+
+                countrySwitch.setListener(new RankingSwitchCountryDialog.RankingSwitchCountryListener() {
+                    @Override
+                    public void onClick(int position) {
+                        countryPosition = position;
+                        callData();
+                    }
+                });
+
+                return true;
+
 
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Retourne l'url de requete
-     * @return url
-     */
-    protected HttpUrl getUrl() {
-
-        HttpUrl.Builder builder = new HttpUrl.Builder()
-                .scheme("https")
-                .host("www.worldcubeassociation.org")
-                .addEncodedPathSegments("results/events.php")
-                .addEncodedQueryParameter("eventId", Assets.getCubeId(cubePosition));
-
-        if(!isSingle) {
-            builder.addEncodedQueryParameter("average", "Average");
-        }
-
-        else {
-            builder.addEncodedQueryParameter("single", "Single");
-        }
-
-        return builder.build();
     }
 
     /**
@@ -253,6 +249,24 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
 
     @Override
     public void callData() {
+
+        swipeRefreshLayout.setRefreshing(true);
+
+        HttpUrl.Builder builder = new HttpUrl.Builder()
+                .scheme("https")
+                .host("www.worldcubeassociation.org")
+                .addEncodedPathSegments("results/events.php")
+                .addEncodedQueryParameter("eventId", Assets.getCubeId(cubePosition))
+                .addEncodedQueryParameter("regionId", getResources().getStringArray(R.array.countries_id)[countryPosition]);
+
+        if(!isSingle) {
+            builder.addEncodedQueryParameter("average", "Average");
+        }
+
+        else {
+            builder.addEncodedQueryParameter("single", "Single");
+        }
+
         adapter.setSingle(isSingle);
 
         String[] cubes = getResources().getStringArray(R.array.cubes);
@@ -261,7 +275,7 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
 
         activity.setSubtitle(subtitle);
 
-        httpManager.callData(getUrl(), new HttpManager.SuccessCallback() {
+        httpManager.callData(builder.build(), new HttpManager.SuccessCallback() {
             @Override
             public void onSuccess(String response) {
                 Document document = Jsoup.parse(response);
@@ -271,6 +285,7 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
                     @Override
                     public void run() {
                         adapter.refreshData(rankings);
+                        httpManager.stopLoaders();
                     }
                 });
             }

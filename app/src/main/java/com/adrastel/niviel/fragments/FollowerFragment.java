@@ -57,12 +57,18 @@ public class FollowerFragment extends BaseFragment {
 
         DatabaseHelper db = DatabaseHelper.getInstance(getContext());
         ArrayList<Follower> followers = db.selectAllFollowers();
+        Follower followerToRemove = null;
 
         for(Follower follower : followers) {
             if(follower._id() == personal_id) {
-                followers.remove(follower);
+                followerToRemove = follower;
             }
         }
+
+        if(followerToRemove != null) {
+            followers.remove(followerToRemove);
+        }
+
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

@@ -67,6 +67,7 @@
     <string name="share">Partager</string>
     <string name="details">Détails</string>
     <string name="switch_cube">Changer de cube</string>
+    <string name="switch_country">Changer de pays</string>
     <string name="my_account">Mon compte</string>
     <string name="about">À propos</string>
     <string name="report_bug">Signaler un bug</string>

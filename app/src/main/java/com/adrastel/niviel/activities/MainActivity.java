@@ -20,6 +20,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     @BindView(R.id.navigation_view) NavigationView navigationView;
     @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
+    private MenuItem searchMenuItem;
     // Les core-objects
     private FragmentManager fragmentManager;
     private BaseFragment fragment;
@@ -224,8 +226,8 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         inflater.inflate(R.menu.menu_main, menu);
 
         try {
-            MenuItem itemSearch = menu.findItem(R.id.search);
-            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(itemSearch);
+            searchMenuItem = menu.findItem(R.id.search);
+            SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
 
             SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -263,10 +265,12 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
      */
     @Override
     public void onBackPressed() {
+        closeSearchview();
 
         if (isDrawerOpen()) {
             closeDrawer();
         }
+
         else {
             super.onBackPressed();
         }
@@ -528,6 +532,8 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
                 String wca_id = query.getLastPathSegment();
                 String name = intent.getStringExtra(SearchManager.EXTRA_DATA_KEY);
                 searchUser(wca_id, name);
+
+                closeSearchview();
             }
         }
 
@@ -549,6 +555,12 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
                 }
 
             }
+        }
+    }
+
+    private void closeSearchview() {
+        if(searchMenuItem != null) {
+            searchMenuItem.collapseActionView();
         }
     }
 

@@ -7,9 +7,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 
 public class RankingSwitchCubeDialog extends DialogFragment {
 
@@ -17,11 +20,13 @@ public class RankingSwitchCubeDialog extends DialogFragment {
 
     private int position = -1;
 
+    private AlertDialog dialog;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        position = getArguments().getInt(Constants.EXTRAS.POSITION, -1);
+        position = getArguments().getInt(Constants.EXTRAS.CUBE_POSITION, -1);
 
         try {
             listener = (RankingSwitchCubeListener) getTargetFragment();
@@ -37,7 +42,7 @@ public class RankingSwitchCubeDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle(R.string.switch_cube);
         builder.setIcon(R.drawable.ic_swap);
@@ -46,9 +51,9 @@ public class RankingSwitchCubeDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 position = i;
+                manageButtons();
             }
         });
-
 
 
         builder.setPositiveButton(R.string.single, new DialogInterface.OnClickListener() {
@@ -67,7 +72,30 @@ public class RankingSwitchCubeDialog extends DialogFragment {
 
         builder.setNegativeButton(R.string.cancel, null);
 
-        return builder.create();
+        dialog = builder.create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                manageButtons();
+            }
+        });
+
+        return dialog;
+    }
+
+    private void manageButtons() {
+
+        if(dialog != null) {
+
+            if(position == 4 || position == 15 || position == 16 || position == 17) {
+                dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
+            }
+
+            else {
+                dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     public interface RankingSwitchCubeListener {

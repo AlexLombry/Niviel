@@ -9,11 +9,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
+import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.views.CircleView;
 
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
         @BindView(R.id.first_line) TextView firstLine;
         @BindView(R.id.second_line) TextView secondLine;
         @BindView(R.id.more) ImageButton more;
+        @BindView(R.id.root_layout) LinearLayout click_area;
 
         public ViewHolder(View view) {
             super(view);
@@ -55,11 +58,20 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Follower follower = followers.get(position);
+        final Follower follower = followers.get(position);
 
         holder.firstLine.setText(follower.name());
         holder.secondLine.setText(follower.wca_id());
         holder.place.setVisibility(View.INVISIBLE);
+
+        holder.click_area.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ProfileFragment profileFragment = ProfileFragment.newInstance(follower._id());
+
+                getActivity().switchFragment(profileFragment);
+            }
+        });
 
         loadMenu(holder, follower);
 

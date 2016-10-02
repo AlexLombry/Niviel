@@ -270,7 +270,7 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         @BindView(R.id.first_line) TextView person;
         @BindView(R.id.second_line) TextView result;
         @BindView(R.id.more) ImageButton more;
-        @BindView(R.id.rool_layout) LinearLayout click_area;
+        @BindView(R.id.root_layout) LinearLayout click_area;
 
 
         public ViewHolder(View itemView) {
