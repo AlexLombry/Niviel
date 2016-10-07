@@ -39,13 +39,14 @@ public class EditRecordService extends IntentService {
     public static final String ACTION = "action";
     public static final int ADD_FOLLOWER = 0;
     public static final int DELETE_FOLLOWER = 1;
-    public static final String LOG = "log";
+    public static final String FOLLOWS = "follows";
 
     private String wca_id = null;
     private String username = null;
     private long follower_id = -1;
     private boolean isPersonal = false;
-    private boolean log = true;
+    // permet de savoir si on follow ou devient
+    private boolean follows = true;
     private ArrayList<Record> records;
     private DatabaseHelper db;
     private Handler handler;
@@ -72,7 +73,7 @@ public class EditRecordService extends IntentService {
         wca_id = intent.getStringExtra(WCA_ID);
         username = intent.getStringExtra(USERNAME);
         isPersonal = intent.getBooleanExtra(IS_PERSONAL, false);
-        log = intent.getBooleanExtra(LOG, true);
+        follows = intent.getBooleanExtra(FOLLOWS, true);
 
         if(action == ADD_FOLLOWER) {
 
@@ -101,8 +102,8 @@ public class EditRecordService extends IntentService {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            String confirmation = String.format(getString(R.string.toast_follow_confirmation), username);
-                            if (log) Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
+                            String confirmation = follows ? String.format(getString(R.string.toast_follow_confirmation), username) : String.format(getString(R.string.toast_switch_profile_confirmation), username);
+                            Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
 
 
                             Intent intent = new Intent(INTENT_FILTER);
@@ -130,7 +131,7 @@ public class EditRecordService extends IntentService {
                 @Override
                 public void run() {
                     String confirmation = String.format(getString(R.string.toast_unfollow_confirmation), username);
-                    if (log) Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
+                    if (follows) Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
                 }
             });
 

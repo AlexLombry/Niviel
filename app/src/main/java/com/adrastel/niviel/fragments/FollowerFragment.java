@@ -79,7 +79,6 @@ public class FollowerFragment extends BaseFragment {
         if(followers.size() == 0) {
             makeSnackbar(R.string.no_followers, Snackbar.LENGTH_INDEFINITE).show();
         }
-
     }
 
     @Override

@@ -10,7 +10,9 @@ import android.view.MenuItem;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.fragments.SettingsFragment;
 
-public class SettingsActivity extends AppCompatActivity{
+public class SettingsActivity extends AppCompatActivity {
+
+    private boolean hasToRestart = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +34,10 @@ public class SettingsActivity extends AppCompatActivity{
                 .commit();
     }
 
+    public void hasToRestart() {
+        hasToRestart = true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -44,5 +50,13 @@ public class SettingsActivity extends AppCompatActivity{
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void finish() {
+        if(hasToRestart) {
+            setResult(MainActivity.RESTART_ACTIVITY);
+        }
+        super.finish();
     }
 }

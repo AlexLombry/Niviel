@@ -77,6 +77,7 @@
     <string name="unfollow">Ne plus suivre</string>
     <string name="followers">Followers</string>
     <string name="goto_internet">Voir le site web</string>
+    <string name="toast_switch_profile_confirmation">Votre profil est maintenant au nom de %1$s</string>
     <string name="toast_follow_confirmation">Vous suivez %1$s</string>
     <string name="toast_unfollow_confirmation">Vous ne suivez plus %1$s</string>
     <string name="search">Rechercher</string>
@@ -85,6 +86,9 @@
     <string name="pref_double_back_title">Confirmation pour quitter l\'application</string>
     <string name="pref_double_back_description">Cliquez 2 fois sur le bouton Retour pour quitter l\'application</string>
     <string name="edit_profile">Changer de profil</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="random_profile">Profil aléatoire</string>
 
     <!-- Preferences -->
     <string name="wca_id">Identifiant WCA</string>
@@ -101,7 +105,6 @@
     <string name="no_title" translatable="false"/>
 
     <string name="dialog_edit_profile_follow_title">Changement de profil/Suivre</string>
-    <!--<string name="dialog_edit_profile_follow_message">Votre profil personnel sera au nom de %1$s</string>-->
     <string name="dialog_edit_profile_follow_message">
         Vous pouvez :
         \n\t-Suivre %1$s et être informé si il obtient de nouveaux records.
@@ -128,4 +131,7 @@
     <!-- todo: à changer -->
     <string name="notif_new_rank_message">Passé de n°%1$d à n°%2$d %3$s (%4$s) en %5$s avec un score de %6$s</string>
     <string name="share_new_rank">%1$s est passé de n°%2$d à n°%3$d %4$s (%5$s) en %6$s avec un score de %7$s</string>
+
+    <string name="reset_pref_id_title">Réinitialiser votre profil personnel</string>
+    <string name="reset_pref_id_content">Réinitialiser votre profil personnel ?\nDes profils selectionnés au hasard défileront à la place</string>
 </resources>

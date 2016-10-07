@@ -43,6 +43,7 @@ import android.widget.Toast;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     public static final String ACTIVITY_RECEIVER = "activity_receiver";
     public static final String ACTIVITY_RECEIVER_ACTION = "activity_receiver_action";
     public static final String UPDATE_WCA_PROFILE = "update_wca_profile";
+    public static final int RESTART_ACTIVITY = 0;
     // Les vues
     public @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
@@ -147,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         // Gere l'intent (si il s'agit d'une requete...)
         Intent intent = getIntent();
         handleIntent(intent);
-
 
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -253,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
             case R.id.settings:
                 Intent settings = new Intent(this, SettingsActivity.class);
-                startActivity(settings);
+                startActivityForResult(settings, 0);
                 return true;
         }
 
@@ -322,7 +323,13 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         }
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESTART_ACTIVITY) {
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
+        }
+    }
 
     /**
      * Choisit le fragment à prendre
@@ -351,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
                     @Override
                     public void run() {
                         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                        startActivity(intent);
+                        startActivityForResult(intent, 0);
                     }
                 });
                 return null;

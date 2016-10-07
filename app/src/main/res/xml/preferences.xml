@@ -1,23 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/profile">
-
-        <EditTextPreference
-            android:key="@string/pref_wca_id"
-            android:title="@string/wca_id"
-            android:summary="Votre id WCA"
-            android:singleLine="true"
-            android:textAllCaps="true"
-            android:capitalize="characters"
-            android:hint="0000AAAA00"
-            android:defaultValue=""/>
-
-        <CheckBoxPreference
-            android:key="@string/pref_double_back"
-            android:title="@string/pref_double_back_title"
-            android:summary="@string/pref_double_back_description"
-            android:defaultValue="true"/>
-
+        <com.adrastel.niviel.preferences.ResetPersIdPreference
+            android:key="@string/pref_personal_id"
+            android:title="@string/reset_pref_id_title"
+            android:dialogTitle="@string/reset_pref_id_title"
+            android:dialogMessage="@string/reset_pref_id_content"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/about">

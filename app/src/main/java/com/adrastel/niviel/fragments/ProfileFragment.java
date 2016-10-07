@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -117,6 +118,19 @@ public class ProfileFragment extends BaseFragment{
             else {
                 wca_id = args.getString(Constants.EXTRAS.WCA_ID, null);
                 username = args.getString(Constants.EXTRAS.USERNAME, null);
+
+                if(wca_id == null) {
+
+                    String[] usernames = getResources().getStringArray(R.array.random_name);
+                    String[] wca_ids = getResources().getStringArray(R.array.random_wca_id);
+
+                    int random = (int) (Math.random() * wca_ids.length);
+
+                    username = usernames[random];
+                    wca_id = wca_ids[random];
+
+
+                }
             }
 
         }
@@ -178,7 +192,7 @@ public class ProfileFragment extends BaseFragment{
                             Intent delete = new Intent(getContext(), EditRecordService.class);
                             delete.putExtra(EditRecordService.ACTION, EditRecordService.DELETE_FOLLOWER);
                             delete.putExtra(EditRecordService.ID, follower_id);
-                            delete.putExtra(EditRecordService.LOG, false);
+                            delete.putExtra(EditRecordService.FOLLOWS, false);
 
                             getContext().startService(delete);
 
@@ -189,7 +203,7 @@ public class ProfileFragment extends BaseFragment{
                             add.putExtra(EditRecordService.USERNAME, username);
                             add.putExtra(EditRecordService.WCA_ID, wca_id);
                             add.putExtra(EditRecordService.IS_PERSONAL, true);
-                            add.putExtra(EditRecordService.LOG, false);
+                            add.putExtra(EditRecordService.FOLLOWS, false);
 
                             getContext().startService(add);
                         }
@@ -228,7 +242,6 @@ public class ProfileFragment extends BaseFragment{
 
         @Override
         public Fragment getItem(int position) {
-
             switch (position) {
                 case 0:
                     return follower_id != -1 ? RecordFragment.newInstance(follower_id) : RecordFragment.newInstance(wca_id);
