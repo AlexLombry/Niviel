@@ -26,6 +26,7 @@ import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -38,8 +39,8 @@ public class HistoryAdapter extends BaseExpandableAdapter<HistoryAdapter.EventVi
 
     private LayoutInflater inflater;
 
-    public HistoryAdapter(FragmentActivity activity) {
-        super(activity);
+    public HistoryAdapter(FragmentActivity activity, ArrayList<Event> events) {
+        super(activity, events);
 
         inflater = LayoutInflater.from(activity);
     }
@@ -66,6 +67,8 @@ public class HistoryAdapter extends BaseExpandableAdapter<HistoryAdapter.EventVi
 
         public EventViewHolder(View itemView) {
             super(itemView);
+
+            title = (TextView) itemView.findViewById(R.id.first_line);
         }
     }
 
@@ -87,7 +90,7 @@ public class HistoryAdapter extends BaseExpandableAdapter<HistoryAdapter.EventVi
     }
 
     // Lors de la creation de la vue
-    @Override
+    /*@Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -95,7 +98,7 @@ public class HistoryAdapter extends BaseExpandableAdapter<HistoryAdapter.EventVi
         View view = inflater.inflate(R.layout.adapter_list_avatar, parent, false);
 
         return new ViewHolder(view);
-    }
+    }*/
 
     @Override
     public EventViewHolder onCreateParentViewHolder(ViewGroup parentViewGroup) {
@@ -159,12 +162,6 @@ public class HistoryAdapter extends BaseExpandableAdapter<HistoryAdapter.EventVi
 
 
     }*/
-
-    @Override
-    public int getItemCount() {
-        return getDatas().size();
-    }
-
     private void loadMenu(ViewHolder holder, final History history) {
         holder.more.setOnClickListener(new View.OnClickListener() {
             @Override

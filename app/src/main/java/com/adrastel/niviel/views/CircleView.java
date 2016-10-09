@@ -81,11 +81,17 @@ public class CircleView extends View {
 
         backgroundPaint.setColor(background);
 
-        canvas.drawCircle(circleX, circleY, radius, backgroundPaint);
+        try {
+            canvas.drawCircle(circleX, circleY, radius, backgroundPaint);
 
-        canvas.drawText(text, circleX, textY, textPaint);
+            canvas.drawText(text, circleX, textY, textPaint);
 
-        canvas.translate(1, 1);
+            canvas.translate(1, 1);
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

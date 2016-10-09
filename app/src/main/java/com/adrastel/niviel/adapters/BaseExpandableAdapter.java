@@ -17,8 +17,8 @@ public abstract class BaseExpandableAdapter<PVH extends ParentViewHolder, CVH ex
 
     private MainActivity activity;
 
-    public BaseExpandableAdapter(FragmentActivity activity) {
-        super(null);
+    public BaseExpandableAdapter(FragmentActivity activity, ArrayList<Event> events) {
+        super(events);
 
         try {
             this.activity = (MainActivity) activity;

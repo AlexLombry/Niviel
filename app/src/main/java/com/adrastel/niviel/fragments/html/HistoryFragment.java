@@ -20,6 +20,7 @@ import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Event;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.models.readable.Record;
+import com.adrastel.niviel.models.writeable.BufferHistory;
 import com.adrastel.niviel.providers.html.HistoryProvider;
 
 import org.jsoup.Jsoup;
@@ -86,7 +87,22 @@ public class HistoryFragment extends BaseFragment {
         urlBuilder.addEncodedQueryParameter("i", wca_id);
 
         // cree l'adapter
-        adapter = new HistoryAdapter(getActivity());
+        BufferHistory history = new BufferHistory();
+        history.setEvent("yolo");
+        history.setResult_details("f");
+        history.setAverage("e");
+        history.setBest("f");
+        history.setCompetition("Herel");
+        history.setRound("tesfq");
+        ArrayList<Event> fakeEv = new ArrayList<>();
+        ArrayList<History> fakeHis = new ArrayList<>();
+
+        fakeHis.add(history);
+
+        fakeEv.add(new Event("test", fakeHis));
+
+        adapter = new HistoryAdapter(getActivity(), fakeEv);
+
 
     }
 
