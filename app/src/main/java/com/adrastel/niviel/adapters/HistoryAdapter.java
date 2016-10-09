@@ -20,6 +20,9 @@ import com.adrastel.niviel.assets.IntentHelper;
 import com.adrastel.niviel.dialogs.HistoryDialog;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.views.CircleView;
+import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemAdapter;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,10 +30,85 @@ import butterknife.ButterKnife;
 /**
  * HistoryAdapter organise les donnes données par un objet histor
  */
-public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, History> {
+public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, History> implements ExpandableItemAdapter {
 
     public HistoryAdapter(FragmentActivity activity) {
         super(activity);
+    }
+
+    @Override
+    public int getGroupCount() {
+        return 0;
+    }
+
+    @Override
+    public int getChildCount(int groupPosition) {
+        return 0;
+    }
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return 0;
+    }
+
+    @Override
+    public int getGroupItemViewType(int groupPosition) {
+        return 0;
+    }
+
+    @Override
+    public int getChildItemViewType(int groupPosition, int childPosition) {
+        return 0;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
+        return null;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
+        return null;
+    }
+
+    @Override
+    public void onBindGroupViewHolder(RecyclerView.ViewHolder holder, int groupPosition, int viewType) {
+
+    }
+
+    @Override
+    public void onBindChildViewHolder(RecyclerView.ViewHolder holder, int groupPosition, int childPosition, int viewType) {
+
+    }
+
+    @Override
+    public boolean onCheckCanExpandOrCollapseGroup(RecyclerView.ViewHolder holder, int groupPosition, int x, int y, boolean expand) {
+        return false;
+    }
+
+    @Override
+    public boolean onHookGroupExpand(int groupPosition, boolean fromUser) {
+        return false;
+    }
+
+    @Override
+    public boolean onHookGroupCollapse(int groupPosition, boolean fromUser) {
+        return false;
+    }
+
+    @Override
+    public void onBindChildViewHolder(RecyclerView.ViewHolder holder, int groupPosition, int childPosition, int viewType, List payloads) {
+
+    }
+
+    @Override
+    public void onBindGroupViewHolder(RecyclerView.ViewHolder holder, int groupPosition, int viewType, List payloads) {
+
     }
 
 
