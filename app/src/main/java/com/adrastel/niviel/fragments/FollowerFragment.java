@@ -19,6 +19,7 @@ import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,16 +58,24 @@ public class FollowerFragment extends BaseFragment {
 
         DatabaseHelper db = DatabaseHelper.getInstance(getContext());
         ArrayList<Follower> followers = db.selectAllFollowers();
-        Follower followerToRemove = null;
+        Follower personalProfile = null;
 
+
+        // Déplace le profil personel en haut de la liste
         for(Follower follower : followers) {
             if(follower._id() == personal_id) {
-                followerToRemove = follower;
+                personalProfile = follower;
             }
         }
 
-        if(followerToRemove != null) {
-            followers.remove(followerToRemove);
+        if(personalProfile != null) {
+            followers.remove(personalProfile);
+            Collections.sort(followers, new Follower.Comparator());
+            followers.add(0, personalProfile);
+        }
+
+        else {
+            Collections.sort(followers, new Follower.Comparator());
         }
 
 

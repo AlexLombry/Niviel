@@ -76,7 +76,7 @@ public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, Histor
         holder.place.setText(place);
         holder.results.setText(Assets.formatHtmlAverageDetails(average, result_details));
 
-        holder.place.setBackground(Assets.getColor(getActivity(), R.color.indigo_200));
+        holder.place.setBackground(Assets.getColor(getActivity(), R.color.indigo_300));
 
         loadMenu(holder, history);
 

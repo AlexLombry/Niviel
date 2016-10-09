@@ -223,7 +223,7 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
     }
 
     private void invalidateCircleView(CircleView circleView, boolean isFollowing) {
-        int color = isFollowing ? Assets.getColor(getActivity(), R.color.green_600) : Assets.getColor(getActivity(), R.color.colorAccent);
+        int color = isFollowing ? Assets.getColor(getActivity(), R.color.green_300) : Assets.getColor(getActivity(), R.color.teal_300);
         circleView.setBackground(color);
     }
 

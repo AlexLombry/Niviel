@@ -88,7 +88,7 @@
     <string name="edit_profile">Changer de profil</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
-    <string name="random_profile">Profil aléatoire</string>
+    <string name="explore">Explorer</string>
 
     <!-- Preferences -->
     <string name="wca_id">Identifiant WCA</string>

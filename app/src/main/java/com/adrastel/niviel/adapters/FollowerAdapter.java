@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.ProfileFragment;
@@ -62,7 +63,8 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
 
         holder.firstLine.setText(follower.name());
         holder.secondLine.setText(follower.wca_id());
-        holder.place.setVisibility(View.INVISIBLE);
+        holder.place.setBackground(Assets.getColor(getActivity(), R.color.green_300));
+        holder.place.setText(String.valueOf(position + 1));
 
         holder.click_area.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +75,13 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
             }
         });
 
-        loadMenu(holder, follower);
+        if(Assets.isPersonal(getActivity(), follower._id())) {
+            holder.click_area.setBackgroundResource(R.color.green_100);
+            holder.more.setVisibility(View.INVISIBLE);
+        }
+        else {
+            loadMenu(holder, follower);
+        }
 
     }
 
@@ -84,6 +92,7 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
             public void onClick(final View view) {
 
                 PopupMenu menu = new PopupMenu(view.getContext(), view);
+
                 menu.inflate(R.menu.menu_pop_follower);
 
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

@@ -25,6 +25,11 @@
                         android:id="@+id/ranking"
                         android:title="@string/ranking"
                         android:icon="@drawable/ic_ranking"/>
+
+                    <item
+                        android:id="@+id/explore"
+                        android:title="@string/explore"
+                        android:icon="@drawable/ic_explore"/>
                 </group>
             </menu>
         </item>

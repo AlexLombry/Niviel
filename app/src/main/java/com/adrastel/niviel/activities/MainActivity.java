@@ -31,9 +31,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.ActionProvider;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -121,6 +124,8 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
         fragmentManager = getSupportFragmentManager();
 
+        // Initialisation des objets
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Actualise l'ID WCA
@@ -142,9 +147,6 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         }
 
         switchFragment(fragment);
-
-        // Initialisation des objets
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         // Gere l'intent (si il s'agit d'une requete...)
         Intent intent = getIntent();
@@ -178,22 +180,8 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
             }
         });
 
-        setNavigationText();
 
         // todo: gere id wca incorrecte
-
-    }
-
-    private void setNavigationText() {
-
-        View headerView = navigationView.getHeaderView(0);
-
-        TextView nameView =(TextView) headerView.findViewById(R.id.name);
-        TextView wca_idView =(TextView) headerView.findViewById(R.id.wca_id);
-
-
-        nameView.setText(prefWcaName);
-        wca_idView.setText(prefWcaId);
 
     }
 
@@ -349,6 +337,9 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
             case R.id.ranking:
                 return new RankingFragment();
 
+            case R.id.explore:
+                return ProfileFragment.newInstance(null, null);
+
             case R.id.followers:
                 return new FollowerFragment();
 
@@ -483,6 +474,13 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
     private void updateWcaProfile() {
         prefId = preferences.getLong(getString(R.string.pref_personal_id), -1);
+        View headerView = navigationView.getHeaderView(0);
+
+        TextView nameView =(TextView) headerView.findViewById(R.id.name);
+        TextView wca_idView =(TextView) headerView.findViewById(R.id.wca_id);
+
+        // Recupere le menuItem du profil
+        MenuItem profileItem = navigationView.getMenu().findItem(R.id.profile);
 
         if(prefId != -1) {
             DatabaseHelper database = DatabaseHelper.getInstance(this);
@@ -490,9 +488,27 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
             prefWcaId = follower.wca_id();
             prefWcaName = follower.name();
+
+            profileItem.setVisible(true);
+
+            nameView.setText(prefWcaName);
+            wca_idView.setText(prefWcaId);
         }
+
+        else {
+            profileItem.setVisible(false);
+
+            nameView.setText(R.string.app_name);
+            wca_idView.setText(R.string.email);
+        }
+
+
     }
 
+    /**
+     * Rafrechie l'UI lors des changements des fragments
+     * @param fragment BaseFragement
+     */
     @SuppressWarnings("ResourceType")
     private void updateUi(BaseFragment fragment) {
 
@@ -529,6 +545,10 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         typedArray.recycle();
     }
 
+    /**
+     * Gere les intent lors du démarrage de l'activité
+     * @param intent intent
+     */
     private void handleIntent(Intent intent) {
         if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_VIEW)) {
 
@@ -565,12 +585,20 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         }
     }
 
+    /**
+     * Ferme la zone de recherche
+     */
     private void closeSearchview() {
         if(searchMenuItem != null) {
             searchMenuItem.collapseActionView();
         }
     }
 
+    /**
+     * Lance la page d'un utilisateur
+     * @param wca_id
+     * @param name
+     */
     private void searchUser(String wca_id, String name) {
 
         ProfileFragment profileFragment = ProfileFragment.newInstance(wca_id, name);
@@ -578,6 +606,10 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
     }
 
+    /**
+     * Change le runner fragmentToRun local en global. Le global est lancé lors de la fermuture du Navigation Drawer
+     * @param runnable
+     */
     private void runWhenDrawerClose(Runnable runnable) {
         this.fragmentToRun = runnable;
     }

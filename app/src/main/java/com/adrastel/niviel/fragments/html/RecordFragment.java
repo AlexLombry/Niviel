@@ -33,6 +33,9 @@ import okhttp3.HttpUrl;
 
 public class RecordFragment extends BaseFragment {
 
+
+    public static final String RECORDS = "records";
+
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
@@ -179,20 +182,14 @@ public class RecordFragment extends BaseFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        try {
-            adapter.getDatas();
-            outState.putParcelableArrayList(Constants.EXTRAS.RECORDS, adapter.getDatas());
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
 
+        outState.putParcelableArrayList(RECORDS, adapter.getDatas());
         super.onSaveInstanceState(outState);
     }
 
     protected ArrayList<Record> loadLocalData(Bundle savedInstanceState) {
         if(savedInstanceState != null) {
-            return savedInstanceState.getParcelableArrayList(Constants.EXTRAS.RECORDS);
+            return savedInstanceState.getParcelableArrayList(RECORDS);
         }
 
         return new ArrayList<>();
