@@ -1,6 +1,7 @@
 package com.adrastel.niviel.fragments.html;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.managers.HttpManager;
+import com.adrastel.niviel.models.readable.Event;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.providers.html.HistoryProvider;
@@ -139,7 +141,7 @@ public class HistoryFragment extends BaseFragment {
                 histories.add(history.toHistoryModel());
             }
 
-            adapter.refreshData(histories);
+            adapter.refreshData(makeExpandedArrayList(histories));
             httpManager.stopLoaders();
         }
 
@@ -169,8 +171,13 @@ public class HistoryFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        outState.putParcelableArrayList(Constants.EXTRAS.HISTORY, adapter.getDatas());
+        try {
+            outState.putParcelableArrayList(Constants.EXTRAS.HISTORY, adapter.getDatas());
 
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         super.onSaveInstanceState(outState);
     }
 
@@ -193,7 +200,7 @@ public class HistoryFragment extends BaseFragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter.refreshData(histories);
+                        adapter.refreshData(makeExpandedArrayList(histories));
                     }
                 });
             }
@@ -201,7 +208,7 @@ public class HistoryFragment extends BaseFragment {
 
     }
 
-    protected ArrayList<History> loadLocalData(Bundle savedInstanceState) {
+    protected ArrayList<Event> loadLocalData(Bundle savedInstanceState) {
         if(savedInstanceState != null) {
             return savedInstanceState.getParcelableArrayList(Constants.EXTRAS.HISTORY);
         }
@@ -212,6 +219,42 @@ public class HistoryFragment extends BaseFragment {
     @Override
     public int getStyle() {
         return R.style.AppTheme_History;
+    }
+
+    /**
+     * Transforme un arraylist d'histoires en arraylist d'arraylist
+     * @param histories historique
+     * @return arraylist d'arraylist
+     */
+    public ArrayList<Event> makeExpandedArrayList(ArrayList<History> histories) {
+
+        // Retour
+        ArrayList<Event> events = new ArrayList<>();
+
+        // Variable temporaire
+        String tokenEvent = histories.size() > 0 ? histories.get(0).getEvent() : null;
+        ArrayList<History> tokenHistories = new ArrayList<>();
+
+        /*
+        Pour chaque historique:
+            - Ajoute l'historique en cours dans une variable temporaire
+            - Si l'event actuel est different du précédent, on ajoute les historiques precedent dans une variable
+         */
+        for(History history : histories) {
+
+            if(tokenEvent != null && !tokenEvent.equals(history.getEvent())) {
+                Event event = new Event(tokenEvent, tokenHistories);
+                events.add(event);
+                tokenEvent = history.getEvent();
+                tokenHistories.clear();
+            }
+
+            tokenHistories.add(history);
+
+        }
+
+        return events;
+
     }
 
 }

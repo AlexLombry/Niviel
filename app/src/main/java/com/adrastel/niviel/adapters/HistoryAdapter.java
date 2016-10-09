@@ -18,8 +18,15 @@ import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.IntentHelper;
 import com.adrastel.niviel.dialogs.HistoryDialog;
+import com.adrastel.niviel.models.readable.Event;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.views.CircleView;
+import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
+import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
+import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,10 +34,14 @@ import butterknife.ButterKnife;
 /**
  * HistoryAdapter organise les donnes données par un objet histor
  */
-public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, History> {
+public class HistoryAdapter extends BaseExpandableAdapter<HistoryAdapter.EventViewHolder, HistoryAdapter.HistoryViewHolder> {
+
+    private LayoutInflater inflater;
 
     public HistoryAdapter(FragmentActivity activity) {
         super(activity);
+
+        inflater = LayoutInflater.from(activity);
     }
 
 
@@ -49,6 +60,32 @@ public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, Histor
         }
     }
 
+    public static class EventViewHolder extends ParentViewHolder {
+
+        public TextView title;
+
+        public EventViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    public static class HistoryViewHolder extends ChildViewHolder {
+
+        public CircleView place;
+        public TextView competition;
+        public TextView results;
+        public ImageButton more;
+
+        public HistoryViewHolder(View itemView) {
+            super(itemView);
+
+            place = (CircleView) itemView.findViewById(R.id.list_place);
+            competition = (TextView) itemView.findViewById(R.id.first_line);
+            results = (TextView) itemView.findViewById(R.id.second_line);
+            more = (ImageButton) itemView.findViewById(R.id.more);
+        }
+    }
+
     // Lors de la creation de la vue
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -60,8 +97,48 @@ public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, Histor
         return new ViewHolder(view);
     }
 
-    // Lors de l'hydratation de la vue
     @Override
+    public EventViewHolder onCreateParentViewHolder(ViewGroup parentViewGroup) {
+        View parentView = inflater.inflate(R.layout.adapter_list_avatar, parentViewGroup, false);
+
+        return new EventViewHolder(parentView);
+    }
+
+    @Override
+    public HistoryViewHolder onCreateChildViewHolder(ViewGroup childViewGroup) {
+        View childView = inflater.inflate(R.layout.adapter_list_avatar, childViewGroup, false);
+
+        return new HistoryViewHolder(childView);
+    }
+
+    @Override
+    public void onBindParentViewHolder(EventViewHolder parentViewHolder, int position, ParentListItem parentListItem) {
+
+        Event event = (Event) parentListItem;
+
+        parentViewHolder.title.setText(event.getTitle());
+    }
+
+    @Override
+    public void onBindChildViewHolder(HistoryViewHolder childViewHolder, int position, Object childListItem) {
+
+        History history = (History) childListItem;
+
+        String event = history.getEvent();
+        String competition = history.getCompetition();
+        String place = history.getPlace();
+        String average = history.getAverage();
+        String result_details = history.getResult_details();
+
+        childViewHolder.competition.setText(Assets.formatHtmltitle(event, competition));
+        childViewHolder.place.setText(place);
+        childViewHolder.results.setText(Assets.formatHtmlAverageDetails(average, result_details));
+
+        childViewHolder.place.setBackground(Assets.getColor(getActivity(), R.color.indigo_300));
+    }
+
+ /*   // Lors de l'hydratation de la vue
+    //@Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         final History history = getDatas().get(position);
@@ -81,7 +158,7 @@ public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, Histor
         loadMenu(holder, history);
 
 
-    }
+    }*/
 
     @Override
     public int getItemCount() {
@@ -138,6 +215,7 @@ public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, Histor
 
     }
 
+    // todo: changer la phrase shareFormat
     private void onShare(History history) {
 
 
