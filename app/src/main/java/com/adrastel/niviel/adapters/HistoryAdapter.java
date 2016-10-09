@@ -22,6 +22,7 @@ import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.views.CircleView;
 import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -30,7 +31,21 @@ import butterknife.ButterKnife;
 /**
  * HistoryAdapter organise les donnes données par un objet histor
  */
-public class HistoryAdapter extends WebAdapter<HistoryAdapter.ViewHolder, History> implements ExpandableItemAdapter {
+public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> implements ExpandableItemAdapter {
+
+    private ArrayList<History> datas = new ArrayList<>();
+
+
+    public void refreshData(ArrayList<History> datas) {
+
+        this.datas.clear();
+        this.datas.addAll(datas);
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<History> getDatas() {
+        return datas;
+    }
 
     public HistoryAdapter(FragmentActivity activity) {
         super(activity);

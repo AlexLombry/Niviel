@@ -24,6 +24,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -212,6 +213,44 @@ public class HistoryFragment extends BaseFragment {
     @Override
     public int getStyle() {
         return R.style.AppTheme_History;
+    }
+
+    /**
+     * Transforme un arraylist d'histoires en arraylist d'arraylist
+     * @param histories historique
+     * @return arraylist d'arraylist
+     */
+    public HashMap<String, ArrayList<History>> makeExpandedArrayList(ArrayList<History> histories) {
+
+        // Retour
+        HashMap<String, ArrayList<History>> events = new HashMap<>();
+
+        // Variable temporaire
+        String tokenEvent = histories.size() > 0 ? histories.get(0).getEvent() : null;
+        ArrayList<History> tokenHistories = new ArrayList<>();
+
+        /*
+        Pour chaque historique:
+            - Ajoute l'historique en cours dans une variable temporaire
+            - Si l'event actuel est different du précédent, on ajoute les historiques precedent dans une variable
+         */
+        for(History history : histories) {
+
+            if(tokenEvent != null && !tokenEvent.equals(history.getEvent())) {
+
+                events.put(tokenEvent, histories);
+
+                tokenEvent = history.getEvent();
+                tokenHistories.clear();
+                tokenHistories = new ArrayList<>();
+            }
+
+            tokenHistories.add(history);
+
+        }
+
+        return events;
+
     }
 
 }
