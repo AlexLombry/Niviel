@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
@@ -71,6 +73,7 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         public TextView competition;
         public TextView results;
         public ImageButton more;
+        public LinearLayout root;
 
         public HistoryViewHolder(View itemView) {
             super(itemView);
@@ -79,6 +82,7 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
             competition = (TextView) itemView.findViewById(R.id.first_line);
             results = (TextView) itemView.findViewById(R.id.second_line);
             more = (ImageButton) itemView.findViewById(R.id.more);
+            root = (LinearLayout) itemView.findViewById(R.id.root_layout);
         }
     }
 
@@ -102,11 +106,12 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
     public void onBindParentViewHolder(@NonNull final EventViewHolder parentViewHolder, int parentPosition, @NonNull Event parent) {
         parentViewHolder.results.setVisibility(View.GONE);
         parentViewHolder.place.setVisibility(View.GONE);
+        parentViewHolder.more.setVisibility(View.GONE);
 
         TextView title = parentViewHolder.title;
         title.setText(parent.getTitle());
         title.setPadding(Assets.dpToPx(getActivity(), 20), 0, 0, 0);
-        title.setTextSize(Assets.dpToPx(getActivity(), 16));
+        title.setTextSize(Assets.dpToPx(getActivity(), 12));
         title.setTextColor(0xFF444444);
 
         ImageView cube = parentViewHolder.cube;
@@ -117,24 +122,6 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
                 .fit()
                 .centerInside()
                 .into(cube);
-
-        parentViewHolder.more.setImageResource(R.drawable.ic_up);
-        parentViewHolder.more.setClickable(false);
-        parentViewHolder.more.setBackgroundColor(0x00000000);
-
-        setExpandCollapseListener(new ExpandCollapseListener() {
-            @Override
-            public void onParentExpanded(int parentPosition) {
-                Log.d("expand");
-                parentViewHolder.more.setImageResource(R.drawable.ic_down);
-            }
-
-            @Override
-            public void onParentCollapsed(int parentPosition) {
-                Log.d("collapse");
-                parentViewHolder.more.setImageResource(R.drawable.ic_up);
-            }
-        });
     }
 
     @Override
@@ -145,6 +132,8 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         String place = child.getPlace();
         String average = child.getAverage();
         String result_details = child.getResult_details();
+
+        childViewHolder.root.setBackgroundColor(0xFFDDDDDD);
 
         childViewHolder.competition.setText(Assets.formatHtmltitle(event, competition));
         childViewHolder.place.setText(place);

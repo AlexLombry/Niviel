@@ -1,7 +1,6 @@
 package com.adrastel.niviel.fragments.html;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,13 +13,13 @@ import android.widget.ProgressBar;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.HistoryAdapter;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
+import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Event;
 import com.adrastel.niviel.models.readable.History;
-import com.adrastel.niviel.models.readable.Record;
-import com.adrastel.niviel.models.writeable.BufferHistory;
 import com.adrastel.niviel.providers.html.HistoryProvider;
 
 import org.jsoup.Jsoup;
@@ -42,7 +41,6 @@ public class HistoryFragment extends BaseFragment {
     private Unbinder unbinder;
     private HistoryAdapter adapter;
     private HttpManager httpManager;
-    private HttpUrl.Builder urlBuilder = new HttpUrl.Builder();
 
     private String wca_id = null;
     private long follower_id = -1;
@@ -80,8 +78,6 @@ public class HistoryFragment extends BaseFragment {
             wca_id = follower_id == -1 ? arguments.getString(Constants.EXTRAS.WCA_ID, null) : null;
         }
 
-        // modifie l'url en fonction de l'id wca
-        urlBuilder.addEncodedQueryParameter("i", wca_id);
 
         adapter = new HistoryAdapter(getActivity(), new ArrayList<Event>());
 
@@ -131,6 +127,9 @@ public class HistoryFragment extends BaseFragment {
         else if(follower_id != -1) {
 
             DatabaseHelper database = DatabaseHelper.getInstance(getContext());
+
+            Follower follower = database.selectFollowerFromId(follower_id);
+            wca_id = follower.wca_id();
 
             ArrayList<com.adrastel.niviel.database.History> localHistories = database.selectHistoriesFromFollower(follower_id);
             ArrayList<History> histories = new ArrayList<>();
@@ -189,10 +188,11 @@ public class HistoryFragment extends BaseFragment {
 
     public void callData() {
 
-        HttpUrl url = urlBuilder
+        HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host("www.worldcubeassociation.org")
                 .addEncodedPathSegments("results/p.php")
+                .addEncodedQueryParameter("i", wca_id)
                 .build();
 
 
@@ -232,7 +232,7 @@ public class HistoryFragment extends BaseFragment {
      * @param histories historique
      * @return arraylist d'arraylist
      */
-    public ArrayList<Event> makeExpandedArrayList(ArrayList<History> histories) {
+    public static ArrayList<Event> makeExpandedArrayList(ArrayList<History> histories) {
 
         // Retour
         ArrayList<Event> events = new ArrayList<>();
@@ -249,10 +249,11 @@ public class HistoryFragment extends BaseFragment {
         for(History history : histories) {
 
             if(tokenEvent != null && !tokenEvent.equals(history.getEvent())) {
+                Log.d(tokenEvent);
                 Event event = new Event(tokenEvent, tokenHistories);
                 events.add(event);
                 tokenEvent = history.getEvent();
-                tokenHistories.clear();
+                tokenHistories = new ArrayList<>();
             }
 
             tokenHistories.add(history);
