@@ -26,6 +26,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -234,6 +235,8 @@ public class HistoryFragment extends BaseFragment {
      */
     public static ArrayList<Event> makeExpandedArrayList(ArrayList<History> histories) {
 
+        Collections.sort(histories, new History.Comparator());
+
         // Retour
         ArrayList<Event> events = new ArrayList<>();
 
@@ -247,6 +250,7 @@ public class HistoryFragment extends BaseFragment {
             - Si l'event actuel est different du précédent, on ajoute les historiques precedent dans une variable
          */
         for(History history : histories) {
+
 
             if(tokenEvent != null && !tokenEvent.equals(history.getEvent())) {
                 Log.d(tokenEvent);
