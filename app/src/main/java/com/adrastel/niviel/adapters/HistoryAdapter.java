@@ -120,15 +120,18 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
 
         parentViewHolder.more.setImageResource(R.drawable.ic_up);
         parentViewHolder.more.setClickable(false);
+        parentViewHolder.more.setBackgroundColor(0x00000000);
 
         setExpandCollapseListener(new ExpandCollapseListener() {
             @Override
             public void onParentExpanded(int parentPosition) {
+                Log.d("expand");
                 parentViewHolder.more.setImageResource(R.drawable.ic_down);
             }
 
             @Override
             public void onParentCollapsed(int parentPosition) {
+                Log.d("collapse");
                 parentViewHolder.more.setImageResource(R.drawable.ic_up);
             }
         });

@@ -58,12 +58,11 @@ public class HistoryFragment extends BaseFragment {
         return instance;
     }
     // todo: tout changer en new instance
-    public static HistoryFragment newInstance(String wca_id, String username) {
+    public static HistoryFragment newInstance(String wca_id) {
         HistoryFragment instance = new HistoryFragment();
 
         Bundle args = new Bundle();
         args.putString(Constants.EXTRAS.WCA_ID, wca_id);
-        args.putString(Constants.EXTRAS.USERNAME, username);
 
         instance.setArguments(args);
         return instance;
@@ -72,8 +71,6 @@ public class HistoryFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        String username = null;
 
         Bundle arguments = getArguments();
 
@@ -86,22 +83,7 @@ public class HistoryFragment extends BaseFragment {
         // modifie l'url en fonction de l'id wca
         urlBuilder.addEncodedQueryParameter("i", wca_id);
 
-        // cree l'adapter
-        BufferHistory history = new BufferHistory();
-        history.setEvent("yolo");
-        history.setResult_details("f");
-        history.setAverage("e");
-        history.setBest("f");
-        history.setCompetition("Herel");
-        history.setRound("tesfq");
-        ArrayList<Event> fakeEv = new ArrayList<>();
-        ArrayList<History> fakeHis = new ArrayList<>();
-
-        fakeHis.add(history);
-
-        fakeEv.add(new Event("test", fakeHis));
-
-        adapter = new HistoryAdapter(getActivity(), fakeEv);
+        adapter = new HistoryAdapter(getActivity(), new ArrayList<Event>());
 
 
     }
@@ -196,6 +178,13 @@ public class HistoryFragment extends BaseFragment {
         }
 
         super.onSaveInstanceState(outState);
+        adapter.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        adapter.onRestoreInstanceState(savedInstanceState);
     }
 
     public void callData() {
