@@ -13,18 +13,20 @@ import android.widget.ProgressBar;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.HistoryAdapter;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
+import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.managers.HttpManager;
+import com.adrastel.niviel.models.readable.Event;
 import com.adrastel.niviel.models.readable.History;
-import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.providers.html.HistoryProvider;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,7 +42,6 @@ public class HistoryFragment extends BaseFragment {
     private Unbinder unbinder;
     private HistoryAdapter adapter;
     private HttpManager httpManager;
-    private HttpUrl.Builder urlBuilder = new HttpUrl.Builder();
 
     private String wca_id = null;
     private long follower_id = -1;
@@ -56,12 +57,11 @@ public class HistoryFragment extends BaseFragment {
         return instance;
     }
     // todo: tout changer en new instance
-    public static HistoryFragment newInstance(String wca_id, String username) {
+    public static HistoryFragment newInstance(String wca_id) {
         HistoryFragment instance = new HistoryFragment();
 
         Bundle args = new Bundle();
         args.putString(Constants.EXTRAS.WCA_ID, wca_id);
-        args.putString(Constants.EXTRAS.USERNAME, username);
 
         instance.setArguments(args);
         return instance;
@@ -71,8 +71,6 @@ public class HistoryFragment extends BaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String username = null;
-
         Bundle arguments = getArguments();
 
         if(arguments != null) {
@@ -81,11 +79,9 @@ public class HistoryFragment extends BaseFragment {
             wca_id = follower_id == -1 ? arguments.getString(Constants.EXTRAS.WCA_ID, null) : null;
         }
 
-        // modifie l'url en fonction de l'id wca
-        urlBuilder.addEncodedQueryParameter("i", wca_id);
 
-        // cree l'adapter
-        adapter = new HistoryAdapter(getActivity());
+        adapter = new HistoryAdapter(getActivity(), new ArrayList<Event>());
+
 
     }
 
@@ -133,6 +129,9 @@ public class HistoryFragment extends BaseFragment {
 
             DatabaseHelper database = DatabaseHelper.getInstance(getContext());
 
+            Follower follower = database.selectFollowerFromId(follower_id);
+            wca_id = follower.wca_id();
+
             ArrayList<com.adrastel.niviel.database.History> localHistories = database.selectHistoriesFromFollower(follower_id);
             ArrayList<History> histories = new ArrayList<>();
 
@@ -140,7 +139,7 @@ public class HistoryFragment extends BaseFragment {
                 histories.add(history.toHistoryModel());
             }
 
-            adapter.refreshData(histories);
+            adapter.refreshData(makeExpandedArrayList(histories));
             httpManager.stopLoaders();
         }
 
@@ -170,17 +169,31 @@ public class HistoryFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        outState.putParcelableArrayList(Constants.EXTRAS.HISTORY, adapter.getDatas());
+        try {
+            outState.putParcelableArrayList(Constants.EXTRAS.HISTORY, adapter.getDatas());
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         super.onSaveInstanceState(outState);
+        adapter.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        adapter.onRestoreInstanceState(savedInstanceState);
     }
 
     public void callData() {
 
-        HttpUrl url = urlBuilder
+        HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host("www.worldcubeassociation.org")
                 .addEncodedPathSegments("results/p.php")
+                .addEncodedQueryParameter("i", wca_id)
                 .build();
 
 
@@ -194,7 +207,7 @@ public class HistoryFragment extends BaseFragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter.refreshData(histories);
+                        adapter.refreshData(makeExpandedArrayList(histories));
                     }
                 });
             }
@@ -202,7 +215,7 @@ public class HistoryFragment extends BaseFragment {
 
     }
 
-    protected ArrayList<History> loadLocalData(Bundle savedInstanceState) {
+    protected ArrayList<Event> loadLocalData(Bundle savedInstanceState) {
         if(savedInstanceState != null) {
             return savedInstanceState.getParcelableArrayList(Constants.EXTRAS.HISTORY);
         }
@@ -220,10 +233,12 @@ public class HistoryFragment extends BaseFragment {
      * @param histories historique
      * @return arraylist d'arraylist
      */
-    public HashMap<String, ArrayList<History>> makeExpandedArrayList(ArrayList<History> histories) {
+    public static ArrayList<Event> makeExpandedArrayList(ArrayList<History> histories) {
+
+        Collections.sort(histories, new History.Comparator());
 
         // Retour
-        HashMap<String, ArrayList<History>> events = new HashMap<>();
+        ArrayList<Event> events = new ArrayList<>();
 
         // Variable temporaire
         String tokenEvent = histories.size() > 0 ? histories.get(0).getEvent() : null;
@@ -237,11 +252,10 @@ public class HistoryFragment extends BaseFragment {
         for(History history : histories) {
 
             if(tokenEvent != null && !tokenEvent.equals(history.getEvent())) {
-
-                events.put(tokenEvent, histories);
-
+                Log.d(tokenEvent);
+                Event event = new Event(tokenEvent, tokenHistories);
+                events.add(event);
                 tokenEvent = history.getEvent();
-                tokenHistories.clear();
                 tokenHistories = new ArrayList<>();
             }
 

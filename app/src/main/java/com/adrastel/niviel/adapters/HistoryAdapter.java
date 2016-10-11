@@ -1,160 +1,162 @@
 package com.adrastel.niviel.adapters;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Cubes;
 import com.adrastel.niviel.assets.IntentHelper;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.HistoryDialog;
+import com.adrastel.niviel.models.readable.Event;
 import com.adrastel.niviel.models.readable.History;
+import com.adrastel.niviel.providers.html.RecordProvider;
 import com.adrastel.niviel.views.CircleView;
-import com.h6ah4i.android.widget.advrecyclerview.expandable.ExpandableItemAdapter;
+import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
+import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
+import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * HistoryAdapter organise les donnes données par un objet histor
  */
-public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> implements ExpandableItemAdapter {
 
-    private ArrayList<History> datas = new ArrayList<>();
+/**
+ * Auto-merging app/src/main/java/com/adrastel/niviel/fragments/html/HistoryFragment.java
+ CONFLICT (content): Merge conflict in app/src/main/java/com/adrastel/niviel/fragments/html/HistoryFragment.java
+ Auto-merging app/src/main/java/com/adrastel/niviel/adapters/HistoryAdapter.java
+ CONFLICT (content): Merge conflict in app/src/main/java/com/adrastel/niviel/adapters/HistoryAdapter.java
+ Auto-merging app/build.gradle
+ CONFLICT (content): Merge conflict in app/build.gradle
+ Automatic merge failed; fix conflicts and then commit the result.
 
+ */
+public class HistoryAdapter extends BaseExpandableAdapter<Event, History, HistoryAdapter.EventViewHolder, HistoryAdapter.HistoryViewHolder> {
 
-    public void refreshData(ArrayList<History> datas) {
+    private LayoutInflater inflater;
 
-        this.datas.clear();
-        this.datas.addAll(datas);
-        notifyDataSetChanged();
+    public HistoryAdapter(FragmentActivity activity, ArrayList<Event> events) {
+        super(activity, events);
+
+        inflater = LayoutInflater.from(activity);
     }
 
-    public ArrayList<History> getDatas() {
-        return datas;
-    }
+    static class EventViewHolder extends ParentViewHolder<Event, History> {
 
-    public HistoryAdapter(FragmentActivity activity) {
-        super(activity);
-    }
+        public CircleView place;
+        public TextView title;
+        public TextView results;
+        public ImageButton more;
+        public ImageView cube;
 
-    @Override
-    public int getGroupCount() {
-        return 0;
-    }
-
-    @Override
-    public int getChildCount(int groupPosition) {
-        return 0;
-    }
-
-    @Override
-    public long getGroupId(int groupPosition) {
-        return groupPosition;
-    }
-
-    @Override
-    public long getChildId(int groupPosition, int childPosition) {
-        return 0;
-    }
-
-    @Override
-    public int getGroupItemViewType(int groupPosition) {
-        return 0;
-    }
-
-    @Override
-    public int getChildItemViewType(int groupPosition, int childPosition) {
-        return 0;
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateGroupViewHolder(ViewGroup parent, int viewType) {
-        return null;
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateChildViewHolder(ViewGroup parent, int viewType) {
-        return null;
-    }
-
-    @Override
-    public void onBindGroupViewHolder(RecyclerView.ViewHolder holder, int groupPosition, int viewType) {
-
-    }
-
-    @Override
-    public void onBindChildViewHolder(RecyclerView.ViewHolder holder, int groupPosition, int childPosition, int viewType) {
-
-    }
-
-    @Override
-    public boolean onCheckCanExpandOrCollapseGroup(RecyclerView.ViewHolder holder, int groupPosition, int x, int y, boolean expand) {
-        return false;
-    }
-
-    @Override
-    public boolean onHookGroupExpand(int groupPosition, boolean fromUser) {
-        return false;
-    }
-
-    @Override
-    public boolean onHookGroupCollapse(int groupPosition, boolean fromUser) {
-        return false;
-    }
-
-    @Override
-    public void onBindChildViewHolder(RecyclerView.ViewHolder holder, int groupPosition, int childPosition, int viewType, List payloads) {
-
-    }
-
-    @Override
-    public void onBindGroupViewHolder(RecyclerView.ViewHolder holder, int groupPosition, int viewType, List payloads) {
-
-    }
-
-
-    // Le view holder qui contient toutes les infos
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        @BindView(R.id.list_place) CircleView place;
-        @BindView(R.id.first_line) TextView competition;
-        @BindView(R.id.second_line) TextView results;
-        @BindView(R.id.more) ImageButton more;
-
-
-        public ViewHolder(View itemView) {
+        public EventViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+
+            place = (CircleView) itemView.findViewById(R.id.list_place);
+            title = (TextView) itemView.findViewById(R.id.first_line);
+            results = (TextView) itemView.findViewById(R.id.second_line);
+            more = (ImageButton) itemView.findViewById(R.id.more);
+            cube = (ImageView) itemView.findViewById(R.id.cube_image);
         }
     }
 
-    // Lors de la creation de la vue
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    static class HistoryViewHolder extends ChildViewHolder<History> {
 
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        public CircleView place;
+        public TextView competition;
+        public TextView results;
+        public ImageButton more;
+        public LinearLayout root;
 
-        View view = inflater.inflate(R.layout.adapter_list_avatar, parent, false);
+        public HistoryViewHolder(View itemView) {
+            super(itemView);
 
-        return new ViewHolder(view);
+            place = (CircleView) itemView.findViewById(R.id.list_place);
+            competition = (TextView) itemView.findViewById(R.id.first_line);
+            results = (TextView) itemView.findViewById(R.id.second_line);
+            more = (ImageButton) itemView.findViewById(R.id.more);
+            root = (LinearLayout) itemView.findViewById(R.id.root_layout);
+        }
     }
 
-    // Lors de l'hydratation de la vue
+    @NonNull
     @Override
+    public EventViewHolder onCreateParentViewHolder(@NonNull ViewGroup parentViewGroup, int viewType) {
+        View parentView = inflater.inflate(R.layout.adapter_list_avatar, parentViewGroup, false);
+
+        return new EventViewHolder(parentView);
+    }
+
+    @NonNull
+    @Override
+    public HistoryViewHolder onCreateChildViewHolder(@NonNull ViewGroup childViewGroup, int viewType) {
+        View childView = inflater.inflate(R.layout.adapter_list_avatar, childViewGroup, false);
+
+        return new HistoryViewHolder(childView);
+    }
+
+    @Override
+    public void onBindParentViewHolder(@NonNull final EventViewHolder parentViewHolder, int parentPosition, @NonNull Event parent) {
+        parentViewHolder.results.setVisibility(View.GONE);
+        parentViewHolder.place.setVisibility(View.GONE);
+        parentViewHolder.more.setVisibility(View.GONE);
+
+        TextView title = parentViewHolder.title;
+        title.setText(parent.getTitle());
+        title.setPadding(Assets.dpToPx(getActivity(), 20), 0, 0, 0);
+        title.setTextSize(Assets.dpToPx(getActivity(), 12));
+        title.setTextColor(0xFF444444);
+
+        ImageView cube = parentViewHolder.cube;
+        cube.setVisibility(View.VISIBLE);
+
+        Picasso.with(getActivity())
+                .load(Cubes.getImage(parent.getTitle()))
+                .fit()
+                .centerInside()
+                .into(cube);
+    }
+
+    @Override
+    public void onBindChildViewHolder(@NonNull HistoryViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull History child) {
+
+        String event = child.getEvent();
+        String competition = child.getCompetition();
+        String place = child.getPlace();
+        String average = child.getAverage();
+        String result_details = child.getResult_details();
+
+        childViewHolder.root.setBackgroundColor(0xFFDDDDDD);
+
+        childViewHolder.competition.setText(Assets.formatHtmltitle(event, competition));
+        childViewHolder.place.setText(place);
+        childViewHolder.results.setText(Assets.formatHtmlAverageDetails(average, result_details));
+
+        childViewHolder.place.setBackground(Assets.getColor(getActivity(), R.color.indigo_300));
+
+        loadMenu(childViewHolder, child);
+    }
+
+ /*   // Lors de l'hydratation de la vue
+    //@Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
 
         final History history = getDatas().get(position);
@@ -174,14 +176,8 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> imple
         loadMenu(holder, history);
 
 
-    }
-
-    @Override
-    public int getItemCount() {
-        return getDatas().size();
-    }
-
-    private void loadMenu(ViewHolder holder, final History history) {
+    }*/
+    private void loadMenu(HistoryViewHolder holder, final History history) {
         holder.more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -231,6 +227,7 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> imple
 
     }
 
+    // todo: changer la phrase shareFormat
     private void onShare(History history) {
 
 
@@ -245,4 +242,8 @@ public class HistoryAdapter extends BaseAdapter<HistoryAdapter.ViewHolder> imple
         IntentHelper.shareIntent(getActivity(), text, html);
     }
 
+    @Override
+    public void collapseParent(@NonNull Event parent) {
+        super.collapseParent(parent);
+    }
 }

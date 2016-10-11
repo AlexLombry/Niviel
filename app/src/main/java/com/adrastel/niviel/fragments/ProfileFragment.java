@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -247,7 +246,7 @@ public class ProfileFragment extends BaseFragment{
                     return follower_id != -1 ? RecordFragment.newInstance(follower_id) : RecordFragment.newInstance(wca_id);
 
                 case 1:
-                    return follower_id != -1 ? HistoryFragment.newInstance(follower_id) : HistoryFragment.newInstance(wca_id, username);
+                    return follower_id != -1 ? HistoryFragment.newInstance(follower_id) : HistoryFragment.newInstance(wca_id);
 
                 default:
                     return follower_id != -1 ? RecordFragment.newInstance(follower_id) : RecordFragment.newInstance(wca_id);
