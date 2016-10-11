@@ -8,8 +8,10 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.StyleRes;
 import android.text.Html;
 import android.text.Spanned;
+import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.database.DatabaseHelper;
@@ -36,6 +38,25 @@ public class Assets {
 
     public static String wrapStrong(String text) {
         return "<strong>" + text + "</strong>";
+    }
+
+    public static int dpToPx(Context context, int dp) {
+
+        float scale = context.getResources().getDisplayMetrics().density;
+
+        return (int) (dp * scale + 0.5f);
+
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void setTextAppearance(Context context, TextView textView, @StyleRes int styleId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            textView.setTextAppearance(styleId);
+        }
+
+        else {
+            textView.setTextAppearance(context, styleId);
+        }
     }
 
     /**

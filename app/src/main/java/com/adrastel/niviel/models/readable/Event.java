@@ -3,12 +3,12 @@ package com.adrastel.niviel.models.readable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
+import com.bignerdranch.expandablerecyclerview.model.Parent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Event implements ParentListItem, Parcelable {
+public class Event implements Parent<History>, Parcelable {
 
     private String title;
     private ArrayList<History> histories;
@@ -36,7 +36,7 @@ public class Event implements ParentListItem, Parcelable {
     };
 
     @Override
-    public List<?> getChildItemList() {
+    public List<History> getChildList() {
         return histories;
     }
 

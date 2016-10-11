@@ -194,6 +194,7 @@ public class HistoryFragment extends BaseFragment {
         catch (Exception e) {
             e.printStackTrace();
         }
+
         super.onSaveInstanceState(outState);
     }
 

@@ -15,7 +15,7 @@
 #   Set larger code cache with -XX:ReservedCodeCacheSize=
 # This output file may be truncated or incomplete.
 #
-#  Out of Memory Error (memory/allocation.inline.hpp:62), pid=61060, tid=50032
+#  Out of Memory Error (memory/allocation.inline.hpp:62), pid=61168, tid=60640
 #
 # JRE version:  (8.0_25-b18) (build )
 # Java VM: Java HotSpot(TM) 64-Bit Server VM (25.25-b02 mixed mode windows-amd64 compressed oops)
@@ -24,17 +24,16 @@
 
 ---------------  T H R E A D  ---------------
 
-Current thread (0x00000000029bd800):  JavaThread "Unknown thread" [_thread_in_vm, id=50032, stack(0x0000000002870000,0x0000000002970000)]
+Current thread (0x000000000281d800):  JavaThread "Unknown thread" [_thread_in_vm, id=60640, stack(0x0000000002640000,0x0000000002740000)]
 
-Stack: [0x0000000002870000,0x0000000002970000]
+Stack: [0x0000000002640000,0x0000000002740000]
 Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
 V  [jvm.dll+0x31667a]
 V  [jvm.dll+0x267073]
 V  [jvm.dll+0x267cb3]
 V  [jvm.dll+0x25f5b5]
-V  [jvm.dll+0x3aa31f]
-V  [jvm.dll+0x3d5f12]
-V  [jvm.dll+0x3d629a]
+V  [jvm.dll+0x25e60f]
+V  [jvm.dll+0x3d616c]
 V  [jvm.dll+0x3d1967]
 V  [jvm.dll+0xe53f2]
 V  [jvm.dll+0x1f9b19]
@@ -53,7 +52,7 @@ Java Threads: ( => current thread )
 
 Other Threads:
 
-=>0x00000000029bd800 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=50032, stack(0x0000000002870000,0x0000000002970000)]
+=>0x000000000281d800 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=60640, stack(0x0000000002640000,0x0000000002740000)]
 
 VM state:not at safepoint (normal execution)
 
@@ -69,16 +68,16 @@ Heap:
  Metaspace       used 674K, capacity 4480K, committed 4480K, reserved 1056768K
   class space    used 66K, capacity 384K, committed 384K, reserved 1048576K
 
-Card table byte_map: [0x0000000011e80000,0x0000000012090000] byte_map_base: 0x0000000011880000
+Card table byte_map: [0x0000000011ce0000,0x0000000011ef0000] byte_map_base: 0x00000000116e0000
 
 Marking Bits: (ParMarkBitMap*) 0x000000005f3bd490
- Begin Bits: [0x00000000125f0000, 0x00000000135f0000)
- End Bits:   [0x00000000135f0000, 0x00000000145f0000)
+ Begin Bits: [0x0000000012450000, 0x0000000013450000)
+ End Bits:   [0x0000000013450000, 0x0000000014450000)
 
-Polling page: 0x00000000027f0000
+Polling page: 0x0000000000cb0000
 
 CodeCache: size=245760Kb used=327Kb max_used=327Kb free=245432Kb
- bounds [0x0000000002ac0000, 0x0000000002d30000, 0x0000000011ac0000]
+ bounds [0x0000000002920000, 0x0000000002b90000, 0x0000000011920000]
  total_blobs=56 nmethods=0 adapters=37
  compilation: enabled
 
@@ -95,16 +94,16 @@ Internal exceptions (0 events):
 No events
 
 Events (10 events):
-Event: 0.032 loading class java/lang/Short
-Event: 0.032 loading class java/lang/Short done
-Event: 0.033 loading class java/lang/Integer
-Event: 0.033 loading class java/lang/Integer done
-Event: 0.033 loading class java/lang/Long
-Event: 0.033 loading class java/lang/Long done
-Event: 0.034 loading class java/lang/NullPointerException
-Event: 0.034 loading class java/lang/NullPointerException done
-Event: 0.034 loading class java/lang/ArithmeticException
-Event: 0.034 loading class java/lang/ArithmeticException done
+Event: 0.049 loading class java/lang/Short
+Event: 0.050 loading class java/lang/Short done
+Event: 0.050 loading class java/lang/Integer
+Event: 0.050 loading class java/lang/Integer done
+Event: 0.050 loading class java/lang/Long
+Event: 0.050 loading class java/lang/Long done
+Event: 0.051 loading class java/lang/NullPointerException
+Event: 0.051 loading class java/lang/NullPointerException done
+Event: 0.051 loading class java/lang/ArithmeticException
+Event: 0.051 loading class java/lang/ArithmeticException done
 
 
 Dynamic libraries:
@@ -140,7 +139,7 @@ Dynamic libraries:
 
 VM Arguments:
 jvm_args: -Djava.awt.headless=true -Xmx1024M -Dfile.encoding=windows-1252 -Duser.country=FR -Duser.language=fr -Duser.variant 
-java_command: com.android.dx.command.Main --dex --num-threads=4 --output C:\Users\Famille\AndroidStudioProjects\Niviel\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-ui-24.2.1_cbae1dd5ea674a31737f5d162b4922c615ccb6aa.jar C:\Users\Famille\AndroidStudioProjects\Niviel\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\classes.jar
+java_command: com.android.dx.command.Main --dex --num-threads=4 --output C:\Users\Famille\AndroidStudioProjects\Niviel\app\build\intermediates\pre-dexed\debug\com.android.support-support-compat-24.2.1_141a5c51f61acba8cf4a1917202386ccd4d00d39.jar C:\Users\Famille\AndroidStudioProjects\Niviel\app\build\intermediates\exploded-aar\com.android.support\support-compat\24.2.1\jars\classes.jar
 java_class_path (initial): C:\Users\Famille\AppData\Local\Android\sdk\build-tools\23.0.2\lib\dx.jar
 Launcher Type: SUN_STANDARD
 
@@ -164,5 +163,5 @@ Memory: 4k page, physical 4122776k(296832k free), swap 5555352k(98296k free)
 vm_info: Java HotSpot(TM) 64-Bit Server VM (25.25-b02) for windows-amd64 JRE (1.8.0_25-b18), built on Oct  7 2014 14:25:37 by "java_re" with MS VC++ 10.0 (VS2010)
 
 time: Tue Oct 11 16:56:24 2016
-elapsed time: 1 seconds (0d 0h 0m 1s)
+elapsed time: 2 seconds (0d 0h 0m 2s)
 

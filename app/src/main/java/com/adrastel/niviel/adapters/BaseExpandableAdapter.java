@@ -1,24 +1,23 @@
 package com.adrastel.niviel.adapters;
 
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 
 import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.models.readable.Event;
-import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
-import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
-import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
-import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
+import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
+import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
+import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
+import com.bignerdranch.expandablerecyclerview.model.Parent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseExpandableAdapter<PVH extends ParentViewHolder, CVH extends ChildViewHolder> extends ExpandableRecyclerAdapter<PVH, CVH> {
+public abstract class BaseExpandableAdapter<P extends Parent<C>, C, PVH extends ParentViewHolder<P, C>, CVH extends ChildViewHolder<C>> extends ExpandableRecyclerAdapter<P, C, PVH, CVH> {
 
     private MainActivity activity;
 
-    public BaseExpandableAdapter(FragmentActivity activity, ArrayList<Event> events) {
-        super(events);
+    public BaseExpandableAdapter(FragmentActivity activity, ArrayList<P> datas) {
+        super(datas);
 
         try {
             this.activity = (MainActivity) activity;
@@ -33,14 +32,14 @@ public abstract class BaseExpandableAdapter<PVH extends ParentViewHolder, CVH ex
         return activity;
     }
 
-    public ArrayList<Event> getDatas() {
-        return (ArrayList<Event>) getParentItemList();
+    public ArrayList<P> getDatas() {
+        return (ArrayList<P>) getParentList();
     }
 
-    public void refreshData(ArrayList<Event> datas) {
+    public void refreshData(ArrayList<P> datas) {
 
         getDatas().clear();
         getDatas().addAll(datas);
-        notifyDataSetChanged();
+        notifyParentDataSetChanged(true);
     }
 }

@@ -89,7 +89,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
         holder.single.setText(detailsMaker.build("#404040"), TextView.BufferType.SPANNABLE);
 
-        Picasso.with(holder.image.getContext())
+        Picasso.with(getActivity())
                 .load(image_resource)
                 .fit()
                 .centerInside()
