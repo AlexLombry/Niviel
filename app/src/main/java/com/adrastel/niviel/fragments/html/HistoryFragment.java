@@ -238,7 +238,9 @@ public class HistoryFragment extends BaseFragment {
     public static ArrayList<Event> makeExpandedArrayList(ArrayList<History> histories) {
 
         Hashtable<String, ArrayList<History>> hashtable = new Hashtable<>();
+        ArrayList<Event> events = new ArrayList<>();
 
+        // Pour chaque historique, les trie dans un HashTable avec pour clé l'event
         for(History history : histories) {
 
             if(hashtable.containsKey(history.getEvent())) {
@@ -260,8 +262,7 @@ public class HistoryFragment extends BaseFragment {
         }
 
 
-        ArrayList<Event> events = new ArrayList<>();
-
+        // Convertie le HashTable en Event
         for(Map.Entry<String, ArrayList<History>> value : hashtable.entrySet()) {
 
             Event event = new Event(value.getKey(), value.getValue());
