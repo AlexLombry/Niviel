@@ -27,6 +27,8 @@ import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Hashtable;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -235,32 +237,35 @@ public class HistoryFragment extends BaseFragment {
      */
     public static ArrayList<Event> makeExpandedArrayList(ArrayList<History> histories) {
 
-        Collections.sort(histories, new History.Comparator());
+        Hashtable<String, ArrayList<History>> hashtable = new Hashtable<>();
 
-        // Retour
-        ArrayList<Event> events = new ArrayList<>();
-
-        // Variable temporaire
-        String tokenEvent = histories.size() > 0 ? histories.get(0).getEvent() : null;
-        ArrayList<History> tokenHistories = new ArrayList<>();
-
-        /*
-        Pour chaque historique:
-            - Ajoute l'historique en cours dans une variable temporaire
-            - Si l'event actuel est different du précédent, on ajoute les historiques precedent dans une variable
-         */
         for(History history : histories) {
 
-            if(tokenEvent != null && !tokenEvent.equals(history.getEvent())) {
-                Log.d(tokenEvent);
-                Event event = new Event(tokenEvent, tokenHistories);
-                events.add(event);
-                tokenEvent = history.getEvent();
-                tokenHistories = new ArrayList<>();
+            if(hashtable.containsKey(history.getEvent())) {
+
+                ArrayList<History> oldHistory = hashtable.get(history.getEvent());
+                oldHistory.add(history);
+
+                hashtable.put(history.getEvent(), oldHistory);
+
             }
 
-            tokenHistories.add(history);
+            else {
 
+                ArrayList<History> oldHistories = new ArrayList<>();
+                oldHistories.add(history);
+
+                hashtable.put(history.getEvent(), oldHistories);
+            }
+        }
+
+
+        ArrayList<Event> events = new ArrayList<>();
+
+        for(Map.Entry<String, ArrayList<History>> value : hashtable.entrySet()) {
+
+            Event event = new Event(value.getKey(), value.getValue());
+            events.add(event);
         }
 
         return events;

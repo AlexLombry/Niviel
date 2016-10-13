@@ -39,16 +39,6 @@ import java.util.ArrayList;
  * HistoryAdapter organise les donnes données par un objet histor
  */
 
-/**
- * Auto-merging app/src/main/java/com/adrastel/niviel/fragments/html/HistoryFragment.java
- CONFLICT (content): Merge conflict in app/src/main/java/com/adrastel/niviel/fragments/html/HistoryFragment.java
- Auto-merging app/src/main/java/com/adrastel/niviel/adapters/HistoryAdapter.java
- CONFLICT (content): Merge conflict in app/src/main/java/com/adrastel/niviel/adapters/HistoryAdapter.java
- Auto-merging app/build.gradle
- CONFLICT (content): Merge conflict in app/build.gradle
- Automatic merge failed; fix conflicts and then commit the result.
-
- */
 public class HistoryAdapter extends BaseExpandableAdapter<Event, History, HistoryAdapter.EventViewHolder, HistoryAdapter.HistoryViewHolder> {
 
     private LayoutInflater inflater;
