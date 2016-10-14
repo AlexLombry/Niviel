@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,9 +19,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -31,22 +28,16 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.ActionProvider;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
@@ -58,14 +49,23 @@ import com.adrastel.niviel.services.EditRecordService;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
+/**
+ * Activité principale
+ *
+ * Est composée d'un DrawerLayout qui gère plusieurs fragments
+ */
 public class MainActivity extends AppCompatActivity implements DrawerLayout.DrawerListener {
 
 
-    // Les constantes du receiver
+    // L'indentifiant du receiver
     public static final String ACTIVITY_RECEIVER = "activity_receiver";
     public static final String ACTIVITY_RECEIVER_ACTION = "activity_receiver_action";
-    public static final String UPDATE_WCA_PROFILE = "update_wca_profile";
+
+    // Code de requête pour redemarrer l'activité
     public static final int RESTART_ACTIVITY = 0;
+
+
     // Les vues
     public @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
@@ -74,14 +74,16 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
     private MenuItem searchMenuItem;
+
+
     // Les core-objects
     private FragmentManager fragmentManager;
     private BaseFragment fragment;
     private SharedPreferences preferences;
-    // Les preferences
-    private String prefWcaId = null;
-    private String prefWcaName = null;
+
+    // L'identifiant du profil
     private long prefId = -1;
+
     // Le runnable qui est executé après que le drawer soit fermé
     private Runnable fragmentToRun;
 
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
             switch (intent.getIntExtra(EditRecordService.ACTION, EditRecordService.ADD_RECORD_FAILURE)) {
 
                 case EditRecordService.ADD_RECORD_SUCCESS:
-                    updateWcaProfile();
+                    updateUiOnProfileChange();
                     break;
             }
 
@@ -104,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
     /**
      * Lors de la creation de l'activité
+     *
+     * Initialise le drawer layout, les preferences et l'identification du profil
      *
      * @param savedInstanceState bundle
      */
@@ -129,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Actualise l'ID WCA
-        updateWcaProfile();
+        updateUiOnProfileChange();
 
         /*
         Si il y a un fragment en mémiore, l'execute
@@ -165,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
                 if (fragment != null) {
 
-                    popBackStack();
 
                     runWhenDrawerClose(new Runnable() {
                         @Override
@@ -186,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     }
 
     /**
-     * On sauvegarde le fragment actuel
+     * Sauvegarde le fragment actuel
      *
      * @param outState bundle
      */
@@ -204,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     }
 
     /**
-     * On inflate le menu
+     * Inflate le menu et définit le composant de recherche
      *
      * @param menu menu
      * @return true pour l'instancier
@@ -214,20 +217,18 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
 
-        try {
-            searchMenuItem = menu.findItem(R.id.search);
-            SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+        searchMenuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
 
-            SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
 
     /**
      * Lors d'un clique de la toolbar
+     *
+     * Ouvre le drawer ou les réglages
      *
      * @param item item
      * @return true pour arreter l'execution
@@ -250,7 +251,9 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     }
 
     /**
-     * Si on presse back, on ferme le menu
+     * Lors de l'appui du bouton arrière
+     *
+     * Ferme le menu et la barre de recherche
      */
     @Override
     public void onBackPressed() {
@@ -266,6 +269,9 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
     }
 
+    /**
+     * Lors de la pause de l'activité, enlève les listeners du drawerLayout et des receivers
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -273,18 +279,39 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         LocalBroadcastManager.getInstance(this).unregisterReceiver(activityReceiver);
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        setIntent(intent);
-        handleIntent(intent);
-    }
-    // todo: ajouter un bouton "ne pas cliquer"
-
+    /**
+     * Lors de la reprise de l'activité, ré établie les listeners et les receivers
+     */
     @Override
     protected void onResume() {
         super.onResume();
         drawerLayout.addDrawerListener(this);
         LocalBroadcastManager.getInstance(this).registerReceiver(activityReceiver, new IntentFilter(EditRecordService.INTENT_FILTER));
+    }
+
+    /**
+     * Redemarre l'activité si un réglage a été changé
+     *
+     * @param requestCode requête
+     * @param resultCode réponse
+     * @param data données
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESTART_ACTIVITY) {
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
+        }
+    }
+
+    /**
+     * Appelé en cas de recherche
+     * @param intent recherche
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
     }
 
     //<editor-fold desc="Drawer events">
@@ -303,19 +330,15 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
     }
     //</editor-fold>
 
+    /**
+     * Demarre le runnable (si n'a pas été lancé) lors de la fermeture du Drawer
+     * @param drawerView drawer
+     */
     @Override
     public void onDrawerClosed(View drawerView) {
         if (fragmentToRun != null) {
             fragmentToRun.run();
             fragmentToRun = null;
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESTART_ACTIVITY) {
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
         }
     }
 
@@ -360,10 +383,16 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         }
     }
 
+    /**
+     * Affiche le fab
+     */
     public void showFab() {
         fab.show();
     }
 
+    /**
+     * Cache le fab
+     */
     public void hideFab() {
         fab.hide();
     }
@@ -381,22 +410,11 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
                 .replace(R.id.frame_layout, fragment)
                 .commit();
 
-        updateUi(fragment);
+        updateUiOnFragmentChange(fragment);
         this.fragment = fragment;
 
 
     }
-
-    public void popBackStack() {
-
-        FragmentManager manager = getSupportFragmentManager();
-
-        for(int i = 0; i < manager.getBackStackEntryCount(); i++) {
-            manager.popBackStack();
-        }
-
-    }
-
 
     /**
      * Ouvre le menu
@@ -468,11 +486,18 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         }
     }
 
+    /**
+     * Retourne le coordinatorLayout
+     * @return coordinatorLayout
+     */
     public CoordinatorLayout getCoordinatorLayout() {
         return coordinatorLayout;
     }
 
-    private void updateWcaProfile() {
+    /**
+     * Actualise les éléments graphiques lors d'un changement de profil
+     */
+    private void updateUiOnProfileChange() {
         prefId = preferences.getLong(getString(R.string.pref_personal_id), -1);
         View headerView = navigationView.getHeaderView(0);
 
@@ -489,8 +514,8 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
                 DatabaseHelper database = DatabaseHelper.getInstance(this);
                 Follower follower = database.selectFollowerFromId(prefId);
 
-                prefWcaId = follower.wca_id();
-                prefWcaName = follower.name();
+                String prefWcaId = follower.wca_id();
+                String prefWcaName = follower.name();
 
                 profileItem.setVisible(true);
 
@@ -523,7 +548,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
      * @param fragment BaseFragement
      */
     @SuppressWarnings("ResourceType")
-    private void updateUi(BaseFragment fragment) {
+    private void updateUiOnFragmentChange(BaseFragment fragment) {
 
         setSubtitle(null);
 
@@ -609,8 +634,8 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
     /**
      * Lance la page d'un utilisateur
-     * @param wca_id
-     * @param name
+     * @param wca_id wca
+     * @param name name
      */
     private void searchUser(String wca_id, String name) {
 
@@ -621,7 +646,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
     /**
      * Change le runner fragmentToRun local en global. Le global est lancé lors de la fermuture du Navigation Drawer
-     * @param runnable
+     * @param runnable runnable
      */
     private void runWhenDrawerClose(Runnable runnable) {
         this.fragmentToRun = runnable;
