@@ -34,6 +34,7 @@ import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * HistoryAdapter organise les donnes données par un objet histor
@@ -233,7 +234,8 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
     }
 
     @Override
-    public void collapseParent(@NonNull Event parent) {
-        super.collapseParent(parent);
+    public void refreshData(ArrayList<Event> datas) {
+        Collections.sort(datas, new Event.COMPARATOR());
+        super.refreshData(datas);
     }
 }

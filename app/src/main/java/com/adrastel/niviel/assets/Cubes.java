@@ -100,4 +100,28 @@ public class Cubes {
         }
     }
 
+    /**
+     * Retourne l'id du cube (utilisé pour trier les cubes) Si ne connais pas, retourne le plus gros nombre
+     * @param event event
+     * @return id
+     */
+    public static int getCubeId(String event) {
+
+        String[] cubes = {"Rubik's cube", "4x4 Cube", "5x5 Cube", "2x2 Cube", "3x3 blindfolded",
+                "Rubik's Cube: Blindfolded", "3x3 one-handed", "Rubik's Cube: One-handed",
+                "3x3 fewest moves", "Rubik's Cube: Fewest moves",
+                "Megaminx", "Pyraminx", "Square-1", "Rubik's Clock", "Skewb", "6x6 Cube", "7x7 Cube",
+                "Rubik's Magic", "Master Magic"
+        };
+
+        for(int i = 0; i < cubes.length; i++) {
+
+            if(event.equalsIgnoreCase(cubes[i]))
+                return i;
+
+        }
+
+        return cubes.length;
+    }
+
 }
