@@ -19,7 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static SQLiteDatabase database;
 
     public static final String DATABASE_NAME = "database.db";
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 9;
 
     private static DatabaseHelper instance;
 
@@ -62,6 +62,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+
 
         db.execSQL(Follower.DELETE_TABLE);
         db.execSQL(Record.DELETE_TABLE);
@@ -292,12 +294,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //</editor-fold>
 
     //<editor-fold desc="History">
-    public void insertHistory(long record_id, long follower_id, String event, String competition, String round, String place, String best, String average, String result_details) {
+    public void insertHistory(long follower_id, String event, String competition, String round, String place, String best, String average, String result_details) {
         try {
             SQLiteDatabase db = openDatabase();
 
             db.insert(History.TABLE_NAME, null, History.FACTORY.marshal()
-                    .record(record_id)
                     .follower(follower_id)
                     .event(event)
                     .competition(competition)

@@ -72,11 +72,6 @@ public class Record extends BaseModel implements Parcelable {
      */
     protected String wr_average;
 
-    /**
-     * L'historique des competitions
-     */
-    protected ArrayList<History> competitions;
-
     // Constructors
 
     public Record() {}
@@ -92,7 +87,6 @@ public class Record extends BaseModel implements Parcelable {
         nr_average = in.readString();
         cr_average = in.readString();
         wr_average = in.readString();
-        competitions = in.createTypedArrayList(History.CREATOR);
     }
 
     public static final Creator<Record> CREATOR = new Creator<Record>() {
@@ -188,10 +182,6 @@ public class Record extends BaseModel implements Parcelable {
         this.cr_average = cr_average;
     }
 
-    public ArrayList<History> getCompetitions() {
-        return competitions;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -208,6 +198,5 @@ public class Record extends BaseModel implements Parcelable {
         parcel.writeString(nr_average);
         parcel.writeString(cr_average);
         parcel.writeString(wr_average);
-        parcel.writeTypedList(competitions);
     }
 }

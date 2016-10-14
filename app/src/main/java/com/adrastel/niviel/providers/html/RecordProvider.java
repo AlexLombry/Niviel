@@ -29,7 +29,7 @@ public class RecordProvider extends HtmlProvider {
      * @param document le code serialisé
      * @return les records
      */
-    public static ArrayList<Record> getRecord(final Context context, Document document, boolean addCompetitions) {
+    public static ArrayList<Record> getRecord(final Context context, Document document) {
 
         ArrayList<Record> arrayList = new ArrayList<>();
 
@@ -68,14 +68,14 @@ public class RecordProvider extends HtmlProvider {
                 /**
                  * Si on veux ajouter les competitions, on les recupere, on les filtres avec l'event et on les ajouter au buffer
                  */
-                if (addCompetitions) {
+                /*if (addCompetitions) {
 
-                    ArrayList<History> history = HistoryProvider.getHistory(context, document, bufferRecord.getEvent());
+                    ArrayList<History> history = HistoryProvider.getHistory(context, document);
 
                     bufferRecord.setCompetitions(history);
 
 
-                }
+                }*/
 
                 /**
                  * Si ce sont des entêtes, on les testes pour savoir si elles sont toujours les mêmes, pour verifier le code HTML
@@ -108,11 +108,6 @@ public class RecordProvider extends HtmlProvider {
 
         return arrayList;
     }
-
-    public static ArrayList<Record> getRecord(Context context, Document document) {
-        return getRecord(context, document, false);
-    }
-
     /**
      * Verifie le HTML avec les entetes
      * @param record l'element

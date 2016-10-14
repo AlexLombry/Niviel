@@ -1,6 +1,5 @@
 package com.adrastel.niviel.providers.html;
 
-import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -33,10 +32,9 @@ public class HistoryProvider extends HtmlProvider {
      * La fonction getAllHistory recupère toutes les competitions à l'aide du code HTML
      * @param context context
      * @param document document
-     * @param filter filter
      * @return competitions
      */
-    public static ArrayList<History> getHistory(final Context context, Document document, String filter) {
+    public static ArrayList<History> getHistory(final Context context, Document document) {
 
 
         ArrayList<History> arrayList = new ArrayList<>();
@@ -97,7 +95,9 @@ public class HistoryProvider extends HtmlProvider {
                     else if (isCompetition(tr)) {
 
 
-                        if (filter != null) {
+                        arrayList.add(hydrate(tr));
+
+                        /*if (filter != null) {
 
                             if (filter.equalsIgnoreCase(bufferHistory.getEvent())) {
                                 arrayList.add(hydrate(tr));
@@ -106,7 +106,7 @@ public class HistoryProvider extends HtmlProvider {
                         } else {
                             arrayList.add(hydrate(tr));
 
-                        }
+                        }*/
 
 
                     }
@@ -124,9 +124,6 @@ public class HistoryProvider extends HtmlProvider {
 
     }
 
-    public static ArrayList<History> getHistory(Activity activity, Document document) {
-        return getHistory(activity, document, null);
-    }
 
     /**
      *

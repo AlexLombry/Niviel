@@ -47,10 +47,5 @@ public class BufferRecord extends Record {
         this.wr_average = wr_average;
     }
 
-    public void setCompetitions(ArrayList<History> competitions) {
-        this.competitions = competitions;
-    }
-
-
 
 }

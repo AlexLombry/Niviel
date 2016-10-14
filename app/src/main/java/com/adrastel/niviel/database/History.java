@@ -14,8 +14,8 @@ public abstract class History implements HistoryModel {
 
     public static final Factory<History> FACTORY = new Factory<>(new Creator<History>() {
         @Override
-        public History create(long _id, long record, long follower, @NonNull String event, @NonNull String competition, @NonNull String round, @NonNull String place, @Nullable String best, @Nullable String average, @Nullable String result_details) {
-            return new AutoValue_History(_id, record, follower, event, competition, round, place, best, average, result_details);
+        public History create(long _id, long follower, @NonNull String event, @NonNull String competition, @NonNull String round, @NonNull String place, @Nullable String best, @Nullable String average, @Nullable String result_details) {
+            return new AutoValue_History(_id, follower, event, competition, round, place, best, average, result_details);
         }
     });
 

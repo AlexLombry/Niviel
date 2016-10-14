@@ -483,16 +483,29 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         MenuItem profileItem = navigationView.getMenu().findItem(R.id.profile);
 
         if(prefId != -1) {
-            DatabaseHelper database = DatabaseHelper.getInstance(this);
-            Follower follower = database.selectFollowerFromId(prefId);
 
-            prefWcaId = follower.wca_id();
-            prefWcaName = follower.name();
+            // Essaie de recuperer le nom et prénom. Si ne peut pas, supprime le profil
+            try {
+                DatabaseHelper database = DatabaseHelper.getInstance(this);
+                Follower follower = database.selectFollowerFromId(prefId);
 
-            profileItem.setVisible(true);
+                prefWcaId = follower.wca_id();
+                prefWcaName = follower.name();
 
-            nameView.setText(prefWcaName);
-            wca_idView.setText(prefWcaId);
+                profileItem.setVisible(true);
+
+                nameView.setText(prefWcaName);
+                wca_idView.setText(prefWcaId);
+
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+
+                preferences
+                        .edit()
+                        .putLong(getString(R.string.pref_personal_id),  -1)
+                        .apply();
+            }
         }
 
         else {

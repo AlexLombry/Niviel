@@ -14,6 +14,7 @@ import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.models.readable.Record;
+import com.adrastel.niviel.providers.html.HistoryProvider;
 import com.adrastel.niviel.providers.html.RecordProvider;
 
 import org.jsoup.Jsoup;
@@ -43,11 +44,9 @@ public class EditRecordService extends IntentService {
 
     private String wca_id = null;
     private String username = null;
-    private long follower_id = -1;
     private boolean isPersonal = false;
     // permet de savoir si on follow ou devient
     private boolean follows = true;
-    private ArrayList<Record> records;
     private DatabaseHelper db;
     private Handler handler;
 
@@ -69,7 +68,7 @@ public class EditRecordService extends IntentService {
 
         int action = intent.getIntExtra(ACTION, ADD_FOLLOWER);
 
-        follower_id = intent.getLongExtra(ID, -1);
+        long follower_id = intent.getLongExtra(ID, -1);
         wca_id = intent.getStringExtra(WCA_ID);
         username = intent.getStringExtra(USERNAME);
         isPersonal = intent.getBooleanExtra(IS_PERSONAL, false);
@@ -86,10 +85,11 @@ public class EditRecordService extends IntentService {
 
             getRecords(new recordsCallback() {
                 @Override
-                public void onSuccess(ArrayList<Record> records) {
+                public void onSuccess(ArrayList<Record> records, ArrayList<History> histories) {
 
                     final long follower = db.insertFollower(username, wca_id);
                     insertRecords(follower, records);
+                    insertHistories(follower, histories);
 
                     if(isPersonal) {
                         PreferenceManager
@@ -194,10 +194,13 @@ public class EditRecordService extends IntentService {
                 }
 
                 Document document = Jsoup.parse(response.body().string());
-                records = RecordProvider.getRecord(getApplicationContext(), document, true);
+                ArrayList<Record> records = RecordProvider.getRecord(getApplicationContext(), document);
+
+                ArrayList<History> histories = HistoryProvider.getHistory(getApplicationContext(), document);
+
                 response.close();
 
-                callback.onSuccess(records);
+                callback.onSuccess(records, histories);
 
 
             }
@@ -205,7 +208,7 @@ public class EditRecordService extends IntentService {
     }
 
     private interface recordsCallback {
-        void onSuccess(ArrayList<Record> records);
+        void onSuccess(ArrayList<Record> records, ArrayList<History> histories);
     }
 
     private void insertRecords(long follower, ArrayList<Record> records) {
@@ -269,7 +272,7 @@ public class EditRecordService extends IntentService {
                 e.printStackTrace();
             }
 
-            long record_id = db.insertRecord(
+            db.insertRecord(
                     follower, events[i],
                     singles[i], nr_singles[i], cr_singles[i], wr_singles[i],
                     averages[i], nr_average[i], cr_average[i], wr_average[i]
@@ -277,7 +280,7 @@ public class EditRecordService extends IntentService {
 
             // Insert Histories
 
-            ArrayList<History> histories = record.getCompetitions();
+            /*ArrayList<History> histories = record.getCompetitions();
 
             for(History history : histories) {
 
@@ -287,7 +290,21 @@ public class EditRecordService extends IntentService {
                         history.getCompetition(), history.getRound(),
                         history.getPlace(), history.getBest(), history.getAverage(), history.getResult_details());
 
-            }
+            }*/
         }
+    }
+
+    private void insertHistories(long follower, ArrayList<History> histories) {
+
+        for(History history : histories) {
+
+            db.insertHistory(
+                    follower,
+                    history.getEvent(),
+                    history.getCompetition(), history.getRound(),
+                    history.getPlace(), history.getBest(), history.getAverage(), history.getResult_details());
+
+        }
+
     }
 }

@@ -1,6 +1,5 @@
 CREATE TABLE history (
     _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    record INTEGER NOT NULL,
     follower INTEGER NOT NULL,
     event TEXT NOT NULL,
     competition TEXT NOT NULL,
@@ -10,7 +9,7 @@ CREATE TABLE history (
     average TEXT,
     result_details TEXT,
 
-    FOREIGN KEY(record) REFERENCES record(_id)
+    FOREIGN KEY(follower) REFERENCES follower(_id)
 );
 
 delete_table:
