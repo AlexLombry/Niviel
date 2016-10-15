@@ -202,11 +202,7 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
             case R.id.switch_cube:
 
 
-                Bundle bundle = new Bundle();
-                bundle.putInt(Constants.EXTRAS.CUBE_POSITION, cubePosition);
-
-                DialogFragment cubeSwitch = new RankingSwitchCubeDialog();
-                cubeSwitch.setArguments(bundle);
+                DialogFragment cubeSwitch = RankingSwitchCubeDialog.newInstance(cubePosition);
                 cubeSwitch.setTargetFragment(this, 0);
                 cubeSwitch.show(getFragmentManager(), "cubeSwitch");
 

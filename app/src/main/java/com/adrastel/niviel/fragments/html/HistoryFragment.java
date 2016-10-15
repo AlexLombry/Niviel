@@ -58,7 +58,7 @@ public class HistoryFragment extends BaseFragment {
         instance.setArguments(args);
         return instance;
     }
-    // todo: tout changer en new instance
+
     public static HistoryFragment newInstance(String wca_id) {
         HistoryFragment instance = new HistoryFragment();
 

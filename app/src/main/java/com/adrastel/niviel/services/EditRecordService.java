@@ -120,7 +120,7 @@ public class EditRecordService extends IntentService {
 
 
             if(follower_id == -1) {
-                follower_id = db.getFollowerIdFromWca(wca_id);
+                follower_id = db.selectFollowerIdFromWca(wca_id);
             }
             db.deleteHistories(follower_id);
             db.deleteRecords(follower_id);

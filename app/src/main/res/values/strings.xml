@@ -9,6 +9,7 @@
             0192: À
     -->
 
+    <!-- Personal -->
     <string name="app_name" translatable="false">Niviel</string>
     <string name="author" translatable="false">Herel Adrastel</string>
     <string name="email" translatable="false">herel.dev@gmail.com</string>
@@ -45,6 +46,34 @@
     <string name="citizen">Nationnalité</string>
     <string name="world">Monde</string>
     <string name="ranking_subtitle">%1$s (%2$s)</string>
+    <string name="switch_cube">Changer de cube</string>
+    <string name="switch_country">Changer de pays</string>
+    <string name="share_ranking">%1$s est classé n°%2$s avec un temps de %3$s</string>
+
+    <!-- Followers -->
+    <string name="follow">Suivre</string>
+    <string name="unfollow">Ne plus suivre</string>
+    <string name="followers">Followers</string>
+
+    <!-- Profile -->
+    <string name="profile">Profil</string>
+    <string name="wca_id">Identifiant WCA</string>
+    <string name="edit_profile">Changer de profil</string>
+    <string name="toast_switch_profile_confirmation">Votre profil est maintenant au nom de %1$s</string>
+    <string name="toast_follow_confirmation">Vous suivez %1$s</string>
+    <string name="toast_unfollow_confirmation">Vous ne suivez plus %1$s</string>
+    <string name="dialog_edit_profile_follow_title">Changement de profil/Suivre</string>
+    <string name="dialog_edit_profile_follow_message">
+        Vous pouvez :
+        \n\t-Suivre %1$s et être informé si il obtient de nouveaux records.
+        \n\t-Changer de profil et assigner votre profil personnel au nom de %1$s.
+    </string>
+    <string name="toast_edit_profile_success">Le changement de profil a bien été effectué</string>
+    <string name="toast_edit_profile_failure">Une erreur est survenue lors du changement de profil</string>
+
+    <!-- Search -->
+    <string name="search">Rechercher</string>
+    <string name="search_hint_users">Rechercher des joueurs…</string>
 
     <!-- Errors -->
     <string name="error_connection">Veuillez vous connecter à internet</string>
@@ -53,67 +82,35 @@
     <string name="error_interpretation_html">Erreur d\'interpretation du code HTML</string>
     <string name="wrong_wca_id">Identifiant WCA erroné</string>
     <string name="unknown_error">Erreur inconnue</string>
-
     <string name="no_followers">Vous ne suivez personne</string>
 
+    <!-- Menus -->
+    <string name="settings">Réglages</string>
+    <string name="my_profile">Mon profil</string>
+    <string name="explore">Explorer</string>
 
     <!-- Actions -->
     <string name="ok">OK</string>
     <string name="cancel">Annuler</string>
-    <string name="settings">Réglages</string>
-    <string name="profile">Profil</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
     <string name="refresh">Rafraichir</string>
     <string name="more_info">Plus d\'infos</string>
     <string name="share">Partager</string>
     <string name="details">Détails</string>
-    <string name="switch_cube">Changer de cube</string>
-    <string name="switch_country">Changer de pays</string>
-    <string name="my_account">Mon compte</string>
     <string name="about">À propos</string>
     <string name="report_bug">Signaler un bug</string>
     <string name="report_err_trad">Signaler une erreur de traduction</string>
     <string name="rate">Évaluer</string>
-    <string name="follow">Suivre</string>
-    <string name="unfollow">Ne plus suivre</string>
-    <string name="followers">Followers</string>
+
     <string name="goto_internet">Voir le site web</string>
-    <string name="toast_switch_profile_confirmation">Votre profil est maintenant au nom de %1$s</string>
-    <string name="toast_follow_confirmation">Vous suivez %1$s</string>
-    <string name="toast_unfollow_confirmation">Vous ne suivez plus %1$s</string>
-    <string name="search">Rechercher</string>
-    <string name="search_hint_users">Rechercher des joueurs…</string>
-    <string name="toast_click_double_back">Cliquez encore sur Retour pour quitter</string>
-    <string name="pref_double_back_title">Confirmation pour quitter l\'application</string>
-    <string name="pref_double_back_description">Cliquez 2 fois sur le bouton Retour pour quitter l\'application</string>
-    <string name="edit_profile">Changer de profil</string>
-    <string name="yes">Oui</string>
-    <string name="no">Non</string>
-    <string name="explore">Explorer</string>
-
-    <!-- Preferences -->
-    <string name="wca_id">Identifiant WCA</string>
-
-    <!-- see -->
-
-    <!-- share strings -->
-    <string name="share_history">J\'ai obtenu la place n°%1$s à la compétition %2$s en faisant un temps moyen de %3$s</string>
-    <string name="share_ranking">%1$s est classé n°%2$s avec un temps de %3$s</string>
-
 
     <!-- Others -->
     <string name="zero" translatable="false">0</string>
     <string name="no_title" translatable="false"/>
 
-    <string name="dialog_edit_profile_follow_title">Changement de profil/Suivre</string>
-    <string name="dialog_edit_profile_follow_message">
-        Vous pouvez :
-        \n\t-Suivre %1$s et être informé si il obtient de nouveaux records.
-        \n\t-Changer de profil et assigner votre profil personnel au nom de %1$s.
-    </string>
 
     <string name="confirm">Confirmer</string>
-    <string name="toast_edit_profile_success">Le changement de profil a bien été effectué</string>
-    <string name="toast_edit_profile_failure">Une erreur est survenue lors du changement de profil</string>
     <string name="toast_adding">Ajout en cours</string>
 
     <!-- notofication -->
@@ -128,10 +125,9 @@
 
     <string name="share_new_record_title">%1$s (%2$s)</string>
 
-    <!-- todo: à changer -->
-    <string name="notif_new_rank_message">Passé de n°%1$d à n°%2$d %3$s (%4$s) en %5$s avec un score de %6$s</string>
-    <string name="share_new_rank">%1$s est passé de n°%2$d à n°%3$d %4$s (%5$s) en %6$s avec un score de %7$s</string>
+    <string name="notif_new_rank_message">Désormais n°%1$d à n°%2$d %3$s (%4$s) en %5$s avec un score de %6$s</string>
+    <string name="share_new_rank">%1$s est désormais n°%2$d à n°%3$d %4$s (%5$s) en %6$s avec un score de %7$s</string>
 
     <string name="reset_pref_id_title">Réinitialiser votre profil personnel</string>
-    <string name="reset_pref_id_content">Réinitialiser votre profil personnel ?\nDes profils selectionnés au hasard défileront à la place</string>
+    <string name="reset_pref_id_content">Réinitialiser votre profil personnel ?</string>
 </resources>

@@ -15,13 +15,22 @@ import com.adrastel.niviel.models.readable.History;
 public class HistoryDialog extends DialogFragment {
 
 
+    public static HistoryDialog newInstance(History history) {
+
+        Bundle args = new Bundle();
+        args.putParcelable(Constants.EXTRAS.HISTORY, history);
+
+        HistoryDialog fragment = new HistoryDialog();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         Bundle bundle = getArguments();
-        History history = bundle.getParcelable(Constants.TAG.HISTORY);
+        History history = bundle.getParcelable(Constants.EXTRAS.HISTORY);
 
         DetailsMaker dialogMaker = new DetailsMaker(getContext());
 

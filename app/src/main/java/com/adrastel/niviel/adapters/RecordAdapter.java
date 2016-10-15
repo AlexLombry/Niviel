@@ -131,13 +131,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
     private void showMoreInfoDialog(FragmentManager manager, Record record) {
 
         if(manager != null) {
-
-            Bundle bundle = new Bundle();
-
-            bundle.putParcelable(Constants.EXTRAS.RECORDS, record);
-
-            DialogFragment recordDialog = new RecordDialog();
-            recordDialog.setArguments(bundle);
+            DialogFragment recordDialog = RecordDialog.newInstance(record);
 
             recordDialog.show(manager, Constants.TAG.RECORDS);
 

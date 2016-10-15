@@ -3,7 +3,7 @@
 
     <group android:checkableBehavior="single">
 
-        <item android:title="@string/my_account">
+        <item android:title="@string/my_profile">
             <menu>
                 <group android:checkableBehavior="single">
                     <item

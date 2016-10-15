@@ -14,6 +14,17 @@ import com.adrastel.niviel.models.readable.Ranking;
 
 public class RankingDetailsDialog extends DialogFragment {
 
+
+    public static RankingDetailsDialog newInstance(Ranking ranking) {
+
+        Bundle args = new Bundle();
+        args.putParcelable(Constants.EXTRAS.RANKING, ranking);
+
+        RankingDetailsDialog instance = new RankingDetailsDialog();
+        instance.setArguments(args);
+        return instance;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

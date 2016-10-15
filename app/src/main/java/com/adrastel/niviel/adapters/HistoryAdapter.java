@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -15,21 +14,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Cubes;
-import com.adrastel.niviel.assets.IntentHelper;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.HistoryDialog;
 import com.adrastel.niviel.models.readable.Event;
 import com.adrastel.niviel.models.readable.History;
-import com.adrastel.niviel.providers.html.RecordProvider;
 import com.adrastel.niviel.views.CircleView;
 import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
-import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 import com.squareup.picasso.Picasso;
 
@@ -37,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * HistoryAdapter organise les donnes données par un objet histor
+ * Cet adapter gère l'historique du joueur. Il se base sur une liste etendable en fonction de l'event
  */
 
 public class HistoryAdapter extends BaseExpandableAdapter<Event, History, HistoryAdapter.EventViewHolder, HistoryAdapter.HistoryViewHolder> {
@@ -50,6 +44,10 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         inflater = LayoutInflater.from(activity);
     }
 
+    /**
+     * Classe parent qui represente la catégorie du cube
+     */
+    @SuppressWarnings("WeakerAccess")
     static class EventViewHolder extends ParentViewHolder<Event, History> {
 
         public CircleView place;
@@ -69,6 +67,10 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         }
     }
 
+    /**
+     * Classe enfant qui représente l'historique
+     */
+    @SuppressWarnings("WeakerAccess")
     static class HistoryViewHolder extends ChildViewHolder<History> {
 
         public CircleView place;
@@ -88,6 +90,12 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         }
     }
 
+    /**
+     * Inflate le layout parent
+     * @param parentViewGroup Vue parente
+     * @param viewType Type de la vue
+     * @return vue enfant
+     */
     @NonNull
     @Override
     public EventViewHolder onCreateParentViewHolder(@NonNull ViewGroup parentViewGroup, int viewType) {
@@ -96,6 +104,12 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         return new EventViewHolder(parentView);
     }
 
+    /**
+     * Inflate le layout enfant
+     * @param childViewGroup Vue parent
+     * @param viewType Type de la vue
+     * @return Vue enfant
+     */
     @NonNull
     @Override
     public HistoryViewHolder onCreateChildViewHolder(@NonNull ViewGroup childViewGroup, int viewType) {
@@ -104,6 +118,18 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         return new HistoryViewHolder(childView);
     }
 
+    /**
+     * Lors de l'attachement de la vue parent
+     *
+     * Cache plusieurs vues
+     * Ajoute un padding pour reiquilibre
+     * Change la taille du titre
+     * Charge la miniature
+     *
+     * @param parentViewHolder vue parent
+     * @param parentPosition position du parent
+     * @param parent objet parent
+     */
     @Override
     public void onBindParentViewHolder(@NonNull final EventViewHolder parentViewHolder, int parentPosition, @NonNull Event parent) {
         parentViewHolder.results.setVisibility(View.GONE);
@@ -126,6 +152,19 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
                 .into(cube);
     }
 
+    /**
+     * Lors de l'attachement de la vue enfant
+     *
+     * Change le background
+     * Inflate les differents elements comme le titre, la place
+     *
+     * Charge le menu contextuel
+     *
+     * @param childViewHolder vue enfant
+     * @param parentPosition position du parent
+     * @param childPosition position de l'enfant
+     * @param child object enfant
+     */
     @Override
     public void onBindChildViewHolder(@NonNull HistoryViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull History child) {
 
@@ -146,28 +185,11 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         loadMenu(childViewHolder, child);
     }
 
- /*   // Lors de l'hydratation de la vue
-    //@Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-
-        final History history = getDatas().get(position);
-
-        String event = history.getEvent();
-        String competition = history.getCompetition();
-        String place = history.getPlace();
-        String average = history.getAverage();
-        String result_details = history.getResult_details();
-
-        holder.competition.setText(Assets.formatHtmltitle(event, competition));
-        holder.place.setText(place);
-        holder.results.setText(Assets.formatHtmlAverageDetails(average, result_details));
-
-        holder.place.setBackground(Assets.getColor(getActivity(), R.color.indigo_300));
-
-        loadMenu(holder, history);
-
-
-    }*/
+    /**
+     * Charge le menu sur chaque enfant
+     * @param holder vue enfant
+     * @param history objet enfant
+     */
     private void loadMenu(HistoryViewHolder holder, final History history) {
         holder.more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -184,10 +206,6 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
                             case R.id.details:
                                 onDetails(getActivity().getSupportFragmentManager(), history);
                                 return true;
-
-                            case R.id.share:
-                                onShare(history);
-                                return true;
                         }
 
                         return false;
@@ -199,18 +217,16 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         });
     }
 
+    /**
+     * Charge un dialogue contenant les détails de l'historique
+     * @param fragmentManager manager
+     * @param history objet enfant
+     */
     private void onDetails(FragmentManager fragmentManager, History history) {
 
         if(fragmentManager != null) {
 
-
-
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Constants.EXTRAS.HISTORY, history);
-
-            DialogFragment historyDialog = new HistoryDialog();
-
-            historyDialog.setArguments(bundle);
+            DialogFragment historyDialog = HistoryDialog.newInstance(history);
 
             historyDialog.show(fragmentManager, Constants.TAG.HISTORY);
 
@@ -218,21 +234,12 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
 
     }
 
-    // todo: changer la phrase shareFormat
-    private void onShare(History history) {
-
-
-        String shareFormat = getActivity().getString(R.string.share_history);
-
-        String text = String.format(shareFormat, history.getPlace(), history.getCompetition(), history.getAverage());
-
-        String html = String.format(shareFormat, Assets.wrapStrong(history.getPlace()),
-                Assets.wrapStrong(history.getCompetition()), Assets.wrapStrong(history.getAverage()));
-
-
-        IntentHelper.shareIntent(getActivity(), text, html);
-    }
-
+    /**
+     * Appelé pour raffrechir les donnéees
+     *
+     * Trie les données avant de les raffrechir
+     * @param datas données
+     */
     @Override
     public void refreshData(ArrayList<Event> datas) {
         Collections.sort(datas, new Event.COMPARATOR());

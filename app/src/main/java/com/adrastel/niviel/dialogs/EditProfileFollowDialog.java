@@ -19,7 +19,7 @@ public class EditProfileFollowDialog extends DialogFragment {
     DialogProfileListener listener;
     String username = null;
 
-    public static EditProfileFollowDialog getInstance(String name) {
+    public static EditProfileFollowDialog newInstance(String name) {
         EditProfileFollowDialog instance = new EditProfileFollowDialog();
 
         Bundle args = new Bundle();

@@ -60,7 +60,6 @@ public class CheckRecordService extends IntentService {
         Log.i("Create CheckRecordService");
     }
 
-    // todo: gerer le cas ou 2 battements de records
     @Override
     protected void onHandleIntent(Intent intent) {
 

@@ -198,7 +198,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public long getFollowerIdFromWca(String wca_id) {
+    public long selectFollowerIdFromWca(String wca_id) {
 
         try {
             SQLiteDatabase db = openDatabase();

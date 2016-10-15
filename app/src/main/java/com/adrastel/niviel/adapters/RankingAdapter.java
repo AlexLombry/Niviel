@@ -203,7 +203,7 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         getActivity().startService(intent);
 
 
-/*        DatabaseHelper helper = DatabaseHelper.getInstance(context);
+/*        DatabaseHelper helper = DatabaseHelper.newInstance(context);
         helper.insertFollower(ranking.getPerson(), ranking.getWca_id(), System.currentTimeMillis());
 
         String confirmation = String.format(context.getString(R.string.toast_follow_confirmation), ranking.getPerson());
@@ -237,13 +237,7 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
 
         if(fragmentManager != null) {
 
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Constants.EXTRAS.RANKING, ranking);
-
-            DialogFragment rankingDialog = new RankingDetailsDialog();
-
-            rankingDialog.setArguments(bundle);
-
+            DialogFragment rankingDialog = RankingDetailsDialog.newInstance(ranking);
             rankingDialog.show(fragmentManager, "details");
 
 

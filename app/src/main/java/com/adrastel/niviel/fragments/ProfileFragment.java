@@ -167,7 +167,7 @@ public class ProfileFragment extends BaseFragment{
                 @Override
                 public void onClick(View view) {
 
-                    EditProfileFollowDialog dialog = EditProfileFollowDialog.getInstance(username);
+                    EditProfileFollowDialog dialog = EditProfileFollowDialog.newInstance(username);
                     dialog.setTargetFragment(ProfileFragment.this, 0);
                     dialog.show(getFragmentManager(), "setProfileDialog");
 

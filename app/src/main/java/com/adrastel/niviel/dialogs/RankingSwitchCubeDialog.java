@@ -22,6 +22,16 @@ public class RankingSwitchCubeDialog extends DialogFragment {
 
     private AlertDialog dialog;
 
+    public static RankingSwitchCubeDialog newInstance(int position) {
+
+        Bundle args = new Bundle();
+        args.putInt(Constants.EXTRAS.CUBE_POSITION, position);
+
+        RankingSwitchCubeDialog instance = new RankingSwitchCubeDialog();
+        instance.setArguments(args);
+        return instance;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.models.readable.Record;
@@ -34,12 +35,21 @@ public class RecordDialog extends DialogFragment {
     @BindView(R.id.average_cr) TextView cr_average;
     @BindView(R.id.average_wr) TextView wr_average;
 
+    public static RecordDialog newInstance(Record record) {
+
+        Bundle args = new Bundle();
+        args.putParcelable(Constants.EXTRAS.RECORDS, record);
+
+        RecordDialog instance = new RecordDialog();
+        instance.setArguments(args);
+        return instance;
+    }
+
     @NonNull
     @Override
     @SuppressWarnings("InflateParams")
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        // todo: utiliser les gets instances en arguments
         Record record = getArguments().getParcelable(Constants.EXTRAS.RECORDS);
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
@@ -52,19 +62,19 @@ public class RecordDialog extends DialogFragment {
 
             if(record.getSingle() != null && !record.getSingle().trim().equals("")) {
                 layout_single.setVisibility(View.VISIBLE);
-                single.setText(String.format(getString(R.string.record_time), record.getSingle()));
-                nr_single.setText(String.format(getString(R.string.record_nr), record.getNr_single()));
-                cr_single.setText(String.format(getString(R.string.record_cr), record.getCr_single()));
-                wr_single.setText(String.format(getString(R.string.record_wr), record.getWr_single()));
+                single.setText(String.format(getString(R.string.record_time), Assets.wrapStrong(record.getSingle())));
+                nr_single.setText(String.format(getString(R.string.record_nr), Assets.wrapStrong(record.getNr_single())));
+                cr_single.setText(String.format(getString(R.string.record_cr), Assets.wrapStrong(record.getCr_single())));
+                wr_single.setText(String.format(getString(R.string.record_wr), Assets.wrapStrong(record.getWr_single())));
             }
 
             if(record.getAverage() != null && !record.getAverage().trim().equals("")) {
                 Log.d("average", record.getAverage());
                 layout_average.setVisibility(View.VISIBLE);
-                average.setText(String.format(getString(R.string.record_time), record.getAverage()));
-                nr_average.setText(String.format(getString(R.string.record_nr), record.getNr_average()));
-                cr_average.setText(String.format(getString(R.string.record_cr), record.getCr_average()));
-                wr_average.setText(String.format(getString(R.string.record_wr), record.getWr_average()));
+                average.setText(String.format(getString(R.string.record_time), Assets.wrapStrong(record.getAverage())));
+                nr_average.setText(String.format(getString(R.string.record_nr), Assets.wrapStrong(record.getNr_average())));
+                cr_average.setText(String.format(getString(R.string.record_cr), Assets.wrapStrong(record.getCr_average())));
+                wr_average.setText(String.format(getString(R.string.record_wr), Assets.wrapStrong(record.getWr_average())));
             }
         }
 
