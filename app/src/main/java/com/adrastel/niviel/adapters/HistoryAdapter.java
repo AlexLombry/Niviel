@@ -55,6 +55,7 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         public TextView results;
         public ImageButton more;
         public ImageView cube;
+        public LinearLayout root;
 
         public EventViewHolder(View itemView) {
             super(itemView);
@@ -64,6 +65,7 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
             results = (TextView) itemView.findViewById(R.id.second_line);
             more = (ImageButton) itemView.findViewById(R.id.more);
             cube = (ImageView) itemView.findViewById(R.id.cube_image);
+            root = (LinearLayout) itemView.findViewById(R.id.root_layout);
         }
     }
 
@@ -132,6 +134,8 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
      */
     @Override
     public void onBindParentViewHolder(@NonNull final EventViewHolder parentViewHolder, int parentPosition, @NonNull Event parent) {
+
+
         parentViewHolder.results.setVisibility(View.GONE);
         parentViewHolder.place.setVisibility(View.GONE);
         parentViewHolder.more.setVisibility(View.GONE);
@@ -150,6 +154,7 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
                 .fit()
                 .centerInside()
                 .into(cube);
+
     }
 
     /**
@@ -191,39 +196,6 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
                 onDetails(getActivity().getSupportFragmentManager(), child);
             }
         });
-        //loadMenu(childViewHolder, child);
-    }
-
-    /**
-     * Charge le menu sur chaque enfant
-     * @param holder vue enfant
-     * @param history objet enfant
-     */
-    private void loadMenu(HistoryViewHolder holder, final History history) {
-        holder.more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-
-                PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-                popupMenu.inflate(R.menu.menu_pop_history);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-
-                        switch (item.getItemId()) {
-
-                            case R.id.details:
-                                onDetails(getActivity().getSupportFragmentManager(), history);
-                                return true;
-                        }
-
-                        return false;
-                    }
-                });
-                popupMenu.show();
-
-            }
-        });
     }
 
     /**
@@ -237,7 +209,7 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
 
             DialogFragment historyDialog = HistoryDialog.newInstance(history);
 
-            historyDialog.show(fragmentManager, Constants.TAG.HISTORY);
+            historyDialog.show(fragmentManager, "historyDetailsDialog");
 
         }
 
@@ -252,6 +224,7 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
     @Override
     public void refreshData(ArrayList<Event> datas) {
         Collections.sort(datas, new Event.COMPARATOR());
+
         super.refreshData(datas);
     }
 }
