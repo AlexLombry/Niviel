@@ -166,13 +166,15 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
      * @param child object enfant
      */
     @Override
-    public void onBindChildViewHolder(@NonNull HistoryViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull History child) {
+    public void onBindChildViewHolder(@NonNull HistoryViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull final History child) {
 
         String event = child.getEvent();
         String competition = child.getCompetition();
         String place = child.getPlace();
         String average = child.getAverage();
         String result_details = child.getResult_details();
+
+        childViewHolder.more.setVisibility(View.GONE);
 
         childViewHolder.root.setBackgroundColor(0xFFDDDDDD);
 
@@ -182,7 +184,14 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
 
         childViewHolder.place.setBackground(Assets.getColor(getActivity(), R.color.indigo_300));
 
-        loadMenu(childViewHolder, child);
+
+        childViewHolder.root.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onDetails(getActivity().getSupportFragmentManager(), child);
+            }
+        });
+        //loadMenu(childViewHolder, child);
     }
 
     /**
