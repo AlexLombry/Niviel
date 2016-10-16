@@ -10,6 +10,14 @@
         android:orderInCategory="100"
         app:showAsAction="collapseActionView|ifRoom"
         app:actionViewClass="android.support.v7.widget.SearchView"/>
+
+    <item
+        android:id="@+id/daynight_theme"
+        android:title="@string/dark_theme"
+        android:orderInCategory="150"
+        app:showAsAction="never"
+        android:checkable="true"/>
+
     <item
         android:title="@string/settings"
         android:id="@+id/settings"

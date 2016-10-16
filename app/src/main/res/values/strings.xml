@@ -88,6 +88,7 @@
     <string name="settings">Réglages</string>
     <string name="my_profile">Mon profil</string>
     <string name="explore">Explorer</string>
+    <string name="dark_theme">Thème sombre</string>
 
     <!-- Actions -->
     <string name="ok">OK</string>

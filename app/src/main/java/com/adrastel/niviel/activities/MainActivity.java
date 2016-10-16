@@ -28,6 +28,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
     // L'identifiant du profil
     private long prefId = -1;
+    private boolean isDark = false;
 
     // Le runnable qui est executé après que le drawer soit fermé
     private Runnable fragmentToRun;
@@ -142,6 +144,15 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        isDark = preferences.getBoolean(getString(R.string.pref_isdark), false);
+
+        if(isDark) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+
+        else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         // Actualise l'ID WCA
         updateUiOnProfileChange();
 
@@ -219,9 +230,11 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflation
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
 
+        // Définition du moteur de rechervche
         searchMenuItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
 

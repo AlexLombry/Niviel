@@ -4,7 +4,13 @@
     <color name="colorPrimaryDark">@color/indigo_700</color>
     <color name="colorPrimaryLight">@color/indigo_200</color>
     <color name="colorAccent">@color/deep_orange_A400</color>
+    <color name="textColorPrimary">#212121</color>
+    <color name="textColorSecondary">#616161</color>
+    <color name="background">#FFFFFF</color>
 
+    <!-- Specifics colors -->
+    <color name="background_card_record">@color/purple_200</color>
+    <color name="background_child_expanded_recycler_view">#DDDDDD</color>
 
     <color name="red_50">#ffebee</color>
     <color name="red_100">#ffcdd2</color>

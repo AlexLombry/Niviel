@@ -87,7 +87,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
             detailsMaker.add(R.string.average, average);
         }
 
-        holder.single.setText(detailsMaker.build("#404040"), TextView.BufferType.SPANNABLE);
+        holder.single.setText(detailsMaker.build(), TextView.BufferType.SPANNABLE);
 
         Picasso.with(getActivity())
                 .load(image_resource)

@@ -43,6 +43,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/first_line"
             android:text="@string/competition"
+            android:textColor="@color/textColorPrimary"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
 
         <TextView
@@ -50,6 +51,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/second_line"
             android:text="@string/zero"
+            android:textColor="@color/textColorSecondary"
             android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     </LinearLayout>
@@ -63,7 +65,7 @@
         android:paddingLeft="@dimen/p2"
         android:paddingRight="@dimen/p2"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_more_black"
+        android:src="@drawable/ic_more"
         android:contentDescription="@string/more_info"
         android:clickable="true"
         android:layout_gravity="center_vertical"/>

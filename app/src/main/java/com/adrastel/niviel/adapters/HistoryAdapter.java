@@ -144,7 +144,6 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         title.setText(parent.getTitle());
         title.setPadding(Assets.dpToPx(getActivity(), 20), 0, 0, 0);
         title.setTextSize(Assets.dpToPx(getActivity(), 12));
-        title.setTextColor(0xFF444444);
 
         ImageView cube = parentViewHolder.cube;
         cube.setVisibility(View.VISIBLE);
@@ -181,7 +180,7 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
 
         childViewHolder.more.setVisibility(View.GONE);
 
-        childViewHolder.root.setBackgroundColor(0xFFDDDDDD);
+        childViewHolder.root.setBackgroundColor(Assets.getColor(getActivity(), R.color.background_child_expanded_recycler_view));
 
         childViewHolder.competition.setText(Assets.formatHtmltitle(event, competition));
         childViewHolder.place.setText(place);
