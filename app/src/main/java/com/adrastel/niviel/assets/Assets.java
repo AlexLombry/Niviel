@@ -224,4 +224,9 @@ public class Assets {
 
     }
 
+    public static boolean isDark(String darkness) {
+        return darkness.equals("1");
+
+    }
+
 }

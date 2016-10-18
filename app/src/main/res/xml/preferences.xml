@@ -6,6 +6,15 @@
             android:title="@string/reset_pref_id_title"
             android:dialogTitle="@string/reset_pref_id_title"
             android:dialogMessage="@string/reset_pref_id_content"/>
+
+        <com.adrastel.niviel.preferences.ThemePreference
+            android:key="@string/pref_isdark"
+            android:defaultValue="0"
+            android:title="@string/theme"
+            android:summary="@string/pref_theme_summary"
+            android:dialogTitle="@string/theme"
+            android:entries="@array/theme_list"
+            android:entryValues="@array/theme_list_values"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/about">

@@ -40,6 +40,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
@@ -59,7 +60,7 @@ import butterknife.ButterKnife;
  * <p>
  * Est composée d'un DrawerLayout qui gère plusieurs fragments
  */
-public class MainActivity extends AppCompatActivity implements DrawerLayout.DrawerListener {
+public class MainActivity extends BaseActivity implements DrawerLayout.DrawerListener {
 
 
     // L'indentifiant du receiver
@@ -144,15 +145,10 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-        isDark = preferences.getBoolean(getString(R.string.pref_isdark), false);
+        isDark = Assets.isDark(preferences.getString(getString(R.string.pref_isdark), "0"));
+        setDayNightTheme(isDark);
 
-        if(isDark) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }
 
-        else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
         // Actualise l'ID WCA
         updateUiOnProfileChange();
 
@@ -203,6 +199,8 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
         });
 
     }
+
+
 
     /**
      * Sauvegarde le fragment actuel
@@ -267,7 +265,6 @@ public class MainActivity extends AppCompatActivity implements DrawerLayout.Draw
 
         return super.onOptionsItemSelected(item);
     }
-
     /**
      * Lors de l'appui du bouton arrière
      * <p>

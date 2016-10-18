@@ -9,7 +9,7 @@
     <color name="background">#FFFFFF</color>
 
     <!-- Specifics colors -->
-    <color name="background_card_record">@color/purple_200</color>
+    <color name="background_card_record">@color/indigo_200</color>
     <color name="background_child_expanded_recycler_view">#DDDDDD</color>
 
     <color name="red_50">#ffebee</color>
