@@ -16,11 +16,11 @@ public class CheckRecordsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Log.d(intent.getScheme(), intent.getAction());
+        Log.i("init receiver");
 
         Intent checkRecords = new Intent(context, CheckRecordService.class);
 
-        PendingIntent pendingIntent = PendingIntent.getService(context, 0, checkRecords, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getService(context, 0, checkRecords, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -28,7 +28,7 @@ public class CheckRecordsReceiver extends BroadcastReceiver {
 
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        //manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        manager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
 
         context.startService(checkRecords);
 

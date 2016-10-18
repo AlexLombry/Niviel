@@ -9,5 +9,6 @@
 
     <!-- Specifics colors -->
     <color name="background_card_record">#444444</color>
+    <color name="background_personal_follower">#444444</color>
     <color name="background_child_expanded_recycler_view">#444444</color>
 </resources>

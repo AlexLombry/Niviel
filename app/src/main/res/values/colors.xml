@@ -10,6 +10,7 @@
 
     <!-- Specifics colors -->
     <color name="background_card_record">@color/indigo_200</color>
+    <color name="background_personal_follower">@color/green_100</color>
     <color name="background_child_expanded_recycler_view">#DDDDDD</color>
 
     <color name="red_50">#ffebee</color>

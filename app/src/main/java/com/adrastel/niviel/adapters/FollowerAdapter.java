@@ -76,7 +76,7 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
         });
 
         if(Assets.isPersonal(getActivity(), follower._id())) {
-            holder.click_area.setBackgroundResource(R.color.green_100);
+            holder.click_area.setBackgroundResource(R.color.background_personal_follower);
             holder.more.setVisibility(View.INVISIBLE);
         }
         else {
