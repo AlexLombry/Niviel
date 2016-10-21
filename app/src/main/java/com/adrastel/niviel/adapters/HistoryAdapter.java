@@ -1,5 +1,6 @@
 package com.adrastel.niviel.adapters;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -132,7 +135,10 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
      * @param parentPosition position du parent
      * @param parent objet parent
      */
+
     @Override
+    @SuppressLint("PrivateResource")
+    @SuppressWarnings("deprecation")
     public void onBindParentViewHolder(@NonNull final EventViewHolder parentViewHolder, int parentPosition, @NonNull Event parent) {
 
 
@@ -143,7 +149,9 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         TextView title = parentViewHolder.title;
         title.setText(parent.getTitle());
         title.setPadding(Assets.dpToPx(getActivity(), 20), 0, 0, 0);
-        title.setTextSize(Assets.dpToPx(getActivity(), 12));
+        title.setTextSize(Assets.spToPx(getActivity(), 12));
+
+        title.setTextAppearance(getActivity(), R.style.TextAppearance_AppCompat_Large);
 
         ImageView cube = parentViewHolder.cube;
         cube.setVisibility(View.VISIBLE);

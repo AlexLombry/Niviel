@@ -1,25 +1,38 @@
 package com.adrastel.niviel.fragments;
 
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.EditProfileFollowDialog;
@@ -27,6 +40,8 @@ import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
 import com.adrastel.niviel.services.CheckRecordService;
 import com.adrastel.niviel.services.EditRecordService;
+
+import java.util.List;
 
 public class ProfileFragment extends BaseFragment{
 
@@ -222,8 +237,9 @@ public class ProfileFragment extends BaseFragment{
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(tab);
 
+
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_star);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_history);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_star);
 
     }
 
@@ -232,6 +248,12 @@ public class ProfileFragment extends BaseFragment{
         return R.style.AppTheme_Profile;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        viewPager.clearOnPageChangeListeners();
+    }
 
     public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 

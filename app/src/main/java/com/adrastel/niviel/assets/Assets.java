@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.TypedValue;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
@@ -36,11 +37,11 @@ public class Assets {
     }
 
     public static int dpToPx(Context context, int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
+    }
 
-        float scale = context.getResources().getDisplayMetrics().density;
-
-        return (int) (dp * scale + 0.5f);
-
+    public static int spToPx(Context context, int sp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
     }
 
     @SuppressWarnings("deprecation")

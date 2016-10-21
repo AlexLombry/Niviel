@@ -19,9 +19,12 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Cubes;
 import com.adrastel.niviel.assets.DetailsMaker;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.RecordDialog;
 import com.adrastel.niviel.models.readable.Record;
 import com.squareup.picasso.Picasso;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,6 +99,8 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                 .into(holder.image);
 
         //listener
+        animateCube(holder.image);
+
         holder.more_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,6 +141,40 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
             recordDialog.show(manager, Constants.TAG.RECORDS);
 
         }
+
+    }
+
+    private void animateCube(final ImageView image) {
+
+        final Animation cube_animation = AnimationUtils.loadAnimation(getActivity(), R.anim.rotation);
+
+
+        final AtomicBoolean isRunning = new AtomicBoolean();
+
+        cube_animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                isRunning.set(true);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                isRunning.set(false);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isRunning.get()) {
+                    image.startAnimation(cube_animation);
+                }
+            }
+        });
 
     }
 }

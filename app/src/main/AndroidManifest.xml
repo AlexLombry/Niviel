@@ -23,6 +23,24 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="www.worldcubeassociation.org"
+                    android:path="/results/events.php"/>
+
+                <data
+                    android:scheme="https"
+                    android:host="www.worldcubeassociation.org"
+                    android:path="/results/p.php?i="/>
+            </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>

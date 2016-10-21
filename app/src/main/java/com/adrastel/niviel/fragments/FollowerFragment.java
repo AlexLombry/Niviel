@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.FollowerAdapter;
 import com.adrastel.niviel.database.DatabaseHelper;
@@ -53,6 +55,10 @@ public class FollowerFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        if(BuildConfig.DEBUG) {
+            Toast.makeText(getContext(), "Service appelé " + preferences.getInt("call_service", 0) + "fois", Toast.LENGTH_LONG);
+        }
 
         long personal_id = preferences.getLong(getString(R.string.pref_personal_id), -1);
 

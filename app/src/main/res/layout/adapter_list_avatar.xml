@@ -45,6 +45,7 @@
             android:id="@+id/first_line"
             android:text="@string/competition"
             android:textColor="@color/textColorPrimary"
+            android:textSize="15sp"
             android:textAppearance="?android:attr/textAppearanceListItemSmall"/>
 
         <TextView

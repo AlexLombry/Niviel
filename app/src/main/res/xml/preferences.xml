@@ -13,6 +13,8 @@
             android:title="@string/theme"
             android:summary="@string/pref_theme_summary"
             android:dialogTitle="@string/theme"
+            android:positiveButtonText="@string/ok"
+            android:negativeButtonText="@string/cancel"
             android:entries="@array/theme_list"
             android:entryValues="@array/theme_list_values"/>
     </PreferenceCategory>
