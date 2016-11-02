@@ -14,12 +14,18 @@ import android.widget.Toast;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RecordAdapter;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Record;
+import com.adrastel.niviel.models.readable.User;
 import com.adrastel.niviel.providers.html.RecordProvider;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -225,6 +231,39 @@ public class RecordFragment extends BaseFragment {
                 });
             }
         });
+
+        // Appel de l'API
+
+        HttpUrl apiUrl = new HttpUrl.Builder()
+                .scheme("https")
+                .host("www.worldcubeassociation.org")
+                .addEncodedPathSegments("api/v0/users")
+                .addEncodedPathSegment(wca_id)
+                .build();
+
+        httpManager.callData(apiUrl, new HttpManager.SuccessCallback() {
+            @Override
+            public void onSuccess(String response) {
+
+                try {
+                    JsonParser parser = new JsonParser();
+
+                    JsonObject jsonTree = parser.parse(response).getAsJsonObject();
+
+                    JsonObject jsonUser = jsonTree.getAsJsonObject("user");
+
+                    Gson gson = new Gson();
+                    User user = gson.fromJson(jsonUser, User.class);
+
+                    Log.d(user.getGender());
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
     }
 
 }

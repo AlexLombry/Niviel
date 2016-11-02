@@ -139,8 +139,6 @@ public class HistoryFragment extends BaseFragment {
 
             for(com.adrastel.niviel.database.History history : localHistories) {
                 histories.add(history.toHistoryModel());
-
-                Log.d(history.event());
             }
 
             adapter.refreshData(makeExpandedArrayList(histories));

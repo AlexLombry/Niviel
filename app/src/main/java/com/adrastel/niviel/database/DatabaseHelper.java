@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
 import com.adrastel.niviel.FollowerModel;
+import com.adrastel.niviel.HistoryModel;
 import com.adrastel.niviel.RecordModel;
 
 import java.util.ArrayList;
@@ -107,7 +108,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db = openDatabase();
 
-            db.execSQL(Follower.DELETE_FOLLOWER, new String[] {String.valueOf(follower_id)});
+            Follower.Delete_follower delete = new Follower.Delete_follower(db);
+
+            delete.bind(follower_id);
+            delete.program.execute();
         }
 
         catch (Exception e) {
@@ -279,7 +283,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteRecords(long follower_id) {
         try {
             SQLiteDatabase db = openDatabase();
-            db.execSQL(Record.DELETE_RECORDS, new Long[] {follower_id});
+
+            Record.Delete_records delete_records = new RecordModel.Delete_records(db);
+
+            delete_records.bind(follower_id);
+            delete_records.program.execute();
         }
 
         catch (Exception e) {
@@ -324,7 +332,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db = openDatabase();
 
-            db.execSQL(History.DELETE_HISTORIES, new Long[] {follower_id});
+            History.Delete_histories delete_histories = new HistoryModel.Delete_histories(db);
+            delete_histories.bind(follower_id);
+            delete_histories.program.execute();
         }
 
         catch (Exception e) {

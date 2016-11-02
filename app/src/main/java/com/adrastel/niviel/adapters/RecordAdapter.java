@@ -22,6 +22,7 @@ import com.adrastel.niviel.assets.DetailsMaker;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.RecordDialog;
 import com.adrastel.niviel.models.readable.Record;
+import com.adrastel.niviel.models.readable.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -86,7 +87,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
         detailsMaker.add(R.string.single, single);
 
-        if(average != null && !average.equals("")) {
+        if (average != null && !average.equals("")) {
             detailsMaker.add(R.string.average, average);
         }
 
@@ -108,7 +109,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
             }
         });
 
-        setAnimation(holder.itemView, position);
+        //setAnimation(holder.itemView, position);
 
     }
 
