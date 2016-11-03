@@ -14,8 +14,10 @@ import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.models.readable.Record;
+import com.adrastel.niviel.models.readable.User;
 import com.adrastel.niviel.providers.html.HistoryProvider;
 import com.adrastel.niviel.providers.html.RecordProvider;
+import com.adrastel.niviel.providers.html.UserProvider;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -85,9 +87,9 @@ public class EditRecordService extends IntentService {
 
             getRecords(new recordsCallback() {
                 @Override
-                public void onSuccess(ArrayList<Record> records, ArrayList<History> histories) {
+                public void onSuccess(User user, ArrayList<Record> records, ArrayList<History> histories) {
 
-                    final long follower = db.insertFollower(username, wca_id);
+                    final long follower = db.insertFollower(username, wca_id, user.getCountry(), user.getGender(), user.getCompetitions());
                     insertRecords(follower, records);
                     insertHistories(follower, histories);
 
@@ -198,9 +200,11 @@ public class EditRecordService extends IntentService {
 
                 ArrayList<History> histories = HistoryProvider.getHistory(getApplicationContext(), document);
 
+                User user = UserProvider.getUser(document);
+
                 response.close();
 
-                callback.onSuccess(records, histories);
+                callback.onSuccess(user, records, histories);
 
 
             }
@@ -208,7 +212,7 @@ public class EditRecordService extends IntentService {
     }
 
     private interface recordsCallback {
-        void onSuccess(ArrayList<Record> records, ArrayList<History> histories);
+        void onSuccess(User user, ArrayList<Record> records, ArrayList<History> histories);
     }
 
     private void insertRecords(long follower, ArrayList<Record> records) {

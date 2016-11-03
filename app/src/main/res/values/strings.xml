@@ -45,7 +45,7 @@
     <string name="result">Résultat</string>
     <string name="citizen">Nationnalité</string>
     <string name="world">Monde</string>
-    <string name="ranking_subtitle">%1$s (%2$s)</string>
+    <string name="two_infos">%1$s (%2$s)</string>
     <string name="switch_cube">Changer de cube</string>
     <string name="switch_country">Changer de pays</string>
     <string name="share_ranking">%1$s est classé n°%2$s avec un temps de %3$s</string>
@@ -70,6 +70,15 @@
     </string>
     <string name="toast_edit_profile_success">Le changement de profil a bien été effectué</string>
     <string name="toast_edit_profile_failure">Une erreur est survenue lors du changement de profil</string>
+
+    <!-- User -->
+    <string name="gender">Genre</string>
+    <string name="country">Pays</string>
+
+    <plurals name="competitions">
+        <item quantity="one">competition</item>
+        <item quantity="other">competitions</item>
+    </plurals>
 
     <!-- Search -->
     <string name="search">Rechercher</string>

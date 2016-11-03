@@ -1,7 +1,10 @@
 CREATE TABLE follower (
     _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    wca_id TEXT NOT NULL
+    wca_id TEXT NOT NULL,
+    country TEXT NOT NULL,
+    gender TEXT NOT NULL,
+    competitions TEXT NOT NULL
 );
 
 delete_table:

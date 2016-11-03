@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RecordAdapter;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
@@ -22,10 +21,7 @@ import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.models.readable.User;
 import com.adrastel.niviel.providers.html.RecordProvider;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.adrastel.niviel.providers.html.UserProvider;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -41,6 +37,7 @@ public class RecordFragment extends BaseFragment {
 
 
     public static final String RECORDS = "records";
+    public static final String USER = "user";
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
@@ -136,7 +133,7 @@ public class RecordFragment extends BaseFragment {
         httpManager = new HttpManager(getActivity(), swipeRefresh, progressBar);
 
         if (savedInstanceState != null) {
-            adapter.refreshData(loadLocalData(savedInstanceState));
+            adapter.refreshData(loadUserData(savedInstanceState), loadRecordData(savedInstanceState));
             httpManager.stopLoaders();
         }
         // Si on est connecté, on fait une requete HTTP, sinon on lit les données locales
@@ -156,7 +153,7 @@ public class RecordFragment extends BaseFragment {
                 records.add(record.toRecordModel());
             }
 
-            adapter.refreshData(records);
+            adapter.refreshData(new User(follower), records);
             httpManager.stopLoaders();
 
 
@@ -190,15 +187,24 @@ public class RecordFragment extends BaseFragment {
     public void onSaveInstanceState(Bundle outState) {
 
         outState.putParcelableArrayList(RECORDS, adapter.getDatas());
+        outState.putParcelable(USER, adapter.getUser());
         super.onSaveInstanceState(outState);
     }
 
-    protected ArrayList<Record> loadLocalData(Bundle savedInstanceState) {
+    protected ArrayList<Record> loadRecordData(Bundle savedInstanceState) {
         if(savedInstanceState != null) {
             return savedInstanceState.getParcelableArrayList(RECORDS);
         }
 
         return new ArrayList<>();
+    }
+
+    protected User loadUserData(Bundle savedInstanceState) {
+        if(savedInstanceState != null) {
+            return savedInstanceState.getParcelable(USER);
+        }
+
+        return null;
     }
 
     @Override
@@ -222,48 +228,19 @@ public class RecordFragment extends BaseFragment {
                 Document document = Jsoup.parse(response);
 
                 final ArrayList<Record> records = RecordProvider.getRecord(getActivity(), document);
+                final User user = UserProvider.getUser(document);
 
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter.refreshData(records);
+                        adapter.refreshData(user, records);
+                        //adapter.setHeader(user);
                     }
                 });
-            }
-        });
 
-        // Appel de l'API
-
-        HttpUrl apiUrl = new HttpUrl.Builder()
-                .scheme("https")
-                .host("www.worldcubeassociation.org")
-                .addEncodedPathSegments("api/v0/users")
-                .addEncodedPathSegment(wca_id)
-                .build();
-
-        httpManager.callData(apiUrl, new HttpManager.SuccessCallback() {
-            @Override
-            public void onSuccess(String response) {
-
-                try {
-                    JsonParser parser = new JsonParser();
-
-                    JsonObject jsonTree = parser.parse(response).getAsJsonObject();
-
-                    JsonObject jsonUser = jsonTree.getAsJsonObject("user");
-
-                    Gson gson = new Gson();
-                    User user = gson.fromJson(jsonUser, User.class);
-
-                    Log.d(user.getGender());
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
 
             }
         });
-
     }
 
 }

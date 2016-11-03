@@ -1,47 +1,54 @@
 package com.adrastel.niviel.models.readable;
 
-import com.google.gson.annotations.SerializedName;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class User {
+import com.adrastel.niviel.database.Follower;
+import com.adrastel.niviel.models.BaseModel;
 
-    @SerializedName("class")
-    private String type;
-
-    private String id;
-
-    private String wca_id;
+public class User extends BaseModel implements Parcelable {
 
     private String name;
-
-    @SerializedName("country_iso2")
     private String country;
-
+    private String wca_id;
     private String gender;
+    private String competitions;
 
-    private String created_at;
-
-    private String url;
-
-    public User() {
-
+    public User(String name, String country, String wca_id, String gender, String competitions) {
+        this.name = name;
+        this.country = country;
+        this.wca_id = wca_id;
+        this.gender = gender;
+        this.competitions = competitions;
     }
 
-    @Override
-    public String toString() {
-        return wca_id;
+    public User(Follower follower) {
+        this.name = follower.name();
+        this.country = follower.country();
+        this.wca_id = follower.wca_id();
+        this.gender = follower.gender();
+        this.competitions = follower.competitions();
     }
 
-    public String getType() {
-        return type;
+    protected User(Parcel in) {
+        name = in.readString();
+        country = in.readString();
+        wca_id = in.readString();
+        gender = in.readString();
+        competitions = in.readString();
     }
 
-    public String getId() {
-        return id;
-    }
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
 
-    public String getWca_id() {
-        return wca_id;
-    }
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -51,19 +58,29 @@ public class User {
         return country;
     }
 
+    public String getWca_id() {
+        return wca_id;
+    }
+
     public String getGender() {
         return gender;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public String getCompetitions() {
+        return competitions;
     }
 
-    public String getUrl() {
-        return url;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(country);
+        parcel.writeString(wca_id);
+        parcel.writeString(gender);
+        parcel.writeString(competitions);
     }
 }

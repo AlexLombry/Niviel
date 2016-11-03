@@ -19,7 +19,6 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RankingAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.RankingSwitchCountryDialog;
 import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
 import com.adrastel.niviel.managers.HttpManager;
@@ -267,7 +266,7 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
 
         String[] cubes = getResources().getStringArray(R.array.cubes);
         String mode = isSingle ? getString(R.string.single) : getString(R.string.average);
-        subtitle = String.format(getString(R.string.ranking_subtitle), cubes[cubePosition], mode);
+        subtitle = String.format(getString(R.string.two_infos), cubes[cubePosition], mode);
 
         activity.setSubtitle(subtitle);
 

@@ -17,9 +17,28 @@ public class DetailsMaker {
 
         String title = context.getString(titleRes);
 
+        return add(title, body);
+    }
+
+    public DetailsMaker add(String title, String body) {
+
         String message = "<strong>" + title + " : </strong>" + body + "<br/>";
 
         this.message += message;
+
+        return this;
+    }
+
+    public DetailsMaker add(String body) {
+        String message = body + "<br/>";
+
+        this.message += message;
+
+        return this;
+    }
+
+    public DetailsMaker br() {
+        this.message += "<br/>";
 
         return this;
     }

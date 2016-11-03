@@ -20,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static SQLiteDatabase database;
 
     public static final String DATABASE_NAME = "database.db";
-    public static final int DATABASE_VERSION = 9;
+    public static final int DATABASE_VERSION = 1;
 
     private static DatabaseHelper instance;
 
@@ -80,7 +80,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //</editor-fold>
 
     //<editor-fold desc="Followers">
-    public long insertFollower(String name, String wca_id) {
+    public long insertFollower(String name, String wca_id, String country, String gender, String competitions) {
 
         try {
             SQLiteDatabase db = openDatabase();
@@ -88,6 +88,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return db.insert(Follower.TABLE_NAME, null, Follower.FACTORY.marshal()
                     .name(name)
                     .wca_id(wca_id)
+                    .country(country)
+                    .gender(gender)
+                    .competitions(competitions)
                     .asContentValues());
 
         }

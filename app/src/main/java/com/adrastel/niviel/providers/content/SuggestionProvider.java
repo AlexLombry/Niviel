@@ -10,7 +10,7 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.adrastel.niviel.models.readable.User;
+import com.adrastel.niviel.models.readable.SuggestionUser;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -34,7 +34,7 @@ public class SuggestionProvider extends ContentProvider {
 
     private OkHttpClient client = new OkHttpClient();
 
-    private ArrayList<User> users = new ArrayList<>();
+    private ArrayList<SuggestionUser> suggestionUsers = new ArrayList<>();
     private SuggestionProvider _this = this;
 
     private static final String[] COLUMNS = {
@@ -92,11 +92,11 @@ public class SuggestionProvider extends ContentProvider {
                     JsonArray result = jsonObject.getAsJsonArray("result");
 
                     Gson gson = new Gson();
-                    ArrayList<User> users = gson.fromJson(result, new TypeToken<ArrayList<User>>() {
+                    ArrayList<SuggestionUser> suggestionUsers = gson.fromJson(result, new TypeToken<ArrayList<SuggestionUser>>() {
                     }.getType());
 
-                    _this.users.clear();
-                    _this.users.addAll(users);
+                    _this.suggestionUsers.clear();
+                    _this.suggestionUsers.addAll(suggestionUsers);
 
                 }
                 catch (Exception e) {
@@ -112,14 +112,14 @@ public class SuggestionProvider extends ContentProvider {
 
             int limit = 10;
 
-            for (int i = 0; i < users.size() && cursor.getCount() < limit; i++) {
+            for (int i = 0; i < suggestionUsers.size() && cursor.getCount() < limit; i++) {
 
-                User user = users.get(i);
+                SuggestionUser suggestionUser = suggestionUsers.get(i);
 
                 // verifie que l'utilisateur a un id wca
-                if ((user.getType().equals("person") || user.getType().equals("user")) && user.getWca_id() != null) {
+                if ((suggestionUser.getType().equals("person") || suggestionUser.getType().equals("suggestionUser")) && suggestionUser.getWca_id() != null) {
 
-                    cursor.addRow(new Object[]{i, user.getWca_id(), user.getName(), user.getName(), user.getWca_id()});
+                    cursor.addRow(new Object[]{i, suggestionUser.getWca_id(), suggestionUser.getName(), suggestionUser.getName(), suggestionUser.getWca_id()});
                     i++;
                 }
             }
