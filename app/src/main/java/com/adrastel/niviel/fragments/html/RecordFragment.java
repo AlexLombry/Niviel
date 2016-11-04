@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
@@ -22,6 +23,7 @@ import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.models.readable.User;
 import com.adrastel.niviel.providers.html.RecordProvider;
 import com.adrastel.niviel.providers.html.UserProvider;
+import com.adrastel.niviel.views.RecyclerViewCompat;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -41,7 +43,9 @@ public class RecordFragment extends BaseFragment {
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
-    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.recycler_view) RecyclerViewCompat recyclerView;
+    @BindView(R.id.empty_view) TextView emptyView;
+
 
     private Unbinder unbinder;
 
@@ -116,8 +120,9 @@ public class RecordFragment extends BaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
 
-
+        recyclerView.setEmptyView(emptyView);
         recyclerView.setAdapter(adapter);
+
 
         return view;
     }

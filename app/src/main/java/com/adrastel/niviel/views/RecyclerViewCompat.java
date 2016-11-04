@@ -26,8 +26,17 @@ public class RecyclerViewCompat extends RecyclerView {
         if(emptyView != null && getAdapter() != null) {
             final boolean emptyViewVisibility = getAdapter().getItemCount() == 0;
 
-            emptyView.setVisibility(emptyViewVisibility ? VISIBLE : GONE);
-            setVisibility(emptyViewVisibility ? GONE : VISIBLE);
+            /*emptyView.setVisibility(emptyViewVisibility ? VISIBLE : GONE);
+            setVisibility(emptyViewVisibility ? GONE : VISIBLE);*/
+
+            if(getAdapter().getItemCount() == 0) {
+                emptyView.setVisibility(View.VISIBLE);
+                RecyclerViewCompat.this.setVisibility(View.GONE);
+            }
+            else {
+                emptyView.setVisibility(View.GONE);
+                RecyclerViewCompat.this.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -63,6 +72,7 @@ public class RecyclerViewCompat extends RecyclerView {
 
         if(adapter != null) {
             adapter.registerAdapterDataObserver(observer);
+            checkIfEmpty();
         }
     }
 

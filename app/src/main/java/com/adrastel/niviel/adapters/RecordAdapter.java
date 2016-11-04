@@ -40,8 +40,6 @@ import butterknife.ButterKnife;
 
 public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> {
 
-    private int lastPosition = -1;
-
     private User user;
 
     public RecordAdapter(FragmentActivity activity) {
@@ -164,14 +162,14 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
         return position == 0;
     }
 
-    public void setHeader(User user) {
-        this.user = user;
-        notifyItemChanged(0);
-    }
-
+    /**
+     * Si le tableau de possède aucun record, ne cree pas de header donc retourne 0.
+     */
     @Override
     public int getItemCount() {
-        return getDatas().size() + 1;
+        int size = getDatas().size();
+
+        return size != 0 ? size + 1 : 0;
     }
 
     public void refreshData(User user, ArrayList<Record> datas) {

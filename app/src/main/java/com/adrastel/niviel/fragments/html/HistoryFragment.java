@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.HistoryAdapter;
@@ -21,6 +22,7 @@ import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Event;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.providers.html.HistoryProvider;
+import com.adrastel.niviel.views.RecyclerViewCompat;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -39,7 +41,8 @@ public class HistoryFragment extends BaseFragment {
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
-    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.recycler_view) RecyclerViewCompat recyclerView;
+    @BindView(R.id.empty_view) TextView emptyView;
 
     private Unbinder unbinder;
     private HistoryAdapter adapter;
@@ -107,6 +110,7 @@ public class HistoryFragment extends BaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
+        recyclerView.setEmptyView(emptyView);
         recyclerView.setAdapter(adapter);
 
         return view;
