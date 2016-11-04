@@ -115,9 +115,6 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
 
             }
-            else {
-                //holder.card.setVisibility(View.INVISIBLE);
-            }
 
         }
         else {
@@ -130,7 +127,8 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
             final int image_resource = Cubes.getImage(event);
 
             holder.event.setText(event);
-
+            holder.event.setGravity(Gravity.LEFT);
+            holder.event.setTextSize(Assets.spToPx(getActivity(), 18));
             holder.image.setVisibility(View.VISIBLE);
             holder.more_info.setVisibility(View.VISIBLE);
 

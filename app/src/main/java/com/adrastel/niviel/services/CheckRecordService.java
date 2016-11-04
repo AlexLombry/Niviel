@@ -1,16 +1,18 @@
 package com.adrastel.niviel.services;
 
-import android.app.IntentService;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v4.util.LongSparseArray;
 import android.support.v7.app.NotificationCompat;
 
-import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.RecordModel;
 import com.adrastel.niviel.activities.MainActivity;
@@ -23,7 +25,6 @@ import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.database.Record;
 import com.adrastel.niviel.fragments.ProfileFragment;
-import com.adrastel.niviel.models.writeable.BufferRecord;
 import com.adrastel.niviel.providers.html.RecordProvider;
 
 import org.jsoup.Jsoup;
@@ -40,11 +41,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class CheckRecordService extends IntentService {
+public class CheckRecordService extends Service {
 
     DatabaseHelper database;
 
     private static int notif_id = 0;
+
+    private long freq = 3600000;
 
 
     /**
@@ -52,19 +55,25 @@ public class CheckRecordService extends IntentService {
      */
     private LongSparseArray<String> notifMsgs = new LongSparseArray<>();
 
-    public CheckRecordService() {
-        super("checkRecordService");
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         database = DatabaseHelper.getInstance(this);
         Log.i("Create CheckRecordService");
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        freq = Long.parseLong(preferences.getString(getString(R.string.pref_check_freq), "3600000"));
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
 
         ArrayList<Follower> followers = database.selectAllFollowers();
 
@@ -79,11 +88,18 @@ public class CheckRecordService extends IntentService {
                 public void onSuccess(ArrayList<com.adrastel.niviel.models.readable.Record> newRecords) {
 
                     compareRecords(follower, oldRecords, newRecords);
+                    stopSelf();
+                }
 
+                @Override
+                public void onFailure() {
+                    stopSelf();
                 }
             });
 
         }
+
+        return START_NOT_STICKY;
     }
 
     private void compareRecords(Follower follower, ArrayList<Record> oldRecords, ArrayList<com.adrastel.niviel.models.readable.Record> newRecords) {
@@ -309,7 +325,20 @@ public class CheckRecordService extends IntentService {
         return oldRecord.average() != null && newRecord.getAverage() != null && !oldRecord.average().equals(newRecord.getAverage());
     }
 
+    @Override
+    public void onDestroy() {
 
+        if(freq != 0) {
+            Intent checkRecords = new Intent(this, CheckRecordService.class);
+            PendingIntent pendingIntent = PendingIntent.getService(this, 0, checkRecords, 0);
+
+            AlarmManager alarm = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+            alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + freq, pendingIntent);
+        }
+
+        super.onDestroy();
+    }
 
     private void callData(String wca_id, final dataCallback callback) {
 
@@ -329,6 +358,7 @@ public class CheckRecordService extends IntentService {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                callback.onFailure();
                 e.printStackTrace();
             }
 
@@ -336,6 +366,7 @@ public class CheckRecordService extends IntentService {
             public void onResponse(Call call, Response response) throws IOException {
 
                 if(!response.isSuccessful()) {
+                    callback.onFailure();
                     return;
                 }
 
@@ -352,5 +383,6 @@ public class CheckRecordService extends IntentService {
 
     private interface dataCallback {
         void onSuccess(ArrayList<com.adrastel.niviel.models.readable.Record> records);
+        void onFailure();
     }
 }

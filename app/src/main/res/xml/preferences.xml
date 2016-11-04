@@ -19,6 +19,18 @@
             android:entryValues="@array/theme_list_values"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/records">
+        <com.adrastel.niviel.preferences.CheckFreqPreference
+            android:key="@string/pref_check_freq"
+            android:defaultValue="3600000"
+            android:title="@string/pref_check_freq_title"
+            android:summary="@string/pref_check_freq_summary"
+            android:positiveButtonText="@string/ok"
+            android:negativeButtonText="@string/cancel"
+            android:entries="@array/pref_check_freq_list"
+            android:entryValues="@array/pref_check_freq_values"/>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/about">
 
         <Preference android:title="@string/report_bug"/>

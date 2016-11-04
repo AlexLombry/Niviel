@@ -2,4 +2,6 @@
 <resources>
     <string name="pref_personal_id" translatable="false">pref_personable_id</string>
     <string name="pref_isdark" translatable="false">pref_isdark</string>
+
+    <string name="pref_check_freq" translatable="false">pref_check_freq</string>
 </resources>

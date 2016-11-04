@@ -49,6 +49,7 @@ import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.html.RankingFragment;
+import com.adrastel.niviel.services.CheckRecordService;
 import com.adrastel.niviel.services.EditRecordService;
 
 import butterknife.BindView;
@@ -260,6 +261,11 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             case R.id.settings:
                 Intent settings = new Intent(this, SettingsActivity.class);
                 startActivityForResult(settings, 0);
+                return true;
+
+            case R.id.check_records:
+                Intent checkRecords = new Intent(this, CheckRecordService.class);
+                startService(checkRecords);
                 return true;
         }
 
