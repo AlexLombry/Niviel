@@ -163,6 +163,34 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                 detailsMaker.add(R.string.average, average);
             }
 
+            try {
+
+                int wr = Integer.parseInt(record.getWr_single());
+
+                if(wr <= 300) {
+                    detailsMaker.add(String.format(getActivity().getString(R.string.record_wr), ""), record.getWr_single());
+                }
+
+                else {
+
+                    int cr = Integer.parseInt(record.getCr_single());
+
+                    if(cr <= 300) {
+                        detailsMaker.add(String.format(getActivity().getString(R.string.record_cr), ""), record.getCr_single());
+                    }
+
+                    else {
+                        detailsMaker.add(String.format(getActivity().getString(R.string.record_nr), ""), record.getNr_single());
+                    }
+                }
+
+            }
+
+            catch (Exception e) {
+                e.printStackTrace();
+                detailsMaker.add(String.format(getActivity().getString(R.string.record_nr), ""), record.getNr_single());
+            }
+
             holder.single.setText(detailsMaker.build(), TextView.BufferType.SPANNABLE);
 
             Picasso.with(getActivity())

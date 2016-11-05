@@ -28,8 +28,9 @@ public class Assets {
 
     }
 
-    public static SharedPreferences getSharedPreferences(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context);
+    public static boolean isConnectionMobile(ConnectivityManager manager) {
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_MOBILE;
     }
 
     public static String wrapStrong(String text) {

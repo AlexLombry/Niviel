@@ -134,17 +134,6 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
             makeSnackbar(R.string.error_connection, Snackbar.LENGTH_INDEFINITE).show();
         }
 
-        /*recyclerView.addOnItemTouchListener(new RecyclerOnItemClickListener(getContext(), new RecyclerOnItemClickListener.OnItemClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-
-                Ranking ranking = adapter.getDatas().get(position);
-
-                ProfileFragment profileFragment = ProfileFragment.newInstance(ranking.getWca_id(), ranking.getPerson());
-                activity.switchFragment(profileFragment);
-
-            }
-        }));*/
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

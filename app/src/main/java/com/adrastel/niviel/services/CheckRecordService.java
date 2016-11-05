@@ -7,10 +7,10 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.v4.util.LongSparseArray;
 import android.support.v7.app.NotificationCompat;
 
 import com.adrastel.niviel.R;
@@ -50,20 +50,11 @@ public class CheckRecordService extends Service {
     private long freq = 3600000;
 
 
-    /**
-     * Stocke les messages des records pour les afficher dans la notification
-     */
-    private LongSparseArray<String> notifMsgs = new LongSparseArray<>();
-
-
     @Override
     public void onCreate() {
         super.onCreate();
         database = DatabaseHelper.getInstance(this);
         Log.i("Create CheckRecordService");
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        freq = Long.parseLong(preferences.getString(getString(R.string.pref_check_freq), "3600000"));
     }
 
     @Nullable
@@ -74,6 +65,18 @@ public class CheckRecordService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        freq = Long.parseLong(preferences.getString(getString(R.string.pref_check_freq), "3600000"));
+
+        boolean canUseMobile = preferences.getString(getString(R.string.pref_check_network), "1").equals("1");
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+
+        // Si connecté en 4G et a désactivé l'option, termine le service
+        if(Assets.isConnectionMobile(connectivityManager) && !canUseMobile) {
+            stopSelf();
+        }
 
         ArrayList<Follower> followers = database.selectAllFollowers();
 
@@ -279,7 +282,7 @@ public class CheckRecordService extends Service {
         gotoMainActivity.putExtra(Constants.EXTRAS.WCA_ID, follower.wca_id());
         gotoMainActivity.putExtra(Constants.EXTRAS.USERNAME, follower.name());
 
-        PendingIntent gotoMainActivityAction = PendingIntent.getActivity(this, 0, gotoMainActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent gotoMainActivityAction = PendingIntent.getActivity(this, 0, gotoMainActivity, 0);
 
         // Partager
         Intent share = new Intent(Intent.ACTION_SEND);
@@ -287,11 +290,11 @@ public class CheckRecordService extends Service {
         share.putExtra(Intent.EXTRA_TEXT, bigContent.toString());
 
         Intent shareChooser = Intent.createChooser(share, getString(R.string.share));
-        PendingIntent shareAction = PendingIntent.getActivity(this, 0, shareChooser, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent shareAction = PendingIntent.getActivity(this, 0, shareChooser, 0);
 
         // Parametres
         Intent gotoSettings = new Intent(this, SettingsActivity.class);
-        PendingIntent gotoSettingsAction = PendingIntent.getActivity(this, 0, gotoSettings, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent gotoSettingsAction = PendingIntent.getActivity(this, 0, gotoSettings, 0);
 
         NotificationCompat.Builder notification = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)

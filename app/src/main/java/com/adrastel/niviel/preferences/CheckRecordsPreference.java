@@ -7,9 +7,9 @@ import android.util.AttributeSet;
 
 import com.adrastel.niviel.services.CheckRecordService;
 
-public class CheckFreqPreference extends ListPreference {
+public class CheckRecordsPreference extends ListPreference {
 
-    public CheckFreqPreference(Context context, AttributeSet attrs) {
+    public CheckRecordsPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

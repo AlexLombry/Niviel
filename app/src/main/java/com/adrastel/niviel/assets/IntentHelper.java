@@ -31,31 +31,4 @@ public class IntentHelper {
         }
     }
 
-    public static void switchFragment(FragmentActivity fragmentActivity, BaseFragment fragment) {
-
-        try {
-            MainActivity activity = (MainActivity) fragmentActivity;
-            activity.switchFragment(fragment);
-        }
-
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static Intent gotoInternet(String url) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-
-        return intent;
-    }
-
-    public static Intent sendBroadcast(String action) {
-        Intent intent = new Intent(MainActivity.ACTIVITY_RECEIVER);
-
-        intent.putExtra(MainActivity.ACTIVITY_RECEIVER_ACTION, action);
-
-        return intent;
-    }
 }

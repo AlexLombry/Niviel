@@ -106,6 +106,18 @@
     </string-array>
     <string name="check_records">Vérifier les records</string>
 
+    <string name="pref_check_network_title">Réseau utilisé pour vérifier les records</string>
+    <string name="pref_check_network_summary">Utiliser le Wi-Fi ou le Wi-Fi et les données mobiles pour effectuer la vérification</string>
+    <string-array name="pref_check_network_list">
+        <item>Wi-Fi</item>
+        <item>Wi-Fi + Données mobiles</item>
+    </string-array>
+
+    <string-array name="pref_check_network_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
     <string name="pref_check_freq_title">Fréquence de vérification</string>
     <string name="pref_check_freq_summary">Fréquence de vérification des records, historiques du profil personnel et des followers.</string>
     <string-array name="pref_check_freq_list">

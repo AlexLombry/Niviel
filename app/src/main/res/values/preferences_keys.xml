@@ -4,4 +4,5 @@
     <string name="pref_isdark" translatable="false">pref_isdark</string>
 
     <string name="pref_check_freq" translatable="false">pref_check_freq</string>
+    <string name="pref_check_network" translatable="false">pref_check_network</string>
 </resources>
