@@ -13,7 +13,7 @@
     <string name="app_name" translatable="false">Niviel</string>
     <string name="author" translatable="false">Herel Adrastel</string>
     <string name="email" translatable="false">herel.dev@gmail.com</string>
-
+    <string name="wca">WCA</string>
     <!-- Activities -->
 
     <!-- CUBES -->

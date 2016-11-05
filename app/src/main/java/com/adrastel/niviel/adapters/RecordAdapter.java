@@ -1,8 +1,10 @@
 package com.adrastel.niviel.adapters;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -37,6 +39,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.HttpUrl;
 
 public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> {
 
@@ -92,7 +95,29 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                 holder.event.setTextSize(Assets.spToPx(getActivity(), 9));
                 holder.event.setGravity(Gravity.CENTER);
                 holder.image.setVisibility(View.GONE);
-                holder.more_info.setVisibility(View.GONE);
+                holder.more_info.setText(R.string.wca);
+
+                holder.more_info.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        Uri url = new Uri.Builder()
+                                .scheme("https")
+                                .authority("www.worldcubeassociation.org")
+                                .appendEncodedPath("results/p.php")
+                                .appendQueryParameter("i", user.getWca_id())
+                                .build();
+
+                        Intent viewOnWebSite = new Intent(Intent.ACTION_VIEW);
+                        viewOnWebSite.setData(url);
+
+                        Intent chooser = Intent.createChooser(viewOnWebSite, user.getName());
+
+                        getActivity().startActivity(chooser);
+
+                    }
+                });
+
 
                 DetailsMaker detailsMaker = new DetailsMaker(getActivity());
 
@@ -128,7 +153,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
             holder.event.setGravity(Gravity.LEFT);
             holder.event.setTextSize(Assets.spToPx(getActivity(), 18));
             holder.image.setVisibility(View.VISIBLE);
-            holder.more_info.setVisibility(View.VISIBLE);
+            holder.more_info.setText(R.string.more_info);
 
             DetailsMaker detailsMaker = new DetailsMaker(holder.single.getContext());
 

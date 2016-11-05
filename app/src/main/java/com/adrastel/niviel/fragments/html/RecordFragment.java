@@ -44,7 +44,7 @@ public class RecordFragment extends BaseFragment {
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.recycler_view) RecyclerViewCompat recyclerView;
-    @BindView(R.id.empty_view) TextView emptyView;
+    @BindView(R.id.empty_view) View emptyView;
 
 
     private Unbinder unbinder;

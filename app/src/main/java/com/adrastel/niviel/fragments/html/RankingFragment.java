@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RankingAdapter;
@@ -24,6 +25,7 @@ import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.providers.html.RankingProvider;
+import com.adrastel.niviel.views.RecyclerViewCompat;
 import com.google.gson.reflect.TypeToken;
 
 import org.jsoup.Jsoup;
@@ -41,7 +43,8 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.recycler_view) RecyclerViewCompat recyclerView;
+    @BindView(R.id.empty_view) View emptyView;
 
     private Unbinder unbinder;
     private RankingAdapter adapter;
@@ -87,6 +90,7 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(true);
 
+        recyclerView.setEmptyView(emptyView);
         recyclerView.setAdapter(adapter);
 
 
