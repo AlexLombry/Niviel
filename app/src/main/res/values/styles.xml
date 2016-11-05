@@ -48,7 +48,7 @@
     </style>
 
     <style name="AppTheme.Profile" parent="AppTheme.NoActionBar">
-        <item name="toolbarTitle">@string/no_title</item>
+        <item name="toolbarTitle">@string/profile</item>
         <item name="fabIcon">@drawable/ic_add</item>
     </style>
 
