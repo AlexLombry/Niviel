@@ -16,6 +16,7 @@ public class Constants {
         String USERNAME = "username";
         String SUBTITLE = "subtitle";
         String FRAGMENT = "fragment";
+        String IS_EXPLORATION = "is_exploration";
 
     }
 

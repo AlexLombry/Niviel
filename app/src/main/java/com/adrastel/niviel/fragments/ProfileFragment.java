@@ -47,6 +47,7 @@ public class ProfileFragment extends BaseFragment{
 
     public static final int RECORD_TAB = 0;
     public static final int HISTORY_TAB = 1;
+
     public static final String FRAGMENT_TAG = "profileFragment";
 
     private MainActivity activity;
@@ -59,6 +60,7 @@ public class ProfileFragment extends BaseFragment{
 
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
+
 
     public static ProfileFragment newInstance(long id) {
         ProfileFragment instance = new ProfileFragment();
@@ -148,11 +150,6 @@ public class ProfileFragment extends BaseFragment{
             }
 
         }
-
-        /*Intent service = new Intent(getContext(), CheckRecordsReceiver.class);
-        getContext().sendBroadcast(service);*/
-
-        getContext().startService(new Intent(getContext(), CheckRecordService.class));
     }
 
     @Nullable
