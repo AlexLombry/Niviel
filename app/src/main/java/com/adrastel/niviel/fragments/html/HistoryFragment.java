@@ -4,17 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.HistoryAdapter;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
@@ -28,7 +25,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -51,22 +47,32 @@ public class HistoryFragment extends BaseFragment {
     private String wca_id = null;
     private long follower_id = -1;
 
+    /**
+     * 2 constantes qui déterminent si on veux trier par event ou competition
+     */
 
-    public static HistoryFragment newInstance(long follower_id) {
+    private int sort = 0;
+    public static final int EVENT = 0;
+    public static final int COMPETITION = 1;
+
+
+    public static HistoryFragment newInstance(long follower_id, int sort) {
         HistoryFragment instance = new HistoryFragment();
 
         Bundle args = new Bundle();
         args.putLong(Constants.EXTRAS.ID, follower_id);
+        args.putInt(Constants.EXTRAS.SORT, sort);
 
         instance.setArguments(args);
         return instance;
     }
 
-    public static HistoryFragment newInstance(String wca_id) {
+    public static HistoryFragment newInstance(String wca_id, int sort) {
         HistoryFragment instance = new HistoryFragment();
 
         Bundle args = new Bundle();
         args.putString(Constants.EXTRAS.WCA_ID, wca_id);
+        args.putInt(Constants.EXTRAS.SORT, sort);
 
         instance.setArguments(args);
         return instance;
@@ -79,8 +85,9 @@ public class HistoryFragment extends BaseFragment {
         Bundle arguments = getArguments();
 
         if(arguments != null) {
-            follower_id = arguments.getLong(Constants.EXTRAS.ID, -1);
+            sort = arguments.getInt(Constants.EXTRAS.SORT);
 
+            follower_id = arguments.getLong(Constants.EXTRAS.ID, -1);
             wca_id = follower_id == -1 ? arguments.getString(Constants.EXTRAS.WCA_ID, null) : null;
         }
 
@@ -145,7 +152,7 @@ public class HistoryFragment extends BaseFragment {
                 histories.add(history.toHistoryModel());
             }
 
-            adapter.refreshData(makeExpandedArrayList(histories));
+            adapter.refreshData(sort == EVENT ? makeExpandedArrayList(histories) : makeExpandedArrayListCompet(histories));
             httpManager.stopLoaders();
         }
 
@@ -213,7 +220,7 @@ public class HistoryFragment extends BaseFragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter.refreshData(makeExpandedArrayList(histories));
+                        adapter.refreshData(sort == EVENT ? makeExpandedArrayList(histories) : makeExpandedArrayListCompet(histories));
                     }
                 });
             }
@@ -274,7 +281,48 @@ public class HistoryFragment extends BaseFragment {
         }
 
         return events;
+    }
 
+    /**
+     * Transforme un arraylist d'histoires en arraylist d'arraylist
+     * @param histories historique
+     * @return arraylist d'arraylist
+     */
+    public static ArrayList<Event> makeExpandedArrayListCompet(ArrayList<History> histories) {
+
+        Hashtable<String, ArrayList<History>> hashtable = new Hashtable<>();
+        ArrayList<Event> events = new ArrayList<>();
+
+        // Pour chaque historique, les trie dans un HashTable avec pour clé l'event
+        for(History history : histories) {
+
+            if(hashtable.containsKey(history.getCompetition())) {
+
+                ArrayList<History> oldHistory = hashtable.get(history.getCompetition());
+                oldHistory.add(history);
+
+                hashtable.put(history.getCompetition(), oldHistory);
+
+            }
+
+            else {
+
+                ArrayList<History> oldHistories = new ArrayList<>();
+                oldHistories.add(history);
+
+                hashtable.put(history.getCompetition(), oldHistories);
+            }
+        }
+
+
+        // Convertie le HashTable en Event
+        for(Map.Entry<String, ArrayList<History>> value : hashtable.entrySet()) {
+
+            Event event = new Event(value.getKey(), value.getValue());
+            events.add(event);
+        }
+
+        return events;
     }
 
 }

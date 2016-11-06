@@ -39,7 +39,7 @@
                 android:visibility="gone"
                 app:tabMaxWidth="0dp"
                 app:tabMode="fixed"
-                app:tabGravity="fill"/>
+                app:tabGravity="center"/>
         </android.support.design.widget.AppBarLayout>
 
         <RelativeLayout
