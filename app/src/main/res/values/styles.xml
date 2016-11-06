@@ -10,7 +10,7 @@
         <item name="colorPrimaryLight">@color/colorPrimaryLight</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="fabVisible">false</item>
-        <item name="fabIcon">@drawable/ic_star</item>
+        <item name="fabIcon">@drawable/ic_star_white</item>
         <item name="toolbarTitle">@string/app_name</item>
     </style>
 

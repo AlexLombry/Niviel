@@ -14,25 +14,19 @@ import java.util.List;
 public class Event implements Parent<History>, Parcelable {
 
     private String title;
+    private boolean sortByEvent;
     private ArrayList<History> histories;
 
-    public Event(String title, ArrayList<History> histories) {
+    public Event(String title, boolean sortByEvent, ArrayList<History> histories) {
         this.title = title;
+        this.sortByEvent = sortByEvent;
         this.histories = histories;
     }
 
     protected Event(Parcel in) {
         title = in.readString();
+        sortByEvent = in.readByte() != 0;
         histories = in.createTypedArrayList(History.CREATOR);
-    }
-
-
-    public static class COMPARATOR implements Comparator<Event> {
-
-        @Override
-        public int compare(Event event, Event t1) {
-            return Cubes.getCubeId(event.getTitle()) - Cubes.getCubeId(t1.getTitle());
-        }
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {
@@ -61,6 +55,10 @@ public class Event implements Parent<History>, Parcelable {
         return title;
     }
 
+    public boolean isSortByEvent() {
+        return sortByEvent;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -69,7 +67,16 @@ public class Event implements Parent<History>, Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(title);
+        parcel.writeByte((byte) (sortByEvent ? 1 : 0));
         parcel.writeTypedList(histories);
+    }
+
+    public static class ComparatorByEvent implements Comparator<Event> {
+
+        @Override
+        public int compare(Event event, Event t1) {
+            return Cubes.getCubeId(event.getTitle()) - Cubes.getCubeId(t1.getTitle());
+        }
     }
 
 }

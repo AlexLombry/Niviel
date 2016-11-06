@@ -1,18 +1,14 @@
 package com.adrastel.niviel.adapters;
 
 import android.annotation.SuppressLint;
-import android.os.Bundle;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,7 +16,6 @@ import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Cubes;
 import com.adrastel.niviel.dialogs.HistoryDialog;
 import com.adrastel.niviel.models.readable.Event;
@@ -40,6 +35,7 @@ import java.util.Collections;
 public class HistoryAdapter extends BaseExpandableAdapter<Event, History, HistoryAdapter.EventViewHolder, HistoryAdapter.HistoryViewHolder> {
 
     private LayoutInflater inflater;
+    private boolean sortByEvent = true;
 
     public HistoryAdapter(FragmentActivity activity, ArrayList<Event> events) {
         super(activity, events);
@@ -141,6 +137,8 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
     @SuppressWarnings("deprecation")
     public void onBindParentViewHolder(@NonNull final EventViewHolder parentViewHolder, int parentPosition, @NonNull Event parent) {
 
+        // Comme tous les parents possède le meme sortByEvent, on peut mettre cette variable en global
+        sortByEvent = parent.isSortByEvent();
 
         parentViewHolder.results.setVisibility(View.GONE);
         parentViewHolder.place.setVisibility(View.GONE);
@@ -156,11 +154,17 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         ImageView cube = parentViewHolder.cube;
         cube.setVisibility(View.VISIBLE);
 
-        Picasso.with(getActivity())
-                .load(Cubes.getImage(parent.getTitle()))
-                .fit()
-                .centerInside()
-                .into(cube);
+
+        if(sortByEvent) {
+            Picasso.with(getActivity())
+                    .load(Cubes.getImage(parent.getTitle()))
+                    .fit()
+                    .centerInside()
+                    .into(cube);
+        } else {
+            cube.setImageResource(R.drawable.ic_star_black);
+        }
+
 
     }
 
@@ -190,7 +194,8 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
 
         childViewHolder.root.setBackgroundColor(Assets.getColor(getActivity(), R.color.background_child_expanded_recycler_view));
 
-        childViewHolder.competition.setText(Assets.formatHtmltitle(event, competition));
+        childViewHolder.competition.setText(sortByEvent ? Assets.formatHtmltitle(event, competition) : event);
+
         childViewHolder.place.setText(place);
         childViewHolder.results.setText(Assets.formatHtmlAverageDetails(average, result_details));
 
@@ -230,7 +235,7 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
      */
     @Override
     public void refreshData(ArrayList<Event> datas) {
-        Collections.sort(datas, new Event.COMPARATOR());
+        Collections.sort(datas, new Event.ComparatorByEvent());
 
         super.refreshData(datas);
     }

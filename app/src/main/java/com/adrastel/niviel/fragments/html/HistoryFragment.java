@@ -51,28 +51,26 @@ public class HistoryFragment extends BaseFragment {
      * 2 constantes qui déterminent si on veux trier par event ou competition
      */
 
-    private int sort = 0;
-    public static final int EVENT = 0;
-    public static final int COMPETITION = 1;
+    private boolean sortByEvent = true;
 
 
-    public static HistoryFragment newInstance(long follower_id, int sort) {
+    public static HistoryFragment newInstance(long follower_id, boolean sort) {
         HistoryFragment instance = new HistoryFragment();
 
         Bundle args = new Bundle();
         args.putLong(Constants.EXTRAS.ID, follower_id);
-        args.putInt(Constants.EXTRAS.SORT, sort);
+        args.putBoolean(Constants.EXTRAS.SORT, sort);
 
         instance.setArguments(args);
         return instance;
     }
 
-    public static HistoryFragment newInstance(String wca_id, int sort) {
+    public static HistoryFragment newInstance(String wca_id, boolean sort) {
         HistoryFragment instance = new HistoryFragment();
 
         Bundle args = new Bundle();
         args.putString(Constants.EXTRAS.WCA_ID, wca_id);
-        args.putInt(Constants.EXTRAS.SORT, sort);
+        args.putBoolean(Constants.EXTRAS.SORT, sort);
 
         instance.setArguments(args);
         return instance;
@@ -85,7 +83,7 @@ public class HistoryFragment extends BaseFragment {
         Bundle arguments = getArguments();
 
         if(arguments != null) {
-            sort = arguments.getInt(Constants.EXTRAS.SORT);
+            sortByEvent = arguments.getBoolean(Constants.EXTRAS.SORT);
 
             follower_id = arguments.getLong(Constants.EXTRAS.ID, -1);
             wca_id = follower_id == -1 ? arguments.getString(Constants.EXTRAS.WCA_ID, null) : null;
@@ -152,7 +150,7 @@ public class HistoryFragment extends BaseFragment {
                 histories.add(history.toHistoryModel());
             }
 
-            adapter.refreshData(sort == EVENT ? makeExpandedArrayList(histories) : makeExpandedArrayListCompet(histories));
+            adapter.refreshData(sortByEvent ? makeExpandedArrayList(histories, true) : makeExpandedArrayList(histories, false));
             httpManager.stopLoaders();
         }
 
@@ -220,7 +218,7 @@ public class HistoryFragment extends BaseFragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter.refreshData(sort == EVENT ? makeExpandedArrayList(histories) : makeExpandedArrayListCompet(histories));
+                        adapter.refreshData(sortByEvent ? makeExpandedArrayList(histories, true) : makeExpandedArrayList(histories, false));
                     }
                 });
             }
@@ -246,7 +244,7 @@ public class HistoryFragment extends BaseFragment {
      * @param histories historique
      * @return arraylist d'arraylist
      */
-    public static ArrayList<Event> makeExpandedArrayList(ArrayList<History> histories) {
+    public static ArrayList<Event> makeExpandedArrayList(ArrayList<History> histories, boolean sortByEvent) {
 
         Hashtable<String, ArrayList<History>> hashtable = new Hashtable<>();
         ArrayList<Event> events = new ArrayList<>();
@@ -254,12 +252,12 @@ public class HistoryFragment extends BaseFragment {
         // Pour chaque historique, les trie dans un HashTable avec pour clé l'event
         for(History history : histories) {
 
-            if(hashtable.containsKey(history.getEvent())) {
+            if(hashtable.containsKey(sortByEvent ? history.getEvent() : history.getCompetition())) {
 
-                ArrayList<History> oldHistory = hashtable.get(history.getEvent());
+                ArrayList<History> oldHistory = hashtable.get(sortByEvent ? history.getEvent() : history.getCompetition());
                 oldHistory.add(history);
 
-                hashtable.put(history.getEvent(), oldHistory);
+                hashtable.put(sortByEvent ? history.getEvent() : history.getCompetition(), oldHistory);
 
             }
 
@@ -268,7 +266,7 @@ public class HistoryFragment extends BaseFragment {
                 ArrayList<History> oldHistories = new ArrayList<>();
                 oldHistories.add(history);
 
-                hashtable.put(history.getEvent(), oldHistories);
+                hashtable.put(sortByEvent ? history.getEvent() : history.getCompetition(), oldHistories);
             }
         }
 
@@ -276,49 +274,7 @@ public class HistoryFragment extends BaseFragment {
         // Convertie le HashTable en Event
         for(Map.Entry<String, ArrayList<History>> value : hashtable.entrySet()) {
 
-            Event event = new Event(value.getKey(), value.getValue());
-            events.add(event);
-        }
-
-        return events;
-    }
-
-    /**
-     * Transforme un arraylist d'histoires en arraylist d'arraylist
-     * @param histories historique
-     * @return arraylist d'arraylist
-     */
-    public static ArrayList<Event> makeExpandedArrayListCompet(ArrayList<History> histories) {
-
-        Hashtable<String, ArrayList<History>> hashtable = new Hashtable<>();
-        ArrayList<Event> events = new ArrayList<>();
-
-        // Pour chaque historique, les trie dans un HashTable avec pour clé l'event
-        for(History history : histories) {
-
-            if(hashtable.containsKey(history.getCompetition())) {
-
-                ArrayList<History> oldHistory = hashtable.get(history.getCompetition());
-                oldHistory.add(history);
-
-                hashtable.put(history.getCompetition(), oldHistory);
-
-            }
-
-            else {
-
-                ArrayList<History> oldHistories = new ArrayList<>();
-                oldHistories.add(history);
-
-                hashtable.put(history.getCompetition(), oldHistories);
-            }
-        }
-
-
-        // Convertie le HashTable en Event
-        for(Map.Entry<String, ArrayList<History>> value : hashtable.entrySet()) {
-
-            Event event = new Event(value.getKey(), value.getValue());
+            Event event = new Event(value.getKey(), sortByEvent, value.getValue());
             events.add(event);
         }
 

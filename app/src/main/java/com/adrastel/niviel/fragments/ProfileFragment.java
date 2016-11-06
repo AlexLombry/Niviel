@@ -219,7 +219,7 @@ public class ProfileFragment extends BaseFragment {
         viewPager.setCurrentItem(tab);
 
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_star);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_star_white);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_history);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_pages);
 
@@ -250,10 +250,10 @@ public class ProfileFragment extends BaseFragment {
                     return follower_id != -1 ? RecordFragment.newInstance(follower_id) : RecordFragment.newInstance(wca_id);
 
                 case 1:
-                    return follower_id != -1 ? HistoryFragment.newInstance(follower_id, HistoryFragment.EVENT) : HistoryFragment.newInstance(wca_id, HistoryFragment.EVENT);
+                    return follower_id != -1 ? HistoryFragment.newInstance(follower_id, true) : HistoryFragment.newInstance(wca_id, true);
 
                 case 2:
-                    return follower_id != -1 ? HistoryFragment.newInstance(follower_id, HistoryFragment.COMPETITION) : HistoryFragment.newInstance(wca_id, HistoryFragment.COMPETITION);
+                    return follower_id != -1 ? HistoryFragment.newInstance(follower_id, false) : HistoryFragment.newInstance(wca_id, false);
 
                 default:
                     return follower_id != -1 ? RecordFragment.newInstance(follower_id) : RecordFragment.newInstance(wca_id);
