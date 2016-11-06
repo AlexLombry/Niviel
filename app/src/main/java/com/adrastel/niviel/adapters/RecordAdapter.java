@@ -1,5 +1,6 @@
 package com.adrastel.niviel.adapters;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -101,19 +102,24 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                     @Override
                     public void onClick(View view) {
 
-                        Uri url = new Uri.Builder()
-                                .scheme("https")
-                                .authority("www.worldcubeassociation.org")
-                                .appendEncodedPath("results/p.php")
-                                .appendQueryParameter("i", user.getWca_id())
-                                .build();
+                        try {
+                            Uri url = new Uri.Builder()
+                                    .scheme("https")
+                                    .authority("www.worldcubeassociation.org")
+                                    .appendEncodedPath("results/p.php")
+                                    .appendQueryParameter("i", user.getWca_id())
+                                    .build();
 
-                        Intent viewOnWebSite = new Intent(Intent.ACTION_VIEW);
-                        viewOnWebSite.setData(url);
+                            Intent viewOnWebSite = new Intent(Intent.ACTION_VIEW);
+                            viewOnWebSite.setData(url);
 
-                        Intent chooser = Intent.createChooser(viewOnWebSite, user.getName());
+                            Intent chooser = Intent.createChooser(viewOnWebSite, user.getName());
 
-                        getActivity().startActivity(chooser);
+                            getActivity().startActivity(chooser);
+                        }
+                        catch (ActivityNotFoundException e ) {
+                            e.printStackTrace();
+                        }
 
                     }
                 });

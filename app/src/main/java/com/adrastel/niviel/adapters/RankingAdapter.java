@@ -1,10 +1,10 @@
 package com.adrastel.niviel.adapters;
 
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -21,8 +21,6 @@ import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.IntentHelper;
 import com.adrastel.niviel.dialogs.RankingDetailsDialog;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.interfaces.PauseResumeInterface;
@@ -254,7 +252,21 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
                 Assets.wrapStrong(ranking.getRank()), Assets.wrapStrong(ranking.getResult()));
 
 
-        IntentHelper.shareIntent(context, text, html);
+        try {
+            Intent intent = new Intent();
+
+            intent.setType("text/plain");
+            intent.setAction(Intent.ACTION_SEND);
+            intent.putExtra(Intent.EXTRA_TEXT, text);
+            intent.putExtra(Intent.EXTRA_HTML_TEXT, html);
+
+            Intent chooser = Intent.createChooser(intent, context.getString(R.string.share));
+
+            context.startActivity(chooser);
+        }
+        catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     // Le view holder qui contient toutes les infos
