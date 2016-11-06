@@ -15,9 +15,18 @@
         android:id="@+id/check_records"
         android:title="@string/check_records"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/day_night"
+        android:title="@string/day_night"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/contact"
+        android:title="@string/contact"
+        app:showAsAction="never"/>
     <item
         android:title="@string/settings"
         android:id="@+id/settings"
-        android:orderInCategory="200"
         app:showAsAction="never" />
 </menu>

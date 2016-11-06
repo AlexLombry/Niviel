@@ -1,6 +1,7 @@
 package com.adrastel.niviel.activities;
 
 import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +9,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -26,9 +26,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -38,11 +35,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
@@ -54,6 +52,7 @@ import com.adrastel.niviel.services.EditRecordService;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.cketti.mailto.EmailIntentBuilder;
 
 
 /**
@@ -267,6 +266,30 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 Intent checkRecords = new Intent(this, CheckRecordService.class);
                 startService(checkRecords);
                 return true;
+
+            case R.id.day_night:
+
+                isDark = !isDark;
+                preferences
+                        .edit()
+                        .putString(getString(R.string.pref_isdark), Assets.dayNightBooleanToString(isDark))
+                        .apply();
+
+                finish();
+                startActivity(new Intent(this, MainActivity.class));
+
+                return true;
+
+            case R.id.contact:
+
+                EmailIntentBuilder
+                        .from(this)
+                        .to(getString(R.string.email))
+                        .subject(getString(R.string.mail_subject))
+                        .body(String.format(getString(R.string.mail_body), Build.MODEL, Build.VERSION.RELEASE, Build.VERSION.SDK_INT, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE))
+                        .start();
+
+
         }
 
         return super.onOptionsItemSelected(item);

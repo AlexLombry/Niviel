@@ -231,4 +231,9 @@ public class Assets {
 
     }
 
+
+    public static String dayNightBooleanToString(boolean isDark) {
+        return isDark ? "1" : "0";
+    }
+
 }

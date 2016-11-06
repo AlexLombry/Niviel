@@ -86,6 +86,7 @@
     <string name="search_hint_users">Rechercher des joueurs…</string>
 
     <!-- Errors -->
+    <string name="error_activity">Pas d\'applcations compatibles</string>
     <string name="error_connection">Veuillez vous connecter à internet</string>
     <string name="err_loading">Erreur de chargement\n\n :-(</string>
     <string name="err_server">Erreur interne du serveur</string>
@@ -100,6 +101,7 @@
     <string name="my_profile">Mon profil</string>
     <string name="explore">Explorer</string>
     <string name="theme">Thème</string>
+    <string name="day_night">Thème clair/sombre</string>
     <string name="pref_theme_summary">Choisissez un thème clair ou sombre</string>
     <string-array name="theme_list">
         <item>Clair</item>
@@ -161,8 +163,14 @@
     <string name="report_bug">Signaler un bug</string>
     <string name="report_err_trad">Signaler une erreur de traduction</string>
     <string name="rate">Évaluer</string>
+    <string name="contact">Contact</string>
 
     <string name="goto_internet">Voir le site web</string>
+
+    <!-- Send mail -->
+    <string name="send">Envoyer</string>
+    <string name="mail_subject" translatable="false">Feedback</string>
+    <string name="mail_body" translatable="false">\n\nSend from: %1$s\nAndroid version: %2$s (%3$d)\nApplication Version %4$s (%5$d)</string>
 
     <!-- Others -->
     <string name="zero" translatable="false">0</string>
