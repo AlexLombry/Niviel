@@ -221,9 +221,7 @@ public class ProfileFragment extends BaseFragment {
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_star);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_history);
-
-        // todo: changer le logo
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_star);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_pages);
 
     }
 
