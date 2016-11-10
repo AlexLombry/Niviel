@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.MainActivity;
-import com.adrastel.niviel.assets.Analytics;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.database.DatabaseHelper;
@@ -26,18 +25,7 @@ import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.EditProfileFollowDialog;
 import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
-import com.adrastel.niviel.http.HttpCallback;
-import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.services.EditRecordService;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 public class ProfileFragment extends BaseFragment {
 
@@ -56,8 +44,6 @@ public class ProfileFragment extends BaseFragment {
 
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
-
-    private Document document;
 
 
     public static ProfileFragment newInstance(long id) {
@@ -193,8 +179,6 @@ public class ProfileFragment extends BaseFragment {
 
                             getContext().startService(follow);
 
-                            //activity.getDefaultTracker().send(Analytics.trackNewFollower(wca_id));
-
                         }
 
                         @Override
@@ -217,8 +201,6 @@ public class ProfileFragment extends BaseFragment {
                             add.putExtra(EditRecordService.FOLLOWS, false);
 
                             getContext().startService(add);
-
-                            //activity.getDefaultTracker().send(Analytics.trackPersonalId(wca_id));
                         }
                     });
 
@@ -227,9 +209,6 @@ public class ProfileFragment extends BaseFragment {
         }
 
 
-        Tracker tracker = activity.getDefaultTracker();
-        tracker.setScreenName(getString(R.string.profile_fragment));
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -268,16 +247,16 @@ public class ProfileFragment extends BaseFragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return follower_id != -1 ? RecordFragment.newInstance(ProfileFragment.this, follower_id) : RecordFragment.newInstance(ProfileFragment.this, wca_id);
+                    return follower_id != -1 ? RecordFragment.newInstance(follower_id) : RecordFragment.newInstance(wca_id);
 
                 case 1:
-                    return follower_id != -1 ? HistoryFragment.newInstance(ProfileFragment.this, follower_id, true) : HistoryFragment.newInstance(ProfileFragment.this, wca_id, true);
+                    return follower_id != -1 ? HistoryFragment.newInstance(follower_id, true) : HistoryFragment.newInstance(wca_id, true);
 
                 case 2:
-                    return follower_id != -1 ? HistoryFragment.newInstance(ProfileFragment.this, follower_id, false) : HistoryFragment.newInstance(ProfileFragment.this, wca_id, false);
+                    return follower_id != -1 ? HistoryFragment.newInstance(follower_id, false) : HistoryFragment.newInstance(wca_id, false);
 
                 default:
-                    return follower_id != -1 ? RecordFragment.newInstance(ProfileFragment.this, follower_id) : RecordFragment.newInstance(ProfileFragment.this, wca_id);
+                    return follower_id != -1 ? RecordFragment.newInstance(follower_id) : RecordFragment.newInstance(wca_id);
             }
 
         }
@@ -331,46 +310,5 @@ public class ProfileFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
-    }
-
-    public void callData(final HttpManager manager, boolean forceRefresh, final Callback callback) {
-
-        if(document != null && !forceRefresh) {
-            callback.onResponse(document);
-            manager.stopLoaders();
-        } else {
-
-            HttpUrl url = new HttpUrl.Builder()
-                    .scheme("https")
-                    .host("www.worldcubeassociation.org")
-                    .addPathSegments("results/p.php")
-                    .addEncodedQueryParameter("i", wca_id)
-                    .build();
-
-            Request request = new Request.Builder()
-                    .url(url)
-                    .build();
-
-            OkHttpClient client = new OkHttpClient();
-
-            client.newCall(request).enqueue(new HttpCallback(getActivity()) {
-                @Override
-                public void onResponse(String response) {
-                    document = Jsoup.parse(response);
-
-                    callback.onResponse(document);
-                    manager.stopLoaders();
-                }
-
-                @Override
-                public void onFailure() {
-                    manager.stopLoaders();
-                }
-            });
-        }
-    }
-
-    public interface Callback {
-        void onResponse(Document document);
     }
 }
