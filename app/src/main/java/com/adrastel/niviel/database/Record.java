@@ -2,13 +2,10 @@ package com.adrastel.niviel.database;
 
 import android.support.annotation.NonNull;
 
-import com.adrastel.niviel.FollowerModel;
 import com.adrastel.niviel.RecordModel;
 import com.adrastel.niviel.models.writeable.BufferRecord;
 import com.google.auto.value.AutoValue;
 import com.squareup.sqldelight.RowMapper;
-
-import java.util.Comparator;
 
 @AutoValue
 public abstract class Record implements RecordModel {

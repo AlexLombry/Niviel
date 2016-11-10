@@ -40,6 +40,7 @@ public class HttpManager {
 
         call = client.newCall(request);
 
+
         call.enqueue(new HttpCallback(activity) {
             @Override
             public void onResponse(String response) {

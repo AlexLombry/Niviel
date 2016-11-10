@@ -1,9 +1,6 @@
 package com.adrastel.niviel.models.writeable;
 
-import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.models.readable.Record;
-
-import java.util.ArrayList;
 
 public class BufferRecord extends Record {
 

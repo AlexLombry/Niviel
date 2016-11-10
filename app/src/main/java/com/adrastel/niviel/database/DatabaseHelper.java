@@ -19,6 +19,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static AtomicInteger openCount = new AtomicInteger();
     private static SQLiteDatabase database;
 
+    // TODO: changer de marshal
+
     public static final String DATABASE_NAME = "database.db";
     public static final int DATABASE_VERSION = 1;
 

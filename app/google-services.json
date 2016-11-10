@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "164433267230",
+    "project_id": "firebase-niviel"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164433267230:android:b14451b1def75f7e",
+        "android_client_info": {
+          "package_name": "com.adrastel.niviel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD4a-pmuNR1OHTdyHUF3ghLrdBnTJQDlA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-87043911-1"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

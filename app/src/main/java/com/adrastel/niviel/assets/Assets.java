@@ -45,17 +45,6 @@ public class Assets {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, context.getResources().getDisplayMetrics());
     }
 
-    @SuppressWarnings("deprecation")
-    public static void setTextAppearance(Context context, TextView textView, @StyleRes int styleId) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            textView.setTextAppearance(styleId);
-        }
-
-        else {
-            textView.setTextAppearance(context, styleId);
-        }
-    }
-
     /**
      * Retourne le tag qui permet d'avoir l'url
      * https://www.worldcubeassociation.org/results/events.php

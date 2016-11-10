@@ -1,7 +1,6 @@
 package com.adrastel.niviel.activities;
 
 import android.app.SearchManager;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -35,10 +34,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.assets.Analytics;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.database.DatabaseHelper;
@@ -49,6 +48,9 @@ import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.html.RankingFragment;
 import com.adrastel.niviel.services.CheckRecordService;
 import com.adrastel.niviel.services.EditRecordService;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -198,6 +200,8 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             }
         });
 
+        //getDefaultTracker().send(Analytics.trackTheme(isDark));
+
     }
 
 
@@ -215,8 +219,13 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             if (fragment != null) {
                 fragmentManager.putFragment(outState, Constants.STORAGE.FRAGMENT, fragment);
             }
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
+
+            getDefaultTracker().send(new HitBuilders.ExceptionBuilder()
+                .setDescription(e.getMessage())
+                .setFatal(false)
+                .build());
         }
     }
 
@@ -282,13 +291,20 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
             case R.id.contact:
 
-                EmailIntentBuilder
-                        .from(this)
-                        .to(getString(R.string.email))
-                        .subject(getString(R.string.mail_subject))
-                        .body(String.format(getString(R.string.mail_body), Build.MODEL, Build.VERSION.RELEASE, Build.VERSION.SDK_INT, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE))
-                        .start();
+                getDefaultTracker().send(new HitBuilders.EventBuilder()
+                    .setCategory("Menu")
+                    .setAction("Press Button")
+                    .setLabel("Contact")
+                    .build());
 
+                if(!BuildConfig.DEBUG) {
+                    EmailIntentBuilder
+                            .from(this)
+                            .to(getString(R.string.email))
+                            .subject(getString(R.string.mail_subject))
+                            .body(String.format(getString(R.string.mail_body), Build.MODEL, Build.VERSION.RELEASE, Build.VERSION.SDK_INT, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE))
+                            .start();
+                }
 
         }
 
@@ -497,6 +513,8 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             toolbar.setBackgroundColor(color);
         }
     }
+
+
 
     /**
      * Change la couleur de la bar de status

@@ -2,14 +2,12 @@ package com.adrastel.niviel.fragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
-import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.support.annotation.StringRes;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.SettingsActivity;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -27,6 +25,15 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        Tracker tracker = activity.getDefaultTracker();
+        tracker.setScreenName(getString(R.string.settings_fragment));
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.adrastel.niviel.fragments;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,8 +15,11 @@ import android.widget.Toast;
 import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.FollowerAdapter;
+import com.adrastel.niviel.assets.Analytics;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -94,6 +95,12 @@ public class FollowerFragment extends BaseFragment {
         if(followers.size() == 0) {
             makeSnackbar(R.string.no_followers, Snackbar.LENGTH_INDEFINITE).show();
         }
+
+        Tracker tracker = activity.getDefaultTracker();
+        tracker.setScreenName(getString(R.string.profile_fragment));
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        //activity.getDefaultTracker().send(Analytics.trackFollower(followers.size()));
     }
 
     @Override

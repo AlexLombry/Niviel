@@ -3,8 +3,6 @@ package com.adrastel.niviel.adapters;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,8 +13,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,21 +22,15 @@ import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Cubes;
 import com.adrastel.niviel.assets.DetailsMaker;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.dialogs.RecordDialog;
 import com.adrastel.niviel.models.readable.Record;
-import com.adrastel.niviel.models.readable.SuggestionUser;
 import com.adrastel.niviel.models.readable.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.HttpUrl;
 
 public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> {
 

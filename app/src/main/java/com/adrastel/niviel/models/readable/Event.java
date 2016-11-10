@@ -3,7 +3,6 @@ package com.adrastel.niviel.models.readable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Cubes;
 import com.bignerdranch.expandablerecyclerview.model.Parent;
 

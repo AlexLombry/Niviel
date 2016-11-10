@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.DetailsMaker;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.models.readable.Ranking;
 
 public class RankingDetailsDialog extends DialogFragment {

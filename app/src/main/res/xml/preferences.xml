@@ -44,9 +44,10 @@
 
     <PreferenceCategory android:title="@string/about">
 
-        <Preference android:title="@string/report_bug"/>
-        <Preference android:title="@string/report_err_trad"/>
-        <Preference android:title="@string/rate"/>
+        <PreferenceScreen android:title="@string/intro">
+            <intent android:action="com.adrastel.niviel.Introduction"/>
+        </PreferenceScreen>
+
 
     </PreferenceCategory>
 </PreferenceScreen>

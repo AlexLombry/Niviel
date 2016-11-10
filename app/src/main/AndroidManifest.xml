@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.adrastel.niviel">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
-    <!-- todo: intent view -->
     <application
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="false"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
@@ -38,14 +39,22 @@
             android:theme="@style/AppTheme.Preferences">
             <intent-filter>
                 <action android:name="android.intent.action.MANAGE_NETWORK_USAGE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
+        <activity
+            android:name=".activities.MainIntroActivity"
+            android:theme="@style/Theme.Intro">
+            <intent-filter>
+                <action android:name="com.adrastel.niviel.Introduction"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
         <provider
             android:name=".providers.content.SuggestionProvider"
-            android:authorities="com.niviel.adrastel.suggestionProvider"
+            android:authorities="com.adrastel.niviel.SuggestionProvider"
             android:enabled="true"
             android:exported="false"/>
 

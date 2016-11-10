@@ -24,10 +24,6 @@ public class RecyclerViewCompat extends RecyclerView {
 
     private void checkIfEmpty() {
         if(emptyView != null && getAdapter() != null) {
-            final boolean emptyViewVisibility = getAdapter().getItemCount() == 0;
-
-            /*emptyView.setVisibility(emptyViewVisibility ? VISIBLE : GONE);
-            setVisibility(emptyViewVisibility ? GONE : VISIBLE);*/
 
             if(getAdapter().getItemCount() == 0) {
                 emptyView.setVisibility(View.VISIBLE);

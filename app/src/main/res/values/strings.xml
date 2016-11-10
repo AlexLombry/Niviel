@@ -14,14 +14,18 @@
     <string name="author" translatable="false">Herel Adrastel</string>
     <string name="email" translatable="false">herel.dev@gmail.com</string>
     <string name="wca">WCA</string>
+
     <!-- Activities -->
+    <string name="profile_fragment" translatable="false">Profile</string>
+    <string name="follower_fragment" translatable="false">Follower</string>
+    <string name="ranking_fragment" translatable="false">Ranking</string>
+    <string name="settings_fragment" translatable="false">Settings</string>
 
     <!-- CUBES -->
     <string name="cube_3x3" translatable="false">Rubik\'s cube</string>
 
 
     <!-- Records -->
-
     <string name="records">Records</string>
     <string name="single">Single</string>
     <string name="average">Moyenne</string>
@@ -34,8 +38,6 @@
     <!-- History -->
     <string name="event">Évenement</string>
     <string name="history">Historique</string>
-    <string name="competition">Competition</string>
-    <string name="competitions">Competitions</string>
     <string name="round">Round</string>
     <string name="best">Meilleur</string>
 
@@ -76,6 +78,8 @@
     <string name="gender">Genre</string>
     <string name="country">Pays</string>
 
+    <string name="competition">Competition</string>
+    <string name="competitions">Competitions</string>
     <plurals name="competitions">
         <item quantity="one">competition</item>
         <item quantity="other">competitions</item>
@@ -90,7 +94,6 @@
     <string name="error_connection">Veuillez vous connecter à internet</string>
     <string name="err_loading">Erreur de chargement\n\n :-(</string>
     <string name="err_server">Erreur interne du serveur</string>
-    <string name="cannot_load">Impossible de charger le contenu</string>
     <string name="error_interpretation_html">Erreur d\'interpretation du code HTML</string>
     <string name="wrong_wca_id">Identifiant WCA erroné</string>
     <string name="unknown_error">Erreur inconnue</string>
@@ -100,6 +103,11 @@
     <string name="settings">Réglages</string>
     <string name="my_profile">Mon profil</string>
     <string name="explore">Explorer</string>
+
+
+    <!-- Préférences -->
+
+    <!-- Thème -->
     <string name="theme">Thème</string>
     <string name="day_night">Thème clair/sombre</string>
     <string name="pref_theme_summary">Choisissez un thème clair ou sombre</string>
@@ -107,20 +115,26 @@
         <item>Clair</item>
         <item>Sombre</item>
     </string-array>
-    <string name="check_records">Vérifier les records</string>
 
+    <string-array name="theme_list_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+
+    <!-- Check records network -->
     <string name="pref_check_network_title">Réseau utilisé pour vérifier les records</string>
     <string name="pref_check_network_summary">Utiliser le Wi-Fi ou le Wi-Fi et les données mobiles pour effectuer la vérification</string>
     <string-array name="pref_check_network_list">
         <item>Wi-Fi</item>
         <item>Wi-Fi + Données mobiles</item>
     </string-array>
-
-    <string-array name="pref_check_network_values">
+    <string-array name="pref_check_network_values" translatable="false">
         <item>0</item>
         <item>1</item>
     </string-array>
 
+    <!-- Check record frequency -->
     <string name="pref_check_freq_title">Fréquence de vérification</string>
     <string name="pref_check_freq_summary">Fréquence de vérification des records, historiques du profil personnel et des followers.</string>
     <string-array name="pref_check_freq_list">
@@ -132,13 +146,7 @@
         <item>Jamais</item>
     </string-array>
 
-    <!-- DO NOT TRANSLATE -->
-    <string-array name="theme_list_values">
-        <item>0</item>
-        <item>1</item>
-    </string-array>
-
-    <string-array name="pref_check_freq_values">
+    <string-array name="pref_check_freq_values" translatable="false">
         <item>3600000</item>
         <item>86400000</item>
         <item>43200000</item>
@@ -146,6 +154,10 @@
         <item>302400000</item>
         <item>0</item>
     </string-array>
+
+    <!-- Reset profile -->
+    <string name="reset_pref_id_title">Réinitialiser votre profil personnel</string>
+    <string name="reset_pref_id_content">Réinitialiser votre profil personnel ?</string>
 
 
 
@@ -164,8 +176,10 @@
     <string name="report_err_trad">Signaler une erreur de traduction</string>
     <string name="rate">Évaluer</string>
     <string name="contact">Contact</string>
-
     <string name="goto_internet">Voir le site web</string>
+    <string name="check_records">Vérifier les records</string>
+    <string name="confirm">Confirmer</string>
+    <string name="toast_adding">Ajout en cours</string>
 
     <!-- Send mail -->
     <string name="send">Envoyer</string>
@@ -175,12 +189,11 @@
     <!-- Others -->
     <string name="zero" translatable="false">0</string>
     <string name="no_title" translatable="false"/>
+    <string name="private_policy">Politique de confidentialité</string>
+    <string name="intro">Introduction</string>
 
 
-    <string name="confirm">Confirmer</string>
-    <string name="toast_adding">Ajout en cours</string>
-
-    <!-- notofication -->
+    <!-- Notification -->
     <string name="notif_single">single</string>
     <string name="notif_average">average</string>
     <string name="notif_country">national</string>
@@ -195,6 +208,5 @@
     <string name="notif_new_rank_message">Désormais n°%1$d à n°%2$d %3$s (%4$s) en %5$s avec un score de %6$s</string>
     <string name="share_new_rank">%1$s est désormais n°%2$d à n°%3$d %4$s (%5$s) en %6$s avec un score de %7$s</string>
 
-    <string name="reset_pref_id_title">Réinitialiser votre profil personnel</string>
-    <string name="reset_pref_id_content">Réinitialiser votre profil personnel ?</string>
+
 </resources>

@@ -6,9 +6,6 @@ import android.os.Parcelable;
 import com.adrastel.niviel.models.BaseModel;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-
 /**
  * Record est une classe regroupant les records personnels d'un joueur
  *

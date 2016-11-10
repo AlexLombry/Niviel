@@ -1,7 +1,5 @@
 package com.adrastel.niviel.providers.html;
 
-import android.content.Context;
-
 import com.adrastel.niviel.models.readable.User;
 
 import org.jsoup.nodes.Document;

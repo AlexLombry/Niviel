@@ -7,7 +7,6 @@ import android.widget.Toast;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.models.writeable.BufferRecord;
-import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.models.readable.Record;
 
 import org.jsoup.nodes.Document;

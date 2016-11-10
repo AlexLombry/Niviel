@@ -3,12 +3,8 @@ package com.adrastel.niviel.models.readable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.Cubes;
 import com.adrastel.niviel.models.BaseModel;
 import com.google.gson.Gson;
-
-import java.util.Comparator;
 
 public class History extends BaseModel implements Parcelable {
 

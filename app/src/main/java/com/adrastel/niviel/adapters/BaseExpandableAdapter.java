@@ -3,16 +3,12 @@ package com.adrastel.niviel.adapters;
 import android.support.v4.app.FragmentActivity;
 
 import com.adrastel.niviel.activities.MainActivity;
-import com.adrastel.niviel.models.readable.Event;
-import com.adrastel.niviel.models.readable.History;
 import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 import com.bignerdranch.expandablerecyclerview.model.Parent;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public abstract class BaseExpandableAdapter<P extends Parent<C>, C, PVH extends ParentViewHolder<P, C>, CVH extends ChildViewHolder<C>> extends ExpandableRecyclerAdapter<P, C, PVH, CVH> {
 

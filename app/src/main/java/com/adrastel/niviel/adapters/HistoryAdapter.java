@@ -1,7 +1,6 @@
 package com.adrastel.niviel.adapters;
 
 import android.annotation.SuppressLint;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
