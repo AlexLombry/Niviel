@@ -2,7 +2,6 @@ package com.adrastel.niviel.fragments.html;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -16,13 +15,13 @@ import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
-import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Event;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.providers.html.HistoryProvider;
 import com.adrastel.niviel.views.RecyclerViewCompat;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.HttpUrl;
 
 public class HistoryFragment extends BaseFragment {
 
@@ -47,7 +47,6 @@ public class HistoryFragment extends BaseFragment {
     private String wca_id = null;
     private long follower_id = -1;
 
-    private ProfileFragment profileFragment;
     /**
      * 2 constantes qui déterminent si on veux trier par event ou competition
      */
@@ -55,7 +54,7 @@ public class HistoryFragment extends BaseFragment {
     private boolean sortByEvent = true;
 
 
-    public static HistoryFragment newInstance(Fragment fragment, long follower_id, boolean sort) {
+    public static HistoryFragment newInstance(long follower_id, boolean sort) {
         HistoryFragment instance = new HistoryFragment();
 
         Bundle args = new Bundle();
@@ -63,11 +62,10 @@ public class HistoryFragment extends BaseFragment {
         args.putBoolean(Constants.EXTRAS.SORT, sort);
 
         instance.setArguments(args);
-        instance.setTargetFragment(fragment, 0);
         return instance;
     }
 
-    public static HistoryFragment newInstance(Fragment fragment, String wca_id, boolean sort) {
+    public static HistoryFragment newInstance(String wca_id, boolean sort) {
         HistoryFragment instance = new HistoryFragment();
 
         Bundle args = new Bundle();
@@ -75,7 +73,6 @@ public class HistoryFragment extends BaseFragment {
         args.putBoolean(Constants.EXTRAS.SORT, sort);
 
         instance.setArguments(args);
-        instance.setTargetFragment(fragment, 0);
         return instance;
     }
 
@@ -94,14 +91,6 @@ public class HistoryFragment extends BaseFragment {
 
 
         adapter = new HistoryAdapter(getActivity(), new ArrayList<Event>());
-
-        try {
-            profileFragment = (ProfileFragment) getTargetFragment();
-        }
-
-        catch (ClassCastException e) {
-            e.printStackTrace();
-        }
 
 
     }
@@ -166,7 +155,7 @@ public class HistoryFragment extends BaseFragment {
         }
 
         else if(isConnected()) {
-            callData(false);
+            callData();
         }
 
         else {
@@ -176,7 +165,7 @@ public class HistoryFragment extends BaseFragment {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                callData(true);
+                callData();
             }
         });
 
@@ -209,28 +198,9 @@ public class HistoryFragment extends BaseFragment {
         adapter.onRestoreInstanceState(savedInstanceState);
     }
 
+    public void callData() {
 
-    public void callData(boolean forceRefresh) {
-
-        if(profileFragment != null) {
-
-            profileFragment.callData(httpManager, forceRefresh, new ProfileFragment.Callback() {
-                @Override
-                public void onResponse(Document document) {
-                    final ArrayList<History> histories = HistoryProvider.getHistory(activity, document);
-
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter.refreshData(sortByEvent ? makeExpandedArrayList(histories, true) : makeExpandedArrayList(histories, false));
-                        }
-                    });
-                }
-            });
-
-        }
-
-        /*HttpUrl url = new HttpUrl.Builder()
+        HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host("www.worldcubeassociation.org")
                 .addEncodedPathSegments("results/p.php")
@@ -252,7 +222,7 @@ public class HistoryFragment extends BaseFragment {
                     }
                 });
             }
-        });*/
+        });
 
     }
 
