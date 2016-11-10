@@ -2,13 +2,14 @@ package com.adrastel.niviel.fragments.html;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
@@ -17,7 +18,6 @@ import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
-import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.models.readable.User;
@@ -25,6 +25,7 @@ import com.adrastel.niviel.providers.html.RecordProvider;
 import com.adrastel.niviel.providers.html.UserProvider;
 import com.adrastel.niviel.views.RecyclerViewCompat;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.HttpUrl;
 
 public class RecordFragment extends BaseFragment {
 
@@ -50,12 +52,11 @@ public class RecordFragment extends BaseFragment {
     private HttpManager httpManager;
 
     private RecordAdapter adapter;
-    private ProfileFragment profileFragment;
 
     private String wca_id;
     private long follower_id = -1;
 
-    public static RecordFragment newInstance(Fragment fragment, long id) {
+    public static RecordFragment newInstance(long id) {
 
         RecordFragment instance = new RecordFragment();
 
@@ -63,13 +64,12 @@ public class RecordFragment extends BaseFragment {
         args.putLong(Constants.EXTRAS.ID , id);
 
         instance.setArguments(args);
-        instance.setTargetFragment(fragment, 0);
 
         return instance;
 
     }
 
-    public static RecordFragment newInstance(Fragment fragment, String wca_id) {
+    public static RecordFragment newInstance(String wca_id) {
 
         RecordFragment instance = new RecordFragment();
 
@@ -77,7 +77,6 @@ public class RecordFragment extends BaseFragment {
         args.putString(Constants.EXTRAS.WCA_ID ,wca_id);
 
         instance.setArguments(args);
-        instance.setTargetFragment(fragment, 0);
 
         return instance;
 
@@ -90,13 +89,6 @@ public class RecordFragment extends BaseFragment {
         adapter = new RecordAdapter(getActivity());
 
         wca_id = null;
-
-        try {
-            profileFragment = (ProfileFragment) getTargetFragment();
-        }
-        catch (ClassCastException e) {
-            e.printStackTrace();
-        }
 
         // On recupere l'follower_id wca
 
@@ -172,7 +164,7 @@ public class RecordFragment extends BaseFragment {
 
         }
         else if (isConnected()) {
-            callData(false);
+            callData();
         }
 
         else {
@@ -183,7 +175,7 @@ public class RecordFragment extends BaseFragment {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                callData(true);
+                callData();
             }
         });
 
@@ -195,7 +187,6 @@ public class RecordFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -226,27 +217,8 @@ public class RecordFragment extends BaseFragment {
         return R.style.AppTheme_Records;
     }
 
-    public void callData(boolean forceRefresh) {
-        if(profileFragment != null)  {
-
-            profileFragment.callData(httpManager, forceRefresh, new ProfileFragment.Callback() {
-                @Override
-                public void onResponse(Document document) {
-                    final ArrayList<Record> records = RecordProvider.getRecord(getActivity(), document);
-                    final User user = UserProvider.getUser(document);
-
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter.refreshData(user, records);
-                        }
-                    });
-                }
-            });
-
-        }
-
-        /*HttpUrl url = new HttpUrl.Builder()
+    public void callData() {
+        HttpUrl url = new HttpUrl.Builder()
 
                 // https://www.worldcubeassociation.org/results/p.php?i=
                 .scheme("https")
@@ -270,8 +242,10 @@ public class RecordFragment extends BaseFragment {
                         //adapter.setHeader(user);
                     }
                 });
+
+
             }
-        });*/
+        });
     }
 
 }
