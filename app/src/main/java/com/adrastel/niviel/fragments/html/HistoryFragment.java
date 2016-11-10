@@ -180,13 +180,8 @@ public class HistoryFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        try {
-            outState.putParcelableArrayList(Constants.EXTRAS.HISTORY, adapter.getDatas());
-
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        outState.putParcelableArrayList(Constants.EXTRAS.HISTORY, adapter.getDatas());
+        setTargetFragment(null, -1);
 
         super.onSaveInstanceState(outState);
         adapter.onSaveInstanceState(outState);

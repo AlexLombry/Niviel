@@ -21,6 +21,7 @@ import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.dialogs.RankingSwitchCountryDialog;
 import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
+import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.providers.html.RankingProvider;
@@ -41,10 +42,9 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import okhttp3.HttpUrl;
 
-public class RankingFragment extends HtmlFragment<Ranking> {
+public class RankingFragment extends BaseFragment {
 
     // todo : gerer le pb erreur chargement lors du chargement
-    // todo: ajouter sur tous les fragments setTarget Fragment
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recycler_view) RecyclerViewCompat recyclerView;
@@ -183,6 +183,8 @@ public class RankingFragment extends HtmlFragment<Ranking> {
         outState.putString(Constants.EXTRAS.SUBTITLE, subtitle);
         outState.putParcelableArrayList(Constants.EXTRAS.RANKING, adapter.getDatas());
 
+        setTargetFragment(null, -1);
+
         super.onSaveInstanceState(outState);
     }
 
@@ -237,21 +239,6 @@ public class RankingFragment extends HtmlFragment<Ranking> {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Retourne l'emplacement de stockage utilisé
-     * @return stockage
-     */
-    @Override
-    public String getStorageLocation() {
-        return Constants.STORAGE.RANKING;
-    }
-
-    @Override
-    public Type getStorageType() {
-        return new TypeToken<ArrayList<Ranking>>(){}.getType();
-    }
-
-    @Override
     public void callData() {
 
         swipeRefreshLayout.setRefreshing(true);

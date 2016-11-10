@@ -167,7 +167,6 @@ public class ProfileFragment extends BaseFragment {
                 @Override
                 public void onClick(View view) {
 
-                    //todo: modifier les set target fragments
                     EditProfileFollowDialog dialog = EditProfileFollowDialog.newInstance(username);
                     dialog.show(getFragmentManager(), "setProfileDialog");
 
@@ -245,6 +244,12 @@ public class ProfileFragment extends BaseFragment {
         super.onDestroy();
 
         viewPager.clearOnPageChangeListeners();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        setTargetFragment(null, -1);
+        super.onSaveInstanceState(outState);
     }
 
     public class ViewPagerAdapter extends FragmentStatePagerAdapter {

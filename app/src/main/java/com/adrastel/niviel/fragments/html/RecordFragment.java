@@ -193,6 +193,7 @@ public class RecordFragment extends BaseFragment {
 
         outState.putParcelableArrayList(RECORDS, adapter.getDatas());
         outState.putParcelable(USER, adapter.getUser());
+        setTargetFragment(null, -1);
         super.onSaveInstanceState(outState);
     }
 
