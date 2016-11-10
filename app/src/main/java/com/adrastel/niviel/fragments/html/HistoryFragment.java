@@ -115,8 +115,8 @@ public class HistoryFragment extends BaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.setEmptyView(emptyView);
         recyclerView.setAdapter(adapter);
+        recyclerView.setEmptyView(emptyView);
 
         return view;
     }

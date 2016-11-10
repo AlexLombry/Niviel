@@ -94,4 +94,10 @@ public class RecordDialog extends DialogFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        setTargetFragment(null, -1);
+        super.onSaveInstanceState(outState);
+    }
 }

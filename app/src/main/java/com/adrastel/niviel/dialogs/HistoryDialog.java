@@ -54,4 +54,10 @@ public class HistoryDialog extends DialogFragment {
 
         return builder.create();
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        setTargetFragment(null, -1);
+        super.onSaveInstanceState(outState);
+    }
 }

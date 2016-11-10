@@ -65,4 +65,10 @@ public class RankingSwitchCountryDialog extends DialogFragment {
     public interface RankingSwitchCountryListener {
         void onClick(int position);
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        setTargetFragment(null, -1);
+        super.onSaveInstanceState(outState);
+    }
 }

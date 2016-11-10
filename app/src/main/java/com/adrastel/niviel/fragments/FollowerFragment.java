@@ -18,6 +18,7 @@ import com.adrastel.niviel.adapters.FollowerAdapter;
 import com.adrastel.niviel.assets.Analytics;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
+import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -97,8 +98,11 @@ public class FollowerFragment extends BaseFragment {
         }
 
         Tracker tracker = activity.getDefaultTracker();
-        tracker.setScreenName(getString(R.string.profile_fragment));
+        tracker.setScreenName(getString(R.string.follower_fragment));
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        if(BuildConfig.DEBUG) {
+            GoogleAnalytics.getInstance(getContext()).dispatchLocalHits();
+        }
 
         //activity.getDefaultTracker().send(Analytics.trackFollower(followers.size()));
     }

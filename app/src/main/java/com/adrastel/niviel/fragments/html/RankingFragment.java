@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RankingAdapter;
 import com.adrastel.niviel.assets.Assets;
@@ -24,6 +25,7 @@ import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.providers.html.RankingProvider;
 import com.adrastel.niviel.views.RecyclerViewCompat;
+import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.gson.reflect.TypeToken;
@@ -39,8 +41,10 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import okhttp3.HttpUrl;
 
-public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwitchCubeDialog.RankingSwitchCubeListener {
+public class RankingFragment extends HtmlFragment<Ranking> {
 
+    // todo : gerer le pb erreur chargement lors du chargement
+    // todo: ajouter sur tous les fragments setTarget Fragment
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recycler_view) RecyclerViewCompat recyclerView;
@@ -90,8 +94,8 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.setEmptyView(emptyView);
         recyclerView.setAdapter(adapter);
+        recyclerView.setEmptyView(emptyView);
 
 
         return view;
@@ -144,8 +148,11 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
         });
 
         Tracker tracker = activity.getDefaultTracker();
-        tracker.setScreenName(getString(R.string.profile_fragment));
+        tracker.setScreenName(getString(R.string.ranking_fragment));
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        if(BuildConfig.DEBUG) {
+            GoogleAnalytics.getInstance(getContext()).dispatchLocalHits();
+        }
     }
 
     @Override
@@ -196,11 +203,17 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
         switch (item.getItemId()) {
 
             case R.id.switch_cube:
-
-
-                DialogFragment cubeSwitch = RankingSwitchCubeDialog.newInstance(cubePosition);
-                cubeSwitch.setTargetFragment(this, 0);
+                RankingSwitchCubeDialog cubeSwitch = RankingSwitchCubeDialog.newInstance(cubePosition);
                 cubeSwitch.show(getFragmentManager(), "cubeSwitch");
+
+                cubeSwitch.setListener(new RankingSwitchCubeDialog.RankingSwitchCubeListener() {
+                    @Override
+                    public void onClick(int position, boolean isSingle) {
+                        RankingFragment.this.cubePosition = cubePosition;
+                        RankingFragment.this.isSingle = isSingle;
+                        callData();
+                    }
+                });
 
                 return true;
 
@@ -218,7 +231,6 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
                 });
 
                 return true;
-
 
         }
 
@@ -289,15 +301,6 @@ public class RankingFragment extends HtmlFragment<Ranking> implements RankingSwi
         return R.style.AppTheme_Ranking;
     }
 
-    @Override
-    public void onClick(int cubePosition, boolean isSingle) {
-
-        this.cubePosition = cubePosition;
-        this.isSingle = isSingle;
-
-        callData();
-
-    }
     private void stopLoaders() {
         progressBar.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(false);

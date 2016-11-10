@@ -35,14 +35,6 @@ public class RankingSwitchCubeDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
 
         position = getArguments().getInt(Constants.EXTRAS.CUBE_POSITION, -1);
-
-        try {
-            listener = (RankingSwitchCubeListener) getTargetFragment();
-        }
-
-        catch (ClassCastException exception) {
-            throw new ClassCastException("Calling fragment must implement RankingSwitchCubeListener interface");
-        }
     }
 
 
@@ -106,7 +98,17 @@ public class RankingSwitchCubeDialog extends DialogFragment {
         }
     }
 
+    public void setListener(RankingSwitchCubeListener listener) {
+        this.listener = listener;
+    }
+
     public interface RankingSwitchCubeListener {
         void onClick(int position, boolean isSingle);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        setTargetFragment(null, -1);
+        super.onSaveInstanceState(outState);
     }
 }

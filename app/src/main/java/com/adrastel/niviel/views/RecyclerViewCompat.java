@@ -22,7 +22,7 @@ public class RecyclerViewCompat extends RecyclerView {
         super(context, attrs, defStyle);
     }
 
-    private void checkIfEmpty() {
+    public void checkIfEmpty() {
         if(emptyView != null && getAdapter() != null) {
 
             if(getAdapter().getItemCount() == 0) {
@@ -73,5 +73,6 @@ public class RecyclerViewCompat extends RecyclerView {
 
     public void setEmptyView(View emptyView) {
         this.emptyView = emptyView;
+        checkIfEmpty();
     }
 }

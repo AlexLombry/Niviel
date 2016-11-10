@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.assets.Assets;
@@ -26,6 +27,9 @@ import com.adrastel.niviel.dialogs.EditProfileFollowDialog;
 import com.adrastel.niviel.fragments.html.HistoryFragment;
 import com.adrastel.niviel.fragments.html.RecordFragment;
 import com.adrastel.niviel.services.EditRecordService;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 public class ProfileFragment extends BaseFragment {
 
@@ -163,8 +167,8 @@ public class ProfileFragment extends BaseFragment {
                 @Override
                 public void onClick(View view) {
 
+                    //todo: modifier les set target fragments
                     EditProfileFollowDialog dialog = EditProfileFollowDialog.newInstance(username);
-                    dialog.setTargetFragment(ProfileFragment.this, 0);
                     dialog.show(getFragmentManager(), "setProfileDialog");
 
                     dialog.setOnDialogClickListener(new EditProfileFollowDialog.DialogProfileListener() {
@@ -208,6 +212,12 @@ public class ProfileFragment extends BaseFragment {
             });
         }
 
+        Tracker tracker = activity.getDefaultTracker();
+        tracker.setScreenName(getString(R.string.profile_fragment));
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        if(BuildConfig.DEBUG) {
+            GoogleAnalytics.getInstance(getContext()).dispatchLocalHits();
+        }
 
     }
 
