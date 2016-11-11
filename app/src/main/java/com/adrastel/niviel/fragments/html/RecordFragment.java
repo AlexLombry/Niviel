@@ -241,7 +241,6 @@ public class RecordFragment extends BaseFragment {
                     @Override
                     public void run() {
                         adapter.refreshData(user, records);
-                        //adapter.setHeader(user);
                     }
                 });
 

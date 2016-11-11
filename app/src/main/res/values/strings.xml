@@ -97,7 +97,7 @@
     <!-- Errors -->
     <string name="error_activity">Pas d\'applcations compatibles</string>
     <string name="error_connection">Veuillez vous connecter à internet</string>
-    <string name="err_loading">Erreur de chargement<:xliff:g>\n\n :-(</:xliff:g></string>
+    <string name="err_loading">Erreur de chargement<xliff:g>\n\n :-(</xliff:g></string>
     <string name="err_server">Erreur interne du serveur</string>
     <string name="error_interpretation_html">Erreur d\'interpretation du code HTML</string>
     <string name="wrong_wca_id">Identifiant WCA erroné</string>
