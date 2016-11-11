@@ -4,13 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RecordAdapter;
@@ -18,12 +15,11 @@ import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
-import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.models.readable.User;
 import com.adrastel.niviel.providers.html.RecordProvider;
 import com.adrastel.niviel.providers.html.UserProvider;
-import com.adrastel.niviel.views.RecyclerViewCompat;
+import com.adrastel.niviel.views.RecyclerViewTest;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -43,13 +39,13 @@ public class RecordFragment extends BaseFragment {
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
-    @BindView(R.id.recycler_view) RecyclerViewCompat recyclerView;
+    @BindView(R.id.recycler_view) RecyclerViewTest recyclerView;
     @BindView(R.id.empty_view) View emptyView;
 
 
     private Unbinder unbinder;
 
-    private HttpManager httpManager;
+    //private HttpManager httpManager;
 
     private RecordAdapter adapter;
 
@@ -111,18 +107,20 @@ public class RecordFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_list, container, false);
+        //todo: remettre à fragment_list
+        View view = inflater.inflate(R.layout.fragment_list_test, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
 
         // todo: resoudre le bug erreur de chargement
-        recyclerView.setEmptyView(emptyView);
         recyclerView.setAdapter(adapter);
+        recyclerView.initRecyclerViewCompat(swipeRefresh, progressBar, emptyView);
+
+        recyclerView.showProgress();
 
 
         return view;
@@ -136,11 +134,11 @@ public class RecordFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        httpManager = new HttpManager(getActivity(), swipeRefresh, progressBar);
+        //httpManager = new HttpManager(getActivity(), swipeRefresh, progressBar);
 
         if (savedInstanceState != null) {
             adapter.refreshData(loadUserData(savedInstanceState), loadRecordData(savedInstanceState));
-            httpManager.stopLoaders();
+            recyclerView.showRecycler();
         }
         // Si on est connecté, on fait une requete HTTP, sinon on lit les données locales
 
@@ -160,7 +158,7 @@ public class RecordFragment extends BaseFragment {
             }
 
             adapter.refreshData(new User(follower), records);
-            httpManager.stopLoaders();
+            recyclerView.showRecycler();
 
 
         }
@@ -169,8 +167,7 @@ public class RecordFragment extends BaseFragment {
         }
 
         else {
-            Toast.makeText(getContext(), R.string.error_connection, Toast.LENGTH_LONG).show();
-            httpManager.stopLoaders();
+            recyclerView.showEmpty();
         }
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -228,7 +225,7 @@ public class RecordFragment extends BaseFragment {
                 .addPathSegments("results/p.php")
                 .addEncodedQueryParameter("i", wca_id)
                 .build();
-        httpManager.callData(url, new HttpManager.SuccessCallback() {
+        recyclerView.callData(url, new RecyclerViewTest.Callback() {
             @Override
             public void onSuccess(String response) {
 
