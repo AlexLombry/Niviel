@@ -57,9 +57,14 @@ public class HttpManager {
             public void onFailure() {
                 stopLoaders();
 
-                if(recyclerViewCompat != null) {
-                    recyclerViewCompat.checkIfEmpty();
-                }
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(recyclerViewCompat != null) {
+                            recyclerViewCompat.checkIfEmpty();
+                        }
+                    }
+                });
             }
         });
 
@@ -83,6 +88,10 @@ public class HttpManager {
 
                 if(progressBar != null) {
                     progressBar.setVisibility(View.GONE);
+                }
+
+                if(recyclerViewCompat != null) {
+                    recyclerViewCompat.notifyLoadingStop();
                 }
             }
         });
