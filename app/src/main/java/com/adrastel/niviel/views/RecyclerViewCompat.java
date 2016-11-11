@@ -30,13 +30,13 @@ public class RecyclerViewCompat extends RecyclerView {
         if(emptyView != null && getAdapter() != null && !isLoading) {
 
             if(getAdapter().getItemCount() == 0) {
-                RecyclerViewCompat.this.setVisibility(View.GONE);
                 emptyView.setVisibility(View.VISIBLE);
+                RecyclerViewCompat.this.setVisibility(View.GONE);
                 Log.i("RecyclerView empty");
             }
             else {
-                RecyclerViewCompat.this.setVisibility(View.VISIBLE);
                 emptyView.setVisibility(View.GONE);
+                RecyclerViewCompat.this.setVisibility(View.VISIBLE);
                 Log.i("RecyclerView not empty");
             }
         }
@@ -75,8 +75,6 @@ public class RecyclerViewCompat extends RecyclerView {
         if(adapter != null) {
             adapter.registerAdapterDataObserver(observer);
         }
-
-        checkIfEmpty();
     }
 
     public void setEmptyView(View emptyView) {
