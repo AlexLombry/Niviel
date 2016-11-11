@@ -9,6 +9,8 @@
             0192: À
     -->
 
+    <!-- todo: ajouter tags xliff -->
+    <!-- todo: creer un compte onskyapp -->
     <!-- Personal -->
     <string name="app_name" translatable="false">Niviel</string>
     <string name="author" translatable="false">Herel Adrastel</string>
@@ -24,6 +26,12 @@
     <!-- CUBES -->
     <string name="cube_3x3" translatable="false">Rubik\'s cube</string>
 
+    <!-- Intro -->
+    <string name="begin">Pour commencer</string>
+    <string name="intro_slide_1">Bienvenue sur Niviel, une application simple affichant vos records provenant de la World Cube Association</string>
+    <string name="intro_slide_2">Retrouvez ainsi vos records, historiques, competitions avec une interface légère et rapide</string>
+    <string name="intro_slide_3">Vous pouvez suivre des personnes afin de garder leur résultats hors lignes et être informés quand ils battent leur records</string>
+    <string name="intro_slide_4">Identifiez-vous pour acceder rapidement à votre profil.\n\nPour vous identifer, accédez à votre profil via une recherche, appuyez sur le bouton + et cliquez sur \"Changer de profil\"</string>
 
     <!-- Records -->
     <string name="records">Records</string>

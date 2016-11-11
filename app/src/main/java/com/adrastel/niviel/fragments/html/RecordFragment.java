@@ -120,8 +120,9 @@ public class RecordFragment extends BaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
 
-        recyclerView.setAdapter(adapter);
+        // todo: resoudre le bug erreur de chargement
         recyclerView.setEmptyView(emptyView);
+        recyclerView.setAdapter(adapter);
 
 
         return view;
