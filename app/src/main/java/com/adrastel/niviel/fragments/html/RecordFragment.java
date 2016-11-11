@@ -136,7 +136,7 @@ public class RecordFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        httpManager = new HttpManager(getActivity(), swipeRefresh, progressBar);
+        httpManager = new HttpManager(getActivity(), swipeRefresh, progressBar, recyclerView);
 
         if (savedInstanceState != null) {
             adapter.refreshData(loadUserData(savedInstanceState), loadRecordData(savedInstanceState));

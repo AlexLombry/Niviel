@@ -38,6 +38,8 @@ public abstract class HttpCallback implements okhttp3.Callback {
                         Toast.makeText(activity, error, Toast.LENGTH_LONG).show();
                     }
                 });
+
+                onFailure();
             }
 
             else {

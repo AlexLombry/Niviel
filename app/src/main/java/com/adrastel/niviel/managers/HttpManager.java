@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.adrastel.niviel.http.HttpCallback;
+import com.adrastel.niviel.views.RecyclerViewCompat;
 
 import okhttp3.Call;
 import okhttp3.HttpUrl;
@@ -18,12 +19,16 @@ public class HttpManager {
 
     protected SwipeRefreshLayout swipeRefreshLayout;
     protected ProgressBar progressBar;
+    protected RecyclerViewCompat recyclerViewCompat;
 
     protected OkHttpClient client = new OkHttpClient();
     protected Call call;
 
-    public HttpManager(Activity activity) {
+    public HttpManager(Activity activity, SwipeRefreshLayout swipeRefreshLayout, ProgressBar progressBar, RecyclerViewCompat recyclerViewCompat) {
         this.activity = activity;
+        this.swipeRefreshLayout = swipeRefreshLayout;
+        this.progressBar = progressBar;
+        this.recyclerViewCompat = recyclerViewCompat;
     }
 
     public HttpManager(Activity activity, SwipeRefreshLayout swipeRefreshLayout, ProgressBar progressBar) {
@@ -51,11 +56,14 @@ public class HttpManager {
             @Override
             public void onFailure() {
                 stopLoaders();
+
+                if(recyclerViewCompat != null) {
+                    recyclerViewCompat.checkIfEmpty();
+                }
             }
         });
 
     }
-
 
     public interface SuccessCallback {
         void onSuccess(String response);

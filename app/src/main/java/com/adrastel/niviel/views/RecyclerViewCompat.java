@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.adrastel.niviel.assets.Log;
+
 public class RecyclerViewCompat extends RecyclerView {
 
     private View emptyView;
@@ -28,10 +30,12 @@ public class RecyclerViewCompat extends RecyclerView {
             if(getAdapter().getItemCount() == 0) {
                 emptyView.setVisibility(View.VISIBLE);
                 RecyclerViewCompat.this.setVisibility(View.GONE);
+                Log.i("RecyclerView empty");
             }
             else {
                 emptyView.setVisibility(View.GONE);
                 RecyclerViewCompat.this.setVisibility(View.VISIBLE);
+                Log.i("RecyclerView not empty");
             }
         }
     }

@@ -10,10 +10,6 @@ public class Log {
     public static void d(String tag, String message) {
         android.util.Log.d(TAG, tag + ": " + message);
     }
-    public static void d(String tag, String message, boolean commas) {
-        android.util.Log.d(TAG, tag + ": \"" + message + "\"");
-    }
-
 
 
     public static void e(String message)  {
