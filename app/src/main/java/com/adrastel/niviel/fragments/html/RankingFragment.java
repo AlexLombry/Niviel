@@ -44,7 +44,6 @@ import okhttp3.HttpUrl;
 
 public class RankingFragment extends BaseFragment {
 
-    // todo : gerer le pb erreur chargement lors du chargement
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recycler_view) RecyclerViewCompat recyclerView;

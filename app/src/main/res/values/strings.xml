@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!--
         Référence:
@@ -8,14 +8,11 @@
             0203: Ë
             0192: À
     -->
-
-    <!-- todo: ajouter tags xliff -->
-    <!-- todo: creer un compte onskyapp -->
     <!-- Personal -->
-    <string name="app_name" translatable="false">Niviel</string>
-    <string name="author" translatable="false">Herel Adrastel</string>
-    <string name="email" translatable="false">herel.dev@gmail.com</string>
-    <string name="wca">WCA</string>
+    <string name="app_name" translatable="false"><xliff:g id="app_name">Niviel</xliff:g></string>
+    <string name="author" translatable="false"><xliff:g id="author">Herel Adrastel</xliff:g></string>
+    <string name="email" translatable="false"><xliff:g id="email">herel.dev@gmail.com</xliff:g></string>
+    <string name="wca" translatable="false"><xliff:g>WCA</xliff:g></string>
 
     <!-- Activities -->
     <string name="profile_fragment" translatable="false">Profile</string>
@@ -24,24 +21,24 @@
     <string name="settings_fragment" translatable="false">Settings</string>
 
     <!-- CUBES -->
-    <string name="cube_3x3" translatable="false">Rubik\'s cube</string>
+    <string name="cube_3x3">Rubik\'s cube</string>
 
     <!-- Intro -->
     <string name="begin">Pour commencer</string>
     <string name="intro_slide_1">Bienvenue sur Niviel, une application simple affichant vos records provenant de la World Cube Association</string>
     <string name="intro_slide_2">Retrouvez ainsi vos records, historiques, competitions avec une interface légère et rapide</string>
-    <string name="intro_slide_3">Vous pouvez suivre des personnes afin de garder leur résultats hors lignes et être informés quand ils battent leur records</string>
-    <string name="intro_slide_4">Identifiez-vous pour acceder rapidement à votre profil.\n\nPour vous identifer, accédez à votre profil via une recherche, appuyez sur le bouton + et cliquez sur \"Changer de profil\"</string>
+    <string name="intro_slide_3">Vous pouvez suivre des personnes afin de garder leur résultats hors ligne et être informés quand ils battent leur records</string>
+    <string name="intro_slide_4">Identifiez-vous pour acceder rapidement à votre profil.<xliff:g>\n\n</xliff:g>Pour vous identifer, accédez à votre profil via une recherche, appuyez sur le bouton + et cliquez sur \"Changer de profil\"</string>
 
     <!-- Records -->
     <string name="records">Records</string>
     <string name="single">Single</string>
     <string name="average">Moyenne</string>
 
-    <string name="record_time">Temps: %1$s</string>
-    <string name="record_nr">Classement national: %1$s</string>
-    <string name="record_cr">Classement continental: %1$s</string>
-    <string name="record_wr">Classement mondial: %1$s</string>
+    <string name="record_time">Temps: <xliff:g id="time">%1$s</xliff:g></string>
+    <string name="record_nr">Classement national: <xliff:g id="rank">%1$s</xliff:g></string>
+    <string name="record_cr">Classement continental: <xliff:g id="rank">%1$s</xliff:g></string>
+    <string name="record_wr">Classement mondial: <xliff:g id="rank">%1$s</xliff:g></string>
 
     <!-- History -->
     <string name="event">Évenement</string>
@@ -56,10 +53,10 @@
     <string name="result">Résultat</string>
     <string name="citizen">Nationnalité</string>
     <string name="world">Monde</string>
-    <string name="two_infos">%1$s (%2$s)</string>
+    <string name="two_infos"><xliff:g>%1$s (%2$s)</xliff:g></string>
     <string name="switch_cube">Changer de cube</string>
     <string name="switch_country">Changer de pays</string>
-    <string name="share_ranking">%1$s est classé n°%2$s avec un temps de %3$s</string>
+    <string name="share_ranking"><xliff:g id="name">%1$s</xliff:g>: classé n°<xliff:g id="rank">%2$s</xliff:g> avec un temps de <xliff:g id="time">%3$s</xliff:g></string>
 
     <!-- Followers -->
     <string name="follow">Suivre</string>
@@ -70,14 +67,14 @@
     <string name="profile">Profil</string>
     <string name="wca_id">Identifiant WCA</string>
     <string name="edit_profile">Changer de profil</string>
-    <string name="toast_switch_profile_confirmation">Votre profil est maintenant au nom de %1$s</string>
-    <string name="toast_follow_confirmation">Vous suivez %1$s</string>
-    <string name="toast_unfollow_confirmation">Vous ne suivez plus %1$s</string>
+    <string name="toast_switch_profile_confirmation">Votre profil est maintenant au nom de <xliff:g id="name">%1$s</xliff:g></string>
+    <string name="toast_follow_confirmation">Vous suivez <xliff:g id="name">%1$s</xliff:g></string>
+    <string name="toast_unfollow_confirmation">Vous ne suivez plus <xliff:g id="name">%1$s</xliff:g></string>
     <string name="dialog_edit_profile_follow_title">Changement de profil/Suivre</string>
     <string name="dialog_edit_profile_follow_message">
         Vous pouvez :
-        \n\t-Suivre %1$s et être informé si il obtient de nouveaux records.
-        \n\t-Changer de profil et assigner votre profil personnel au nom de %1$s.
+        <xliff:g>\n\t-</xliff:g>Suivre <xliff:g id="name">%1$s</xliff:g> et être informé si il obtient de nouveaux records.
+        <xliff:g>\n\t-</xliff:g>Changer de profil et assigner votre profil personnel au nom de <xliff:g id="name">%1$s</xliff:g>.
     </string>
     <string name="toast_edit_profile_success">Le changement de profil a bien été effectué</string>
     <string name="toast_edit_profile_failure">Une erreur est survenue lors du changement de profil</string>
@@ -100,7 +97,7 @@
     <!-- Errors -->
     <string name="error_activity">Pas d\'applcations compatibles</string>
     <string name="error_connection">Veuillez vous connecter à internet</string>
-    <string name="err_loading">Erreur de chargement\n\n :-(</string>
+    <string name="err_loading">Erreur de chargement<:xliff:g>\n\n :-(</:xliff:g></string>
     <string name="err_server">Erreur interne du serveur</string>
     <string name="error_interpretation_html">Erreur d\'interpretation du code HTML</string>
     <string name="wrong_wca_id">Identifiant WCA erroné</string>
@@ -191,8 +188,8 @@
 
     <!-- Send mail -->
     <string name="send">Envoyer</string>
-    <string name="mail_subject" translatable="false">Feedback</string>
-    <string name="mail_body" translatable="false">\n\nSend from: %1$s\nAndroid version: %2$s (%3$d)\nApplication Version %4$s (%5$d)</string>
+    <string name="mail_subject" translatable="false"><xliff:g id="mail_title">Feedback</xliff:g></string>
+    <string name="mail_body" translatable="false"><xliff:g>\n\nSend from: %1$s\nAndroid version: %2$s (%3$d)\nApplication Version %4$s (%5$d)</xliff:g></string>
 
     <!-- Others -->
     <string name="zero" translatable="false">0</string>
@@ -208,13 +205,11 @@
     <string name="notif_continent">continental</string>
     <string name="notif_world">mondial</string>
 
-    <string name="notif_new_single">Single battu: %1$s</string>
-    <string name="notif_new_average">Average battu: %1$s</string>
+    <string name="notif_new_single">Single battu: <xliff:g id="time">%1$s</xliff:g></string>
+    <string name="notif_new_average">Average battu: <xliff:g id="time">%1$s</xliff:g></string>
 
-    <string name="share_new_record_title">%1$s (%2$s)</string>
+    <string name="share_new_record_title"><xliff:g id="title">%1$s</xliff:g> (<xliff:g id="content">%2$s</xliff:g>)</string>
 
-    <string name="notif_new_rank_message">Désormais n°%1$d à n°%2$d %3$s (%4$s) en %5$s avec un score de %6$s</string>
-    <string name="share_new_rank">%1$s est désormais n°%2$d à n°%3$d %4$s (%5$s) en %6$s avec un score de %7$s</string>
 
 
 </resources>
