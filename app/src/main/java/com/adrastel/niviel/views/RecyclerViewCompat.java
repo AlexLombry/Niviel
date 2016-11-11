@@ -12,8 +12,6 @@ public class RecyclerViewCompat extends RecyclerView {
 
     private View emptyView;
 
-    private boolean isLoading = true;
-
     public RecyclerViewCompat(Context context) {
         super(context);
     }
@@ -27,7 +25,7 @@ public class RecyclerViewCompat extends RecyclerView {
     }
 
     public void checkIfEmpty() {
-        if(emptyView != null && getAdapter() != null && !isLoading) {
+        if(emptyView != null && getAdapter() != null) {
 
             if(getAdapter().getItemCount() == 0) {
                 emptyView.setVisibility(View.VISIBLE);
@@ -80,9 +78,5 @@ public class RecyclerViewCompat extends RecyclerView {
     public void setEmptyView(View emptyView) {
         this.emptyView = emptyView;
         checkIfEmpty();
-    }
-
-    public void notifyLoadingStop() {
-        isLoading = false;
     }
 }
