@@ -19,10 +19,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static AtomicInteger openCount = new AtomicInteger();
     private static SQLiteDatabase database;
 
-    // TODO: changer de marshal
 
-    public static final String DATABASE_NAME = "database.db";
-    public static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "database.db";
+    private static final int DATABASE_VERSION = 2;
 
     private static DatabaseHelper instance;
 
@@ -39,7 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return instance;
     }
 
-    public synchronized SQLiteDatabase openDatabase() {
+    private synchronized SQLiteDatabase openDatabase() {
         if(openCount.incrementAndGet() == 1) {
             database = getWritableDatabase();
         }
@@ -47,7 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return database;
     }
 
-    public synchronized void closeDatabase() {
+    private synchronized void closeDatabase() {
         if(openCount.decrementAndGet() == 0) {
             database.close();
         }
@@ -87,13 +86,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db = openDatabase();
 
-            return db.insert(Follower.TABLE_NAME, null, Follower.FACTORY.marshal()
-                    .name(name)
-                    .wca_id(wca_id)
-                    .country(country)
-                    .gender(gender)
-                    .competitions(competitions)
-                    .asContentValues());
+            Follower.Insert_follower insert_follower = new FollowerModel.Insert_follower(db);
+            insert_follower.bind(name, wca_id, country, gender, competitions);
+            return insert_follower.program.executeInsert();
 
         }
 
@@ -116,7 +111,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Follower.Delete_follower delete = new Follower.Delete_follower(db);
 
             delete.bind(follower_id);
-            delete.program.execute();
+            delete.program.executeUpdateDelete();
         }
 
         catch (Exception e) {
@@ -239,18 +234,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db = openDatabase();
 
-            return db.insert(Record.TABLE_NAME, null, Record.FACTORY.marshal()
-                .follower(follower_id)
-                .event(event)
-                .single(single)
-                .nr_single(nr_single)
-                .cr_single(cr_single)
-                .wr_single(wr_single)
-                .average(average)
-                .nr_average(nr_average)
-                .cr_average(cr_average)
-                .wr_average(wr_average).asContentValues());
-
+            Record.Insert_record insert_record = new RecordModel.Insert_record(db);
+            insert_record.bind(follower_id, event, single, nr_single, cr_single, wr_single, average, nr_average, cr_average, wr_average);
+            return insert_record.program.executeInsert();
 
         }
 
@@ -292,7 +278,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Record.Delete_records delete_records = new RecordModel.Delete_records(db);
 
             delete_records.bind(follower_id);
-            delete_records.program.execute();
+            delete_records.program.executeUpdateDelete();
         }
 
         catch (Exception e) {
@@ -311,17 +297,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db = openDatabase();
 
-            db.insert(History.TABLE_NAME, null, History.FACTORY.marshal()
-                    .follower(follower_id)
-                    .event(event)
-                    .competition(competition)
-                    .round(round)
-                    .place(place)
-                    .best(best)
-                    .average(average)
-                    .result_details(result_details)
-                    .asContentValues()
-            );
+            History.Insert_history insert_history = new HistoryModel.Insert_history(db);
+            insert_history.bind(follower_id, event, competition, round, place, best, average, result_details);
+            insert_history.program.executeInsert();
         }
 
         catch (Exception e) {
@@ -339,7 +317,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             History.Delete_histories delete_histories = new HistoryModel.Delete_histories(db);
             delete_histories.bind(follower_id);
-            delete_histories.program.execute();
+            delete_histories.program.executeUpdateDelete();
         }
 
         catch (Exception e) {

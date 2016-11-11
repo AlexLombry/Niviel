@@ -20,3 +20,8 @@ SELECT * FROM history WHERE follower = ?;
 
 delete_histories:
 DELETE FROM history WHERE follower = ?;
+
+insert_history:
+INSERT INTO
+    history(follower, event, competition, round, place, best, average, result_details)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?);

@@ -21,3 +21,8 @@ SELECT * FROM follower WHERE _id = ?;
 
 delete_follower:
 DELETE FROM follower WHERE _id = ?;
+
+insert_follower:
+INSERT INTO
+    follower(name, wca_id, country, gender, competitions)
+    VALUES (?, ?, ?, ?, ?);

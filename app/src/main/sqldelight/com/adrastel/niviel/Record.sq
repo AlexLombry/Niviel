@@ -26,3 +26,8 @@ SELECT * FROM record WHERE follower = ?;
 delete_records:
 DELETE FROM record WHERE follower = ?;
 
+insert_record:
+INSERT INTO
+    record(follower, event, single, nr_single, cr_single, wr_single, average, nr_average, cr_average, wr_average)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
