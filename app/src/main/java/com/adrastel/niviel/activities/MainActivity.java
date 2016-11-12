@@ -74,19 +74,12 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
 
     // Les vues
-    public
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.navigation_view)
-    NavigationView navigationView;
-    @BindView(R.id.coordinatorLayout)
-    CoordinatorLayout coordinatorLayout;
-    @BindView(R.id.tab_layout)
-    TabLayout tabLayout;
+    public @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.navigation_view) NavigationView navigationView;
+    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.tab_layout) TabLayout tabLayout;
     private MenuItem searchMenuItem;
 
 

@@ -211,12 +211,15 @@ public class ProfileFragment extends BaseFragment {
             });
         }
 
+        /*
+        Creation du Tracker de Google Analytics
+        Les dimensions et stats globales s'appliquent ici
+         */
         Tracker tracker = activity.getDefaultTracker();
         tracker.setScreenName(getString(R.string.profile_fragment));
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
-        if(BuildConfig.DEBUG) {
-            GoogleAnalytics.getInstance(getContext()).dispatchLocalHits();
-        }
+        tracker.send(new HitBuilders.ScreenViewBuilder()
+                .setCustomDimension(1, wca_id)
+                .build());
 
     }
 
