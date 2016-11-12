@@ -146,9 +146,6 @@ public class RankingFragment extends BaseFragment {
         Tracker tracker = activity.getDefaultTracker();
         tracker.setScreenName(getString(R.string.ranking_fragment));
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
-        if(BuildConfig.DEBUG) {
-            GoogleAnalytics.getInstance(getContext()).dispatchLocalHits();
-        }
     }
 
     @Override

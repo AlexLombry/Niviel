@@ -36,9 +36,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         Tracker tracker = activity.getDefaultTracker();
         tracker.setScreenName(getString(R.string.settings_fragment));
         tracker.send(new HitBuilders.ScreenViewBuilder().build());
-        if(BuildConfig.DEBUG) {
-            GoogleAnalytics.getInstance(getActivity()).dispatchLocalHits();
-        }
     }
 
     @Override

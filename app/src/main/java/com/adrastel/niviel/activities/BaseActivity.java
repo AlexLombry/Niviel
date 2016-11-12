@@ -26,7 +26,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Retourne le tracker pour Google Analytics
      */
-    public synchronized Tracker getDefaultTracker(String wca_id) {
+    public synchronized Tracker getDefaultTracker() {
         if(tracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
             tracker = analytics.newTracker(R.xml.global_tracker);
@@ -39,9 +39,4 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         return tracker;
     }
-
-    public synchronized Tracker getDefaultTracker() {
-        return getDefaultTracker(null);
-    }
-
 }

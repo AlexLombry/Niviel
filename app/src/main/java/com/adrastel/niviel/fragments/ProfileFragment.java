@@ -49,7 +49,6 @@ public class ProfileFragment extends BaseFragment {
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
 
-
     public static ProfileFragment newInstance(long id) {
         ProfileFragment instance = new ProfileFragment();
 
@@ -217,9 +216,19 @@ public class ProfileFragment extends BaseFragment {
          */
         Tracker tracker = activity.getDefaultTracker();
         tracker.setScreenName(getString(R.string.profile_fragment));
-        tracker.send(new HitBuilders.ScreenViewBuilder()
-                .setCustomDimension(1, wca_id)
-                .build());
+
+        HitBuilders.ScreenViewBuilder builder = new HitBuilders.ScreenViewBuilder();
+
+        // WCA ID
+        if(follower_id != -1 && Assets.isPersonal(getContext(), follower_id)) {
+            builder.setCustomDimension(1, wca_id);
+        }
+
+        // idDark
+        boolean isDark = Assets.isDark(preferences.getString(getString(R.string.pref_isdark), "0"));
+        builder.setCustomDimension(2, isDark ? "Sombre" : "Clair");
+
+        tracker.send(builder.build());
 
     }
 
