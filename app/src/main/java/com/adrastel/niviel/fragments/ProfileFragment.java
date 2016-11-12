@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.assets.Assets;
@@ -24,10 +23,7 @@ import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.EditProfileFollowDialog;
-import com.adrastel.niviel.fragments.html.HistoryFragment;
-import com.adrastel.niviel.fragments.html.RecordFragment;
 import com.adrastel.niviel.services.EditRecordService;
-import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 

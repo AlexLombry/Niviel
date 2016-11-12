@@ -37,7 +37,6 @@ import android.widget.TextView;
 
 import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Analytics;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.database.DatabaseHelper;
@@ -45,12 +44,9 @@ import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
-import com.adrastel.niviel.fragments.html.RankingFragment;
-import com.adrastel.niviel.services.CheckRecordService;
+import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.services.EditRecordService;
-import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
