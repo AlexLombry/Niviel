@@ -3,7 +3,6 @@ package com.adrastel.niviel.fragments.html;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
@@ -22,19 +22,16 @@ import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.dialogs.RankingSwitchCountryDialog;
 import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
 import com.adrastel.niviel.fragments.BaseFragment;
-import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.providers.html.RankingProvider;
 import com.adrastel.niviel.views.RecyclerViewCompat;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-import com.google.gson.reflect.TypeToken;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -46,12 +43,13 @@ public class RankingFragment extends BaseFragment {
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.recycler_view) RecyclerViewCompat recyclerView;
-    @BindView(R.id.empty_view) View emptyView;
+    @BindView(R.id.recycler_view)
+    RecyclerViewCompat recyclerView;
+    @BindView(R.id.empty_view) TextView emptyView;
 
     private Unbinder unbinder;
     private RankingAdapter adapter;
-    private HttpManager httpManager;
+    //private HttpManager httpManager;
 
     // cubePosition est une variable qui permet d'identifier sur quelle rubrique on est
     private int cubePosition = 0;
@@ -94,7 +92,7 @@ public class RankingFragment extends BaseFragment {
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setAdapter(adapter);
-        recyclerView.setEmptyView(emptyView);
+        recyclerView.initRecyclerViewCompat(swipeRefreshLayout, progressBar, emptyView);
 
 
         return view;
@@ -108,7 +106,7 @@ public class RankingFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        httpManager = new HttpManager(activity, swipeRefreshLayout, progressBar);
+        //httpManager = new HttpManager(activity, swipeRefreshLayout, progressBar);
 
         if(savedInstanceState != null) {
             cubePosition = savedInstanceState.getInt(Constants.EXTRAS.CUBE_POSITION, 0);
@@ -123,7 +121,7 @@ public class RankingFragment extends BaseFragment {
 
             adapter.refreshData(rankings);
 
-            stopLoaders();
+            recyclerView.showRecycler();
 
         }
 
@@ -133,7 +131,7 @@ public class RankingFragment extends BaseFragment {
         }
 
         else {
-            stopLoaders();
+            recyclerView.showEmpty();
             makeSnackbar(R.string.error_connection, Snackbar.LENGTH_INDEFINITE).show();
         }
 
@@ -142,7 +140,6 @@ public class RankingFragment extends BaseFragment {
             @Override
             public void onRefresh() {
                 callData();
-                swipeRefreshLayout.setRefreshing(true);
             }
         });
 
@@ -240,8 +237,6 @@ public class RankingFragment extends BaseFragment {
 
     public void callData() {
 
-        swipeRefreshLayout.setRefreshing(true);
-
         HttpUrl.Builder builder = new HttpUrl.Builder()
                 .scheme("https")
                 .host("www.worldcubeassociation.org")
@@ -265,7 +260,7 @@ public class RankingFragment extends BaseFragment {
 
         activity.setSubtitle(subtitle);
 
-        httpManager.callData(builder.build(), new HttpManager.SuccessCallback() {
+        recyclerView.callData(builder.build(), new RecyclerViewCompat.SuccessCallback() {
             @Override
             public void onSuccess(String response) {
                 Document document = Jsoup.parse(response);
@@ -275,7 +270,6 @@ public class RankingFragment extends BaseFragment {
                     @Override
                     public void run() {
                         adapter.refreshData(rankings);
-                        httpManager.stopLoaders();
                     }
                 });
             }
@@ -285,11 +279,6 @@ public class RankingFragment extends BaseFragment {
     @Override
     public int getStyle() {
         return R.style.AppTheme_Ranking;
-    }
-
-    private void stopLoaders() {
-        progressBar.setVisibility(View.GONE);
-        swipeRefreshLayout.setRefreshing(false);
     }
 
 }

@@ -12,11 +12,6 @@
         app:actionViewClass="android.support.v7.widget.SearchView"/>
 
     <item
-        android:id="@+id/check_records"
-        android:title="@string/check_records"
-        app:showAsAction="never"/>
-
-    <item
         android:id="@+id/day_night"
         android:title="@string/day_night"
         app:showAsAction="never"/>

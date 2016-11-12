@@ -271,11 +271,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 startActivityForResult(settings, 0);
                 return true;
 
-            case R.id.check_records:
-                Intent checkRecords = new Intent(this, CheckRecordService.class);
-                startService(checkRecords);
-                return true;
-
             case R.id.day_night:
 
                 isDark = !isDark;

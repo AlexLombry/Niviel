@@ -2,15 +2,28 @@ package com.adrastel.niviel.views;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import com.adrastel.niviel.assets.Log;
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class RecyclerViewCompat extends RecyclerView {
 
-    private View emptyView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressBar progressBar;
+    private TextView emptyView;
+    private RecyclerViewCompat recyclerView = this;
+
+    private OkHttpClient client = new OkHttpClient();
 
     public RecyclerViewCompat(Context context) {
         super(context);
@@ -24,59 +37,93 @@ public class RecyclerViewCompat extends RecyclerView {
         super(context, attrs, defStyle);
     }
 
-    public void checkIfEmpty() {
-        if(emptyView != null && getAdapter() != null) {
-
-            if(getAdapter().getItemCount() == 0) {
-                emptyView.setVisibility(View.VISIBLE);
-                RecyclerViewCompat.this.setVisibility(View.GONE);
-                Log.i("RecyclerView empty");
-            }
-            else {
-                emptyView.setVisibility(View.GONE);
-                RecyclerViewCompat.this.setVisibility(View.VISIBLE);
-                Log.i("RecyclerView not empty");
-            }
-        }
-    }
-
-    final private AdapterDataObserver observer = new AdapterDataObserver() {
-        @Override
-        public void onChanged() {
-            super.onChanged();
-            checkIfEmpty();
-        }
-
-        @Override
-        public void onItemRangeInserted(int positionStart, int itemCount) {
-            super.onItemRangeInserted(positionStart, itemCount);
-            checkIfEmpty();
-        }
-
-        @Override
-        public void onItemRangeRemoved(int positionStart, int itemCount) {
-            super.onItemRangeRemoved(positionStart, itemCount);
-            checkIfEmpty();
-        }
-    };
-
-    @Override
-    public void setAdapter(Adapter adapter) {
-        Adapter oldAdaper = getAdapter();
-
-        if(oldAdaper != null) {
-            oldAdaper.unregisterAdapterDataObserver(observer);
-        }
-
-        super.setAdapter(adapter);
-
-        if(adapter != null) {
-            adapter.registerAdapterDataObserver(observer);
-        }
-    }
-
-    public void setEmptyView(View emptyView) {
+    public void initRecyclerViewCompat(SwipeRefreshLayout swipeRefreshLayout, ProgressBar progressBar, TextView emptyView) {
+        this.swipeRefreshLayout = swipeRefreshLayout;
+        this.progressBar = progressBar;
         this.emptyView = emptyView;
-        checkIfEmpty();
     }
+
+    public void hideAll() {
+        swipeRefreshLayout.setRefreshing(false);
+        emptyView.setVisibility(GONE);
+        progressBar.setVisibility(GONE);
+        recyclerView.setVisibility(GONE);
+    }
+
+    public void showRecycler() {
+        hideAll();
+        recyclerView.setVisibility(VISIBLE);
+    }
+
+    public void showProgress() {
+        if(getAdapter() != null && getAdapter().getItemCount() != 0) {
+            showRecycler();
+        }
+
+        else if(!swipeRefreshLayout.isRefreshing()){
+            hideAll();
+            progressBar.setVisibility(VISIBLE);
+        }
+    }
+
+    public void showEmpty() {
+        if(getAdapter() != null && getAdapter().getItemCount() != 0) {
+            showRecycler();
+        }
+
+        else {
+            hideAll();
+            emptyView.setVisibility(VISIBLE);
+        }
+    }
+
+    public void callData(HttpUrl url, final SuccessCallback callback) {
+        showProgress();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                post(new Runnable() {
+                    @Override
+                    public void run() {
+                        showEmpty();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(!response.isSuccessful()) {
+                    post(new Runnable() {
+                        @Override
+                        public void run() {
+                            showEmpty();
+                        }
+                    });
+                }
+
+                else {
+                    callback.onSuccess(response.body().string());
+                    post(new Runnable() {
+                        @Override
+                        public void run() {
+                            showRecycler();
+                        }
+                    });
+                }
+
+                response.close();
+            }
+        });
+    }
+
+    public interface SuccessCallback {
+        void onSuccess(String response);
+    }
+
+
 }

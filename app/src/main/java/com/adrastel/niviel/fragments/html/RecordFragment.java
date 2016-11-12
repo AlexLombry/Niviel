@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RecordAdapter;
@@ -19,7 +20,7 @@ import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.models.readable.User;
 import com.adrastel.niviel.providers.html.RecordProvider;
 import com.adrastel.niviel.providers.html.UserProvider;
-import com.adrastel.niviel.views.RecyclerViewTest;
+import com.adrastel.niviel.views.RecyclerViewCompat;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -39,8 +40,9 @@ public class RecordFragment extends BaseFragment {
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
-    @BindView(R.id.recycler_view) RecyclerViewTest recyclerView;
-    @BindView(R.id.empty_view) View emptyView;
+    @BindView(R.id.recycler_view)
+    RecyclerViewCompat recyclerView;
+    @BindView(R.id.empty_view) TextView emptyView;
 
 
     private Unbinder unbinder;
@@ -107,11 +109,9 @@ public class RecordFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //todo: remettre à fragment_list
-        View view = inflater.inflate(R.layout.fragment_list_test, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        //progressBar.setVisibility(View.VISIBLE);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
@@ -225,7 +225,7 @@ public class RecordFragment extends BaseFragment {
                 .addPathSegments("results/p.php")
                 .addEncodedQueryParameter("i", wca_id)
                 .build();
-        recyclerView.callData(url, new RecyclerViewTest.Callback() {
+        recyclerView.callData(url, new RecyclerViewCompat.SuccessCallback() {
             @Override
             public void onSuccess(String response) {
 

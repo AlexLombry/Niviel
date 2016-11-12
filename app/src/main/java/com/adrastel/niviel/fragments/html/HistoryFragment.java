@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.HistoryAdapter;
@@ -15,7 +16,6 @@ import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
-import com.adrastel.niviel.managers.HttpManager;
 import com.adrastel.niviel.models.readable.Event;
 import com.adrastel.niviel.models.readable.History;
 import com.adrastel.niviel.providers.html.HistoryProvider;
@@ -37,12 +37,13 @@ public class HistoryFragment extends BaseFragment {
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
-    @BindView(R.id.recycler_view) RecyclerViewCompat recyclerView;
-    @BindView(R.id.empty_view) View emptyView;
+    @BindView(R.id.recycler_view)
+    RecyclerViewCompat recyclerView;
+    @BindView(R.id.empty_view) TextView emptyView;
 
     private Unbinder unbinder;
     private HistoryAdapter adapter;
-    private HttpManager httpManager;
+    //private HttpManager httpManager;
 
     private String wca_id = null;
     private long follower_id = -1;
@@ -110,13 +111,13 @@ public class HistoryFragment extends BaseFragment {
 
         unbinder = ButterKnife.bind(this, view);
 
-        progressBar.setVisibility(View.VISIBLE);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setAdapter(adapter);
-        recyclerView.setEmptyView(emptyView);
+        recyclerView.initRecyclerViewCompat(swipeRefresh, progressBar, emptyView);
+
+        recyclerView.showProgress();
 
         return view;
     }
@@ -129,11 +130,11 @@ public class HistoryFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        httpManager = new HttpManager(getActivity(), swipeRefresh, progressBar);
+        //httpManager = new HttpManager(getActivity(), swipeRefresh, progressBar);
 
         if(savedInstanceState != null) {
             adapter.refreshData(loadLocalData(savedInstanceState));
-            httpManager.stopLoaders();
+            recyclerView.showRecycler();
         }
 
         else if(follower_id != -1) {
@@ -151,7 +152,7 @@ public class HistoryFragment extends BaseFragment {
             }
 
             adapter.refreshData(sortByEvent ? makeExpandedArrayList(histories, true) : makeExpandedArrayList(histories, false));
-            httpManager.stopLoaders();
+            recyclerView.showRecycler();
         }
 
         else if(isConnected()) {
@@ -159,7 +160,7 @@ public class HistoryFragment extends BaseFragment {
         }
 
         else {
-            httpManager.stopLoaders();
+            recyclerView.showEmpty();
         }
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -203,7 +204,7 @@ public class HistoryFragment extends BaseFragment {
                 .build();
 
 
-        httpManager.callData(url, new HttpManager.SuccessCallback() {
+        recyclerView.callData(url, new RecyclerViewCompat.SuccessCallback() {
             @Override
             public void onSuccess(String response) {
                 Document document = Jsoup.parse(response);
