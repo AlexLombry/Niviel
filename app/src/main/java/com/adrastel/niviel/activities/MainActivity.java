@@ -145,7 +145,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             return;
         }
 
-
+        // Paramètre le thème
         isDark = Assets.isDark(preferences.getString(getString(R.string.pref_isdark), "0"));
         setDayNightTheme(isDark);
 
