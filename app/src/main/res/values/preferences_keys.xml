@@ -5,4 +5,6 @@
 
     <string name="pref_check_freq" translatable="false">pref_check_freq</string>
     <string name="pref_check_network" translatable="false">pref_check_network</string>
+
+    <string name="pref_first_launch" translatable="false">pref_launch</string>
 </resources>

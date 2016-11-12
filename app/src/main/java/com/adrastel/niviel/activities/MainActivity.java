@@ -136,6 +136,16 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
+        // Si c'est le premier lancement de l'application, lance intro
+        if(preferences.getBoolean(getString(R.string.pref_first_launch), true)) {
+
+            preferences.edit().putBoolean(getString(R.string.pref_first_launch), false).apply();
+
+            startActivity(new Intent(this, MainIntroActivity.class));
+            return;
+        }
+
+
         isDark = Assets.isDark(preferences.getString(getString(R.string.pref_isdark), "0"));
         setDayNightTheme(isDark);
 
