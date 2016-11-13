@@ -29,8 +29,6 @@ import com.google.android.gms.analytics.Tracker;
 
 public class ProfileFragment extends BaseFragment {
 
-    public static final int RECORD_TAB = 0;
-    public static final int HISTORY_TAB = 1;
 
     public static final String FRAGMENT_TAG = "profileFragment";
 
@@ -40,7 +38,6 @@ public class ProfileFragment extends BaseFragment {
     private long follower_id = -1;
     private String wca_id = null;
     private String username = null;
-    private int tab = RECORD_TAB;
 
     private ViewPager viewPager;
 
@@ -49,7 +46,6 @@ public class ProfileFragment extends BaseFragment {
 
         Bundle args = new Bundle();
 
-        args.putInt(Constants.EXTRAS.TAB, RECORD_TAB);
         args.putLong(Constants.EXTRAS.ID, id);
 
         instance.setArguments(args);
@@ -57,22 +53,17 @@ public class ProfileFragment extends BaseFragment {
         return instance;
     }
 
-    public static ProfileFragment newInstance(int tab, String wca_id, String name) {
+    public static ProfileFragment newInstance(String wca_id, String name) {
         ProfileFragment instance = new ProfileFragment();
 
         Bundle args = new Bundle();
 
-        args.putInt(Constants.EXTRAS.TAB, tab);
         args.putString(Constants.EXTRAS.WCA_ID, wca_id);
         args.putString(Constants.EXTRAS.USERNAME, name);
 
         instance.setArguments(args);
 
         return instance;
-    }
-
-    public static ProfileFragment newInstance(String wca_id, String name) {
-        return newInstance(0, wca_id, name);
     }
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -101,8 +92,6 @@ public class ProfileFragment extends BaseFragment {
 
         Bundle args = getArguments();
         if(args != null) {
-
-            tab = args.getInt(Constants.EXTRAS.TAB, RECORD_TAB);
 
             follower_id = args.getLong(Constants.EXTRAS.ID, -1);
 
@@ -232,8 +221,6 @@ public class ProfileFragment extends BaseFragment {
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(tab);
-
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_star_white);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_history);

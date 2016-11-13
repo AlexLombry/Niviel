@@ -161,7 +161,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             if (savedInstanceState != null && fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT) != null) {
                 this.fragment = (BaseFragment) fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT);
             } else {
-                //this.fragment = ProfileFragment.newInstance(ProfileFragment.RECORD_TAB, prefWcaId, prefWcaName);
                 this.fragment = ProfileFragment.newInstance(prefId);
             }
         }
