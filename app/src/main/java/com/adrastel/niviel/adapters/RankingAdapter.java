@@ -216,7 +216,7 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
     }
 
     private void gotoProfile(Ranking ranking) {
-        ProfileFragment fragment = ProfileFragment.newInstance(ranking.getWca_id(), ranking.getPerson());
+        ProfileFragment fragment = ProfileFragment.newInstance(ranking.getWca_id(), ranking.getPerson(), false);
         getActivity().switchFragment(fragment);
 
     }

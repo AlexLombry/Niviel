@@ -39,27 +39,32 @@ public class ProfileFragment extends BaseFragment {
     private String wca_id = null;
     private String username = null;
 
+    // Mode exploration ou non ?
+    private boolean explore = true;
+
     private ViewPager viewPager;
 
-    public static ProfileFragment newInstance(long id) {
+    public static ProfileFragment newInstance(long id, boolean explore) {
         ProfileFragment instance = new ProfileFragment();
 
         Bundle args = new Bundle();
 
         args.putLong(Constants.EXTRAS.ID, id);
+        args.putBoolean(Constants.EXTRAS.EXPLORE, explore);
 
         instance.setArguments(args);
 
         return instance;
     }
 
-    public static ProfileFragment newInstance(String wca_id, String name) {
+    public static ProfileFragment newInstance(String wca_id, String name, boolean explore) {
         ProfileFragment instance = new ProfileFragment();
 
         Bundle args = new Bundle();
 
         args.putString(Constants.EXTRAS.WCA_ID, wca_id);
         args.putString(Constants.EXTRAS.USERNAME, name);
+        args.putBoolean(Constants.EXTRAS.EXPLORE, explore);
 
         instance.setArguments(args);
 
@@ -93,6 +98,7 @@ public class ProfileFragment extends BaseFragment {
         Bundle args = getArguments();
         if(args != null) {
 
+            explore = args.getBoolean(Constants.EXTRAS.EXPLORE, true);
             follower_id = args.getLong(Constants.EXTRAS.ID, -1);
 
             if(follower_id != -1) {
@@ -230,7 +236,7 @@ public class ProfileFragment extends BaseFragment {
 
     @Override
     public int getStyle() {
-        return R.style.AppTheme_Profile;
+        return explore ? R.style.AppTheme_Explore : R.style.AppTheme_Profile;
     }
 
     @Override

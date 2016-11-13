@@ -27,6 +27,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,6 +40,7 @@ import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
@@ -161,7 +163,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             if (savedInstanceState != null && fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT) != null) {
                 this.fragment = (BaseFragment) fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT);
             } else {
-                this.fragment = ProfileFragment.newInstance(prefId);
+                this.fragment = ProfileFragment.newInstance(prefId, true);
             }
         }
 
@@ -198,7 +200,9 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             }
         });
 
-        //getDefaultTracker().send(Analytics.trackTheme(isDark));
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+
+        Log.d(metrics.widthPixels + "x" + metrics.heightPixels);
 
     }
 
@@ -408,13 +412,13 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
         switch (item.getItemId()) {
             case R.id.profile:
-                return ProfileFragment.newInstance(prefId);
+                return ProfileFragment.newInstance(prefId, false);
 
             case R.id.ranking:
                 return new RankingFragment();
 
             case R.id.explore:
-                return ProfileFragment.newInstance(null, null);
+                return ProfileFragment.newInstance(null, null, true);
 
             case R.id.followers:
                 return new FollowerFragment();
@@ -431,7 +435,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 return null;
 
             default:
-                return ProfileFragment.newInstance(prefId);
+                return ProfileFragment.newInstance(prefId, false);
 
         }
     }
@@ -667,7 +671,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                         String wca_id = intent.getStringExtra(Constants.EXTRAS.WCA_ID);
                         String username = intent.getStringExtra(Constants.EXTRAS.USERNAME);
 
-                        BaseFragment fragment = ProfileFragment.newInstance(wca_id, username);
+                        BaseFragment fragment = ProfileFragment.newInstance(wca_id, username, false);
                         switchFragment(fragment);
                         break;
                 }
@@ -693,7 +697,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
      */
     private void searchUser(String wca_id, String name) {
 
-        ProfileFragment profileFragment = ProfileFragment.newInstance(wca_id, name);
+        ProfileFragment profileFragment = ProfileFragment.newInstance(wca_id, name, false);
         switchFragment(profileFragment);
 
     }

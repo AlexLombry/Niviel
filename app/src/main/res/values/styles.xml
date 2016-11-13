@@ -52,6 +52,11 @@
         <item name="fabIcon">@drawable/ic_add</item>
     </style>
 
+    <style name="AppTheme.Explore" parent="AppTheme.NoActionBar">
+        <item name="toolbarTitle">@string/explore</item>
+        <item name="fabIcon">@drawable/ic_add</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>

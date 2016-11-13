@@ -69,7 +69,7 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
         holder.click_area.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ProfileFragment profileFragment = ProfileFragment.newInstance(follower._id());
+                ProfileFragment profileFragment = ProfileFragment.newInstance(follower._id(), false);
 
                 getActivity().switchFragment(profileFragment);
             }

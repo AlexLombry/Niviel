@@ -17,6 +17,7 @@ public class Constants {
         String SUBTITLE = "subtitle";
         String FRAGMENT = "fragment";
         String SORT = "sort";
+        String EXPLORE = "explore";
 
     }
 
