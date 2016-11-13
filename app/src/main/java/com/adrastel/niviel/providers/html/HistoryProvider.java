@@ -18,7 +18,7 @@ import java.util.ArrayList;
  *
  * Elle récupere le code html, récupere les compet, et hydrate le record des competitions
  */
-public class HistoryProvider extends HtmlProvider {
+public class HistoryProvider {
 
     private static final String event_class = "caption";
     private static final String event_colspan_attr = "colspan";
