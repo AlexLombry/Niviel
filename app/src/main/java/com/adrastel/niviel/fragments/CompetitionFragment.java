@@ -10,11 +10,26 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.assets.Log;
+import com.adrastel.niviel.models.readable.Competition;
+import com.adrastel.niviel.providers.html.CompetitionProvider;
 import com.adrastel.niviel.views.RecyclerViewCompat;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class CompetitionFragment extends BaseFragment {
 
@@ -46,6 +61,7 @@ public class CompetitionFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        callData();
     }
 
     @Override
@@ -58,5 +74,47 @@ public class CompetitionFragment extends BaseFragment {
     public int getStyle() {
         // todo : changer ça
         return R.style.AppTheme_Followers;
+    }
+
+    public void callData() {
+
+        OkHttpClient client = new OkHttpClient();
+
+        HttpUrl url = new HttpUrl.Builder()
+                .scheme("https")
+                .host("www.worldcubeassociation.org")
+                .addEncodedPathSegment("competitions")
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(!response.isSuccessful()) {
+                    Log.e("Erreur http");
+                    return;
+                }
+
+                Document document = Jsoup.parse(response.body().string());
+                response.close();
+
+                ArrayList<Competition> competitions = CompetitionProvider.getCompetition(document, CompetitionProvider.IN_PROGRESS);
+
+                for(Competition competition : competitions) {
+                    Log.d(String.valueOf(competition));
+                }
+
+
+            }
+        });
+
     }
 }

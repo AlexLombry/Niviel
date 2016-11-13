@@ -697,7 +697,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
      * Lance la page d'un utilisateur
      *
      * @param wca_id wca
-     * @param name   name
+     * @param name   competition
      */
     private void searchUser(String wca_id, String name) {
 

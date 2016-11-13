@@ -4,30 +4,59 @@ import com.adrastel.niviel.models.readable.Competition;
 
 public class BufferCompetition extends Competition {
 
+
     public BufferCompetition() {
     }
 
-    public void setDate(String date) {
+    public BufferCompetition (String date, String competition, String competition_link, String country, String town, String place, String place_link, int type) {
         this.date = date;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setCountry(String country) {
+        this.competition = competition;
+        this.competition_link = competition_link;
         this.country = country;
-    }
-
-    public void setTown(String town) {
         this.town = town;
-    }
-
-    public void setPlace(String place) {
         this.place = place;
+        this.place_link = place_link;
+        this.type = type;
     }
 
-    public void setType(int type) {
+
+    public BufferCompetition setDate(String date) {
+        this.date = date;
+        return this;
+    }
+
+    public BufferCompetition setCompetition(String name) {
+        this.competition = name;
+        return this;
+    }
+
+    public BufferCompetition setCompetition_link(String competition_link) {
+        this.competition_link = competition_link;
+        return this;
+    }
+
+    public BufferCompetition setCountry(String country) {
+        this.country = country;
+        return this;
+    }
+
+    public BufferCompetition setTown(String town) {
+        this.town = town;
+        return this;
+    }
+
+    public BufferCompetition setPlace(String place) {
+        this.place = place;
+        return this;
+    }
+
+    public BufferCompetition setType(int type) {
         this.type = type;
+        return this;
+    }
+
+    public BufferCompetition setPlace_link(String place_link) {
+        this.place_link = place_link;
+        return this;
     }
 }

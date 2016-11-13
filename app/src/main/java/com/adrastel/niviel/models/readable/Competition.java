@@ -6,18 +6,24 @@ public class Competition extends BaseModel {
 
 
     protected String date;
-    protected String name;
+    protected String competition;
+    protected String competition_link;
     protected String country;
     protected String town;
     protected String place;
+    protected String place_link;
     protected int type;
 
     public String getDate() {
         return date;
     }
 
-    public String getName() {
-        return name;
+    public String getCompetition() {
+        return competition;
+    }
+
+    public String getCompetition_link() {
+        return competition_link;
     }
 
     public String getCountry() {
@@ -30,5 +36,23 @@ public class Competition extends BaseModel {
 
     public String getPlace() {
         return place;
+    }
+
+    public String getPlace_link() {
+        return place_link;
+    }
+
+    @Override
+    public String toString() {
+        return "Competition{" +
+                "date='" + date + '\'' +
+                ", competition='" + competition + '\'' +
+                ", competition_link='" + competition_link + '\'' +
+                ", country='" + country + '\'' +
+                ", town='" + town + '\'' +
+                ", place='" + place + '\'' +
+                ", place_link='" + place_link + '\'' +
+                ", type=" + type +
+                '}';
     }
 }

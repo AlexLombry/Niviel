@@ -83,7 +83,6 @@ public class HistoryProvider {
                      * On verifie le HTML si c'est un sous titre
                      */
                     if (isTitle(tr)) {
-                        //Log.d("mock test");
                         if (!checkHtml(hydrate(tr))) {
                             Toast.makeText(context, context.getString(R.string.error_interpretation_html), Toast.LENGTH_LONG).show();
                         }
@@ -96,17 +95,6 @@ public class HistoryProvider {
 
 
                         arrayList.add(hydrate(tr));
-
-                        /*if (filter != null) {
-
-                            if (filter.equalsIgnoreCase(bufferHistory.getEvent())) {
-                                arrayList.add(hydrate(tr));
-                            }
-
-                        } else {
-                            arrayList.add(hydrate(tr));
-
-                        }*/
 
 
                     }
