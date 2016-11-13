@@ -40,7 +40,6 @@ import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
@@ -163,7 +162,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             if (savedInstanceState != null && fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT) != null) {
                 this.fragment = (BaseFragment) fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT);
             } else {
-                this.fragment = ProfileFragment.newInstance(prefId, true);
+                this.fragment = ProfileFragment.newInstance(prefId, false);
             }
         }
 
@@ -201,8 +200,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         });
 
         DisplayMetrics metrics = getResources().getDisplayMetrics();
-
-        Log.d(metrics.widthPixels + "x" + metrics.heightPixels);
 
     }
 
