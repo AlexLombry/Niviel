@@ -46,7 +46,6 @@ public class RankingFragment extends BaseFragment {
 
     private Unbinder unbinder;
     private RankingAdapter adapter;
-    //private HttpManager httpManager;
 
     // cubePosition est une variable qui permet d'identifier sur quelle rubrique on est
     private int cubePosition = 0;
@@ -102,8 +101,6 @@ public class RankingFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        //httpManager = new HttpManager(activity, swipeRefreshLayout, progressBar);
 
         if(savedInstanceState != null) {
             cubePosition = savedInstanceState.getInt(Constants.EXTRAS.CUBE_POSITION, 0);
@@ -258,7 +255,7 @@ public class RankingFragment extends BaseFragment {
             @Override
             public void onSuccess(String response) {
                 Document document = Jsoup.parse(response);
-                final ArrayList<Ranking> rankings = RankingProvider.getRanking(getActivity(), document);
+                final ArrayList<Ranking> rankings = RankingProvider.getRanking(document);
 
                 activity.runOnUiThread(new Runnable() {
                     @Override
@@ -274,5 +271,6 @@ public class RankingFragment extends BaseFragment {
     public int getStyle() {
         return R.style.AppTheme_Ranking;
     }
+
 
 }

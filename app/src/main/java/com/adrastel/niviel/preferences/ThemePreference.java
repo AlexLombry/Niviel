@@ -6,7 +6,6 @@ import android.preference.ListPreference;
 import android.util.AttributeSet;
 
 import com.adrastel.niviel.activities.SettingsActivity;
-import com.adrastel.niviel.assets.Analytics;
 import com.adrastel.niviel.assets.Assets;
 
 public class ThemePreference extends ListPreference {
@@ -25,8 +24,6 @@ public class ThemePreference extends ListPreference {
             SettingsActivity activity = (SettingsActivity) getContext();
 
             activity.setDayNightTheme(isDark);
-
-            Analytics.trackTheme(isDark);
 
             activity.finish();
             activity.startActivity(new Intent(activity, SettingsActivity.class));

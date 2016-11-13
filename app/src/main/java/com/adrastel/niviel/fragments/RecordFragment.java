@@ -46,8 +46,6 @@ public class RecordFragment extends BaseFragment {
 
     private Unbinder unbinder;
 
-    //private HttpManager httpManager;
-
     private RecordAdapter adapter;
 
     private String wca_id;
@@ -132,8 +130,6 @@ public class RecordFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        //httpManager = new HttpManager(getActivity(), swipeRefresh, progressBar);
 
         if (savedInstanceState != null) {
             adapter.refreshData(loadUserData(savedInstanceState), loadRecordData(savedInstanceState));

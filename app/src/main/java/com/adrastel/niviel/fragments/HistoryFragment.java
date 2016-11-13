@@ -42,7 +42,6 @@ public class HistoryFragment extends BaseFragment {
 
     private Unbinder unbinder;
     private HistoryAdapter adapter;
-    //private HttpManager httpManager;
 
     private String wca_id = null;
     private long follower_id = -1;
@@ -129,7 +128,6 @@ public class HistoryFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //httpManager = new HttpManager(getActivity(), swipeRefresh, progressBar);
 
         if(savedInstanceState != null) {
             adapter.refreshData(loadLocalData(savedInstanceState));

@@ -16,7 +16,7 @@ public class RankingProvider extends HtmlProvider {
 
     private static String rank_buffer = null;
 
-    public static ArrayList<Ranking> getRanking(Activity activity, Document document) {
+    public static ArrayList<Ranking> getRanking(Document document) {
 
         ArrayList<Ranking> arrayList = new ArrayList<>();
 

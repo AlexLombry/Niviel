@@ -43,7 +43,6 @@ public class ProfileFragment extends BaseFragment {
     private int tab = RECORD_TAB;
 
     private ViewPager viewPager;
-    private ViewPagerAdapter adapter;
 
     public static ProfileFragment newInstance(long id) {
         ProfileFragment instance = new ProfileFragment();
@@ -231,7 +230,7 @@ public class ProfileFragment extends BaseFragment {
     @SuppressWarnings("ConstantConditions")
     private void setupViewPager(ViewPager viewPager) {
 
-        adapter = new ViewPagerAdapter(getFragmentManager());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(tab);
 

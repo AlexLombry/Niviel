@@ -23,7 +23,6 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.dialogs.RankingDetailsDialog;
 import com.adrastel.niviel.fragments.ProfileFragment;
-import com.adrastel.niviel.interfaces.PauseResumeInterface;
 import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.services.EditRecordService;
 import com.adrastel.niviel.views.CircleView;
@@ -31,7 +30,7 @@ import com.adrastel.niviel.views.CircleView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Ranking> implements PauseResumeInterface {
+public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Ranking> {
 
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -59,12 +58,10 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
 
     }
 
-    @Override
     public void onResume() {
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(receiver, new IntentFilter(EditRecordService.INTENT_FILTER));
     }
 
-    @Override
     public void onPause() {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
     }
@@ -180,7 +177,7 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
 
                         else {
                             item.setTitle(getActivity().getString(R.string.unfollow));
-                            onFollow(holder, ranking);
+                            onFollow(ranking);
                             //invalidateCircleView(holder.rank, true);
                         }
                         return true;
@@ -193,19 +190,12 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         popupMenu.show();
     }
 
-    private void onFollow(final ViewHolder holder, Ranking ranking) {
+    private void onFollow(Ranking ranking) {
 
         Intent intent = new Intent(getActivity(), EditRecordService.class);
         intent.putExtra(EditRecordService.WCA_ID, ranking.getWca_id());
         intent.putExtra(EditRecordService.USERNAME, ranking.getPerson());
         getActivity().startService(intent);
-
-
-/*        DatabaseHelper helper = DatabaseHelper.newInstance(context);
-        helper.insertFollower(ranking.getPerson(), ranking.getWca_id(), System.currentTimeMillis());
-
-        String confirmation = String.format(context.getString(R.string.toast_follow_confirmation), ranking.getPerson());
-        Toast.makeText(context, confirmation, Toast.LENGTH_LONG).show();*/
 
     }
 

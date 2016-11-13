@@ -7,11 +7,9 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.StyleRes;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.TypedValue;
-import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.database.DatabaseHelper;
