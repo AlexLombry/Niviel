@@ -3,7 +3,9 @@ package com.adrastel.niviel.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,7 +112,10 @@ public class RecordFragment extends BaseFragment {
         unbinder = ButterKnife.bind(this, view);
 
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.records_columns), StaggeredGridLayoutManager.VERTICAL);
+
+        recyclerView.setLayoutManager(layoutManager);
+
         recyclerView.setHasFixedSize(true);
 
         // todo: resoudre le bug erreur de chargement
