@@ -1,6 +1,6 @@
 package com.adrastel.niviel.models.writeable;
 
-import com.adrastel.niviel.models.readable.History;
+import com.adrastel.niviel.models.readable.history.History;
 
 public class BufferHistory extends History {
 

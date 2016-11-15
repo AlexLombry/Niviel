@@ -12,7 +12,7 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
-import com.adrastel.niviel.models.readable.History;
+import com.adrastel.niviel.models.readable.history.History;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.models.readable.User;
 import com.adrastel.niviel.providers.html.HistoryProvider;
@@ -153,7 +153,7 @@ public class EditRecordService extends IntentService {
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host(Constants.WCA.HOST)
-                .addEncodedPathSegments("results/p.php")
+                .addEncodedPathSegments("location/p.php")
                 .addEncodedQueryParameter("i", wca_id)
                 .build();
 

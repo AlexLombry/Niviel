@@ -117,8 +117,6 @@ public class RecordFragment extends BaseFragment {
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.setHasFixedSize(true);
-
-        // todo: resoudre le bug erreur de chargement
         recyclerView.setAdapter(adapter);
         recyclerView.initRecyclerViewCompat(swipeRefresh, progressBar, emptyView);
 
@@ -222,7 +220,7 @@ public class RecordFragment extends BaseFragment {
                 // https://www.worldcubeassociation.org/results/p.php?i=
                 .scheme("https")
                 .host("www.worldcubeassociation.org")
-                .addPathSegments("results/p.php")
+                .addPathSegments("location/p.php")
                 .addEncodedQueryParameter("i", wca_id)
                 .build();
         recyclerView.callData(url, new RecyclerViewCompat.SuccessCallback() {

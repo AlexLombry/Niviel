@@ -1,4 +1,4 @@
-package com.adrastel.niviel.models.readable;
+package com.adrastel.niviel.models.readable.competition;
 
 import com.adrastel.niviel.models.BaseModel;
 
@@ -45,7 +45,7 @@ public class Competition extends BaseModel {
     @Override
     public String toString() {
         return "Competition{" +
-                "date='" + date + '\'' +
+                "location='" + date + '\'' +
                 ", competition='" + competition + '\'' +
                 ", competition_link='" + competition_link + '\'' +
                 ", country='" + country + '\'' +

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.models.readable.History;
+import com.adrastel.niviel.models.readable.history.History;
 import com.adrastel.niviel.models.writeable.BufferHistory;
 
 import org.jsoup.nodes.Document;

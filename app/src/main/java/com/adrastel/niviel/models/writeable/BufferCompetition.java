@@ -1,6 +1,6 @@
 package com.adrastel.niviel.models.writeable;
 
-import com.adrastel.niviel.models.readable.Competition;
+import com.adrastel.niviel.models.readable.competition.Competition;
 
 public class BufferCompetition extends Competition {
 

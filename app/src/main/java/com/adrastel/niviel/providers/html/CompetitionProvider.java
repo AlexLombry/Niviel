@@ -1,6 +1,7 @@
 package com.adrastel.niviel.providers.html;
 
-import com.adrastel.niviel.models.readable.Competition;
+import com.adrastel.niviel.assets.Log;
+import com.adrastel.niviel.models.readable.competition.Competition;
 import com.adrastel.niviel.models.writeable.BufferCompetition;
 
 import org.jsoup.nodes.Document;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 public class CompetitionProvider {
 
     public static String IN_PROGRESS = "in-progress-comps";
+    public static String UPCOMING_COMPS = "upcoming-comps";
+    public static String PAST_COMPS = "past-comps";
 
     public static ArrayList<Competition> getCompetition(Document document, String type) {
 
@@ -28,9 +31,11 @@ public class CompetitionProvider {
 
                 Element line = lines.get(i);
 
-                Competition competition = hydrate(line);
+                if(!line.hasClass("break")) {
+                    Competition competition = hydrate(line);
 
-                competitions.add(competition);
+                    competitions.add(competition);
+                }
             }
 
 
@@ -41,7 +46,6 @@ public class CompetitionProvider {
 
 
         return competitions;
-
 
     }
 
@@ -65,7 +69,7 @@ public class CompetitionProvider {
             place_link = competition_infos.children().last().child(0).child(0).attr("href");
         }
         catch (Exception e) {
-            e.printStackTrace();
+            Log.e("No link place");
             place_link = null;
         }
 
