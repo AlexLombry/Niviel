@@ -21,7 +21,7 @@ public abstract class History implements HistoryModel {
 
     public static final RowMapper<History> SELECT_ALL_MAPPER = FACTORY.select_from_followerMapper();
 
-    public com.adrastel.niviel.models.readable.History toHistoryModel() {
+    public com.adrastel.niviel.models.readable.history.History toHistoryModel() {
         BufferHistory history = new BufferHistory();
 
         history.setEvent(event());

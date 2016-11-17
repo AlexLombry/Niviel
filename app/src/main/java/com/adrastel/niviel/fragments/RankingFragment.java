@@ -55,6 +55,11 @@ public class RankingFragment extends BaseFragment {
     private boolean isSingle = true;
     private String subtitle = null;
 
+
+    public static RankingFragment newInstance() {
+        return new RankingFragment();
+    }
+
     /**
      * Lors de la creation de l'app
      * @param savedInstanceState bundle

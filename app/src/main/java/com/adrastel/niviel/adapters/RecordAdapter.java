@@ -96,7 +96,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                             Uri url = new Uri.Builder()
                                     .scheme("https")
                                     .authority("www.worldcubeassociation.org")
-                                    .appendEncodedPath("results/p.php")
+                                    .appendEncodedPath("location/p.php")
                                     .appendQueryParameter("i", user.getWca_id())
                                     .build();
 

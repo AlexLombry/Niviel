@@ -1,4 +1,4 @@
-package com.adrastel.niviel.models.readable;
+package com.adrastel.niviel.models.readable.history;
 
 import android.os.Parcel;
 import android.os.Parcelable;

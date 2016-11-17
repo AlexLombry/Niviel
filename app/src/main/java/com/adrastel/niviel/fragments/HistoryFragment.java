@@ -15,8 +15,8 @@ import com.adrastel.niviel.adapters.HistoryAdapter;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
-import com.adrastel.niviel.models.readable.Event;
-import com.adrastel.niviel.models.readable.History;
+import com.adrastel.niviel.models.readable.history.Event;
+import com.adrastel.niviel.models.readable.history.History;
 import com.adrastel.niviel.providers.html.HistoryProvider;
 import com.adrastel.niviel.views.RecyclerViewCompat;
 
@@ -201,6 +201,7 @@ public class HistoryFragment extends BaseFragment {
                 .build();
 
 
+        // todo: resoudre le erreur de chargement
         recyclerView.callData(url, new RecyclerViewCompat.SuccessCallback() {
             @Override
             public void onSuccess(String response) {

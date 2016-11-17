@@ -27,6 +27,11 @@
                         android:icon="@drawable/ic_ranking"/>
 
                     <item
+                        android:id="@+id/competitions"
+                        android:title="@string/competitions"
+                        android:icon="@drawable/ic_competition"/>
+
+                    <item
                         android:id="@+id/explore"
                         android:title="@string/explore"
                         android:icon="@drawable/ic_explore"/>

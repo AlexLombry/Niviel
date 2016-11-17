@@ -18,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Personal Record decode a partir du code HTML les record du joueur
  */
-public class RecordProvider extends HtmlProvider {
+public class RecordProvider {
 
 
     /**

@@ -6,7 +6,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class UserProvider extends HtmlProvider {
+public class UserProvider {
 
     public static User getUser(Document document) {
 

@@ -43,6 +43,7 @@ import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
+import com.adrastel.niviel.fragments.CompetitionFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
@@ -169,9 +170,9 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         switchFragment(fragment);
 
         // Gere l'intent (si il s'agit d'une requete...)
-        Intent intent = getIntent();
+        /*Intent intent = getIntent();
         handleIntent(intent);
-
+*/
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -412,7 +413,10 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 return ProfileFragment.newInstance(prefId, false);
 
             case R.id.ranking:
-                return new RankingFragment();
+                return RankingFragment.newInstance();
+
+            case R.id.competitions:
+                return CompetitionFragment.newInstance();
 
             case R.id.explore:
                 return ProfileFragment.newInstance(null, null, true);
@@ -690,7 +694,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
      * Lance la page d'un utilisateur
      *
      * @param wca_id wca
-     * @param name   name
+     * @param name   competition
      */
     private void searchUser(String wca_id, String name) {
 

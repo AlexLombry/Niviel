@@ -350,7 +350,7 @@ public class CheckRecordService extends Service {
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host(Constants.WCA.HOST)
-                .addEncodedPathSegments("results/p.php")
+                .addEncodedPathSegments("location/p.php")
                 .addEncodedQueryParameter("i", wca_id)
                 .build();
 

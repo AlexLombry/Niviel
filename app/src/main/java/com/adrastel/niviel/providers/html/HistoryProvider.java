@@ -4,7 +4,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.models.readable.History;
+import com.adrastel.niviel.models.readable.history.History;
 import com.adrastel.niviel.models.writeable.BufferHistory;
 
 import org.jsoup.nodes.Document;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
  *
  * Elle récupere le code html, récupere les compet, et hydrate le record des competitions
  */
-public class HistoryProvider extends HtmlProvider {
+public class HistoryProvider {
 
     private static final String event_class = "caption";
     private static final String event_colspan_attr = "colspan";
@@ -83,7 +83,6 @@ public class HistoryProvider extends HtmlProvider {
                      * On verifie le HTML si c'est un sous titre
                      */
                     if (isTitle(tr)) {
-                        //Log.d("mock test");
                         if (!checkHtml(hydrate(tr))) {
                             Toast.makeText(context, context.getString(R.string.error_interpretation_html), Toast.LENGTH_LONG).show();
                         }
@@ -96,17 +95,6 @@ public class HistoryProvider extends HtmlProvider {
 
 
                         arrayList.add(hydrate(tr));
-
-                        /*if (filter != null) {
-
-                            if (filter.equalsIgnoreCase(bufferHistory.getEvent())) {
-                                arrayList.add(hydrate(tr));
-                            }
-
-                        } else {
-                            arrayList.add(hydrate(tr));
-
-                        }*/
 
 
                     }
