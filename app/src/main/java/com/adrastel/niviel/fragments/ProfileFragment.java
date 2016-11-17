@@ -32,15 +32,14 @@ public class ProfileFragment extends BaseFragment {
 
     public static final String FRAGMENT_TAG = "profileFragment";
 
+    public static final String TAB = "tab";
+
     private MainActivity activity;
     private TabLayout tabLayout;
 
     private long follower_id = -1;
     private String wca_id = null;
     private String username = null;
-
-    // Mode exploration ou non ?
-    private boolean explore = true;
 
     private ViewPager viewPager;
 
@@ -98,7 +97,6 @@ public class ProfileFragment extends BaseFragment {
         Bundle args = getArguments();
         if(args != null) {
 
-            explore = args.getBoolean(Constants.EXTRAS.EXPLORE, true);
             follower_id = args.getLong(Constants.EXTRAS.ID, -1);
 
             if(follower_id != -1) {
@@ -138,8 +136,14 @@ public class ProfileFragment extends BaseFragment {
 
         tabLayout = (TabLayout) activity.findViewById(R.id.tab_layout);
         tabLayout.setVisibility(View.VISIBLE);
+
+
         tabLayout.setupWithViewPager(viewPager);
         setupViewPager(viewPager);
+        if(savedInstanceState != null) {
+            int tab = savedInstanceState.getInt(TAB, 0);
+            viewPager.setCurrentItem(tab);
+        }
         updateProfileInfos();
 
         return view;
@@ -236,7 +240,7 @@ public class ProfileFragment extends BaseFragment {
 
     @Override
     public int getStyle() {
-        return explore ? R.style.AppTheme_Explore : R.style.AppTheme_Profile;
+        return R.style.AppTheme_Profile;
     }
 
     @Override
@@ -249,6 +253,7 @@ public class ProfileFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         setTargetFragment(null, -1);
+        outState.putInt(TAB, viewPager.getCurrentItem());
         super.onSaveInstanceState(outState);
     }
 
@@ -314,6 +319,8 @@ public class ProfileFragment extends BaseFragment {
         }
         super.onDestroyView();
     }
+
+
 
     @Override
     public void onResume() {

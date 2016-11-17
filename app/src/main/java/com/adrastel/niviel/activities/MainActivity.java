@@ -171,9 +171,9 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         switchFragment(fragment);
 
         // Gere l'intent (si il s'agit d'une requete...)
-        Intent intent = getIntent();
+        /*Intent intent = getIntent();
         handleIntent(intent);
-
+*/
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
