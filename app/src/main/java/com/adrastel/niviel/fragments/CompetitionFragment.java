@@ -92,6 +92,7 @@ public class CompetitionFragment extends BaseFragment {
 
     public void callData() {
 
+        // todo : changer en wcaurl
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host("www.worldcubeassociation.org")

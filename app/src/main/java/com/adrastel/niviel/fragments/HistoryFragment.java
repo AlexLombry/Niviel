@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.HistoryAdapter;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.models.readable.history.Event;
@@ -193,15 +194,16 @@ public class HistoryFragment extends BaseFragment {
 
     public void callData() {
 
-        HttpUrl url = new HttpUrl.Builder()
+        /*HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host("www.worldcubeassociation.org")
                 .addEncodedPathSegments("results/p.php")
                 .addEncodedQueryParameter("i", wca_id)
+                .build();*/
+        HttpUrl url = new WcaUrl()
+                .profile(wca_id)
                 .build();
 
-
-        // todo: resoudre le erreur de chargement
         recyclerView.callData(url, new RecyclerViewCompat.SuccessCallback() {
             @Override
             public void onSuccess(String response) {

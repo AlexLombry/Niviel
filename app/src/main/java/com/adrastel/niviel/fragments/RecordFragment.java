@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RecordAdapter;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.models.readable.Record;
@@ -215,13 +216,16 @@ public class RecordFragment extends BaseFragment {
     }
 
     public void callData() {
-        HttpUrl url = new HttpUrl.Builder()
+        /*HttpUrl url = new HttpUrl.Builder()
 
                 // https://www.worldcubeassociation.org/results/p.php?i=
                 .scheme("https")
                 .host("www.worldcubeassociation.org")
                 .addPathSegments("results/p.php")
                 .addEncodedQueryParameter("i", wca_id)
+                .build();*/
+        HttpUrl url = new WcaUrl()
+                .profile(wca_id)
                 .build();
         recyclerView.callData(url, new RecyclerViewCompat.SuccessCallback() {
             @Override

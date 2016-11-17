@@ -10,6 +10,7 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.models.readable.SuggestionUser;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -61,11 +62,15 @@ public class SuggestionProvider extends ContentProvider {
                 .replace(" ", "+");
 
 
-        HttpUrl url = new HttpUrl.Builder()
+        /*HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host("www.worldcubeassociation.org")
                 .addEncodedPathSegments("api/v0/search")
                 .addEncodedQueryParameter("q", query)
+                .build();*/
+
+        HttpUrl url = new WcaUrl()
+                .apiSearch(query)
                 .build();
 
         Request request = new Request.Builder()

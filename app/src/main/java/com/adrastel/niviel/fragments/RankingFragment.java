@@ -18,6 +18,7 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RankingAdapter;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.dialogs.RankingSwitchCountryDialog;
 import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
 import com.adrastel.niviel.models.readable.Ranking;
@@ -233,7 +234,7 @@ public class RankingFragment extends BaseFragment {
 
     public void callData() {
 
-        HttpUrl.Builder builder = new HttpUrl.Builder()
+        /*HttpUrl.Builder builder = new HttpUrl.Builder()
                 .scheme("https")
                 .host("www.worldcubeassociation.org")
                 .addEncodedPathSegments("results/events.php")
@@ -246,7 +247,11 @@ public class RankingFragment extends BaseFragment {
 
         else {
             builder.addEncodedQueryParameter("single", "Single");
-        }
+        }*/
+
+        HttpUrl url = new WcaUrl()
+                .ranking(Assets.getCubeId(cubePosition), getResources().getStringArray(R.array.countries_id)[countryPosition], isSingle)
+                .build();
 
         adapter.setSingle(isSingle);
 
@@ -256,7 +261,7 @@ public class RankingFragment extends BaseFragment {
 
         activity.setSubtitle(subtitle);
 
-        recyclerView.callData(builder.build(), new RecyclerViewCompat.SuccessCallback() {
+        recyclerView.callData(url, new RecyclerViewCompat.SuccessCallback() {
             @Override
             public void onSuccess(String response) {
                 Document document = Jsoup.parse(response);

@@ -21,6 +21,7 @@ import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.InboxStyle;
 import com.adrastel.niviel.assets.Log;
+import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.database.Record;
@@ -347,11 +348,15 @@ public class CheckRecordService extends Service {
 
         OkHttpClient client = new OkHttpClient();
 
-        HttpUrl url = new HttpUrl.Builder()
+        /*HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host(Constants.WCA.HOST)
                 .addEncodedPathSegments("location/p.php")
                 .addEncodedQueryParameter("i", wca_id)
+                .build();*/
+
+        HttpUrl url = new WcaUrl()
+                .profile(wca_id)
                 .build();
 
         Request request = new Request.Builder()

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Log;
+import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.models.readable.history.History;
 import com.adrastel.niviel.models.readable.Record;
@@ -150,11 +151,14 @@ public class EditRecordService extends IntentService {
 
         OkHttpClient client = new OkHttpClient();
 
-        HttpUrl url = new HttpUrl.Builder()
+        /*HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host(Constants.WCA.HOST)
                 .addEncodedPathSegments("location/p.php")
                 .addEncodedQueryParameter("i", wca_id)
+                .build();*/
+        HttpUrl url = new WcaUrl()
+                .profile(wca_id)
                 .build();
 
         Request request = new Request.Builder()
