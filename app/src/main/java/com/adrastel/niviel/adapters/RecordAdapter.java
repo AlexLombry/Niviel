@@ -31,6 +31,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.HttpUrl;
 
 public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> {
 
@@ -85,7 +86,6 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                 holder.event.setText(String.format(getActivity().getString(R.string.two_infos), user.getName(), user.getWca_id()));
                 holder.event.setTextSize(Assets.spToPx(getActivity(), 9));
                 holder.event.setGravity(Gravity.CENTER);
-                holder.image.setVisibility(View.GONE);
                 holder.more_info.setText(R.string.wca);
 
                 holder.more_info.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +131,26 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
                 holder.single.setText(detailsMaker.build());
 
+                holder.image.setImageResource(R.drawable.ic_share);
+                holder.image.setClickable(true);
+                holder.image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
+                        HttpUrl url = new HttpUrl.Builder()
+                                .scheme("https")
+                                .host("www.worldcubeassociation.org")
+                                .addPathSegments("results/p.php")
+                                .addEncodedQueryParameter("i", user.getWca_id())
+                                .build();
+
+                        Intent share = new Intent(Intent.ACTION_SEND);
+                        share.setType("text/plain");
+                        share.putExtra(Intent.EXTRA_TEXT, url.toString());
+
+                        getActivity().startActivity(Intent.createChooser(share, getActivity().getString(R.string.share)));
+                    }
+                });
 
             }
 
@@ -149,6 +168,8 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
             holder.event.setGravity(Gravity.LEFT);
             holder.event.setTextSize(Assets.spToPx(getActivity(), 18));
             holder.image.setVisibility(View.VISIBLE);
+            holder.image.setClickable(false);
+            holder.image.setOnClickListener(null);
             holder.more_info.setText(R.string.more_info);
 
             DetailsMaker detailsMaker = new DetailsMaker(holder.single.getContext());

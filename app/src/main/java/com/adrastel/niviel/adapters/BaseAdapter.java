@@ -1,5 +1,6 @@
 package com.adrastel.niviel.adapters;
 
+import android.support.annotation.StringRes;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 
@@ -20,5 +21,10 @@ public abstract class BaseAdapter<T extends RecyclerView.ViewHolder> extends Rec
 
     protected MainActivity getActivity() {
         return activity;
+    }
+
+    // todo: utiliser cette fonction au lieu de getActivity().getString()
+    protected String getString(@StringRes int resId) {
+        return getActivity().getString(resId);
     }
 }
