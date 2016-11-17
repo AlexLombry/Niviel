@@ -236,7 +236,7 @@ public class RankingFragment extends BaseFragment {
         HttpUrl.Builder builder = new HttpUrl.Builder()
                 .scheme("https")
                 .host("www.worldcubeassociation.org")
-                .addEncodedPathSegments("location/events.php")
+                .addEncodedPathSegments("results/events.php")
                 .addEncodedQueryParameter("eventId", Assets.getCubeId(cubePosition))
                 .addEncodedQueryParameter("regionId", getResources().getStringArray(R.array.countries_id)[countryPosition]);
 

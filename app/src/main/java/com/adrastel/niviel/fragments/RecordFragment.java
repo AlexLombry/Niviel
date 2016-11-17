@@ -220,7 +220,7 @@ public class RecordFragment extends BaseFragment {
                 // https://www.worldcubeassociation.org/results/p.php?i=
                 .scheme("https")
                 .host("www.worldcubeassociation.org")
-                .addPathSegments("location/p.php")
+                .addPathSegments("results/p.php")
                 .addEncodedQueryParameter("i", wca_id)
                 .build();
         recyclerView.callData(url, new RecyclerViewCompat.SuccessCallback() {

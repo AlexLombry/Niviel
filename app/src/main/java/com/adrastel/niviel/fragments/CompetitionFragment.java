@@ -92,8 +92,6 @@ public class CompetitionFragment extends BaseFragment {
 
     public void callData() {
 
-        OkHttpClient client = new OkHttpClient();
-
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host("www.worldcubeassociation.org")

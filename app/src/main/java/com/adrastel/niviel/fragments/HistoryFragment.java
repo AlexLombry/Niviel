@@ -196,11 +196,12 @@ public class HistoryFragment extends BaseFragment {
         HttpUrl url = new HttpUrl.Builder()
                 .scheme("https")
                 .host("www.worldcubeassociation.org")
-                .addEncodedPathSegments("location/p.php")
+                .addEncodedPathSegments("results/p.php")
                 .addEncodedQueryParameter("i", wca_id)
                 .build();
 
 
+        // todo: resoudre le erreur de chargement
         recyclerView.callData(url, new RecyclerViewCompat.SuccessCallback() {
             @Override
             public void onSuccess(String response) {
