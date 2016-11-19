@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.CompetitionAdapter;
-import com.adrastel.niviel.assets.Log;
+import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.models.readable.competition.Competition;
 import com.adrastel.niviel.models.readable.competition.Title;
 import com.adrastel.niviel.providers.html.CompetitionProvider;
@@ -21,24 +21,19 @@ import com.adrastel.niviel.views.RecyclerViewCompat;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class CompetitionFragment extends BaseFragment {
 
     private Unbinder unbinder;
     private CompetitionAdapter adapter;
+
+    public static final String TITLES = "titles";
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
@@ -76,7 +71,39 @@ public class CompetitionFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        callData();
+
+        if(savedInstanceState != null) {
+            ArrayList<Title> titles = savedInstanceState.getParcelableArrayList(TITLES);
+            adapter.refreshData(titles);
+            recyclerView.showRecycler();
+        }
+
+        else if(isConnected()) {
+            callData();
+        }
+        else {
+            recyclerView.showEmpty();
+        }
+
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                callData();
+            }
+        });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(TITLES, adapter.getDatas());
+        super.onSaveInstanceState(outState);
+        adapter.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        adapter.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
@@ -93,11 +120,8 @@ public class CompetitionFragment extends BaseFragment {
 
     public void callData() {
 
-        // todo : changer en wcaurl
-        HttpUrl url = new HttpUrl.Builder()
-                .scheme("https")
-                .host("www.worldcubeassociation.org")
-                .addEncodedPathSegment("competitions")
+        HttpUrl url = new WcaUrl()
+                .competition()
                 .build();
 
 
