@@ -8,6 +8,8 @@ import android.util.AttributeSet;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.adrastel.niviel.assets.Log;
+
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -93,6 +95,7 @@ public class RecyclerViewCompat extends RecyclerView {
                         showEmpty();
                     }
                 });
+                e.printStackTrace();
             }
 
             @Override
@@ -104,6 +107,7 @@ public class RecyclerViewCompat extends RecyclerView {
                             showEmpty();
                         }
                     });
+                    Log.e("Http error " + response.code());
                 }
 
                 else {
@@ -119,6 +123,14 @@ public class RecyclerViewCompat extends RecyclerView {
                 response.close();
             }
         });
+    }
+
+    public void callData(HttpUrl url, final okhttp3.Callback callback) {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(callback);
     }
 
     public interface SuccessCallback {

@@ -83,12 +83,17 @@
     <string name="gender">Genre</string>
     <string name="country">Pays</string>
 
-    <string name="competition">Competition</string>
-    <string name="competitions">Competitions</string>
+    <!-- Competitions -->
+    <string name="competition">Compétition</string>
+    <string name="competitions">Compétitions</string>
+    <string name="in_progress_competitions">Compétitions en cours</string>
+    <string name="upcomming_competitions">Prochaines compétitions</string>
     <plurals name="competitions">
         <item quantity="one">competition</item>
         <item quantity="other">competitions</item>
     </plurals>
+
+
 
     <!-- Search -->
     <string name="search">Rechercher</string>

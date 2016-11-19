@@ -16,12 +16,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Cubes;
 import com.adrastel.niviel.assets.DetailsMaker;
+import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.dialogs.RecordDialog;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.models.readable.User;
@@ -93,12 +95,9 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                     public void onClick(View view) {
 
                         try {
-                            Uri url = new Uri.Builder()
-                                    .scheme("https")
-                                    .authority("www.worldcubeassociation.org")
-                                    .appendEncodedPath("location/p.php")
-                                    .appendQueryParameter("i", user.getWca_id())
-                                    .build();
+                            Uri url = new WcaUrl()
+                                    .profile(user.getWca_id())
+                                    .toUri();
 
                             Intent viewOnWebSite = new Intent(Intent.ACTION_VIEW);
                             viewOnWebSite.setData(url);
@@ -137,18 +136,26 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                     @Override
                     public void onClick(View view) {
 
-                        HttpUrl url = new HttpUrl.Builder()
-                                .scheme("https")
-                                .host("www.worldcubeassociation.org")
-                                .addPathSegments("results/p.php")
-                                .addEncodedQueryParameter("i", user.getWca_id())
-                                .build();
+                        String url = new WcaUrl()
+                                .profile(user.getWca_id())
+                                .toString();
 
                         Intent share = new Intent(Intent.ACTION_SEND);
                         share.setType("text/plain");
-                        share.putExtra(Intent.EXTRA_TEXT, url.toString());
+                        share.putExtra(Intent.EXTRA_TEXT, url);
 
-                        getActivity().startActivity(Intent.createChooser(share, getActivity().getString(R.string.share)));
+                        try {
+                            getActivity().startActivity(Intent.createChooser(share, getActivity().getString(R.string.share)));
+                        }
+                        catch (ActivityNotFoundException e) {
+                            e.printStackTrace();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getActivity(), R.string.error_activity, Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
                     }
                 });
 

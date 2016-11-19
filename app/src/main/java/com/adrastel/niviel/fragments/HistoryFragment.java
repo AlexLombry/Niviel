@@ -194,12 +194,6 @@ public class HistoryFragment extends BaseFragment {
 
     public void callData() {
 
-        /*HttpUrl url = new HttpUrl.Builder()
-                .scheme("https")
-                .host("www.worldcubeassociation.org")
-                .addEncodedPathSegments("results/p.php")
-                .addEncodedQueryParameter("i", wca_id)
-                .build();*/
         HttpUrl url = new WcaUrl()
                 .profile(wca_id)
                 .build();

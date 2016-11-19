@@ -216,14 +216,7 @@ public class RecordFragment extends BaseFragment {
     }
 
     public void callData() {
-        /*HttpUrl url = new HttpUrl.Builder()
 
-                // https://www.worldcubeassociation.org/results/p.php?i=
-                .scheme("https")
-                .host("www.worldcubeassociation.org")
-                .addPathSegments("results/p.php")
-                .addEncodedQueryParameter("i", wca_id)
-                .build();*/
         HttpUrl url = new WcaUrl()
                 .profile(wca_id)
                 .build();

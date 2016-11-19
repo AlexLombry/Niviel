@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
+import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.dialogs.RankingDetailsDialog;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.models.readable.Ranking;
@@ -29,6 +30,7 @@ import com.adrastel.niviel.views.CircleView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.HttpUrl;
 
 public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Ranking> {
 
@@ -234,21 +236,18 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
     }
 
     private void onShare(Context context, Ranking ranking) {
-        String shareFormat = context.getString(R.string.share_ranking);
-
-        String text = String.format(shareFormat, ranking.getPerson(), ranking.getRank(), ranking.getResult());
-
-        String html = String.format(shareFormat, Assets.wrapStrong(ranking.getPerson()),
-                Assets.wrapStrong(ranking.getRank()), Assets.wrapStrong(ranking.getResult()));
-
 
         try {
+
+            String url = new WcaUrl()
+                    .profile(ranking.getWca_id())
+                    .toString();
+
             Intent intent = new Intent();
 
             intent.setType("text/plain");
             intent.setAction(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_TEXT, text);
-            intent.putExtra(Intent.EXTRA_HTML_TEXT, html);
+            intent.putExtra(Intent.EXTRA_TEXT, url);
 
             Intent chooser = Intent.createChooser(intent, context.getString(R.string.share));
 

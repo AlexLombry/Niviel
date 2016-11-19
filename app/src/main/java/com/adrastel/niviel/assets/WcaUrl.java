@@ -1,5 +1,7 @@
 package com.adrastel.niviel.assets;
 
+import android.net.Uri;
+
 import com.adrastel.niviel.R;
 
 import okhttp3.HttpUrl;
@@ -41,6 +43,14 @@ public class WcaUrl {
 
     public HttpUrl build() {
         return url.build();
+    }
+
+    public String toString() {
+        return url.toString();
+    }
+
+    public Uri toUri() {
+        return Uri.parse(toString());
     }
 
 }

@@ -23,6 +23,7 @@ import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -103,28 +104,43 @@ public class CompetitionFragment extends BaseFragment {
         recyclerView.callData(url, new RecyclerViewCompat.SuccessCallback() {
             @Override
             public void onSuccess(String response) {
+
                 Document document = Jsoup.parse(response);
 
-                final ArrayList<Competition> competitions = CompetitionProvider.getCompetition(document, CompetitionProvider.UPCOMING_COMPS);
+                final ArrayList<Title> titles = new ArrayList<>();
 
+                // In progress
+                Title inProgress = treatData(document, CompetitionProvider.IN_PROGRESS, getString(R.string.in_progress_competitions));
 
-                for(Competition competition : competitions) {
-                    Log.d(String.valueOf(competition));
+                // Upcomming
+                Title upcomming = treatData(document, CompetitionProvider.UPCOMING_COMPS, getString(R.string.upcomming_competitions));
+
+                if(inProgress != null) {
+                    titles.add(inProgress);
                 }
-                Log.d("Size", String.valueOf(competitions.size()));
 
-                activity.runOnUiThread(new Runnable() {
+                if(upcomming != null) {
+                    titles.add(upcomming);
+                }
+
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Title title = new Title("Upcomming", competitions);
-
-                        ArrayList<Title> titles = new ArrayList<Title>();
-                        titles.add(title);
                         adapter.refreshData(titles);
                     }
                 });
+
             }
         });
+    }
 
+    private Title treatData(Document document, String tag, String title) {
+        final ArrayList<Competition> competitions = CompetitionProvider.getCompetition(document, tag);
+
+        if(competitions.size() != 0 ){
+            return new Title(title, competitions);
+        }
+
+        return null;
     }
 }

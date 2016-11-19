@@ -61,14 +61,6 @@ public class SuggestionProvider extends ContentProvider {
                 .trim()
                 .replace(" ", "+");
 
-
-        /*HttpUrl url = new HttpUrl.Builder()
-                .scheme("https")
-                .host("www.worldcubeassociation.org")
-                .addEncodedPathSegments("api/v0/search")
-                .addEncodedQueryParameter("q", query)
-                .build();*/
-
         HttpUrl url = new WcaUrl()
                 .apiSearch(query)
                 .build();

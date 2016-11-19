@@ -151,12 +151,6 @@ public class EditRecordService extends IntentService {
 
         OkHttpClient client = new OkHttpClient();
 
-        /*HttpUrl url = new HttpUrl.Builder()
-                .scheme("https")
-                .host(Constants.WCA.HOST)
-                .addEncodedPathSegments("location/p.php")
-                .addEncodedQueryParameter("i", wca_id)
-                .build();*/
         HttpUrl url = new WcaUrl()
                 .profile(wca_id)
                 .build();

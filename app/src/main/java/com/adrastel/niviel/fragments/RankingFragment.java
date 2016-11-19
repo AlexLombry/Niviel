@@ -234,21 +234,6 @@ public class RankingFragment extends BaseFragment {
 
     public void callData() {
 
-        /*HttpUrl.Builder builder = new HttpUrl.Builder()
-                .scheme("https")
-                .host("www.worldcubeassociation.org")
-                .addEncodedPathSegments("results/events.php")
-                .addEncodedQueryParameter("eventId", Assets.getCubeId(cubePosition))
-                .addEncodedQueryParameter("regionId", getResources().getStringArray(R.array.countries_id)[countryPosition]);
-
-        if(!isSingle) {
-            builder.addEncodedQueryParameter("average", "Average");
-        }
-
-        else {
-            builder.addEncodedQueryParameter("single", "Single");
-        }*/
-
         HttpUrl url = new WcaUrl()
                 .ranking(Assets.getCubeId(cubePosition), getResources().getStringArray(R.array.countries_id)[countryPosition], isSingle)
                 .build();
