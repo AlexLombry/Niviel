@@ -297,7 +297,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                             .from(this)
                             .to(getString(R.string.email))
                             .subject(getString(R.string.mail_subject))
-                            .body(String.format(getString(R.string.mail_body), Build.MODEL, Build.VERSION.RELEASE, Build.VERSION.SDK_INT, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE))
+                            .body(getString(R.string.mail_body, Build.MODEL, Build.VERSION.RELEASE, Build.VERSION.SDK_INT, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE))
                             .start();
                 }
 

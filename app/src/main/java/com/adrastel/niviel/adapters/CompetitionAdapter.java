@@ -95,9 +95,8 @@ public class CompetitionAdapter extends BaseExpandableAdapter<Title, Competition
         parentViewHolder.results.setVisibility(View.GONE);
         parentViewHolder.place.setVisibility(View.GONE);
         parentViewHolder.more.setVisibility(View.GONE);
-
         TextView title = parentViewHolder.title;
-        title.setText(parent.getTitle());
+        title.setText(getActivity().getString(R.string.string_details_number, parent.getTitle(), parent.getCompetitions().size()));
         title.setPadding(Assets.dpToPx(getActivity(), 20), 0, 0, 0);
         title.setTextSize(Assets.spToPx(getActivity(), 12));
 
@@ -108,6 +107,7 @@ public class CompetitionAdapter extends BaseExpandableAdapter<Title, Competition
 
         cube.setImageResource(R.drawable.ic_competition);
         cube.setColorFilter(0x00000000);
+
     }
 
     @Override

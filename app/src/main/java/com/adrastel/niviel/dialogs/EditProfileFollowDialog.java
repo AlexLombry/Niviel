@@ -53,7 +53,7 @@ public class EditProfileFollowDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle(R.string.dialog_edit_profile_follow_title);
-        builder.setMessage(String.format(getString(R.string.dialog_edit_profile_follow_message), username));
+        builder.setMessage(getString(R.string.dialog_edit_profile_follow_message, username));
 
         builder.setPositiveButton(R.string.follow, new DialogInterface.OnClickListener() {
             @Override

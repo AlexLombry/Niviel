@@ -40,7 +40,7 @@ public class InboxStyle extends NotificationCompat.InboxStyle {
 
     @Override
     public String toString() {
-        String inbox = String.format(context.getString(R.string.share_new_record_title), title, summary) + "\n";
+        String inbox = context.getString(R.string.string_details_string, title, summary) + "\n";
 
         for(CharSequence line : lines) {
             inbox += (line + "\n");

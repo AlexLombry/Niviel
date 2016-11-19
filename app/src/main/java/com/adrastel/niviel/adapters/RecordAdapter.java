@@ -85,7 +85,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
                 Resources resources = getActivity().getResources();
 
-                holder.event.setText(String.format(getActivity().getString(R.string.two_infos), user.getName(), user.getWca_id()));
+                holder.event.setText(getActivity().getString(R.string.two_infos, user.getName(), user.getWca_id()));
                 holder.event.setTextSize(Assets.spToPx(getActivity(), 9));
                 holder.event.setGravity(Gravity.CENTER);
                 holder.more_info.setText(R.string.wca);
@@ -192,7 +192,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                 int wr = Integer.parseInt(record.getWr_single());
 
                 if(wr <= 300) {
-                    detailsMaker.add(String.format(getActivity().getString(R.string.record_wr), ""), record.getWr_single());
+                    detailsMaker.add(getActivity().getString(R.string.record_wr, ""), record.getWr_single());
                 }
 
                 else {
@@ -200,11 +200,11 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                     int cr = Integer.parseInt(record.getCr_single());
 
                     if(cr <= 300) {
-                        detailsMaker.add(String.format(getActivity().getString(R.string.record_cr), ""), record.getCr_single());
+                        detailsMaker.add(getActivity().getString(R.string.record_cr, ""), record.getCr_single());
                     }
 
                     else {
-                        detailsMaker.add(String.format(getActivity().getString(R.string.record_nr), ""), record.getNr_single());
+                        detailsMaker.add(getActivity().getString(R.string.record_nr, ""), record.getNr_single());
                     }
                 }
 
@@ -212,7 +212,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
             catch (Exception e) {
                 e.printStackTrace();
-                detailsMaker.add(String.format(getActivity().getString(R.string.record_nr), ""), record.getNr_single());
+                detailsMaker.add(getActivity().getString(R.string.record_nr, ""), record.getNr_single());
             }
 
             holder.single.setText(detailsMaker.build(), TextView.BufferType.SPANNABLE);

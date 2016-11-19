@@ -242,7 +242,7 @@ public class RankingFragment extends BaseFragment {
 
         String[] cubes = getResources().getStringArray(R.array.cubes);
         String mode = isSingle ? getString(R.string.single) : getString(R.string.average);
-        subtitle = String.format(getString(R.string.two_infos), cubes[cubePosition], mode);
+        subtitle = getString(R.string.two_infos, cubes[cubePosition], mode);
 
         activity.setSubtitle(subtitle);
 

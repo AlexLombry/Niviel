@@ -35,10 +35,11 @@ import okhttp3.HttpUrl;
 
 public class HistoryFragment extends BaseFragment {
 
+    public static final String EVENTS = "events";
+    
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
-    @BindView(R.id.recycler_view)
-    RecyclerViewCompat recyclerView;
+    @BindView(R.id.recycler_view) RecyclerViewCompat recyclerView;
     @BindView(R.id.empty_view) TextView emptyView;
 
     private Unbinder unbinder;
@@ -131,7 +132,8 @@ public class HistoryFragment extends BaseFragment {
 
 
         if(savedInstanceState != null) {
-            adapter.refreshData(loadLocalData(savedInstanceState));
+            ArrayList<Event> histories = savedInstanceState.getParcelableArrayList(EVENTS);
+            adapter.refreshData(histories);
             recyclerView.showRecycler();
         }
 
@@ -179,7 +181,7 @@ public class HistoryFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        outState.putParcelableArrayList(Constants.EXTRAS.HISTORY, adapter.getDatas());
+        outState.putParcelableArrayList(EVENTS, adapter.getDatas());
         setTargetFragment(null, -1);
 
         super.onSaveInstanceState(outState);
@@ -214,14 +216,6 @@ public class HistoryFragment extends BaseFragment {
             }
         });
 
-    }
-
-    protected ArrayList<Event> loadLocalData(Bundle savedInstanceState) {
-        if(savedInstanceState != null) {
-            return savedInstanceState.getParcelableArrayList(Constants.EXTRAS.HISTORY);
-        }
-
-        return new ArrayList<>();
     }
 
     @Override

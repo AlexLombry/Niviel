@@ -62,19 +62,19 @@ public class RecordDialog extends DialogFragment {
 
             if(record.getSingle() != null && !record.getSingle().trim().equals("")) {
                 layout_single.setVisibility(View.VISIBLE);
-                single.setText(Assets.fromHtml(String.format(getString(R.string.record_time), Assets.wrapStrong(record.getSingle()))));
-                nr_single.setText(Assets.fromHtml(String.format(getString(R.string.record_nr), Assets.wrapStrong(record.getNr_single()))));
-                cr_single.setText(Assets.fromHtml(String.format(getString(R.string.record_cr), Assets.wrapStrong(record.getCr_single()))));
-                wr_single.setText(Assets.fromHtml(String.format(getString(R.string.record_wr), Assets.wrapStrong(record.getWr_single()))));
+                single.setText(Assets.fromHtml(getString(R.string.record_time, Assets.wrapStrong(record.getSingle()))));
+                nr_single.setText(Assets.fromHtml(getString(R.string.record_nr, Assets.wrapStrong(record.getNr_single()))));
+                cr_single.setText(Assets.fromHtml(getString(R.string.record_cr, Assets.wrapStrong(record.getCr_single()))));
+                wr_single.setText(Assets.fromHtml(getString(R.string.record_wr, Assets.wrapStrong(record.getWr_single()))));
             }
 
             if(record.getAverage() != null && !record.getAverage().trim().equals("")) {
                 Log.d("average", record.getAverage());
                 layout_average.setVisibility(View.VISIBLE);
-                average.setText(Assets.fromHtml(String.format(getString(R.string.record_time), Assets.wrapStrong(record.getAverage()))));
-                nr_average.setText(Assets.fromHtml(String.format(getString(R.string.record_nr), Assets.wrapStrong(record.getNr_average()))));
-                cr_average.setText(Assets.fromHtml(String.format(getString(R.string.record_cr), Assets.wrapStrong(record.getCr_average()))));
-                wr_average.setText(Assets.fromHtml(String.format(getString(R.string.record_wr), Assets.wrapStrong(record.getWr_average()))));
+                average.setText(Assets.fromHtml(getString(R.string.record_time, Assets.wrapStrong(record.getAverage()))));
+                nr_average.setText(Assets.fromHtml(getString(R.string.record_nr, Assets.wrapStrong(record.getNr_average()))));
+                cr_average.setText(Assets.fromHtml(getString(R.string.record_cr, Assets.wrapStrong(record.getCr_average()))));
+                wr_average.setText(Assets.fromHtml(getString(R.string.record_wr, Assets.wrapStrong(record.getWr_average()))));
             }
         }
 

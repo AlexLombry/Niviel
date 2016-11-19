@@ -105,7 +105,7 @@ public class EditRecordService extends IntentService {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            String confirmation = follows ? String.format(getString(R.string.toast_follow_confirmation), username) : String.format(getString(R.string.toast_switch_profile_confirmation), username);
+                            String confirmation = follows ? getString(R.string.toast_follow_confirmation, username) : getString(R.string.toast_switch_profile_confirmation, username);
                             Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
 
 
@@ -133,7 +133,7 @@ public class EditRecordService extends IntentService {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    String confirmation = String.format(getString(R.string.toast_unfollow_confirmation), username);
+                    String confirmation = getString(R.string.toast_unfollow_confirmation, username);
                     if (follows) Toast.makeText(getApplicationContext(), confirmation, Toast.LENGTH_LONG).show();
                 }
             });

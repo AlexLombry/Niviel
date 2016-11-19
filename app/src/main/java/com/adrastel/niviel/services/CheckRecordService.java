@@ -152,7 +152,7 @@ public class CheckRecordService extends Service {
                             Log.v(oldRecord.single() + "->" + newRecord.getSingle());
 
 
-                            content = String.format(getString(R.string.notif_new_single), newRecord.getSingle());
+                            content = getString(R.string.notif_new_single, newRecord.getSingle());
 
                             // Update notification title
                             nr = newRecord.getNr_single();
@@ -175,7 +175,7 @@ public class CheckRecordService extends Service {
                             Log.v(oldRecord.average() + "->" + newRecord.getAverage());
                             // Si le titre est vide, on ne fait rien, sinon on ajoute un séparateur
                             content = content.equals("") ? "" : content + " | ";
-                            content += String.format(getString(R.string.notif_new_average), newRecord.getAverage());
+                            content += getString(R.string.notif_new_average, newRecord.getAverage());
 
                             // Update notification
                             nr = nr.equals("") ? "" : nr + " | ";
@@ -201,9 +201,9 @@ public class CheckRecordService extends Service {
                             inboxStyle.setBigContentTitle(follower.name());
                             inboxStyle.setSummaryText(follower.wca_id());
                             inboxStyle.addLine(content);
-                            inboxStyle.addLine(String.format(getString(R.string.record_nr), nr));
-                            inboxStyle.addLine(String.format(getString(R.string.record_cr), cr));
-                            inboxStyle.addLine(String.format(getString(R.string.record_wr), wr));
+                            inboxStyle.addLine(getString(R.string.record_nr, nr));
+                            inboxStyle.addLine(getString(R.string.record_cr, cr));
+                            inboxStyle.addLine(getString(R.string.record_wr, wr));
 
                             makeNotification(follower, follower.name(), content, inboxStyle);
 
