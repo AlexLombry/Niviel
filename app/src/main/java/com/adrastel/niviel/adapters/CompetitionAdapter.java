@@ -1,24 +1,32 @@
 package com.adrastel.niviel.adapters;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
+import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.models.readable.competition.Competition;
 import com.adrastel.niviel.models.readable.competition.Title;
 import com.adrastel.niviel.views.CircleView;
 import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class CompetitionAdapter extends BaseExpandableAdapter<Title, Competition, CompetitionAdapter.TitleViewHolder, CompetitionAdapter.CompetitionViewHolder> {
@@ -105,16 +113,95 @@ public class CompetitionAdapter extends BaseExpandableAdapter<Title, Competition
         ImageView cube = parentViewHolder.cube;
         cube.setVisibility(View.VISIBLE);
 
-        cube.setImageResource(R.drawable.ic_competition);
+        cube.setImageResource(R.drawable.ic_competition_black);
         cube.setColorFilter(0x00000000);
 
     }
 
     @Override
-    public void onBindChildViewHolder(@NonNull CompetitionViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull Competition child) {
+    public void onBindChildViewHolder(@NonNull CompetitionViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull final Competition child) {
 
-        childViewHolder.competition.setText(child.getCompetition());
+        childViewHolder.place.setVisibility(View.INVISIBLE);
+
+        childViewHolder.competition.setText(getActivity().getString(R.string.string_details_string, child.getCompetition(), child.getDate()));
         childViewHolder.location.setText(child.getCountry());
+
+
+        childViewHolder.more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadMenu(view, child);
+            }
+        });
+
+        childViewHolder.more.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if(child.getPlace() != null)
+                    Toast.makeText(getActivity(), child.getPlace(), Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });
+    }
+
+    private void loadMenu(View view, final Competition child) {
+
+        PopupMenu popupMenu = new PopupMenu(getActivity(), view);
+        popupMenu.inflate(R.menu.menu_pop_competition);
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                switch (item.getItemId()) {
+
+                    case R.id.goto_maps:
+                        gotoMaps(child);
+                        return true;
+
+                    case R.id.goto_internet:
+                        gotoInternet(child);
+                        return true;
+                }
+
+                return false;
+            }
+        });
+
+        popupMenu.show();
+
+    }
+
+    private void gotoMaps(Competition child) {
+        String address = "";
+
+        address += child.getPlace() != null ? child.getPlace() : "";
+        address += child.getCountry() != null ? child.getCountry() : "";
+
+        try {
+
+            Uri uri = Uri.parse("geo:0,0?q=" + address);
+
+            Intent goToMaps = new Intent(Intent.ACTION_VIEW, uri);
+
+            getActivity().startActivity(goToMaps);
+        }
+
+        catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // todo: utiliser  if (intent.resolveActivity(getPackageManager()) != null)
+    }
+
+    private void gotoInternet(Competition child) {
+
+        Uri uri = new WcaUrl().competition(child.getCompetition_link()).toUri();
+        Intent gotoInteret = new Intent(Intent.ACTION_VIEW, uri);
+
+        if(gotoInteret.resolveActivity(getActivity().getPackageManager()) != null) {
+            getActivity().startActivity(gotoInteret);
+        }
 
     }
 }

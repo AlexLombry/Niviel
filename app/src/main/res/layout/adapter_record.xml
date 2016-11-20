@@ -12,6 +12,7 @@
         android:layout_margin="5dp"
         app:cardCornerRadius="2dp"
         app:cardElevation="2dp"
+        android:clickable="true"
         app:cardBackgroundColor="@color/background_card_record">
 
             <LinearLayout

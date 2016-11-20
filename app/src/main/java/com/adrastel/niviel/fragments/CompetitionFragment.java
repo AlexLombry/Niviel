@@ -114,8 +114,7 @@ public class CompetitionFragment extends BaseFragment {
 
     @Override
     public int getStyle() {
-        // todo : changer ça
-        return R.style.AppTheme_Followers;
+        return R.style.AppTheme_Competitions;
     }
 
     public void callData() {
@@ -147,6 +146,9 @@ public class CompetitionFragment extends BaseFragment {
                     titles.add(upcomming);
                 }
 
+                // Ouvre le premier onglet
+                expendFirst(titles);
+
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -166,5 +168,13 @@ public class CompetitionFragment extends BaseFragment {
         }
 
         return null;
+    }
+
+    /**
+     * Ouvre le premier groupe de la liste
+     */
+    private void expendFirst(ArrayList<Title> titles) {
+        if(titles.size() != 0)
+            titles.get(0).expend();
     }
 }

@@ -144,7 +144,7 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         parentViewHolder.more.setVisibility(View.GONE);
 
         TextView title = parentViewHolder.title;
-        title.setText(parent.getTitle());
+        title.setText(getActivity().getString(R.string.string_details_number, parent.getTitle(), parent.getChildList().size()));
         title.setPadding(Assets.dpToPx(getActivity(), 20), 0, 0, 0);
         title.setTextSize(Assets.spToPx(getActivity(), 12));
 

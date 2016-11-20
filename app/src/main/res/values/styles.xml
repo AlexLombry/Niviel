@@ -57,6 +57,12 @@
         <item name="fabIcon">@drawable/ic_add</item>
     </style>
 
+    <style name="AppTheme.Competitions" parent="AppTheme.NoActionBar">
+        <item name="toolbarTitle">@string/competitions</item>
+        <item name="colorPrimary">@color/red_500</item>
+        <item name="colorPrimaryDark">@color/red_700</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>

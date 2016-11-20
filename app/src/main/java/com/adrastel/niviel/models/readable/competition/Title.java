@@ -12,6 +12,7 @@ public class Title implements Parent<Competition>, Parcelable {
 
     private String title;
     private ArrayList<Competition> competitions;
+    private boolean isExpanded = false;
 
     public Title(String title, ArrayList<Competition> competitions) {
         this.title = title;
@@ -51,6 +52,10 @@ public class Title implements Parent<Competition>, Parcelable {
         this.competitions = competitions;
     }
 
+    public void expend() {
+        isExpanded = true;
+    }
+
     @Override
     public List<Competition> getChildList() {
         return competitions;
@@ -58,7 +63,7 @@ public class Title implements Parent<Competition>, Parcelable {
 
     @Override
     public boolean isInitiallyExpanded() {
-        return false;
+        return isExpanded;
     }
 
     @Override

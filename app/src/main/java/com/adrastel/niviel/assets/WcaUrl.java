@@ -26,6 +26,11 @@ public class WcaUrl {
         return this;
     }
 
+    public WcaUrl competition(String segment) {
+        url.addEncodedPathSegments(segment);
+        return this;
+    }
+
     public WcaUrl ranking(String eventId, String regionId, boolean isSingle) {
 
         url.addEncodedPathSegments("results/events.php")

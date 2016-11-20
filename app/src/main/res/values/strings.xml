@@ -190,6 +190,7 @@
     <string name="check_records">Vérifier les records</string>
     <string name="confirm">Confirmer</string>
     <string name="toast_adding">Ajout en cours</string>
+    <string name="goto_maps">Voir sur la carte</string>
 
     <!-- Send mail -->
     <string name="send">Envoyer</string>

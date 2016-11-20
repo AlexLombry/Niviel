@@ -230,6 +230,14 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                     showMoreInfoDialog(getActivity().getSupportFragmentManager(), record);
                 }
             });
+
+            holder.card.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    showMoreInfoDialog(getActivity().getSupportFragmentManager(), record);
+                    return true;
+                }
+            });
         }
 
 
