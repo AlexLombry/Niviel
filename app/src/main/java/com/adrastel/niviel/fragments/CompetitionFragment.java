@@ -2,9 +2,13 @@ package com.adrastel.niviel.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.PluralsRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -12,7 +16,10 @@ import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.CompetitionAdapter;
+import com.adrastel.niviel.assets.Cubes;
 import com.adrastel.niviel.assets.WcaUrl;
+import com.adrastel.niviel.dialogs.RankingChooseCubeDialog;
+import com.adrastel.niviel.dialogs.RankingSwitchCountryDialog;
 import com.adrastel.niviel.models.readable.competition.Competition;
 import com.adrastel.niviel.models.readable.competition.Title;
 import com.adrastel.niviel.providers.html.CompetitionProvider;
@@ -35,6 +42,9 @@ public class CompetitionFragment extends BaseFragment {
 
     public static final String TITLES = "titles";
 
+    private int countryPosition = 0;
+    private boolean[] eventSelected = RankingChooseCubeDialog.getDefaultSelectedItems();
+
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.recycler_view) RecyclerViewCompat recyclerView;
@@ -47,6 +57,7 @@ public class CompetitionFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         adapter = new CompetitionAdapter(getActivity(), new ArrayList<Title>());
     }
@@ -107,6 +118,50 @@ public class CompetitionFragment extends BaseFragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_ranking, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.switch_cube:
+
+                RankingChooseCubeDialog switchCube = RankingChooseCubeDialog.newInstance(eventSelected);
+                switchCube.show(getFragmentManager(), "cubeSwitch");
+
+                switchCube.setListener(new RankingChooseCubeDialog.RankingChooseCubeListener() {
+                    @Override
+                    public void onClick(boolean[] selectedItems) {
+                        eventSelected = selectedItems;
+                        callData();
+                    }
+                });
+
+                return true;
+
+            case R.id.switch_country:
+
+                RankingSwitchCountryDialog switchCountry = RankingSwitchCountryDialog.newInstance(countryPosition);
+                switchCountry.show(getFragmentManager(), "countrySwitch");
+
+                switchCountry.setListener(new RankingSwitchCountryDialog.RankingSwitchCountryListener() {
+                    @Override
+                    public void onClick(int position) {
+                        countryPosition = position;
+                        callData();
+                    }
+                });
+
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
@@ -119,8 +174,16 @@ public class CompetitionFragment extends BaseFragment {
 
     public void callData() {
 
+        ArrayList<String> event_ids = new ArrayList<>();
+
+        for(int i = 0; i < eventSelected.length; i++) {
+            if(eventSelected[i]) {
+                event_ids.add(Cubes.getCubeId(i));
+            }
+        }
+
         HttpUrl url = new WcaUrl()
-                .competition()
+                .competition(event_ids, getResources().getStringArray(R.array.competitions_countries_id)[countryPosition])
                 .build();
 
 
@@ -133,10 +196,10 @@ public class CompetitionFragment extends BaseFragment {
                 final ArrayList<Title> titles = new ArrayList<>();
 
                 // In progress
-                Title inProgress = treatData(document, CompetitionProvider.IN_PROGRESS, getString(R.string.in_progress_competitions));
+                Title inProgress = treatData(document, CompetitionProvider.IN_PROGRESS, R.plurals.in_progress_competitions);
 
                 // Upcomming
-                Title upcomming = treatData(document, CompetitionProvider.UPCOMING_COMPS, getString(R.string.upcomming_competitions));
+                Title upcomming = treatData(document, CompetitionProvider.UPCOMING_COMPS, R.plurals.upcomming_competitions);
 
                 if(inProgress != null) {
                     titles.add(inProgress);
@@ -160,10 +223,11 @@ public class CompetitionFragment extends BaseFragment {
         });
     }
 
-    private Title treatData(Document document, String tag, String title) {
+    private Title treatData(Document document, String tag, @PluralsRes int titleRes) {
         final ArrayList<Competition> competitions = CompetitionProvider.getCompetition(document, tag);
 
         if(competitions.size() != 0 ){
+            String title = getResources().getQuantityString(titleRes, competitions.size(), competitions.size());
             return new Title(title, competitions);
         }
 

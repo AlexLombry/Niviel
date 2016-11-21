@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RankingAdapter;
-import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.assets.Cubes;
 import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.dialogs.RankingSwitchCountryDialog;
 import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
@@ -235,7 +235,7 @@ public class RankingFragment extends BaseFragment {
     public void callData() {
 
         HttpUrl url = new WcaUrl()
-                .ranking(Assets.getCubeId(cubePosition), getResources().getStringArray(R.array.countries_id)[countryPosition], isSingle)
+                .ranking(Cubes.getCubeId(cubePosition), getResources().getStringArray(R.array.countries_id)[countryPosition], isSingle)
                 .build();
 
         adapter.setSingle(isSingle);

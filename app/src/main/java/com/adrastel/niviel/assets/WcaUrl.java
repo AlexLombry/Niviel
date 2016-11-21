@@ -4,6 +4,8 @@ import android.net.Uri;
 
 import com.adrastel.niviel.R;
 
+import java.util.ArrayList;
+
 import okhttp3.HttpUrl;
 
 public class WcaUrl {
@@ -28,6 +30,17 @@ public class WcaUrl {
 
     public WcaUrl competition(String segment) {
         url.addEncodedPathSegments(segment);
+        return this;
+    }
+
+    public WcaUrl competition(ArrayList<String> eventIds, String regionId) {
+
+        url.addEncodedPathSegment("competitions")
+                .addEncodedQueryParameter("region", regionId);
+
+        for(String eventId : eventIds) {
+            url.addEncodedQueryParameter("event_ids[]", eventId);
+        }
         return this;
     }
 

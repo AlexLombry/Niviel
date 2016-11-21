@@ -2,6 +2,7 @@ package com.adrastel.niviel.assets;
 
 public class Constants {
 
+    // todo: supprimer asap
     public interface EXTRAS {
         String RECORDS = "records";
         String HISTORY = "history";

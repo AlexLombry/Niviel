@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- WARNING: si le nombre de cube change, changer le fichier RankingChooseCubeDialog -->
     <string-array name="cubes">
-
         <item>Rubik\'s cube</item>
         <item>4x4 Cube</item>
         <item>5x5 Cube</item>
@@ -20,7 +20,6 @@
         <item>4x4 blindfolded</item>
         <item>5x5 blindfolded</item>
         <item>3x3 multi blind</item>
-
     </string-array>
 
     <string-array name="countries">
@@ -156,6 +155,137 @@
 
     <string-array name="countries_id">
         <item>World</item>
+        <item>_Africa</item>
+        <item>_Asia</item>
+        <item>_Europe</item>
+        <item>_North+America</item>
+        <item>_Oceania</item>
+        <item>_South+America</item>
+        <item>Afghanistan</item>
+        <item>Albania</item>
+        <item>Algeria</item>
+        <item>Andorra</item>
+        <item>Angola</item>
+        <item>Argentina</item>
+        <item>Armenia</item>
+        <item>Aruba</item>
+        <item>Australia</item>
+        <item>Austria</item>
+        <item>Azerbaijan</item>
+        <item>Bangladesh</item>
+        <item>Belarus</item>
+        <item>Belgium</item>
+        <item>Belize</item>
+        <item>Bolivia</item>
+        <item>Bosnia+and+Herzegovina</item>
+        <item>Brazil</item>
+        <item>Bulgaria</item>
+        <item>Canada</item>
+        <item>Chile</item>
+        <item>China</item>
+        <item>Colombia</item>
+        <item>Costa+Rica</item>
+        <item>Cote+d_Ivoire</item>
+        <item>Croatia</item>
+        <item>Cuba</item>
+        <item>Cyprus</item>
+        <item>Czech+Republic</item>
+        <item>Denmark</item>
+        <item>Dominican+Republic</item>
+        <item>Ecuador</item>
+        <item>Egypt</item>
+        <item>El+Salvador</item>
+        <item>Estonia</item>
+        <item>Finland</item>
+        <item>France</item>
+        <item>Georgia</item>
+        <item>Germany</item>
+        <item>Greece</item>
+        <item>Guatemala</item>
+        <item>Haiti</item>
+        <item>Honduras</item>
+        <item>Hong+Kong</item>
+        <item>Hungary</item>
+        <item>Iceland</item>
+        <item>India</item>
+        <item>Indonesia</item>
+        <item>Iran</item>
+        <item>Ireland</item>
+        <item>Israel</item>
+        <item>Italy</item>
+        <item>Jamaica</item>
+        <item>Japan</item>
+        <item>Jordan</item>
+        <item>Kazakhstan</item>
+        <item>Korea</item>
+        <item>Kosovo</item>
+        <item>Latvia</item>
+        <item>Lebanon</item>
+        <item>Liechtenstein</item>
+        <item>Lithuania</item>
+        <item>Luxembourg</item>
+        <item>Macau</item>
+        <item>Macedonia</item>
+        <item>Madagascar</item>
+        <item>Malawi</item>
+        <item>Malaysia</item>
+        <item>Mauritius</item>
+        <item>Mexico</item>
+        <item>Moldova</item>
+        <item>Monaco</item>
+        <item>Mongolia</item>
+        <item>Montenegro</item>
+        <item>Morocco</item>
+        <item>Nepal</item>
+        <item>Netherlands</item>
+        <item>New+Zealand</item>
+        <item>Nicaragua</item>
+        <item>Nigeria</item>
+        <item>Norway</item>
+        <item>Pakistan</item>
+        <item>Palestine</item>
+        <item>Paraguay</item>
+        <item>Peru</item>
+        <item>Philippines</item>
+        <item>Poland</item>
+        <item>Portugal</item>
+        <item>Puerto+Rico</item>
+        <item>Romania</item>
+        <item>Russia</item>
+        <item>Samoa</item>
+        <item>Saudi+Arabia</item>
+        <item>Senegal</item>
+        <item>Serbia</item>
+        <item>Singapore</item>
+        <item>Slovakia</item>
+        <item>Slovenia</item>
+        <item>South+Africa</item>
+        <item>Spain</item>
+        <item>Sri+Lanka</item>
+        <item>Sudan</item>
+        <item>Suriname</item>
+        <item>Sweden</item>
+        <item>Switzerland</item>
+        <item>Syria</item>
+        <item>Taiwan</item>
+        <item>Thailand</item>
+        <item>Trinidad+and+Tobago</item>
+        <item>Tunisia</item>
+        <item>Turkey</item>
+        <item>Ukraine</item>
+        <item>United+Arab+Emirates</item>
+        <item>United+Kingdom</item>
+        <item>Uruguay</item>
+        <item>USA</item>
+        <item>Uzbekistan</item>
+        <item>Venezuela</item>
+        <item>Vietnam</item>
+        <item>Zambia</item>
+        <item>Zimbabwe</item>
+    </string-array>
+
+    <string-array name="competitions_countries_id">
+        <item>all</item>
         <item>_Africa</item>
         <item>_Asia</item>
         <item>_Europe</item>

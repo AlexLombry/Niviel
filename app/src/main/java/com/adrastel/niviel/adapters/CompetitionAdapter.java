@@ -104,7 +104,7 @@ public class CompetitionAdapter extends BaseExpandableAdapter<Title, Competition
         parentViewHolder.place.setVisibility(View.GONE);
         parentViewHolder.more.setVisibility(View.GONE);
         TextView title = parentViewHolder.title;
-        title.setText(getActivity().getString(R.string.string_details_number, parent.getTitle(), parent.getCompetitions().size()));
+        title.setText(parent.getTitle());
         title.setPadding(Assets.dpToPx(getActivity(), 20), 0, 0, 0);
         title.setTextSize(Assets.spToPx(getActivity(), 12));
 

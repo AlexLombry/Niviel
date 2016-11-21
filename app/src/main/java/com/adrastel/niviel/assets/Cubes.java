@@ -124,4 +124,68 @@ public class Cubes {
         return cubes.length;
     }
 
+    /**
+     * Retourne le tag qui permet d'avoir l'url
+     * https://www.worldcubeassociation.org/results/events.php
+     * @param position position dans la liste
+     * @return tag
+     */
+    public static String getCubeId(int position) {
+
+        switch (position) {
+            case 1:
+                return "444";
+
+            case 2:
+                return "555";
+
+            case 3:
+                return "222";
+
+            case 4:
+                return "333bf";
+
+            case 5:
+                return "333oh";
+
+            case 6:
+                return "333fm";
+
+            case 7:
+                return "333ft";
+
+            case 8:
+                return "minx";
+
+            case 9:
+                return "pyram";
+
+            case 10:
+                return "sq1";
+
+            case 11:
+                return "clock";
+
+            case 12:
+                return "skewb";
+
+            case 13:
+                return "666";
+
+            case 14:
+                return "777";
+
+            case 15:
+                return "444bf";
+
+            case 16:
+                return "555bf";
+
+            case 17:
+                return "333mbf";
+
+            default:
+                return "333";
+        }
+    }
 }

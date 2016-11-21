@@ -86,8 +86,16 @@
     <!-- Competitions -->
     <string name="competition">Compétition</string>
     <string name="competitions">Compétitions</string>
-    <string name="in_progress_competitions">Compétitions en cours</string>
-    <string name="upcomming_competitions">Prochaines compétitions</string>
+    <plurals name="in_progress_competitions">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> compétition en cours</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> compétitions en cours</item>
+    </plurals>
+
+    <plurals name="upcomming_competitions">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> compétition à venir</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> compétitions à venir</item>
+    </plurals>
+
     <plurals name="competitions">
         <item quantity="one">competition</item>
         <item quantity="other">competitions</item>
