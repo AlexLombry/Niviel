@@ -7,17 +7,18 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.DetailsMaker;
 import com.adrastel.niviel.models.readable.history.History;
 
 public class HistoryDialog extends DialogFragment {
 
 
+    public static final String HISTORY = "history";
+
     public static HistoryDialog newInstance(History history) {
 
         Bundle args = new Bundle();
-        args.putParcelable(Constants.EXTRAS.HISTORY, history);
+        args.putParcelable(HISTORY, history);
 
         HistoryDialog fragment = new HistoryDialog();
         fragment.setArguments(args);
@@ -29,7 +30,7 @@ public class HistoryDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         Bundle bundle = getArguments();
-        History history = bundle.getParcelable(Constants.EXTRAS.HISTORY);
+        History history = bundle.getParcelable(HISTORY);
 
         DetailsMaker dialogMaker = new DetailsMaker(getContext());
 

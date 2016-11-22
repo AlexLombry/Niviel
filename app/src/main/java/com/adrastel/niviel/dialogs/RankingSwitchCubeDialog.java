@@ -10,9 +10,11 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.fragments.RankingFragment;
 
 public class RankingSwitchCubeDialog extends DialogFragment {
+
+    public static final String CUBE_POSITION = "cube_position";
 
     RankingSwitchCubeListener listener;
 
@@ -23,7 +25,7 @@ public class RankingSwitchCubeDialog extends DialogFragment {
     public static RankingSwitchCubeDialog newInstance(int position) {
 
         Bundle args = new Bundle();
-        args.putInt(Constants.EXTRAS.CUBE_POSITION, position);
+        args.putInt(CUBE_POSITION, position);
 
         RankingSwitchCubeDialog instance = new RankingSwitchCubeDialog();
         instance.setArguments(args);
@@ -34,7 +36,7 @@ public class RankingSwitchCubeDialog extends DialogFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        position = getArguments().getInt(Constants.EXTRAS.CUBE_POSITION, -1);
+        position = getArguments().getInt(CUBE_POSITION, -1);
     }
 
 

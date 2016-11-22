@@ -1,13 +1,11 @@
 package com.adrastel.niviel.adapters;
 
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -30,7 +28,6 @@ import com.adrastel.niviel.views.CircleView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.HttpUrl;
 
 public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Ranking> {
 
@@ -146,7 +143,7 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         popupMenu.inflate(R.menu.menu_pop_ranking);
 
 
-        String followTitle = isFollowing ? getActivity().getString(R.string.unfollow) : getActivity().getString(R.string.follow);
+        String followTitle = isFollowing ? getString(R.string.unfollow) : getString(R.string.follow);
 
         MenuItem followButton = popupMenu.getMenu().findItem(R.id.follow);
         followButton.setTitle(followTitle);
@@ -158,11 +155,11 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
                 switch (item.getItemId()) {
 
                     case R.id.details:
-                        onDetails(getActivity().getSupportFragmentManager(), ranking);
+                        onDetails(ranking);
                         return true;
 
                     case R.id.share:
-                        onShare(getActivity(), ranking);
+                        onShare(ranking);
                         return true;
 
                     case R.id.goto_profile:
@@ -172,15 +169,14 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
 
                     case R.id.follow:
                         if(isFollowing) {
-                            item.setTitle(getActivity().getString(R.string.follow));
+                            item.setTitle(getString(R.string.follow));
                             onUnfollow(ranking);
                             invalidateCircleView(holder.rank, false);
                         }
 
                         else {
-                            item.setTitle(getActivity().getString(R.string.unfollow));
+                            item.setTitle(getString(R.string.unfollow));
                             onFollow(ranking);
-                            //invalidateCircleView(holder.rank, true);
                         }
                         return true;
 
@@ -218,44 +214,33 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
     }
 
     private void gotoProfile(Ranking ranking) {
-        ProfileFragment fragment = ProfileFragment.newInstance(ranking.getWca_id(), ranking.getPerson(), false);
+        ProfileFragment fragment = ProfileFragment.newInstance(ranking.getWca_id(), ranking.getPerson());
         getActivity().switchFragment(fragment);
 
     }
 
-    private void onDetails(FragmentManager fragmentManager, Ranking ranking) {
+    private void onDetails(Ranking ranking) {
 
-        if(fragmentManager != null) {
-
-            DialogFragment rankingDialog = RankingDetailsDialog.newInstance(ranking);
-            rankingDialog.show(fragmentManager, "details");
-
-
-        }
+        DialogFragment rankingDialog = RankingDetailsDialog.newInstance(ranking);
+        rankingDialog.show(getActivity().getSupportFragmentManager(), "details");
 
     }
 
-    private void onShare(Context context, Ranking ranking) {
+    private void onShare(Ranking ranking) {
 
-        try {
+        String url = new WcaUrl()
+                .profile(ranking.getWca_id())
+                .toString();
 
-            String url = new WcaUrl()
-                    .profile(ranking.getWca_id())
-                    .toString();
+        Intent intent = new Intent();
 
-            Intent intent = new Intent();
+        intent.setType("text/plain");
+        intent.setAction(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_TEXT, url);
 
-            intent.setType("text/plain");
-            intent.setAction(Intent.ACTION_SEND);
-            intent.putExtra(Intent.EXTRA_TEXT, url);
+        Intent chooser = Intent.createChooser(intent, getString(R.string.share));
 
-            Intent chooser = Intent.createChooser(intent, context.getString(R.string.share));
-
-            context.startActivity(chooser);
-        }
-        catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-        }
+        getActivity().startActivity(chooser);
     }
 
     // Le view holder qui contient toutes les infos

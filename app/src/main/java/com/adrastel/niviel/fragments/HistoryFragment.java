@@ -11,8 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.activities.BaseActivity;
 import com.adrastel.niviel.adapters.HistoryAdapter;
-import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
@@ -36,7 +36,8 @@ import okhttp3.HttpUrl;
 public class HistoryFragment extends BaseFragment {
 
     public static final String EVENTS = "events";
-    
+    public static final String SORT = "sort";
+
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.recycler_view) RecyclerViewCompat recyclerView;
@@ -59,8 +60,8 @@ public class HistoryFragment extends BaseFragment {
         HistoryFragment instance = new HistoryFragment();
 
         Bundle args = new Bundle();
-        args.putLong(Constants.EXTRAS.ID, follower_id);
-        args.putBoolean(Constants.EXTRAS.SORT, sort);
+        args.putLong(BaseActivity.ID, follower_id);
+        args.putBoolean(SORT, sort);
 
         instance.setArguments(args);
         return instance;
@@ -70,8 +71,8 @@ public class HistoryFragment extends BaseFragment {
         HistoryFragment instance = new HistoryFragment();
 
         Bundle args = new Bundle();
-        args.putString(Constants.EXTRAS.WCA_ID, wca_id);
-        args.putBoolean(Constants.EXTRAS.SORT, sort);
+        args.putString(BaseActivity.WCA_ID, wca_id);
+        args.putBoolean(SORT, sort);
 
         instance.setArguments(args);
         return instance;
@@ -84,10 +85,10 @@ public class HistoryFragment extends BaseFragment {
         Bundle arguments = getArguments();
 
         if(arguments != null) {
-            sortByEvent = arguments.getBoolean(Constants.EXTRAS.SORT);
+            sortByEvent = arguments.getBoolean(SORT);
 
-            follower_id = arguments.getLong(Constants.EXTRAS.ID, -1);
-            wca_id = follower_id == -1 ? arguments.getString(Constants.EXTRAS.WCA_ID, null) : null;
+            follower_id = arguments.getLong(BaseActivity.ID, -1);
+            wca_id = follower_id == -1 ? arguments.getString(BaseActivity.WCA_ID, null) : null;
         }
 
 

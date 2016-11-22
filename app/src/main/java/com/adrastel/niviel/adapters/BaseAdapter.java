@@ -23,7 +23,6 @@ public abstract class BaseAdapter<T extends RecyclerView.ViewHolder> extends Rec
         return activity;
     }
 
-    // todo: utiliser cette fonction au lieu de getActivity().getString()
     protected String getString(@StringRes int resId) {
         return getActivity().getString(resId);
     }

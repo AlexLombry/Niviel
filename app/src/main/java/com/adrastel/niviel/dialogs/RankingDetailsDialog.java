@@ -7,17 +7,18 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.DetailsMaker;
 import com.adrastel.niviel.models.readable.Ranking;
 
 public class RankingDetailsDialog extends DialogFragment {
 
 
+    public static final String RANKING = "ranking";
+
     public static RankingDetailsDialog newInstance(Ranking ranking) {
 
         Bundle args = new Bundle();
-        args.putParcelable(Constants.EXTRAS.RANKING, ranking);
+        args.putParcelable(RANKING, ranking);
 
         RankingDetailsDialog instance = new RankingDetailsDialog();
         instance.setArguments(args);
@@ -28,7 +29,7 @@ public class RankingDetailsDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        Ranking ranking = getArguments().getParcelable(Constants.EXTRAS.RANKING);
+        Ranking ranking = getArguments().getParcelable(RANKING);
 
 
         DetailsMaker detailsMaker = new DetailsMaker(getContext());

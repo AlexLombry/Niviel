@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.models.readable.Record;
 
@@ -22,6 +21,7 @@ import butterknife.Unbinder;
 
 public class RecordDialog extends DialogFragment {
 
+    public static final String RECORDS = "records";
     Unbinder unbinder;
     @BindView(R.id.layout_single) LinearLayout layout_single;
     @BindView(R.id.single) TextView single;
@@ -38,7 +38,7 @@ public class RecordDialog extends DialogFragment {
     public static RecordDialog newInstance(Record record) {
 
         Bundle args = new Bundle();
-        args.putParcelable(Constants.EXTRAS.RECORDS, record);
+        args.putParcelable(RECORDS, record);
 
         RecordDialog instance = new RecordDialog();
         instance.setArguments(args);
@@ -50,7 +50,7 @@ public class RecordDialog extends DialogFragment {
     @SuppressWarnings("InflateParams")
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        Record record = getArguments().getParcelable(Constants.EXTRAS.RECORDS);
+        Record record = getArguments().getParcelable(RECORDS);
 
         LayoutInflater inflater = LayoutInflater.from(getActivity());
 

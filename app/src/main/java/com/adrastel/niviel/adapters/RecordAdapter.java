@@ -1,6 +1,5 @@
 package com.adrastel.niviel.adapters;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
@@ -16,11 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Cubes;
 import com.adrastel.niviel.assets.DetailsMaker;
 import com.adrastel.niviel.assets.WcaUrl;
@@ -33,7 +30,6 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.HttpUrl;
 
 public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> {
 
@@ -68,7 +64,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
 
         View view = inflater.inflate(R.layout.adapter_record, parent, false);
 
@@ -94,22 +90,14 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                     @Override
                     public void onClick(View view) {
 
-                        try {
-                            Uri url = new WcaUrl()
-                                    .profile(user.getWca_id())
-                                    .toUri();
+                        Uri url = new WcaUrl()
+                                .profile(user.getWca_id())
+                                .toUri();
 
-                            Intent viewOnWebSite = new Intent(Intent.ACTION_VIEW);
-                            viewOnWebSite.setData(url);
+                        Intent viewOnWebSite = new Intent(Intent.ACTION_VIEW);
+                        viewOnWebSite.setData(url);
 
-                            Intent chooser = Intent.createChooser(viewOnWebSite, user.getName());
-
-                            getActivity().startActivity(chooser);
-                        }
-                        catch (ActivityNotFoundException e ) {
-                            e.printStackTrace();
-                        }
-
+                        getActivity().startActivity(viewOnWebSite);
                     }
                 });
 
@@ -144,18 +132,8 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                         share.setType("text/plain");
                         share.putExtra(Intent.EXTRA_TEXT, url);
 
-                        try {
-                            getActivity().startActivity(Intent.createChooser(share, getActivity().getString(R.string.share)));
-                        }
-                        catch (ActivityNotFoundException e) {
-                            e.printStackTrace();
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(getActivity(), R.string.error_activity, Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        }
+                        getActivity().startActivity(Intent.createChooser(share, getString(R.string.share)));
+
                     }
                 });
 
@@ -179,7 +157,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
             holder.image.setOnClickListener(null);
             holder.more_info.setText(R.string.more_info);
 
-            DetailsMaker detailsMaker = new DetailsMaker(holder.single.getContext());
+            DetailsMaker detailsMaker = new DetailsMaker(getActivity());
 
             detailsMaker.add(R.string.single, single);
 
@@ -273,7 +251,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
         if(manager != null) {
             DialogFragment recordDialog = RecordDialog.newInstance(record);
 
-            recordDialog.show(manager, Constants.TAG.RECORDS);
+            recordDialog.show(manager, "more_infos");
 
         }
 

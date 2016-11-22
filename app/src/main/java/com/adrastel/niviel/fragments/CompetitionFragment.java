@@ -223,12 +223,28 @@ public class CompetitionFragment extends BaseFragment {
         });
     }
 
+    /**
+     * Traite les données pour former le groupe
+     *
+     * Afin de résoudre le bug des Ressources, vérifie bien si le fragment est attaché à l'activité
+     * @param document code HTML
+     * @param tag Pour distinguer un record d'un autre
+     * @param titleRes Titre du groupe
+     * @return Groupe
+     */
     private Title treatData(Document document, String tag, @PluralsRes int titleRes) {
         final ArrayList<Competition> competitions = CompetitionProvider.getCompetition(document, tag);
 
-        if(competitions.size() != 0 ){
-            String title = getResources().getQuantityString(titleRes, competitions.size(), competitions.size());
-            return new Title(title, competitions);
+        if (competitions.size() != 0) {
+
+            if(isAdded()) {
+
+                String title = getResources().getQuantityString(titleRes, competitions.size(), competitions.size());
+                return new Title(title, competitions);
+
+            }
+
+            return new Title(null, competitions);
         }
 
         return null;

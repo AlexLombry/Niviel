@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.RankingAdapter;
-import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.Cubes;
 import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.dialogs.RankingSwitchCountryDialog;
@@ -39,6 +38,10 @@ import okhttp3.HttpUrl;
 
 public class RankingFragment extends BaseFragment {
 
+    public static final String ISSINGLE = "issingle";
+    public static final String RANKING = "ranking";
+    public static final String CUBE_POSITION = "cube_position";
+    public static final String SUBTITLE = "subtitle";
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recycler_view)
@@ -109,13 +112,13 @@ public class RankingFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         if(savedInstanceState != null) {
-            cubePosition = savedInstanceState.getInt(Constants.EXTRAS.CUBE_POSITION, 0);
-            isSingle = savedInstanceState.getBoolean(Constants.EXTRAS.ISSINGLE, true);
+            cubePosition = savedInstanceState.getInt(CUBE_POSITION, 0);
+            isSingle = savedInstanceState.getBoolean(ISSINGLE, true);
 
-            subtitle = savedInstanceState.getString(Constants.EXTRAS.SUBTITLE, null);
+            subtitle = savedInstanceState.getString(SUBTITLE, null);
             activity.setSubtitle(subtitle);
 
-            ArrayList<Ranking> rankings = savedInstanceState.getParcelableArrayList(Constants.EXTRAS.RANKING);
+            ArrayList<Ranking> rankings = savedInstanceState.getParcelableArrayList(RANKING);
 
             adapter.setSingle(isSingle);
 
@@ -171,10 +174,10 @@ public class RankingFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
 
-        outState.putInt(Constants.EXTRAS.CUBE_POSITION, cubePosition);
-        outState.putBoolean(Constants.EXTRAS.ISSINGLE, isSingle);
-        outState.putString(Constants.EXTRAS.SUBTITLE, subtitle);
-        outState.putParcelableArrayList(Constants.EXTRAS.RANKING, adapter.getDatas());
+        outState.putInt(CUBE_POSITION, cubePosition);
+        outState.putBoolean(ISSINGLE, isSingle);
+        outState.putString(SUBTITLE, subtitle);
+        outState.putParcelableArrayList(RANKING, adapter.getDatas());
 
         setTargetFragment(null, -1);
 

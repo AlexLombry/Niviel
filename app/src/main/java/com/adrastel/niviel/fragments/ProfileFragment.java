@@ -17,9 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.activities.BaseActivity;
 import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.EditProfileFollowDialog;
@@ -43,27 +43,25 @@ public class ProfileFragment extends BaseFragment {
 
     private ViewPager viewPager;
 
-    public static ProfileFragment newInstance(long id, boolean explore) {
+    public static ProfileFragment newInstance(long id) {
         ProfileFragment instance = new ProfileFragment();
 
         Bundle args = new Bundle();
 
-        args.putLong(Constants.EXTRAS.ID, id);
-        args.putBoolean(Constants.EXTRAS.EXPLORE, explore);
+        args.putLong(BaseActivity.ID, id);
 
         instance.setArguments(args);
 
         return instance;
     }
 
-    public static ProfileFragment newInstance(String wca_id, String name, boolean explore) {
+    public static ProfileFragment newInstance(String wca_id, String name) {
         ProfileFragment instance = new ProfileFragment();
 
         Bundle args = new Bundle();
 
-        args.putString(Constants.EXTRAS.WCA_ID, wca_id);
-        args.putString(Constants.EXTRAS.USERNAME, name);
-        args.putBoolean(Constants.EXTRAS.EXPLORE, explore);
+        args.putString(BaseActivity.WCA_ID, wca_id);
+        args.putString(BaseActivity.USERNAME, name);
 
         instance.setArguments(args);
 
@@ -97,7 +95,7 @@ public class ProfileFragment extends BaseFragment {
         Bundle args = getArguments();
         if(args != null) {
 
-            follower_id = args.getLong(Constants.EXTRAS.ID, -1);
+            follower_id = args.getLong(BaseActivity.ID, -1);
 
             if(follower_id != -1) {
                 DatabaseHelper database = DatabaseHelper.getInstance(getContext());
@@ -107,8 +105,8 @@ public class ProfileFragment extends BaseFragment {
                 wca_id = follower.wca_id();
             }
             else {
-                wca_id = args.getString(Constants.EXTRAS.WCA_ID, null);
-                username = args.getString(Constants.EXTRAS.USERNAME, null);
+                wca_id = args.getString(BaseActivity.WCA_ID, null);
+                username = args.getString(BaseActivity.USERNAME, null);
 
                 if(wca_id == null) {
 

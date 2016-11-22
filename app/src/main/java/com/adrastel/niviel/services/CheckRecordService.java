@@ -15,10 +15,10 @@ import android.support.v7.app.NotificationCompat;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.RecordModel;
+import com.adrastel.niviel.activities.BaseActivity;
 import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.activities.SettingsActivity;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.InboxStyle;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.assets.WcaUrl;
@@ -279,9 +279,9 @@ public class CheckRecordService extends Service {
 
         // Voir le profil
         Intent gotoMainActivity = new Intent(this, MainActivity.class);
-        gotoMainActivity.putExtra(Constants.EXTRAS.FRAGMENT, ProfileFragment.FRAGMENT_TAG);
-        gotoMainActivity.putExtra(Constants.EXTRAS.WCA_ID, follower.wca_id());
-        gotoMainActivity.putExtra(Constants.EXTRAS.USERNAME, follower.name());
+        gotoMainActivity.putExtra(MainActivity.FRAGMENT_DESTINATION, ProfileFragment.FRAGMENT_TAG);
+        gotoMainActivity.putExtra(BaseActivity.WCA_ID, follower.wca_id());
+        gotoMainActivity.putExtra(BaseActivity.USERNAME, follower.name());
 
         PendingIntent gotoMainActivityAction = PendingIntent.getActivity(this, 0, gotoMainActivity, 0);
 

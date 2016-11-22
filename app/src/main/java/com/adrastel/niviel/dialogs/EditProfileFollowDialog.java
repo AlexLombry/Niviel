@@ -9,7 +9,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Constants;
+import com.adrastel.niviel.activities.BaseActivity;
 
 /**
  * Dialogue affiché pour savoir si l'uilisateur veux suivre la personne ou changer de profil à son nom
@@ -23,7 +23,7 @@ public class EditProfileFollowDialog extends DialogFragment {
         EditProfileFollowDialog instance = new EditProfileFollowDialog();
 
         Bundle args = new Bundle();
-        args.putString(Constants.EXTRAS.USERNAME, name);
+        args.putString(BaseActivity.USERNAME, name);
 
         instance.setArguments(args);
 
@@ -36,7 +36,7 @@ public class EditProfileFollowDialog extends DialogFragment {
 
         Bundle args = getArguments();
         if (args != null) {
-            username = args.getString(Constants.EXTRAS.USERNAME, null);
+            username = args.getString(BaseActivity.USERNAME, null);
         }
     }
 

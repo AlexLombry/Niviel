@@ -178,20 +178,11 @@ public class CompetitionAdapter extends BaseExpandableAdapter<Title, Competition
         address += child.getPlace() != null ? child.getPlace() : "";
         address += child.getCountry() != null ? child.getCountry() : "";
 
-        try {
+        Uri uri = Uri.parse("geo:0,0?q=" + address);
 
-            Uri uri = Uri.parse("geo:0,0?q=" + address);
+        Intent goToMaps = new Intent(Intent.ACTION_VIEW, uri);
 
-            Intent goToMaps = new Intent(Intent.ACTION_VIEW, uri);
-
-            getActivity().startActivity(goToMaps);
-        }
-
-        catch (ActivityNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        // todo: utiliser  if (intent.resolveActivity(getPackageManager()) != null)
+        getActivity().startActivity(goToMaps);
     }
 
     private void gotoInternet(Competition child) {

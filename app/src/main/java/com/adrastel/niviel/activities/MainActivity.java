@@ -39,7 +39,6 @@ import android.widget.TextView;
 import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
@@ -69,6 +68,8 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
     // Code de requête pour redemarrer l'activité
     public static final int RESTART_ACTIVITY = 0;
+    public static final String FRAGMENT = "fragment";
+    public static final String FRAGMENT_DESTINATION = "fragment";
 
 
     // Les vues
@@ -160,10 +161,10 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         Sinon lance profileFragment
          */
         if (this.fragment == null) {
-            if (savedInstanceState != null && fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT) != null) {
-                this.fragment = (BaseFragment) fragmentManager.getFragment(savedInstanceState, Constants.STORAGE.FRAGMENT);
+            if (savedInstanceState != null && fragmentManager.getFragment(savedInstanceState, FRAGMENT) != null) {
+                this.fragment = (BaseFragment) fragmentManager.getFragment(savedInstanceState, FRAGMENT);
             } else {
-                this.fragment = ProfileFragment.newInstance(prefId, false);
+                this.fragment = ProfileFragment.newInstance(prefId);
             }
         }
 
@@ -217,7 +218,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
         try {
             if (fragment != null) {
-                fragmentManager.putFragment(outState, Constants.STORAGE.FRAGMENT, fragment);
+                fragmentManager.putFragment(outState, FRAGMENT, fragment);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -410,7 +411,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
         switch (item.getItemId()) {
             case R.id.profile:
-                return ProfileFragment.newInstance(prefId, false);
+                return ProfileFragment.newInstance(prefId);
 
             case R.id.ranking:
                 return RankingFragment.newInstance();
@@ -419,7 +420,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 return CompetitionFragment.newInstance();
 
             case R.id.explore:
-                return ProfileFragment.newInstance(null, null, true);
+                return ProfileFragment.newInstance(null, null);
 
             case R.id.followers:
                 return new FollowerFragment();
@@ -436,7 +437,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 return null;
 
             default:
-                return ProfileFragment.newInstance(prefId, false);
+                return ProfileFragment.newInstance(prefId);
 
         }
     }
@@ -662,17 +663,17 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             }
         } else {
 
-            String fragment_tag = intent.getStringExtra(Constants.EXTRAS.FRAGMENT);
+            String fragment_tag = intent.getStringExtra(FRAGMENT_DESTINATION);
 
             if (fragment_tag != null) {
 
                 switch (fragment_tag) {
 
                     case ProfileFragment.FRAGMENT_TAG:
-                        String wca_id = intent.getStringExtra(Constants.EXTRAS.WCA_ID);
-                        String username = intent.getStringExtra(Constants.EXTRAS.USERNAME);
+                        String wca_id = intent.getStringExtra(BaseActivity.WCA_ID);
+                        String username = intent.getStringExtra(BaseActivity.USERNAME);
 
-                        BaseFragment fragment = ProfileFragment.newInstance(wca_id, username, false);
+                        BaseFragment fragment = ProfileFragment.newInstance(wca_id, username);
                         switchFragment(fragment);
                         break;
                 }
@@ -698,7 +699,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
      */
     private void searchUser(String wca_id, String name) {
 
-        ProfileFragment profileFragment = ProfileFragment.newInstance(wca_id, name, false);
+        ProfileFragment profileFragment = ProfileFragment.newInstance(wca_id, name);
         switchFragment(profileFragment);
 
     }

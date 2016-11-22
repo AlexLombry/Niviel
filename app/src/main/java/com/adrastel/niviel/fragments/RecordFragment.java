@@ -3,8 +3,6 @@ package com.adrastel.niviel.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +11,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.activities.BaseActivity;
 import com.adrastel.niviel.adapters.RecordAdapter;
-import com.adrastel.niviel.assets.Constants;
 import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
@@ -59,7 +57,7 @@ public class RecordFragment extends BaseFragment {
         RecordFragment instance = new RecordFragment();
 
         Bundle args = new Bundle();
-        args.putLong(Constants.EXTRAS.ID , id);
+        args.putLong(BaseActivity.ID , id);
 
         instance.setArguments(args);
 
@@ -72,7 +70,7 @@ public class RecordFragment extends BaseFragment {
         RecordFragment instance = new RecordFragment();
 
         Bundle args = new Bundle();
-        args.putString(Constants.EXTRAS.WCA_ID ,wca_id);
+        args.putString(BaseActivity.WCA_ID ,wca_id);
 
         instance.setArguments(args);
 
@@ -93,9 +91,9 @@ public class RecordFragment extends BaseFragment {
         Bundle arguments = getArguments();
 
         if(arguments != null) {
-            follower_id = arguments.getLong(Constants.EXTRAS.ID, -1);
+            follower_id = arguments.getLong(BaseActivity.ID, -1);
 
-            wca_id = follower_id == -1 ? arguments.getString(Constants.EXTRAS.WCA_ID, null) : null;
+            wca_id = follower_id == -1 ? arguments.getString(BaseActivity.WCA_ID, null) : null;
         }
     }
 

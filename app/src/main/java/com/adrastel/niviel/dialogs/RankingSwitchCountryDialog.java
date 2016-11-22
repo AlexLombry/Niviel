@@ -8,11 +8,11 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Constants;
 
 
 public class RankingSwitchCountryDialog extends DialogFragment {
 
+    public static final String COUNTRY_POSITION = "country_position";
     int position = -1;
     RankingSwitchCountryListener listener;
 
@@ -21,7 +21,7 @@ public class RankingSwitchCountryDialog extends DialogFragment {
         RankingSwitchCountryDialog instance = new RankingSwitchCountryDialog();
 
         Bundle args = new Bundle();
-        args.putInt(Constants.EXTRAS.COUNTRY_POSITION, position);
+        args.putInt(COUNTRY_POSITION, position);
 
         instance.setArguments(args);
         return instance;
@@ -33,7 +33,7 @@ public class RankingSwitchCountryDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        position = getArguments() != null ? getArguments().getInt(Constants.EXTRAS.COUNTRY_POSITION, -1) : null;
+        position = getArguments() != null ? getArguments().getInt(COUNTRY_POSITION, -1) : null;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
 
