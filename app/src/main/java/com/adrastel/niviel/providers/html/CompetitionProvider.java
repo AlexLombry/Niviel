@@ -1,6 +1,5 @@
 package com.adrastel.niviel.providers.html;
 
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.models.readable.competition.Competition;
 import com.adrastel.niviel.models.writeable.BufferCompetition;
 
@@ -14,7 +13,6 @@ public class CompetitionProvider {
 
     public static String IN_PROGRESS = "in-progress-comps";
     public static String UPCOMING_COMPS = "upcoming-comps";
-    public static String PAST_COMPS = "past-comps";
 
     public static ArrayList<Competition> getCompetition(Document document, String type) {
 
@@ -64,24 +62,13 @@ public class CompetitionProvider {
         String country = competition_infos.child(1).text();
 
         String place = competition_infos.child(2).text();
-        String place_link;
-        try {
-            place_link = competition_infos.children().last().child(0).child(0).attr("href");
-        }
-        catch (Exception e) {
-            Log.e("No link place");
-            place_link = null;
-        }
 
         bufferCompetition
                 .setDate(date)
                 .setCompetition(competition)
                 .setCompetition_link(competition_link)
                 .setCountry(country)
-                // todo changer ça
-                .setTown(null)
-                .setPlace(place)
-                .setPlace_link(place_link);
+                .setPlace(place);
 
 
         return bufferCompetition;

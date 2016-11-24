@@ -7,6 +7,7 @@ public class Log {
     public static void d(String message) {
         android.util.Log.d(TAG, message);
     }
+    @SuppressWarnings("SameParameterValue")
     public static void d(String tag, String message) {
         android.util.Log.d(TAG, tag + ": " + message);
     }

@@ -58,7 +58,7 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         public EventViewHolder(View itemView) {
             super(itemView);
 
-            place = (CircleView) itemView.findViewById(R.id.list_place);
+            place = (CircleView) itemView.findViewById(R.id.place);
             title = (TextView) itemView.findViewById(R.id.first_line);
             results = (TextView) itemView.findViewById(R.id.second_line);
             more = (ImageButton) itemView.findViewById(R.id.more);
@@ -82,7 +82,7 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         public HistoryViewHolder(View itemView) {
             super(itemView);
 
-            place = (CircleView) itemView.findViewById(R.id.list_place);
+            place = (CircleView) itemView.findViewById(R.id.place);
             competition = (TextView) itemView.findViewById(R.id.first_line);
             results = (TextView) itemView.findViewById(R.id.second_line);
             more = (ImageButton) itemView.findViewById(R.id.more);

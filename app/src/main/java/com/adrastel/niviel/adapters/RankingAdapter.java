@@ -246,7 +246,7 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
     // Le view holder qui contient toutes les infos
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.list_place) CircleView rank;
+        @BindView(R.id.place) CircleView rank;
         @BindView(R.id.first_line) TextView person;
         @BindView(R.id.second_line) TextView result;
         @BindView(R.id.more) ImageButton more;

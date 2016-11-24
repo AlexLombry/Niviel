@@ -106,6 +106,7 @@ public class CheckRecordService extends Service {
         return START_NOT_STICKY;
     }
 
+    @SuppressWarnings("deprecation")
     private void compareRecords(Follower follower, ArrayList<Record> oldRecords, ArrayList<com.adrastel.niviel.models.readable.Record> newRecords) {
 
         // si la taille est la meme et que l'event est le meme

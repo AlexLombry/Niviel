@@ -1,12 +1,12 @@
 package com.adrastel.niviel.adapters;
 
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.PopupMenu;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +26,6 @@ import com.adrastel.niviel.views.CircleView;
 import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class CompetitionAdapter extends BaseExpandableAdapter<Title, Competition, CompetitionAdapter.TitleViewHolder, CompetitionAdapter.CompetitionViewHolder> {
@@ -51,7 +50,7 @@ public class CompetitionAdapter extends BaseExpandableAdapter<Title, Competition
         public TitleViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            place = (CircleView) itemView.findViewById(R.id.list_place);
+            place = (CircleView) itemView.findViewById(R.id.place);
             title = (TextView) itemView.findViewById(R.id.first_line);
             results = (TextView) itemView.findViewById(R.id.second_line);
             more = (ImageButton) itemView.findViewById(R.id.more);
@@ -62,7 +61,6 @@ public class CompetitionAdapter extends BaseExpandableAdapter<Title, Competition
 
     static class CompetitionViewHolder extends ChildViewHolder<Competition> {
 
-        public CircleView place;
         public TextView competition;
         public TextView location;
         public ImageButton more;
@@ -71,7 +69,6 @@ public class CompetitionAdapter extends BaseExpandableAdapter<Title, Competition
         public CompetitionViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            place = (CircleView) itemView.findViewById(R.id.list_place);
             competition = (TextView) itemView.findViewById(R.id.first_line);
             location = (TextView) itemView.findViewById(R.id.second_line);
             more = (ImageButton) itemView.findViewById(R.id.more);
@@ -90,7 +87,7 @@ public class CompetitionAdapter extends BaseExpandableAdapter<Title, Competition
     @NonNull
     @Override
     public CompetitionViewHolder onCreateChildViewHolder(@NonNull ViewGroup childViewGroup, int viewType) {
-        View childView = inflater.inflate(R.layout.adapter_list_avatar, childViewGroup, false);
+        View childView = inflater.inflate(R.layout.adapter_list, childViewGroup, false);
 
         return new CompetitionViewHolder(childView);
     }
@@ -105,26 +102,25 @@ public class CompetitionAdapter extends BaseExpandableAdapter<Title, Competition
         parentViewHolder.more.setVisibility(View.GONE);
         TextView title = parentViewHolder.title;
         title.setText(parent.getTitle());
-        title.setPadding(Assets.dpToPx(getActivity(), 20), 0, 0, 0);
+        title.setPadding(Assets.dpToPx(getActivity(), 10), 10, 0, 0);
         title.setTextSize(Assets.spToPx(getActivity(), 12));
+        title.setGravity(Gravity.CENTER_HORIZONTAL);
 
         title.setTextAppearance(getActivity(), R.style.TextAppearance_AppCompat_Large);
 
         ImageView cube = parentViewHolder.cube;
         cube.setVisibility(View.VISIBLE);
-
         cube.setImageResource(R.drawable.ic_competition_black);
-        cube.setColorFilter(0x00000000);
 
     }
 
     @Override
     public void onBindChildViewHolder(@NonNull CompetitionViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull final Competition child) {
 
-        childViewHolder.place.setVisibility(View.INVISIBLE);
-
         childViewHolder.competition.setText(getActivity().getString(R.string.string_details_string, child.getCompetition(), child.getDate()));
         childViewHolder.location.setText(child.getCountry());
+
+        childViewHolder.root.setBackgroundColor(Assets.getColor(getActivity(), R.color.background_child_expanded_recycler_view));
 
 
         childViewHolder.more.setOnClickListener(new View.OnClickListener() {

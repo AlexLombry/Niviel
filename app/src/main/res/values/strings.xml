@@ -10,7 +10,6 @@
     -->
     <!-- Personal -->
     <string name="app_name" translatable="false"><xliff:g id="app_name">Niviel</xliff:g></string>
-    <string name="author" translatable="false"><xliff:g id="author">Herel Adrastel</xliff:g></string>
     <string name="email" translatable="false"><xliff:g id="email">herel.dev@gmail.com</xliff:g></string>
     <string name="wca" translatable="false"><xliff:g>WCA</xliff:g></string>
 
@@ -56,7 +55,6 @@
     <string name="two_infos"><xliff:g>%1$s (%2$s)</xliff:g></string>
     <string name="switch_cube">Changer de cube</string>
     <string name="switch_country">Changer de pays</string>
-    <string name="share_ranking"><xliff:g id="name">%1$s</xliff:g>: classé n°<xliff:g id="rank">%2$s</xliff:g> avec un temps de <xliff:g id="time">%3$s</xliff:g></string>
 
     <!-- Followers -->
     <string name="follow">Suivre</string>
@@ -65,7 +63,6 @@
 
     <!-- Profile -->
     <string name="profile">Profil</string>
-    <string name="wca_id">Identifiant WCA</string>
     <string name="edit_profile">Changer de profil</string>
     <string name="toast_switch_profile_confirmation">Votre profil est maintenant au nom de <xliff:g id="name">%1$s</xliff:g></string>
     <string name="toast_follow_confirmation">Vous suivez <xliff:g id="name">%1$s</xliff:g></string>
@@ -76,8 +73,6 @@
         <xliff:g>\n\t-</xliff:g>Suivre <xliff:g id="name">%1$s</xliff:g> et être informé si il obtient de nouveaux records.
         <xliff:g>\n\t-</xliff:g>Changer de profil et assigner votre profil personnel au nom de <xliff:g id="name">%1$s</xliff:g>.
     </string>
-    <string name="toast_edit_profile_success">Le changement de profil a bien été effectué</string>
-    <string name="toast_edit_profile_failure">Une erreur est survenue lors du changement de profil</string>
 
     <!-- User -->
     <string name="gender">Genre</string>
@@ -111,9 +106,7 @@
     <string name="error_activity">Aucune application disponible pour effectuer cette action</string>
     <string name="error_connection">Veuillez vous connecter à internet</string>
     <string name="err_loading">Erreur de chargement<xliff:g>\n\n :-(</xliff:g></string>
-    <string name="err_server">Erreur interne du serveur</string>
     <string name="error_interpretation_html">Erreur d\'interpretation du code HTML</string>
-    <string name="wrong_wca_id">Identifiant WCA erroné</string>
     <string name="unknown_error">Erreur inconnue</string>
     <string name="no_followers">Vous ne suivez personne</string>
 
@@ -185,39 +178,25 @@
     <string name="cancel">Annuler</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
-    <string name="refresh">Rafraichir</string>
     <string name="more_info">Plus d\'infos</string>
     <string name="share">Partager</string>
     <string name="details">Détails</string>
     <string name="about">À propos</string>
-    <string name="report_bug">Signaler un bug</string>
-    <string name="report_err_trad">Signaler une erreur de traduction</string>
-    <string name="rate">Évaluer</string>
     <string name="contact">Contact</string>
     <string name="goto_internet">Voir le site web</string>
-    <string name="check_records">Vérifier les records</string>
-    <string name="confirm">Confirmer</string>
     <string name="toast_adding">Ajout en cours</string>
     <string name="goto_maps">Voir sur la carte</string>
 
     <!-- Send mail -->
-    <string name="send">Envoyer</string>
     <string name="mail_subject" translatable="false"><xliff:g id="mail_title">Feedback</xliff:g></string>
     <string name="mail_body" translatable="false"><xliff:g>\n\nSend from: %1$s\nAndroid version: %2$s (%3$d)\nApplication Version %4$s (%5$d)</xliff:g></string>
 
     <!-- Others -->
     <string name="zero" translatable="false">0</string>
-    <string name="no_title" translatable="false"/>
-    <string name="private_policy">Politique de confidentialité</string>
     <string name="intro">Introduction</string>
 
 
     <!-- Notification -->
-    <string name="notif_single">single</string>
-    <string name="notif_average">average</string>
-    <string name="notif_country">national</string>
-    <string name="notif_continent">continental</string>
-    <string name="notif_world">mondial</string>
 
     <string name="notif_new_single">Single battu: <xliff:g id="time">%1$s</xliff:g></string>
     <string name="notif_new_average">Average battu: <xliff:g id="time">%1$s</xliff:g></string>

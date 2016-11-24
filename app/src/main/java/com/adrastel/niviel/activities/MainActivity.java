@@ -201,9 +201,9 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             }
         });
 
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-
     }
+
+    // todo : resoudre les probleme de density independant folder
 
 
 

@@ -36,7 +36,7 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.list_place) CircleView place;
+        @BindView(R.id.place) CircleView place;
         @BindView(R.id.first_line) TextView firstLine;
         @BindView(R.id.second_line) TextView secondLine;
         @BindView(R.id.more) ImageButton more;

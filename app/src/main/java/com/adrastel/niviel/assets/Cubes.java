@@ -36,6 +36,7 @@ public class Cubes {
 
     /**
      * Retourne une image en fonction d'un nombre
+     *
      * @param i type du cube
      * @return drawable
      */
@@ -57,7 +58,7 @@ public class Cubes {
      */
     public static int getImage(String event) {
 
-        switch(event.toLowerCase()) {
+        switch (event.toLowerCase()) {
             case "2x2 cube":
                 return R.drawable.cube_2x2;
 
@@ -102,6 +103,7 @@ public class Cubes {
 
     /**
      * Retourne l'id du cube (utilisé pour trier les cubes) Si ne connais pas, retourne le plus gros nombre
+     *
      * @param event event
      * @return id
      */
@@ -114,9 +116,9 @@ public class Cubes {
                 "Rubik's Magic", "Master Magic"
         };
 
-        for(int i = 0; i < cubes.length; i++) {
+        for (int i = 0; i < cubes.length; i++) {
 
-            if(event.equalsIgnoreCase(cubes[i]))
+            if (event.equalsIgnoreCase(cubes[i]))
                 return i;
 
         }
@@ -127,6 +129,7 @@ public class Cubes {
     /**
      * Retourne le tag qui permet d'avoir l'url
      * https://www.worldcubeassociation.org/results/events.php
+     *
      * @param position position dans la liste
      * @return tag
      */

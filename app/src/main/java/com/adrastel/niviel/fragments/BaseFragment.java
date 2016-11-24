@@ -37,9 +37,9 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    protected Snackbar makeSnackbar(@StringRes int resId, int duration) {
+    protected Snackbar makeSnackbar(@StringRes int resId) {
         if(activity != null && activity.getCoordinatorLayout() != null) {
-            snackbar = Snackbar.make(activity.getCoordinatorLayout(), resId, duration);
+            snackbar = Snackbar.make(activity.getCoordinatorLayout(), resId, Snackbar.LENGTH_INDEFINITE);
             return snackbar;
         }
 

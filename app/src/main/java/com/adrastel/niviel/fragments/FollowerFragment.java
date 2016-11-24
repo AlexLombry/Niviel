@@ -2,7 +2,6 @@ package com.adrastel.niviel.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -92,7 +91,7 @@ public class FollowerFragment extends BaseFragment {
         recyclerView.setAdapter(adapter);
 
         if(followers.size() == 0) {
-            makeSnackbar(R.string.no_followers, Snackbar.LENGTH_INDEFINITE).show();
+            makeSnackbar(R.string.no_followers).show();
         }
 
         Tracker tracker = activity.getDefaultTracker();

@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatDelegate;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.database.DatabaseHelper;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 

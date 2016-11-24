@@ -2,8 +2,6 @@ package com.adrastel.niviel.assets;
 
 import android.net.Uri;
 
-import com.adrastel.niviel.R;
-
 import java.util.ArrayList;
 
 import okhttp3.HttpUrl;

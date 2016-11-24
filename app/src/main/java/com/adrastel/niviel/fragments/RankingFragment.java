@@ -2,7 +2,6 @@ package com.adrastel.niviel.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -135,7 +134,7 @@ public class RankingFragment extends BaseFragment {
 
         else {
             recyclerView.showEmpty();
-            makeSnackbar(R.string.error_connection, Snackbar.LENGTH_INDEFINITE).show();
+            makeSnackbar(R.string.error_connection).show();
         }
 
 

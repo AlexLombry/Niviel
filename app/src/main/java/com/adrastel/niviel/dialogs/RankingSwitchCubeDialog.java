@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.fragments.RankingFragment;
 
 public class RankingSwitchCubeDialog extends DialogFragment {
 

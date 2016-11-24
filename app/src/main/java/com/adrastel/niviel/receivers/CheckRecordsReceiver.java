@@ -6,7 +6,6 @@ import android.content.Intent;
 
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.services.CheckRecordService;
-import com.google.android.gms.analytics.HitBuilders;
 
 public class CheckRecordsReceiver extends BroadcastReceiver {
     @Override

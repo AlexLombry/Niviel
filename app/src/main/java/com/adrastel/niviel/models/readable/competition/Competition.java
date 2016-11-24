@@ -12,24 +12,17 @@ public class Competition extends BaseModel implements Parcelable {
     protected String competition;
     protected String competition_link;
     protected String country;
-    protected String town;
     protected String place;
-    protected String place_link;
-    protected int type;
 
-    public Competition() {
-
+    protected Competition() {
     }
 
-    protected Competition(Parcel in) {
+    private Competition(Parcel in) {
         date = in.readString();
         competition = in.readString();
         competition_link = in.readString();
         country = in.readString();
-        town = in.readString();
         place = in.readString();
-        place_link = in.readString();
-        type = in.readInt();
     }
 
     public static final Creator<Competition> CREATOR = new Creator<Competition>() {
@@ -60,31 +53,10 @@ public class Competition extends BaseModel implements Parcelable {
         return country;
     }
 
-    public String getTown() {
-        return town;
-    }
-
     public String getPlace() {
         return place;
     }
 
-    public String getPlace_link() {
-        return place_link;
-    }
-
-    @Override
-    public String toString() {
-        return "Competition{" +
-                "location='" + date + '\'' +
-                ", competition='" + competition + '\'' +
-                ", competition_link='" + competition_link + '\'' +
-                ", country='" + country + '\'' +
-                ", town='" + town + '\'' +
-                ", place='" + place + '\'' +
-                ", place_link='" + place_link + '\'' +
-                ", type=" + type +
-                '}';
-    }
 
     @Override
     public int describeContents() {
@@ -97,9 +69,6 @@ public class Competition extends BaseModel implements Parcelable {
         parcel.writeString(competition);
         parcel.writeString(competition_link);
         parcel.writeString(country);
-        parcel.writeString(town);
         parcel.writeString(place);
-        parcel.writeString(place_link);
-        parcel.writeInt(type);
     }
 }

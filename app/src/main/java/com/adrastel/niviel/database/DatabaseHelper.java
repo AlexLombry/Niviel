@@ -251,7 +251,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    // todo: changer ça
     public void updateRecord(long follower_id, String event, ContentValues contentValues) {
 
         try {

@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.TypedValue;
-import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.database.DatabaseHelper;
@@ -36,6 +35,7 @@ public class Assets {
         return "<strong>" + text + "</strong>";
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static int dpToPx(Context context, int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
