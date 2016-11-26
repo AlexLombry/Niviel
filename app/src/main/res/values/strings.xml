@@ -38,6 +38,7 @@
     <string name="record_nr">Classement national: <xliff:g id="rank">%1$s</xliff:g></string>
     <string name="record_cr">Classement continental: <xliff:g id="rank">%1$s</xliff:g></string>
     <string name="record_wr">Classement mondial: <xliff:g id="rank">%1$s</xliff:g></string>
+    <string name="online">En ligne</string>
 
     <!-- History -->
     <string name="event">Évenement</string>

@@ -45,6 +45,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
         @BindView(R.id.record) TextView single;
         @BindView(R.id.cube_image) ImageView image;
         @BindView(R.id.more_info) Button more_info;
+        @BindView(R.id.share) Button share;
         @BindView(R.id.card) CardView card;
 
 
@@ -81,11 +82,12 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
                 Resources resources = getActivity().getResources();
 
+                holder.image.setVisibility(View.GONE);
+
                 holder.event.setText(getActivity().getString(R.string.two_infos, user.getName(), user.getWca_id()));
                 holder.event.setTextSize(Assets.spToPx(getActivity(), 9));
-                holder.event.setGravity(Gravity.CENTER);
-                holder.more_info.setText(R.string.wca);
 
+                holder.more_info.setText(R.string.online);
                 holder.more_info.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -118,12 +120,10 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
                 holder.single.setText(detailsMaker.build());
 
-                holder.image.setImageResource(R.drawable.ic_share);
-                holder.image.setClickable(true);
-                holder.image.setOnClickListener(new View.OnClickListener() {
+                holder.share.setVisibility(View.VISIBLE);
+                holder.share.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         String url = new WcaUrl()
                                 .profile(user.getWca_id())
                                 .toString();
@@ -133,9 +133,10 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                         share.putExtra(Intent.EXTRA_TEXT, url);
 
                         getActivity().startActivity(Intent.createChooser(share, getString(R.string.share)));
-
                     }
                 });
+
+
 
             }
 
@@ -156,6 +157,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
             holder.image.setClickable(false);
             holder.image.setOnClickListener(null);
             holder.more_info.setText(R.string.more_info);
+            holder.share.setVisibility(View.GONE);
 
             DetailsMaker detailsMaker = new DetailsMaker(getActivity());
 

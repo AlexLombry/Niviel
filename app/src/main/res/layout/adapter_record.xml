@@ -48,18 +48,38 @@
                         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                         android:text="@string/zero"/>
 
-                    <Button
-                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/more_info"
-                        android:textColor="@color/colorAccent"
-                        android:layout_gravity="start"
-                        android:gravity="center_vertical|left"
-                        android:layout_marginTop="8dp"
-                        android:paddingLeft="0dp"
-                        android:paddingTop="8dp"
-                        android:id="@+id/more_info"/>
+                        android:orientation="horizontal">
+                        <Button
+                            style="@style/Base.Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/more_info"
+                            android:textColor="@color/colorAccent"
+                            android:layout_gravity="start"
+                            android:gravity="center"
+                            android:layout_marginTop="8dp"
+                            android:paddingLeft="0dp"
+                            android:paddingRight="0dp"
+                            android:paddingTop="8dp"
+                            android:id="@+id/more_info"/>
+
+                        <Button
+                            style="@style/Base.Widget.AppCompat.Button.Borderless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/share"
+                            android:textColor="@color/colorAccent"
+                            android:layout_gravity="start"
+                            android:gravity="center"
+                            android:visibility="gone"
+                            android:layout_marginTop="8dp"
+                            android:paddingLeft="0dp"
+                            android:paddingTop="8dp"
+                            android:id="@+id/share"/>
+                    </LinearLayout>
 
 
                 </LinearLayout>
