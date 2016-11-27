@@ -18,13 +18,26 @@ import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.views.CircleView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
+public class FollowerAdapter extends BaseAdapter<RecyclerView.ViewHolder> {
+
+    public static final int CONTENT_TYPE = 0;
+    public static final int AD_TYPE = 1;
+
+    public static final int DIVIDER = 6;
+
+    /**
+     * Number of ads
+     */
+    private int ad_count = 0;
 
     private ArrayList<Follower> followers;
 
@@ -32,9 +45,11 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
     public FollowerAdapter(FragmentActivity activity, ArrayList<Follower> followers) {
         super(activity);
         this.followers = followers;
+
+        ad_count = (int) Math.ceil(this.followers.size() / DIVIDER);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class FollowerHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.place) CircleView place;
         @BindView(R.id.first_line) TextView firstLine;
@@ -42,50 +57,96 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
         @BindView(R.id.more) ImageButton more;
         @BindView(R.id.root_layout) LinearLayout click_area;
 
-        public ViewHolder(View view) {
+        public FollowerHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
     }
 
+    public class AdHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.adview) AdView adView;
+        public AdHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
+
+
+
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public int getItemViewType(int position) {
+        if(position % DIVIDER == 0) {
+            return AD_TYPE;
+        }
+
+        return CONTENT_TYPE;
+    }
+
+    @Override
+    public RecyclerView.ViewHolder   onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        View view = inflater.inflate(R.layout.adapter_list_avatar, parent, false);
+        if(viewType == AD_TYPE) {
+            View view = inflater.inflate(R.layout.ad_view, parent, false);
+            return new AdHolder(view);
+        }
 
-        return new ViewHolder(view);
+        else {
+            View view = inflater.inflate(R.layout.adapter_list_avatar, parent, false);
+
+            return new FollowerHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        final Follower follower = followers.get(position);
+    public void onBindViewHolder(RecyclerView.ViewHolder recyclerHolder, int position) {
 
-        holder.firstLine.setText(follower.name());
-        holder.secondLine.setText(follower.wca_id());
-        holder.place.setBackground(Assets.getColor(getActivity(), R.color.green_300));
-        holder.place.setText(String.valueOf(position + 1));
+        if(recyclerHolder instanceof AdHolder) {
 
-        holder.click_area.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ProfileFragment profileFragment = ProfileFragment.newInstance(follower._id());
+            AdHolder holder = (AdHolder) recyclerHolder;
 
-                getActivity().switchFragment(profileFragment);
+
+            try {
+                MobileAds.initialize(getActivity(), "ca-app-pub-4938379788839148/5583565117");
+
+                AdRequest adRequest = new AdRequest.Builder().addTestDevice("60C90B1288225E9B7FDB8AB3972CC7E5").build();
+                holder.adView.loadAd(adRequest);
             }
-        });
+            catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        if(Assets.isPersonal(getActivity(), follower._id())) {
-            holder.click_area.setBackgroundResource(R.color.background_personal_follower);
-            holder.more.setVisibility(View.INVISIBLE);
-        }
-        else {
-            loadMenu(holder, follower);
+
+        } else if(recyclerHolder instanceof FollowerHolder) {
+            FollowerHolder holder = (FollowerHolder) recyclerHolder;
+
+            final Follower follower = followers.get(position);
+
+            holder.firstLine.setText(follower.name());
+            holder.secondLine.setText(follower.wca_id());
+            holder.place.setBackground(Assets.getColor(getActivity(), R.color.green_300));
+            holder.place.setText(String.valueOf(position + 1));
+
+            holder.click_area.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ProfileFragment profileFragment = ProfileFragment.newInstance(follower._id());
+
+                    getActivity().switchFragment(profileFragment);
+                }
+            });
+
+            if (Assets.isPersonal(getActivity(), follower._id())) {
+                holder.click_area.setBackgroundResource(R.color.background_personal_follower);
+                holder.more.setVisibility(View.INVISIBLE);
+            } else {
+                loadMenu(holder, follower);
+            }
         }
 
     }
 
-    private void loadMenu(ViewHolder holder, final Follower follower) {
+    private void loadMenu(FollowerHolder holder, final Follower follower) {
 
         holder.more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +185,6 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return followers.size();
+        return followers.size() + ad_count;
     }
 }

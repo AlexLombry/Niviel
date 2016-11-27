@@ -47,6 +47,9 @@ import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.services.EditRecordService;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 
 import butterknife.BindView;
@@ -201,10 +204,10 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             }
         });
 
+
     }
 
     // todo : resoudre les probleme de density independant folder
-
 
 
     /**
