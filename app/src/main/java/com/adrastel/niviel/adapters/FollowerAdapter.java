@@ -1,6 +1,8 @@
 package com.adrastel.niviel.adapters;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -19,10 +21,11 @@ import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.views.CircleView;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.NativeExpressAdView;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +43,8 @@ public class FollowerAdapter extends BaseAdapter<RecyclerView.ViewHolder> {
     private int ad_count = 0;
 
     private ArrayList<Follower> followers;
+
+    final Handler handler = new Handler(Looper.getMainLooper());
 
 
     public FollowerAdapter(FragmentActivity activity, ArrayList<Follower> followers) {
@@ -64,7 +69,7 @@ public class FollowerAdapter extends BaseAdapter<RecyclerView.ViewHolder> {
     }
 
     public class AdHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.adview) AdView adView;
+        @BindView(R.id.adview) NativeExpressAdView adView;
         public AdHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -83,7 +88,7 @@ public class FollowerAdapter extends BaseAdapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public RecyclerView.ViewHolder   onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
         if(viewType == AD_TYPE) {
@@ -101,23 +106,33 @@ public class FollowerAdapter extends BaseAdapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder recyclerHolder, int position) {
 
-        if(recyclerHolder instanceof AdHolder) {
+        if(recyclerHolder != null &&recyclerHolder instanceof AdHolder) {
 
-            AdHolder holder = (AdHolder) recyclerHolder;
-
+            final AdHolder holder = (AdHolder) recyclerHolder;
 
             try {
-                MobileAds.initialize(getActivity(), "ca-app-pub-4938379788839148/5583565117");
 
-                AdRequest adRequest = new AdRequest.Builder().addTestDevice("60C90B1288225E9B7FDB8AB3972CC7E5").build();
-                holder.adView.loadAd(adRequest);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        MobileAds.initialize(getActivity(), "ca-app-pub-4938379788839148~5723165913");
+
+                        AdRequest adRequest = new AdRequest.Builder()
+                                .addTestDevice("60C90B1288225E9B7FDB8AB3972CC7E5")
+                                .setBirthday(new GregorianCalendar(2000, 1, 1).getTime())
+                                .setGender(AdRequest.GENDER_MALE)
+                                .tagForChildDirectedTreatment(true)
+                                .build();
+                        holder.adView.loadAd(adRequest);
+                    }
+                }, 2000);
+
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
 
-
-        } else if(recyclerHolder instanceof FollowerHolder) {
+        } else if(recyclerHolder != null && recyclerHolder instanceof FollowerHolder) {
             FollowerHolder holder = (FollowerHolder) recyclerHolder;
 
             final Follower follower = followers.get(position);

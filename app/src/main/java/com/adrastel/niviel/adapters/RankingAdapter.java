@@ -29,7 +29,7 @@ import com.adrastel.niviel.views.CircleView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Ranking> {
+public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Ranking> implements AdInterface {
 
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
