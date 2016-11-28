@@ -135,7 +135,7 @@ public class FollowerAdapter extends BaseAdapter<RecyclerView.ViewHolder> {
         } else if(recyclerHolder != null && recyclerHolder instanceof FollowerHolder) {
             FollowerHolder holder = (FollowerHolder) recyclerHolder;
 
-            final Follower follower = followers.get(position);
+            final Follower follower = followers.get(position - (position / DIVIDER));
 
             holder.firstLine.setText(follower.name());
             holder.secondLine.setText(follower.wca_id());

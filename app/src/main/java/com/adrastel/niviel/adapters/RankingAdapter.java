@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
@@ -25,12 +27,22 @@ import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.services.EditRecordService;
 import com.adrastel.niviel.views.CircleView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Ranking> implements AdInterface {
+public class RankingAdapter extends WebAdapter<RecyclerView.ViewHolder, Ranking> implements AdInterface {
 
+
+    private int adCount = 0;
+    private final static int CONTENT_TYPE = 0;
+
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -54,7 +66,6 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
 
     public RankingAdapter(FragmentActivity activity) {
         super(activity);
-
     }
 
     public void onResume() {
@@ -66,70 +77,124 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
     }
 
     @Override
-    public RankingAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        View view = inflater.inflate(R.layout.adapter_list_avatar, parent, false);
 
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(final RankingAdapter.ViewHolder holder, int position) {
-
-        final Ranking ranking = getDatas().get(position);
-
-        final String rank = ranking.getRank();
-        final String person = ranking.getPerson();
-        final String result = ranking.getResult();
-        final String details = ranking.getDetails();
-
-        holder.rank.setText(rank);
-        holder.person.setText(person);
-
-        if(isSingle) {
-            holder.result.setText(result);
+        if(viewType == AD_TYPE) {
+            View view = inflater.inflate(R.layout.ad_view, parent, false);
+            return new AdHolder(view);
         }
 
         else {
+            View view = inflater.inflate(R.layout.adapter_list_avatar, parent, false);
 
-            holder.result.setText(Assets.formatHtmlAverageDetails(result, details));
-
+            return new ViewHolder(view);
         }
+    }
 
-        final boolean isFollowing = Assets.isFollowing(getActivity(), ranking.getWca_id());
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder recyclerHolder, int position) {
 
-        // Actualise le circle view
-        invalidateCircleView(holder.rank, isFollowing);
+        if(recyclerHolder != null && recyclerHolder instanceof AdHolder) {
 
-        // charge le menu
-        holder.more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadMenu(view, holder, ranking);
+            final AdHolder holder = (AdHolder) recyclerHolder;
+
+            try {
+
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        MobileAds.initialize(getActivity(), "ca-app-pub-4938379788839148~5723165913");
+
+                        AdRequest adRequest = new AdRequest.Builder()
+                                .addTestDevice("60C90B1288225E9B7FDB8AB3972CC7E5")
+                                .setBirthday(new GregorianCalendar(2000, 1, 1).getTime())
+                                .setGender(AdRequest.GENDER_MALE)
+                                .tagForChildDirectedTreatment(true)
+                                .build();
+                        holder.adView.loadAd(adRequest);
+                    }
+                }, 2000);
+
             }
-        });
-
-        holder.click_area.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gotoProfile(ranking);
+            catch (Exception e) {
+                e.printStackTrace();
             }
-        });
+        }
+        else if(recyclerHolder != null && recyclerHolder instanceof ViewHolder) {
+            final ViewHolder holder = (ViewHolder) recyclerHolder;
 
-        holder.click_area.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                loadMenu(view, holder, ranking);
-                return true;
+            final Ranking ranking = getDatas().get((int) (position - Math.ceil(position / DIVIDER)));
+
+            final String rank = ranking.getRank();
+            final String person = ranking.getPerson();
+            final String result = ranking.getResult();
+            final String details = ranking.getDetails();
+
+            holder.rank.setText(rank);
+            holder.person.setText(person);
+
+            if (isSingle) {
+                holder.result.setText(result);
+            } else {
+
+                holder.result.setText(Assets.formatHtmlAverageDetails(result, details));
+
             }
-        });
+
+            final boolean isFollowing = Assets.isFollowing(getActivity(), ranking.getWca_id());
+
+            // Actualise le circle view
+            invalidateCircleView(holder.rank, isFollowing);
+
+            // charge le menu
+            holder.more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    loadMenu(view, holder, ranking);
+                }
+            });
+
+            holder.click_area.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    gotoProfile(ranking);
+                }
+            });
+
+            holder.click_area.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    loadMenu(view, holder, ranking);
+                    return true;
+                }
+            });
+        }
+    }
+
+    @Override
+    public void refreshData(ArrayList<Ranking> datas) {
+        adCount = (int) Math.ceil(datas.size() / DIVIDER);
+        super.refreshData(datas);
     }
 
     @Override
     public int getItemCount() {
-        return getDatas().size();
+        return getDatas().size() + adCount;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(position % DIVIDER == 0) {
+            return AD_TYPE;
+        }
+
+        else {
+            return CONTENT_TYPE;
+        }
     }
 
     public void setSingle(boolean single) {
