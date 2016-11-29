@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.adrastel.niviel.BuildConfig;
@@ -16,6 +17,7 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.adapters.FollowerAdapter;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
+import com.adrastel.niviel.views.RecyclerViewCompat;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -29,9 +31,10 @@ import butterknife.Unbinder;
 public class FollowerFragment extends BaseFragment {
 
 
-    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.recycler_view) RecyclerViewCompat recyclerView;
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.empty_view) TextView emptyView;
 
     private Unbinder unbinder;
 
@@ -45,8 +48,11 @@ public class FollowerFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        progressBar.setVisibility(View.GONE);
-        swipeRefreshLayout.setEnabled(false);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.initRecyclerViewCompat(swipeRefreshLayout, progressBar, emptyView);
+
+        recyclerView.hideAll();
 
         return view;
     }
@@ -84,14 +90,13 @@ public class FollowerFragment extends BaseFragment {
         }
 
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         FollowerAdapter adapter = new FollowerAdapter(getActivity(), followers);
         recyclerView.setAdapter(adapter);
+        recyclerView.showRecycler();
 
         if(followers.size() == 0) {
-            makeSnackbar(R.string.no_followers).show();
+            emptyView.setText(R.string.no_followers);
+            recyclerView.showEmpty();
         }
 
         Tracker tracker = activity.getDefaultTracker();

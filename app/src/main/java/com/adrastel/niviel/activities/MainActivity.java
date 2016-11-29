@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -27,7 +26,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -62,10 +60,6 @@ import de.cketti.mailto.EmailIntentBuilder;
 public class MainActivity extends BaseActivity implements DrawerLayout.DrawerListener {
 
 
-    // L'indentifiant du receiver
-    public static final String ACTIVITY_RECEIVER = "activity_receiver";
-    public static final String ACTIVITY_RECEIVER_ACTION = "activity_receiver_action";
-
     // Code de requête pour redemarrer l'activité
     public static final int RESTART_ACTIVITY = 0;
     public static final String FRAGMENT = "fragment";
@@ -77,7 +71,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.navigation_view) NavigationView navigationView;
-    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
     private MenuItem searchMenuItem;
 
@@ -103,6 +96,10 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             switch (intent.getIntExtra(EditRecordService.ACTION, EditRecordService.ADD_RECORD_FAILURE)) {
 
                 case EditRecordService.ADD_RECORD_SUCCESS:
+                    updateUiOnProfileChange();
+                    break;
+
+                case EditRecordService.ADD_RECORD_FAILURE:
                     updateUiOnProfileChange();
                     break;
             }
@@ -406,7 +403,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
      */
     @Nullable
     private BaseFragment selectDrawerItem(MenuItem item) {
-
+        // todo : si on selectionne un item déja selectionné, on ne fait rien
         tabLayout.setVisibility(View.GONE);
 
         switch (item.getItemId()) {
@@ -545,15 +542,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         if (actionBar != null) {
             actionBar.setSubtitle(subtitle);
         }
-    }
-
-    /**
-     * Retourne le coordinatorLayout
-     *
-     * @return coordinatorLayout
-     */
-    public CoordinatorLayout getCoordinatorLayout() {
-        return coordinatorLayout;
     }
 
     /**

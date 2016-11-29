@@ -16,7 +16,6 @@ import com.adrastel.niviel.assets.Assets;
 public abstract class BaseFragment extends Fragment {
     public abstract int getStyle();
 
-    private Snackbar snackbar;
     protected ConnectivityManager connectivityManager;
     protected SharedPreferences preferences;
     protected MainActivity activity;
@@ -34,23 +33,6 @@ public abstract class BaseFragment extends Fragment {
 
         catch (ClassCastException e) {
             e.printStackTrace();
-        }
-    }
-
-    protected Snackbar makeSnackbar(@StringRes int resId) {
-        if(activity != null && activity.getCoordinatorLayout() != null) {
-            snackbar = Snackbar.make(activity.getCoordinatorLayout(), resId, Snackbar.LENGTH_INDEFINITE);
-            return snackbar;
-        }
-
-        return null;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if(snackbar != null) {
-            snackbar.dismiss();
         }
     }
 

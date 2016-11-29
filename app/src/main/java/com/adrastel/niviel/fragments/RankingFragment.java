@@ -134,7 +134,6 @@ public class RankingFragment extends BaseFragment {
 
         else {
             recyclerView.showEmpty();
-            makeSnackbar(R.string.error_connection).show();
         }
 
 
