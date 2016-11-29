@@ -46,15 +46,25 @@ public class RecyclerViewCompat extends RecyclerView {
     }
 
     public void hideAll() {
-        swipeRefreshLayout.setRefreshing(false);
-        emptyView.setVisibility(GONE);
-        progressBar.setVisibility(GONE);
-        recyclerView.setVisibility(GONE);
+        if(swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
+        if(emptyView != null) {
+            emptyView.setVisibility(GONE);
+        }
+        if(progressBar != null) {
+            progressBar.setVisibility(GONE);
+        }
+        if(recyclerView != null) {
+            recyclerView.setVisibility(GONE);
+        }
     }
 
     public void showRecycler() {
         hideAll();
-        recyclerView.setVisibility(VISIBLE);
+        if(recyclerView != null) {
+            recyclerView.setVisibility(VISIBLE);
+        }
     }
 
     public void showProgress() {
@@ -64,7 +74,9 @@ public class RecyclerViewCompat extends RecyclerView {
 
         else if(!swipeRefreshLayout.isRefreshing()){
             hideAll();
-            progressBar.setVisibility(VISIBLE);
+            if(progressBar != null) {
+                progressBar.setVisibility(VISIBLE);
+            }
         }
     }
 
@@ -75,7 +87,9 @@ public class RecyclerViewCompat extends RecyclerView {
 
         else {
             hideAll();
-            emptyView.setVisibility(VISIBLE);
+            if(emptyView != null) {
+                emptyView.setVisibility(VISIBLE);
+            }
         }
     }
 
@@ -123,14 +137,6 @@ public class RecyclerViewCompat extends RecyclerView {
                 response.close();
             }
         });
-    }
-
-    public void callData(HttpUrl url, final okhttp3.Callback callback) {
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        client.newCall(request).enqueue(callback);
     }
 
     public interface SuccessCallback {

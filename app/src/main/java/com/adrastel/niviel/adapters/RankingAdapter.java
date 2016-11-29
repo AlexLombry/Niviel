@@ -188,7 +188,7 @@ public class RankingAdapter extends WebAdapter<RecyclerView.ViewHolder, Ranking>
 
     @Override
     public int getItemViewType(int position) {
-        if(position % DIVIDER == 0) {
+        if(position % DIVIDER == 0 && position != 0) {
             return AD_TYPE;
         }
 
@@ -241,7 +241,7 @@ public class RankingAdapter extends WebAdapter<RecyclerView.ViewHolder, Ranking>
 
                         else {
                             item.setTitle(getString(R.string.unfollow));
-                            onFollow(ranking);
+                            onFollow(ranking, holder);
                         }
                         return true;
 
@@ -253,7 +253,9 @@ public class RankingAdapter extends WebAdapter<RecyclerView.ViewHolder, Ranking>
         popupMenu.show();
     }
 
-    private void onFollow(Ranking ranking) {
+    private void onFollow(Ranking ranking, ViewHolder holder) {
+
+        holder.more.setEnabled(false);
 
         Intent intent = new Intent(getActivity(), EditRecordService.class);
         intent.putExtra(EditRecordService.WCA_ID, ranking.getWca_id());

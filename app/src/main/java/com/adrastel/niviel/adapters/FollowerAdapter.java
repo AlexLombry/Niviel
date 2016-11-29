@@ -80,7 +80,7 @@ public class FollowerAdapter extends BaseAdapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        if(position % DIVIDER == 0) {
+        if(position % DIVIDER == 0 && position != 0) {
             return AD_TYPE;
         }
 
@@ -135,7 +135,7 @@ public class FollowerAdapter extends BaseAdapter<RecyclerView.ViewHolder> {
         } else if(recyclerHolder != null && recyclerHolder instanceof FollowerHolder) {
             FollowerHolder holder = (FollowerHolder) recyclerHolder;
 
-            final Follower follower = followers.get(position - (position / DIVIDER));
+            final Follower follower = followers.get((int) (position - Math.ceil(position / DIVIDER)));
 
             holder.firstLine.setText(follower.name());
             holder.secondLine.setText(follower.wca_id());

@@ -8,7 +8,7 @@
     <com.google.android.gms.ads.NativeExpressAdView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        ads:adSize="300x80"
+        ads:adSize="FULL_WIDTHx80"
         android:id="@+id/adview"
         ads:adUnitId="ca-app-pub-4938379788839148/4295511512"
         android:minWidth="280dp"
