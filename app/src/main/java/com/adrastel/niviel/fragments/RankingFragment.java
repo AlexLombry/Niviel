@@ -206,7 +206,7 @@ public class RankingFragment extends BaseFragment {
                 cubeSwitch.setListener(new RankingSwitchCubeDialog.RankingSwitchCubeListener() {
                     @Override
                     public void onClick(int position, boolean isSingle) {
-                        RankingFragment.this.cubePosition = cubePosition;
+                        RankingFragment.this.cubePosition = position;
                         RankingFragment.this.isSingle = isSingle;
                         callData();
                     }

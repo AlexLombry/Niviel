@@ -176,7 +176,7 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
 
                         else {
                             item.setTitle(getString(R.string.unfollow));
-                            onFollow(ranking);
+                            onFollow(ranking, holder);
                         }
                         return true;
 
@@ -188,7 +188,9 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         popupMenu.show();
     }
 
-    private void onFollow(Ranking ranking) {
+    private void onFollow(Ranking ranking, ViewHolder holder) {
+
+        holder.more.setEnabled(false);
 
         Intent intent = new Intent(getActivity(), EditRecordService.class);
         intent.putExtra(EditRecordService.WCA_ID, ranking.getWca_id());
