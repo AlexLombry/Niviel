@@ -12,6 +12,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -45,6 +47,10 @@ import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.services.EditRecordService;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.android.gms.analytics.HitBuilders;
 
 import butterknife.BindView;
@@ -72,6 +78,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.navigation_view) NavigationView navigationView;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
+    @BindView(R.id.ad_view) AdView adView;
     private MenuItem searchMenuItem;
 
 
@@ -197,6 +204,22 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 return true;
             }
         });
+
+
+        Handler handler = new Handler();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MobileAds.initialize(getApplicationContext(), "ca-app-pub-4938379788839148~5723165913");
+
+                AdRequest request = new AdRequest.Builder()
+                        .addTestDevice("60C90B1288225E9B7FDB8AB3972CC7E5")
+                        .build();
+
+                adView.loadAd(request);
+            }
+        }, 5000);
 
     }
 
@@ -325,9 +348,11 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
      */
     @Override
     protected void onPause() {
-        super.onPause();
         drawerLayout.removeDrawerListener(this);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(activityReceiver);
+        adView.pause();
+
+        super.onPause();
     }
 
     /**
@@ -338,6 +363,16 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         super.onResume();
         drawerLayout.addDrawerListener(this);
         LocalBroadcastManager.getInstance(this).registerReceiver(activityReceiver, new IntentFilter(EditRecordService.INTENT_FILTER));
+        adView.resume();
+    }
+
+    /**
+     * Lors de la destruction de l'activité
+     */
+    @Override
+    protected void onDestroy() {
+        adView.destroy();
+        super.onDestroy();
     }
 
     /**
