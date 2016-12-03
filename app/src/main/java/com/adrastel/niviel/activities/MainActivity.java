@@ -48,6 +48,7 @@ import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.services.EditRecordService;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
@@ -86,12 +87,18 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
     private BaseFragment fragment;
     private SharedPreferences preferences;
 
+    private InterstitialAd interstitialAd;
+
     // L'identifiant du profil
     private long prefId = -1;
     private boolean isDark = false;
 
     // Le runnable qui est executé après que le drawer soit fermé
     private Runnable fragmentToRun;
+
+    private int adViewed = 0;
+    private int screenViewed = 0;
+    private long adViewedTime = 0;
 
 
     // Le reciever
@@ -194,7 +201,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                     runWhenDrawerClose(new Runnable() {
                         @Override
                         public void run() {
-
+                            runAdd();
                             switchFragment(fragment);
                         }
                     });
@@ -210,41 +217,48 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-4938379788839148~5723165913");
 
 
-        AdRequest request = new AdRequest.Builder()
-                .addTestDevice("60C90B1288225E9B7FDB8AB3972CC7E5")
-                .build();
-
-        final InterstitialAd interstitialAd = new InterstitialAd(MainActivity.this);
+        interstitialAd = new InterstitialAd(MainActivity.this);
         interstitialAd.setAdUnitId("ca-app-pub-4938379788839148/5596801111");
 
-        interstitialAd.loadAd(request);
+        requestNewAd();
 
-
-        Handler handler = new Handler();
-
-        handler.postDelayed(new Runnable() {
+        interstitialAd.setAdListener(new AdListener() {
             @Override
-            public void run() {
-
-                if(interstitialAd.isLoaded()) {
-                    interstitialAd.show();
-                }
-                else {
-                    Toast.makeText(getApplicationContext(), "Snif...", Toast.LENGTH_LONG).show();
-                }
-
-
+            public void onAdClosed() {
+                super.onAdClosed();
+                requestNewAd();
             }
-        }, 5000);
+        });
 
     }
 
     // todo : resoudre les probleme de density independant folder
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        Log.d("RESTORE INSTANCE");
+    public void requestNewAd() {
+        interstitialAd.loadAd(getAdRequest());
+    }
+
+    public void showAdd() {
+        if(interstitialAd.isLoaded()) {
+            interstitialAd.show();
+        }
+    }
+
+    public void runAdd() {
+        screenViewed++;
+
+        if(adViewed == 0) {
+            showAdd();
+            adViewed++;
+            adViewedTime = System.currentTimeMillis();
+        }
+
+        else if(System.currentTimeMillis() - adViewedTime >= 3 * 60 * 1000) {
+            showAdd();
+            adViewed++;
+        }
+
+
     }
     /**
      * Sauvegarde le fragment actuel
