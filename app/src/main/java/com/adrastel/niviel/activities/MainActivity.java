@@ -12,10 +12,10 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -27,7 +27,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,10 +34,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.BaseFragment;
@@ -48,7 +49,7 @@ import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.services.EditRecordService;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 
@@ -65,10 +66,6 @@ import de.cketti.mailto.EmailIntentBuilder;
 public class MainActivity extends BaseActivity implements DrawerLayout.DrawerListener {
 
 
-    // L'indentifiant du receiver
-    public static final String ACTIVITY_RECEIVER = "activity_receiver";
-    public static final String ACTIVITY_RECEIVER_ACTION = "activity_receiver_action";
-
     // Code de requête pour redemarrer l'activité
     public static final int RESTART_ACTIVITY = 0;
     public static final String FRAGMENT = "fragment";
@@ -80,7 +77,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
     @BindView(R.id.drawer_layout) DrawerLayout drawerLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.navigation_view) NavigationView navigationView;
-    @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
     private MenuItem searchMenuItem;
 
@@ -106,6 +102,10 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             switch (intent.getIntExtra(EditRecordService.ACTION, EditRecordService.ADD_RECORD_FAILURE)) {
 
                 case EditRecordService.ADD_RECORD_SUCCESS:
+                    updateUiOnProfileChange();
+                    break;
+
+                case EditRecordService.ADD_RECORD_FAILURE:
                     updateUiOnProfileChange();
                     break;
             }
@@ -204,12 +204,48 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             }
         });
 
+        // todo: tant que vous n'etes pas connecté, des profils aleatoires défilent
+
+
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-4938379788839148~5723165913");
+
+
+        AdRequest request = new AdRequest.Builder()
+                .addTestDevice("60C90B1288225E9B7FDB8AB3972CC7E5")
+                .build();
+
+        final InterstitialAd interstitialAd = new InterstitialAd(MainActivity.this);
+        interstitialAd.setAdUnitId("ca-app-pub-4938379788839148/5596801111");
+
+        interstitialAd.loadAd(request);
+
+
+        Handler handler = new Handler();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                if(interstitialAd.isLoaded()) {
+                    interstitialAd.show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Snif...", Toast.LENGTH_LONG).show();
+                }
+
+
+            }
+        }, 5000);
 
     }
 
     // todo : resoudre les probleme de density independant folder
 
-
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d("RESTORE INSTANCE");
+    }
     /**
      * Sauvegarde le fragment actuel
      *
@@ -331,9 +367,10 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
      */
     @Override
     protected void onPause() {
-        super.onPause();
         drawerLayout.removeDrawerListener(this);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(activityReceiver);
+
+        super.onPause();
     }
 
     /**
@@ -344,6 +381,14 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         super.onResume();
         drawerLayout.addDrawerListener(this);
         LocalBroadcastManager.getInstance(this).registerReceiver(activityReceiver, new IntentFilter(EditRecordService.INTENT_FILTER));
+    }
+
+    /**
+     * Lors de la destruction de l'activité
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     /**
@@ -409,7 +454,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
      */
     @Nullable
     private BaseFragment selectDrawerItem(MenuItem item) {
-
+        // todo : si on selectionne un item déja selectionné, on ne fait rien
         tabLayout.setVisibility(View.GONE);
 
         switch (item.getItemId()) {
@@ -548,15 +593,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         if (actionBar != null) {
             actionBar.setSubtitle(subtitle);
         }
-    }
-
-    /**
-     * Retourne le coordinatorLayout
-     *
-     * @return coordinatorLayout
-     */
-    public CoordinatorLayout getCoordinatorLayout() {
-        return coordinatorLayout;
     }
 
     /**
