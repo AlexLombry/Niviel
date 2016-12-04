@@ -20,6 +20,13 @@ public class DetailsMaker {
         return add(title, body);
     }
 
+    public DetailsMaker add(@StringRes int titleRes, @StringRes int bodyRes) {
+        String title = context.getString(titleRes);
+        String body = context.getString(bodyRes);
+
+        return add(title, body);
+    }
+
     public DetailsMaker add(String title, String body) {
 
         String message = "<strong>" + title + " : </strong>" + body + "<br/>";

@@ -6,15 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Debug;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,12 +33,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.InfoDialog;
@@ -52,7 +47,6 @@ import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.services.EditRecordService;
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
@@ -221,8 +215,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             }
         });
 
-        // todo: tant que vous n'etes pas connecté, des profils aleatoires défilent
-
+        // todo: new thread ?
 
         MobileAds.initialize(getApplicationContext(), "ca-app-pub-4938379788839148~5723165913");
 

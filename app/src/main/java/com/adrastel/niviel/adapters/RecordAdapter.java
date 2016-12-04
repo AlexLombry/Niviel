@@ -104,8 +104,10 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                 });
 
 
+                // Creation du body
                 DetailsMaker detailsMaker = new DetailsMaker(getActivity());
 
+                // Nombre de compeitions
                 try {
                     int competitions = Integer.parseInt(user.getCompetitions());
                     detailsMaker.add(user.getCompetitions() + " " + resources.getQuantityString(R.plurals.competitions, competitions));
@@ -115,7 +117,18 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                 }
                 detailsMaker.br();
                 detailsMaker.add(R.string.country, user.getCountry());
-                detailsMaker.add(R.string.gender, user.getGender());
+
+                // Traduction du gendre
+                String gender = user.getGender();
+
+                if(gender.equalsIgnoreCase("Male"))
+                    detailsMaker.add(R.string.gender, R.string.male);
+
+                else if(gender.equalsIgnoreCase("Female"))
+                    detailsMaker.add(R.string.gender, R.string.female);
+
+                else
+                    detailsMaker.add(R.string.gender, gender);
 
 
                 holder.single.setText(detailsMaker.build());
@@ -172,7 +185,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                 int wr = Integer.parseInt(record.getWr_single());
 
                 if(wr <= 300) {
-                    detailsMaker.add(getActivity().getString(R.string.record_wr, ""), record.getWr_single());
+                    detailsMaker.add(getActivity().getString(R.string.record_wr), record.getWr_single());
                 }
 
                 else {
@@ -180,11 +193,11 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                     int cr = Integer.parseInt(record.getCr_single());
 
                     if(cr <= 300) {
-                        detailsMaker.add(getActivity().getString(R.string.record_cr, ""), record.getCr_single());
+                        detailsMaker.add(getActivity().getString(R.string.record_cr), record.getCr_single());
                     }
 
                     else {
-                        detailsMaker.add(getActivity().getString(R.string.record_nr, ""), record.getNr_single());
+                        detailsMaker.add(getActivity().getString(R.string.record_nr), record.getNr_single());
                     }
                 }
 
@@ -192,7 +205,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
             catch (Exception e) {
                 e.printStackTrace();
-                detailsMaker.add(getActivity().getString(R.string.record_nr, ""), record.getNr_single());
+                detailsMaker.add(getActivity().getString(R.string.record_nr_format, ""), record.getNr_single());
             }
 
             holder.single.setText(detailsMaker.build(), TextView.BufferType.SPANNABLE);

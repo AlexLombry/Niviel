@@ -37,9 +37,12 @@
     <string name="average">Moyenne</string>
 
     <string name="record_time">Temps: <xliff:g id="time">%1$s</xliff:g></string>
-    <string name="record_nr">Classement national: <xliff:g id="rank">%1$s</xliff:g></string>
-    <string name="record_cr">Classement continental: <xliff:g id="rank">%1$s</xliff:g></string>
-    <string name="record_wr">Classement mondial: <xliff:g id="rank">%1$s</xliff:g></string>
+    <string name="record_nr">Classement national</string>
+    <string name="record_nr_format">Classement national: <xliff:g id="rank">%1$s</xliff:g></string>
+    <string name="record_cr">Classement continental</string>
+    <string name="record_cr_format">Classement continental: <xliff:g id="rank">%1$s</xliff:g></string>
+    <string name="record_wr">Classement mondial</string>
+    <string name="record_wr_format">Classement mondial: <xliff:g id="rank">%1$s</xliff:g></string>
     <string name="online">En ligne</string>
 
     <!-- History -->
@@ -79,6 +82,8 @@
 
     <!-- User -->
     <string name="gender">Genre</string>
+    <string name="male">Cubeur</string>
+    <string name="female">Cubeuse</string>
     <string name="country">Pays</string>
 
     <!-- Competitions -->

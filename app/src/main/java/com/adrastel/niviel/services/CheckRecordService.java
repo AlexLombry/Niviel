@@ -202,9 +202,9 @@ public class CheckRecordService extends Service {
                             inboxStyle.setBigContentTitle(follower.name());
                             inboxStyle.setSummaryText(follower.wca_id());
                             inboxStyle.addLine(content);
-                            inboxStyle.addLine(getString(R.string.record_nr, nr));
-                            inboxStyle.addLine(getString(R.string.record_cr, cr));
-                            inboxStyle.addLine(getString(R.string.record_wr, wr));
+                            inboxStyle.addLine(getString(R.string.record_nr_format, nr));
+                            inboxStyle.addLine(getString(R.string.record_cr_format, cr));
+                            inboxStyle.addLine(getString(R.string.record_wr_format, wr));
 
                             makeNotification(follower, follower.name(), content, inboxStyle);
 

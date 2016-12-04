@@ -46,8 +46,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public static AdRequest getAdRequest() {
-        return new AdRequest.Builder()// todo: virer le test device
+        return new AdRequest.Builder()
                 .addTestDevice("60C90B1288225E9B7FDB8AB3972CC7E5")
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .setGender(AdRequest.GENDER_MALE)
                 .build();
     }
