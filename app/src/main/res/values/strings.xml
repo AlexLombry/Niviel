@@ -29,6 +29,8 @@
     <string name="intro_slide_3">Vous pouvez suivre des personnes afin de garder leur résultats hors ligne et être informés quand ils battent leur records</string>
     <string name="intro_slide_4">Identifiez-vous pour acceder rapidement à votre profil.<xliff:g>\n\n</xliff:g>Pour vous identifer, accédez à votre profil via une recherche, appuyez sur le bouton + et cliquez sur \"Changer de profil\"</string>
 
+    <string name="information">Information</string>
+    <string name="info_no_connection">Tant que vous n\'êtes pas connecté, des profils aléatoires des meilleurs cubeurs.</string>
     <!-- Records -->
     <string name="records">Records</string>
     <string name="single">Single</string>

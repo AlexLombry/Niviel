@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -42,6 +44,7 @@ import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
+import com.adrastel.niviel.dialogs.InfoDialog;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.CompetitionFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
@@ -150,12 +153,19 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Si c'est le premier lancement de l'application, lance intro
+        // todo changer la couleur des records (le gris est moche)
         if(preferences.getBoolean(getString(R.string.pref_first_launch), true)) {
 
-            preferences.edit().putBoolean(getString(R.string.pref_first_launch), false).apply();
+            preferences
+                    .edit()
+                    .putBoolean(getString(R.string.pref_first_launch), false)
+                    .putLong(getString(R.string.pref_time_first_launch), System.currentTimeMillis())
+                    .apply();
+
+            InfoDialog introDialog = InfoDialog.newInstance(R.string.information, R.string.info_no_connection);
+            introDialog.show(getSupportFragmentManager(), "IntroDialog");
 
             startActivity(new Intent(this, MainIntroActivity.class));
-            return;
         }
 
         // Paramètre le thème
@@ -241,25 +251,25 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
     public void showAdd() {
         if(interstitialAd.isLoaded()) {
             interstitialAd.show();
+            adViewed++;
+            adViewedTime = System.currentTimeMillis();
         }
     }
 
     public void runAdd() {
         screenViewed++;
 
-        if(adViewed == 0) {
-            showAdd();
-            adViewed++;
-            adViewedTime = System.currentTimeMillis();
-        }
+        // Ne montre pas d'annonce avant les 15 premières minutes du premier lancement de l'app
+        if(System.currentTimeMillis() - preferences.getLong(getString(R.string.pref_time_first_launch), 0) >= 15 * 60 * 1000) {
 
-        else if(System.currentTimeMillis() - adViewedTime >= 3 * 60 * 1000) {
-            showAdd();
-            adViewed++;
+            // Ne montre pas d'annonce à 3 minutes d'intervalles
+            if ((adViewed >= 5 && System.currentTimeMillis() >= 6 * 60 * 1000) || (System.currentTimeMillis() - adViewedTime >= 3 * 60 * 1000)) {
+                showAdd();
+            }
         }
-
 
     }
+
     /**
      * Sauvegarde le fragment actuel
      *
