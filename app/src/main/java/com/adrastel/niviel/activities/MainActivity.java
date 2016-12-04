@@ -652,7 +652,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             profileItem.setVisible(false);
 
             nameView.setText(R.string.app_name);
-            wca_idView.setText(R.string.email);
+            wca_idView.setText("");
         }
 
 
