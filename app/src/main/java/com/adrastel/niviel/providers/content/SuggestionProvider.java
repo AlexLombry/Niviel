@@ -10,6 +10,7 @@ import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.models.readable.SuggestionUser;
 import com.google.gson.Gson;
@@ -55,6 +56,7 @@ public class SuggestionProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
+        Log.d("SuggestionProvider", uri.toString());
 
         String query = uri
                 .getLastPathSegment()
@@ -120,6 +122,7 @@ public class SuggestionProvider extends ContentProvider {
                     i++;
                 }
             }
+        
 
         return cursor;
     }

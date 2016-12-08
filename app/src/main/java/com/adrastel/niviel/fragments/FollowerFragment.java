@@ -48,6 +48,8 @@ public class FollowerFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        swipeRefreshLayout.setEnabled(false);
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.initRecyclerViewCompat(swipeRefreshLayout, progressBar, emptyView);
@@ -97,7 +99,9 @@ public class FollowerFragment extends BaseFragment {
         Tracker tracker = activity.getDefaultTracker();
         tracker.setScreenName(getString(R.string.follower_fragment));
         tracker.send(new HitBuilders.ScreenViewBuilder()
-                .setCustomMetric(1, followers.size())
+                .setCustomMetric(1, followers.size(
+
+                ))
                 .build());
     }
 

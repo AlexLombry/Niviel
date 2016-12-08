@@ -51,6 +51,8 @@ import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
 
+import java.util.Calendar;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.cketti.mailto.EmailIntentBuilder;
@@ -94,7 +96,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
     private Runnable fragmentToRun;
 
     private int adViewed = 0;
-    private int screenViewed = 0;
     private long adViewedTime = 0;
 
 
@@ -184,11 +185,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
         switchFragment(fragment);
 
-        // Gere l'intent (si il s'agit d'une requete...)
-        /*Intent intent = getIntent();
-        handleIntent(intent);
-*/
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
@@ -200,7 +196,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 final BaseFragment fragment = selectDrawerItem(item);
 
                 if (fragment != null) {
-
 
                     runWhenDrawerClose(new Runnable() {
                         @Override
@@ -215,32 +210,56 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             }
         });
 
-        // todo: new thread ?
-
-        MobileAds.initialize(getApplicationContext(), "ca-app-pub-4938379788839148~5723165913");
-
-
-        interstitialAd = new InterstitialAd(MainActivity.this);
-        interstitialAd.setAdUnitId("ca-app-pub-4938379788839148/5596801111");
-
-        requestNewAd();
-
-        interstitialAd.setAdListener(new AdListener() {
+        // Initialisation des annonces
+        new Thread(new Runnable() {
             @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-                requestNewAd();
+            public void run() {
+                MobileAds.initialize(getApplicationContext(), "ca-app-pub-4938379788839148~5723165913");
+
+                int oldDayOfMonth = preferences.getInt("dayOfMonth", 0);
+                int currentDayOfMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+
+                // Si l'application a été ouverte aujourd'hui, retarde, l'affichage de l'annonce
+                if(oldDayOfMonth == currentDayOfMonth)
+                    adViewedTime = System.currentTimeMillis();
+
+                else
+                    preferences.edit().putInt("dayOfMonth", currentDayOfMonth).apply();
+
+                interstitialAd = new InterstitialAd(MainActivity.this);
+                interstitialAd.setAdUnitId("ca-app-pub-4938379788839148/5596801111");
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        requestNewAd();
+
+                        interstitialAd.setAdListener(new AdListener() {
+                            @Override
+                            public void onAdClosed() {
+                                super.onAdClosed();
+                                requestNewAd();
+                            }
+                        });
+                    }
+                });
             }
-        });
+        }).start();
 
     }
 
     // todo : resoudre les probleme de density independant folder
 
+    /**
+     * Charge une annonce dans la RAM
+     */
     public void requestNewAd() {
         interstitialAd.loadAd(getAdRequest());
     }
 
+    /**
+     * Affiche une annonce
+     */
     public void showAdd() {
         if(interstitialAd.isLoaded()) {
             interstitialAd.show();
@@ -250,12 +269,11 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
     }
 
     public void runAdd() {
-        screenViewed++;
 
         // Ne montre pas d'annonce avant les 15 premières minutes du premier lancement de l'app
         if(System.currentTimeMillis() - preferences.getLong(getString(R.string.pref_time_first_launch), 0) >= 15 * 60 * 1000) {
 
-            // Ne montre pas d'annonce à 3 minutes d'intervalles
+            // Ne montre pas d'annonce à 3 minutes d'intervalles ou à 6 minutes d'intervalles si 5 annonces ont étés montréees
             if ((adViewed >= 5 && System.currentTimeMillis() >= 6 * 60 * 1000) || (System.currentTimeMillis() - adViewedTime >= 3 * 60 * 1000)) {
                 showAdd();
             }
@@ -301,6 +319,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         // Définition du moteur de rechervche
         searchMenuItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+        searchView.setQueryRefinementEnabled(true);
 
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -398,14 +417,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         super.onResume();
         drawerLayout.addDrawerListener(this);
         LocalBroadcastManager.getInstance(this).registerReceiver(activityReceiver, new IntentFilter(EditRecordService.INTENT_FILTER));
-    }
-
-    /**
-     * Lors de la destruction de l'activité
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     /**
