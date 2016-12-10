@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Debug;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
@@ -68,6 +69,8 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -172,7 +175,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Si c'est le premier lancement de l'application, lance intro
-        // todo changer la couleur des records (le gris est moche)
         if(preferences.getBoolean(getString(R.string.pref_first_launch), true)) {
 
             preferences
@@ -235,40 +237,48 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         });
 
         // Initialisation des annonces
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                MobileAds.initialize(getApplicationContext(), "ca-app-pub-4938379788839148~5723165913");
 
-                int oldDayOfMonth = preferences.getInt("dayOfMonth", 0);
-                int currentDayOfMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        try {
+            Timer timer = new Timer();
 
-                // Si l'application a été ouverte aujourd'hui, retarde, l'affichage de l'annonce
-                if(oldDayOfMonth == currentDayOfMonth)
-                    adViewedTime = System.currentTimeMillis();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Log.d("Execution du TimerTask");
+                    MobileAds.initialize(getApplicationContext(), "ca-app-pub-4938379788839148~5723165913");
 
-                else
-                    preferences.edit().putInt("dayOfMonth", currentDayOfMonth).apply();
+                    int oldDayOfMonth = preferences.getInt("dayOfMonth", 0);
+                    int currentDayOfMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
-                interstitialAd = new InterstitialAd(MainActivity.this);
-                interstitialAd.setAdUnitId("ca-app-pub-4938379788839148/5596801111");
+                    // Si l'application a été ouverte aujourd'hui, retarde, l'affichage de l'annonce
+                    if(oldDayOfMonth == currentDayOfMonth)
+                        adViewedTime = System.currentTimeMillis();
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        requestNewAd();
+                    else
+                        preferences.edit().putInt("dayOfMonth", currentDayOfMonth).apply();
 
-                        interstitialAd.setAdListener(new AdListener() {
-                            @Override
-                            public void onAdClosed() {
-                                super.onAdClosed();
-                                requestNewAd();
-                            }
-                        });
-                    }
-                });
-            }
-        }).start();
+                    interstitialAd = new InterstitialAd(MainActivity.this);
+                    interstitialAd.setAdUnitId("ca-app-pub-4938379788839148/5596801111");
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            requestNewAd();
+
+                            interstitialAd.setAdListener(new AdListener() {
+                                @Override
+                                public void onAdClosed() {
+                                    super.onAdClosed();
+                                    requestNewAd();
+                                }
+                            });
+                        }
+                    });
+                }
+            }, 5000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -462,7 +472,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 return false;
             }
         });
-
+        // todo : ammeillorer le skip des frames
         return true;
     }
 
@@ -622,7 +632,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
      */
     @Nullable
     private BaseFragment selectDrawerItem(MenuItem item) {
-        // todo : si on selectionne un item déja selectionné, on ne fait rien
         tabLayout.setVisibility(View.GONE);
 
         switch (item.getItemId()) {
