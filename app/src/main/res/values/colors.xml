@@ -9,6 +9,7 @@
     <color name="textColorPrimary">#212121</color>
     <color name="textColorSecondary">#424242</color>
     <color name="background">#FFFFFF</color>
+    <color name="divider">#1F000000</color>
 
     <!-- Specifics colors -->
     <color name="background_card_record">@color/indigo_200</color>

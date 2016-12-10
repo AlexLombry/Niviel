@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.database.MatrixCursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -22,7 +24,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -37,6 +41,8 @@ import android.widget.TextView;
 import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
+import com.adrastel.niviel.assets.Log;
+import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.InfoDialog;
@@ -45,17 +51,33 @@ import com.adrastel.niviel.fragments.CompetitionFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
+import com.adrastel.niviel.models.readable.SuggestionUser;
+import com.adrastel.niviel.models.readable.User;
 import com.adrastel.niviel.services.EditRecordService;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.analytics.HitBuilders;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.cketti.mailto.EmailIntentBuilder;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 /**
@@ -97,6 +119,8 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
     private int adViewed = 0;
     private long adViewedTime = 0;
+
+    private OkHttpClient httpClient = new OkHttpClient();
 
 
     // Le reciever
@@ -318,11 +342,127 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
         // Définition du moteur de rechervche
         searchMenuItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
         searchView.setQueryRefinementEnabled(true);
 
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        final CursorAdapter adapter = new SimpleCursorAdapter(
+                this,
+                R.layout.adapter_suggestion, null,
+                new String[] {SearchManager.SUGGEST_COLUMN_TEXT_1},
+                new int[] {android.R.id.text1},
+                0
+        );
+
+        final ArrayList<SuggestionUser> suggestions = new ArrayList<>();
+
+        searchView.setSuggestionsAdapter(adapter);
+
+        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
+            @Override
+            public boolean onSuggestionSelect(int position) {
+                return false;
+            }
+
+            @Override
+            public boolean onSuggestionClick(int position) {
+
+                SuggestionUser user = suggestions.get(position);
+                searchView.setQuery(user.getName(), false);
+                searchView.clearFocus();
+
+                Log.d(user.getName());
+                return true;
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+
+                HttpUrl url = new WcaUrl()
+                        .apiSearch(query)
+                        .build();
+
+                Request request = new Request.Builder()
+                        .url(url)
+                        .build();
+
+                httpClient.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+
+                        try {
+                            if(response.isSuccessful()) {
+                                String data = response.body().string();
+                                response.close();
+
+                                JsonParser jsonParser = new JsonParser();
+                                JsonElement jsonTree = jsonParser.parse(data);
+
+                                JsonObject jsonObject = jsonTree.getAsJsonObject();
+
+                                JsonArray result = jsonObject.getAsJsonArray("result");
+
+                                Gson gson = new Gson();
+                                ArrayList<SuggestionUser> suggestionUsers = gson.fromJson(result, new TypeToken<ArrayList<SuggestionUser>>() {
+                                }.getType());
+
+                                suggestions.clear();
+                                suggestions.addAll(suggestionUsers);
+
+
+                                String[] COLUMNS = {
+                                        BaseColumns._ID,
+                                        SearchManager.SUGGEST_COLUMN_TEXT_1,
+                                        SearchManager.SUGGEST_COLUMN_INTENT_DATA
+                                };
+                                final MatrixCursor cursor = new MatrixCursor(COLUMNS);
+
+
+                                int limit = 10;
+
+                                for (int i = 0; i < suggestions.size() && cursor.getCount() < limit; i++) {
+
+                                    SuggestionUser suggestionUser = suggestions.get(i);
+
+                                    // verifie que l'utilisateur a un id wca
+                                    if ((suggestionUser.getType().equals("person") || suggestionUser.getType().equals("suggestionUser")) && suggestionUser.getWca_id() != null) {
+
+                                        String field = getString(R.string.string_details_string, suggestionUser.getName(), suggestionUser.getWca_id());
+                                        cursor.addRow(new Object[]{i, field, suggestionUser.getName()});
+                                        i++;
+                                    }
+
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            adapter.swapCursor(cursor);
+                                        }
+                                    });
+
+                                }
+                            }
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                return false;
+            }
+        });
+
         return true;
     }
 

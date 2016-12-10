@@ -6,6 +6,7 @@
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="textColorSecondary">#EEEEEE</color>
     <color name="background">#555555</color>
+    <color name="divider">#1FFFFFFF</color>
 
     <!-- Specifics colors -->
     <color name="background_card_record">#444444</color>
