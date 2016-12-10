@@ -211,6 +211,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
         switchFragment(fragment);
 
+        // Lance un fragment lors d'un clique du menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
@@ -236,7 +237,10 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             }
         });
 
-        // Initialisation des annonces
+        /**
+         * Initialisation des annonces
+         * Lance avec 5 secondes de retard pour soulager le Thread
+         */
 
         try {
             Timer timer = new Timer();
@@ -244,7 +248,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    Log.d("Execution du TimerTask");
                     MobileAds.initialize(getApplicationContext(), "ca-app-pub-4938379788839148~5723165913");
 
                     int oldDayOfMonth = preferences.getInt("dayOfMonth", 0);
@@ -282,7 +285,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
     }
 
-    // todo : resoudre les probleme de density independant folder
 
     /**
      * Charge une annonce dans la RAM
@@ -381,7 +383,8 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 searchView.setQuery(user.getName(), false);
                 searchView.clearFocus();
 
-                Log.d(user.getName());
+                searchUser(user.getWca_id(), user.getName());
+                closeSearchview();
                 return true;
             }
         });
@@ -457,6 +460,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                                         @Override
                                         public void run() {
                                             adapter.swapCursor(cursor);
+                                            adapter.notifyDataSetChanged();
                                         }
                                     });
 
@@ -472,7 +476,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 return false;
             }
         });
-        // todo : ammeillorer le skip des frames
         return true;
     }
 
