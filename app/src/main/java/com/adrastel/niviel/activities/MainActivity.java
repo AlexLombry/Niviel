@@ -71,6 +71,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicLong;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -370,6 +371,8 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
         searchView.setSuggestionsAdapter(adapter);
 
+
+
         searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
             @Override
             public boolean onSuggestionSelect(int position) {
@@ -389,6 +392,13 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             }
         });
 
+        /**
+         * Envoie des requetes espacées de 500ms pour gagner en fluidité
+         * Stocke le temps en ms de la derniere requête
+         */
+        final AtomicLong lastRequest = new AtomicLong();
+
+        lastRequest.set(0);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -398,83 +408,90 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             @Override
             public boolean onQueryTextChange(String query) {
 
-                HttpUrl url = new WcaUrl()
-                        .apiSearch(query)
-                        .build();
+                if(System.currentTimeMillis() - lastRequest.get() >= 500) {
 
-                Request request = new Request.Builder()
-                        .url(url)
-                        .build();
+                    HttpUrl url = new WcaUrl()
+                            .apiSearch(query)
+                            .build();
 
-                httpClient.newCall(request).enqueue(new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                    }
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .build();
 
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
+                    httpClient.newCall(request).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                        }
 
-                        try {
-                            if(response.isSuccessful()) {
-                                String data = response.body().string();
-                                response.close();
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
 
-                                JsonParser jsonParser = new JsonParser();
-                                JsonElement jsonTree = jsonParser.parse(data);
+                            try {
+                                if (response.isSuccessful()) {
+                                    String data = response.body().string();
+                                    response.close();
 
-                                JsonObject jsonObject = jsonTree.getAsJsonObject();
+                                    JsonParser jsonParser = new JsonParser();
+                                    JsonElement jsonTree = jsonParser.parse(data);
 
-                                JsonArray result = jsonObject.getAsJsonArray("result");
+                                    JsonObject jsonObject = jsonTree.getAsJsonObject();
 
-                                Gson gson = new Gson();
-                                ArrayList<SuggestionUser> suggestionUsers = gson.fromJson(result, new TypeToken<ArrayList<SuggestionUser>>() {
-                                }.getType());
+                                    JsonArray result = jsonObject.getAsJsonArray("result");
 
-                                suggestions.clear();
-                                suggestions.addAll(suggestionUsers);
+                                    Gson gson = new Gson();
+                                    ArrayList<SuggestionUser> suggestionUsers = gson.fromJson(result, new TypeToken<ArrayList<SuggestionUser>>() {
+                                    }.getType());
 
-
-                                String[] COLUMNS = {
-                                        BaseColumns._ID,
-                                        SearchManager.SUGGEST_COLUMN_TEXT_1,
-                                        SearchManager.SUGGEST_COLUMN_INTENT_DATA
-                                };
-                                final MatrixCursor cursor = new MatrixCursor(COLUMNS);
+                                    suggestions.clear();
+                                    suggestions.addAll(suggestionUsers);
 
 
-                                int limit = 10;
+                                    String[] COLUMNS = {
+                                            BaseColumns._ID,
+                                            SearchManager.SUGGEST_COLUMN_TEXT_1,
+                                            SearchManager.SUGGEST_COLUMN_INTENT_DATA
+                                    };
+                                    final MatrixCursor cursor = new MatrixCursor(COLUMNS);
 
-                                for (int i = 0; i < suggestions.size() && cursor.getCount() < limit; i++) {
 
-                                    SuggestionUser suggestionUser = suggestions.get(i);
+                                    int limit = 10;
 
-                                    // verifie que l'utilisateur a un id wca
-                                    if ((suggestionUser.getType().equals("person") || suggestionUser.getType().equals("suggestionUser")) && suggestionUser.getWca_id() != null) {
+                                    for (int i = 0; i < suggestions.size() && cursor.getCount() < limit; i++) {
 
-                                        String field = getString(R.string.string_details_string, suggestionUser.getName(), suggestionUser.getWca_id());
-                                        cursor.addRow(new Object[]{i, field, suggestionUser.getName()});
-                                        i++;
-                                    }
+                                        SuggestionUser suggestionUser = suggestions.get(i);
 
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            adapter.swapCursor(cursor);
-                                            adapter.notifyDataSetChanged();
+                                        // verifie que l'utilisateur a un id wca
+                                        if ((suggestionUser.getType().equals("person") || suggestionUser.getType().equals("suggestionUser")) && suggestionUser.getWca_id() != null) {
+
+                                            String field = getString(R.string.string_details_string, suggestionUser.getName(), suggestionUser.getWca_id());
+                                            cursor.addRow(new Object[]{i, field, suggestionUser.getName()});
+                                            i++;
                                         }
-                                    });
 
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                adapter.swapCursor(cursor);
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        });
+
+                                    }
                                 }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         }
-                        catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                    });
+
+                    lastRequest.set(System.currentTimeMillis());
+                }
 
                 return false;
+
             }
+
+
         });
         return true;
     }
