@@ -22,6 +22,47 @@
         <item>3x3 multi blind</item>
     </string-array>
 
+    <!-- Array pour choisir une fréquence de vérification -->
+    <string-array name="pref_check_freq_list">
+        <item>@string/once_hour</item>
+        <item>@string/twice_day</item>
+        <item>@string/once_day</item>
+        <item>@string/twice_week</item>
+        <item>@string/once_week</item>
+        <item>@string/never</item>
+    </string-array>
+
+    <!-- Preference pour changer le thème -->
+    <string-array name="theme_list">
+        <item>@string/light</item>
+        <item>@string/dark</item>
+    </string-array>
+
+    <string-array name="theme_list_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <!-- Preference pour changer le network -->
+    <string-array name="pref_check_network_list">
+        <item>@string/wifi</item>
+        <item>@string/wifi_datas</item>
+    </string-array>
+    <string-array name="pref_check_network_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+
+    <string-array name="pref_check_freq_values" translatable="false">
+        <item>3600000</item><!-- Une fois par heure -->
+        <item>43200000</item><!-- Deux fois par jour -->
+        <item>86400000</item><!-- Une fois par jour -->
+        <item>302400000</item><!-- Deux fois par semaine -->
+        <item>604800000</item><!-- Une fois par semaine -->
+        <item>0</item>
+    </string-array>
+
     <string-array name="countries">
         <item>World</item>
         <item>Africa</item>

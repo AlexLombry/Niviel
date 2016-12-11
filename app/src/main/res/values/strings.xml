@@ -88,6 +88,7 @@
     <!-- Competitions -->
     <string name="competition">Compétition</string>
     <string name="competitions">Compétitions</string>
+
     <plurals name="in_progress_competitions">
         <item quantity="one"><xliff:g id="count">%1$d</xliff:g> compétition en cours</item>
         <item quantity="other"><xliff:g id="count">%1$d</xliff:g> compétitions en cours</item>
@@ -129,50 +130,28 @@
     <string name="theme">Thème</string>
     <string name="day_night">Thème clair/sombre</string>
     <string name="pref_theme_summary">Choisissez un thème clair ou sombre</string>
-    <string-array name="theme_list">
-        <item>Clair</item>
-        <item>Sombre</item>
-    </string-array>
-
-    <string-array name="theme_list_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-    </string-array>
+    <string name="light">Clair</string>
+    <string name="dark">Sombre</string>
 
 
     <!-- Check records network -->
     <string name="pref_check_network_title">Réseau utilisé pour vérifier les records</string>
     <string name="pref_check_network_summary">Utiliser le Wi-Fi ou le Wi-Fi et les données mobiles pour effectuer la vérification</string>
-    <string-array name="pref_check_network_list">
-        <item>Wi-Fi</item>
-        <item>Wi-Fi + Données mobiles</item>
-    </string-array>
-    <string-array name="pref_check_network_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-    </string-array>
+    <string name="wifi">Wi-Fi</string>
+    <string name="wifi_datas">Wi-Fi + Données mobiles</string>
+
 
     <!-- Check record frequency -->
     <string name="pref_check_freq_title">Fréquence de vérification</string>
     <string name="pref_check_freq_summary">Fréquence de vérification des records, historiques du profil personnel et des followers.</string>
-    <string name="once_an_hour">Une fois par heure</string>
-    <string-array name="pref_check_freq_list">
-        <item>Une fois par heure</item>
-        <item>Une fois par jour</item>
-        <item>Deux fois par jour</item>
-        <item>Une fois par semaine</item>
-        <item>Deux fois par semaine</item>
-        <item>Jamais</item>
-    </string-array>
 
-    <string-array name="pref_check_freq_values" translatable="false">
-        <item>3600000</item>
-        <item>86400000</item>
-        <item>43200000</item>
-        <item>604800000</item>
-        <item>302400000</item>
-        <item>0</item>
-    </string-array>
+    <string name="once_hour">Une fois par heure</string>
+    <string name="once_day">Une fois par jour</string>
+    <string name="twice_day">Deux fois par jour</string>
+    <string name="once_week">Une fois par semaine</string>
+    <string name="twice_week">Deux fois par semaine</string>
+    <string name="never">Jamais</string>
+
 
     <!-- Reset profile -->
     <string name="reset_pref_id_title">Réinitialiser votre profil personnel</string>
