@@ -110,7 +110,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                 // Nombre de compeitions
                 try {
                     int competitions = Integer.parseInt(user.getCompetitions());
-                    detailsMaker.add(user.getCompetitions() + " " + resources.getQuantityString(R.plurals.competitions, competitions));
+                    detailsMaker.add(resources.getQuantityString(R.plurals.competitions, competitions, competitions));
                 }
                 catch (Exception e) {
                     e.printStackTrace();

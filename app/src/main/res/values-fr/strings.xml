@@ -1,23 +1,5 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <!--
-        Référence:
-            &#160; espace
-            0144: É
-            0200: È
-            0203: Ë
-            0192: À
-    -->
-    <!-- Personal -->
-    <string name="app_name" translatable="false"><xliff:g id="app_name">Niviel</xliff:g></string>
-    <string name="email" translatable="false"><xliff:g id="email">herel.dev@gmail.com</xliff:g></string>
-
-    <!-- Activities -->
-    <string name="profile_fragment" translatable="false">Profile</string>
-    <string name="follower_fragment" translatable="false">Follower</string>
-    <string name="ranking_fragment" translatable="false">Ranking</string>
-    <string name="settings_fragment" translatable="false">Settings</string>
-
     <!-- CUBES -->
     <string name="cube_3x3">Rubik\'s cube</string>
 
@@ -174,12 +156,8 @@
     <string name="toast_adding">Ajout en cours</string>
     <string name="goto_maps">Voir sur la carte</string>
 
-    <!-- Send mail -->
-    <string name="mail_subject" translatable="false"><xliff:g id="mail_title">Feedback</xliff:g></string>
-    <string name="mail_body" translatable="false"><xliff:g>\n\nSend from: %1$s\nAndroid version: %2$s (%3$d)\nApplication Version %4$s (%5$d)</xliff:g></string>
 
     <!-- Others -->
-    <string name="zero" translatable="false">0</string>
     <string name="intro">Introduction</string>
 
 
