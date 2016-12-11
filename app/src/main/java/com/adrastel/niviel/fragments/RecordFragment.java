@@ -1,5 +1,6 @@
 package com.adrastel.niviel.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,6 +21,7 @@ import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.models.readable.User;
 import com.adrastel.niviel.providers.html.RecordProvider;
 import com.adrastel.niviel.providers.html.UserProvider;
+import com.adrastel.niviel.services.CheckRecordService;
 import com.adrastel.niviel.views.RecyclerViewCompat;
 
 import org.jsoup.Jsoup;
@@ -136,6 +138,17 @@ public class RecordFragment extends BaseFragment {
         if (savedInstanceState != null) {
             adapter.refreshData(loadUserData(savedInstanceState), loadRecordData(savedInstanceState));
             recyclerView.showRecycler();
+
+            // Hydrate la variable WCA ID
+            if(follower_id != -1) {
+                DatabaseHelper database = DatabaseHelper.getInstance(getContext());
+
+                Follower follower = database.selectFollowerFromId(follower_id);
+
+                this.wca_id = follower.wca_id();
+
+                getContext().startService(new Intent(getContext(), CheckRecordService.class));
+            }
         }
         // Si on est connecté, on fait une requete HTTP, sinon on lit les données locales
 
@@ -202,7 +215,9 @@ public class RecordFragment extends BaseFragment {
 
     protected User loadUserData(Bundle savedInstanceState) {
         if(savedInstanceState != null) {
-            return savedInstanceState.getParcelable(USER);
+            User user = savedInstanceState.getParcelable(USER);
+            //this.wca_id = user != null ? user.getWca_id() : null;
+            return user;
         }
 
         return null;

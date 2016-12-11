@@ -136,6 +136,14 @@ public class HistoryFragment extends BaseFragment {
             ArrayList<Event> histories = savedInstanceState.getParcelableArrayList(EVENTS);
             adapter.refreshData(histories);
             recyclerView.showRecycler();
+
+            // Hydrate la variable WCA_ID
+            if(follower_id != -1) {
+                DatabaseHelper database = DatabaseHelper.getInstance(getContext());
+
+                Follower follower = database.selectFollowerFromId(follower_id);
+                wca_id = follower.wca_id();
+            }
         }
 
         else if(follower_id != -1) {

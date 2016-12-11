@@ -298,7 +298,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
      * Affiche une annonce
      */
     public void showAdd() {
-        if(interstitialAd.isLoaded()) {
+        if(interstitialAd != null && interstitialAd.isLoaded()) {
             interstitialAd.show();
             adViewed++;
             adViewedTime = System.currentTimeMillis();
