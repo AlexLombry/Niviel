@@ -5,7 +5,7 @@
 
     <!-- Intro -->
     <string name="begin">Pour commencer</string>
-    <string name="intro_slide_1">Bienvenue sur Niviel, une application simple affichant vos records provenant de la World Cube Association</string>
+    <string name="intro_slide_1">Bienvenue sur WCA Records, une application simple affichant vos records provenant de la World Cube Association</string>
     <string name="intro_slide_2">Retrouvez ainsi vos records, historiques, competitions avec une interface légère et rapide</string>
     <string name="intro_slide_3">Vous pouvez suivre des personnes afin de garder leur résultats hors ligne et être informés quand ils battent leur records</string>
     <string name="intro_slide_4">Identifiez-vous pour acceder rapidement à votre profil.<xliff:g>\n\n</xliff:g>Pour vous identifer, accédez à votre profil via une recherche, appuyez sur le bouton + et cliquez sur \"Changer de profil\"</string>
@@ -76,7 +76,7 @@
         <item quantity="other"><xliff:g id="count">%1$d</xliff:g> compétitions en cours</item>
     </plurals>
 
-    <plurals name="upcomming_competitions">
+    <plurals name="upcoming_competitions">
         <item quantity="one"><xliff:g id="count">%1$d</xliff:g> compétition à venir</item>
         <item quantity="other"><xliff:g id="count">%1$d</xliff:g> compétitions à venir</item>
     </plurals>
@@ -110,7 +110,7 @@
 
     <!-- Thème -->
     <string name="theme">Thème</string>
-    <string name="day_night">Thème clair/sombre</string>
+    <string name="light_dark_theme">Thème clair/sombre</string>
     <string name="pref_theme_summary">Choisissez un thème clair ou sombre</string>
     <string name="light">Clair</string>
     <string name="dark">Sombre</string>

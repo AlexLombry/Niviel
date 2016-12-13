@@ -9,7 +9,7 @@
             0192: À
     -->
     <!-- Personal -->
-    <string name="app_name" translatable="false"><xliff:g id="app_name">Niviel</xliff:g></string>
+    <string name="app_name" translatable="false"><xliff:g id="app_name">WCA Records</xliff:g></string>
     <string name="email" translatable="false"><xliff:g id="email">herel.dev@gmail.com</xliff:g></string>
 
     <!-- Activities -->
@@ -22,81 +22,82 @@
     <string name="cube_3x3">Rubik\'s cube</string>
 
     <!-- Intro -->
-    <string name="begin">Pour commencer</string>
-    <string name="intro_slide_1">Bienvenue sur Niviel, une application simple affichant vos records provenant de la World Cube Association</string>
-    <string name="intro_slide_2">Retrouvez ainsi vos records, historiques, competitions avec une interface légère et rapide</string>
-    <string name="intro_slide_3">Vous pouvez suivre des personnes afin de garder leur résultats hors ligne et être informés quand ils battent leur records</string>
-    <string name="intro_slide_4">Identifiez-vous pour acceder rapidement à votre profil.<xliff:g>\n\n</xliff:g>Pour vous identifer, accédez à votre profil via une recherche, appuyez sur le bouton + et cliquez sur \"Changer de profil\"</string>
+    <string name="begin">Beginning</string>
+    <!-- todo :Verifier le titre -->
+    <string name="intro_slide_1">Welcome to WCA Records, an application simple displaying your records from the World Cube Association</string>
+    <string name="intro_slide_2">Get your records, historics, competitions on a light interface</string>
+    <string name="intro_slide_3">You can follow cubers so as to save their results offline and keep you informed as soon as they break their records</string>
+    <string name="intro_slide_4">Log in to quickly reach your profile.<xliff:g>\n\n</xliff:g>To log in, get to your profile by searching it, press the + button and click on \"Switch profile\"</string>
 
     <string name="information">Information</string>
-    <string name="info_no_connection">Tant que vous n\'êtes pas connecté, des profils aléatoires des meilleurs cubeurs.</string>
+    <string name="info_no_connection">While you are not logged in, you will see random profiles of the best players instead.</string>
     <!-- Records -->
     <string name="records">Records</string>
     <string name="single">Single</string>
-    <string name="average">Moyenne</string>
+    <string name="average">Average</string>
 
-    <string name="record_time">Temps: <xliff:g id="time">%1$s</xliff:g></string>
-    <string name="record_nr">Classement national</string>
-    <string name="record_nr_format">Classement national: <xliff:g id="rank">%1$s</xliff:g></string>
-    <string name="record_cr">Classement continental</string>
-    <string name="record_cr_format">Classement continental: <xliff:g id="rank">%1$s</xliff:g></string>
-    <string name="record_wr">Classement mondial</string>
-    <string name="record_wr_format">Classement mondial: <xliff:g id="rank">%1$s</xliff:g></string>
-    <string name="online">En ligne</string>
+    <string name="record_time">Time: <xliff:g id="time">%1$s</xliff:g></string>
+    <string name="record_nr">National record</string>
+    <string name="record_nr_format">Nation record: <xliff:g id="rank">%1$s</xliff:g></string>
+    <string name="record_cr">Continental record</string>
+    <string name="record_cr_format">Continental record: <xliff:g id="rank">%1$s</xliff:g></string>
+    <string name="record_wr">World record</string>
+    <string name="record_wr_format">World record: <xliff:g id="rank">%1$s</xliff:g></string>
+    <string name="online">Online</string>
 
     <!-- History -->
-    <string name="event">Évenement</string>
-    <string name="history">Historique</string>
+    <string name="event">Event</string>
+    <string name="history">History</string>
     <string name="round">Round</string>
-    <string name="best">Meilleur</string>
+    <string name="best">Best</string>
 
     <!-- Ranking -->
-    <string name="ranking">Classement</string>
-    <string name="rank">Place</string>
-    <string name="person">Personne</string>
-    <string name="result">Résultat</string>
-    <string name="citizen">Nationnalité</string>
-    <string name="world">Monde</string>
+    <string name="ranking">Ranking</string>
+    <string name="rank">Rank</string>
+    <string name="person">Person</string>
+    <string name="result">Result</string>
+    <string name="citizen">Citizen</string>
+    <string name="world">World</string>
     <string name="two_infos"><xliff:g>%1$s (%2$s)</xliff:g></string>
-    <string name="switch_cube">Changer de cube</string>
-    <string name="switch_country">Changer de pays</string>
+    <string name="switch_cube">Switch cube</string>
+    <string name="switch_country">Switch pays</string>
 
     <!-- Followers -->
-    <string name="follow">Suivre</string>
-    <string name="unfollow">Ne plus suivre</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Stop following anymore</string>
     <string name="followers">Followers</string>
 
     <!-- Profile -->
-    <string name="profile">Profil</string>
-    <string name="edit_profile">Changer de profil</string>
-    <string name="toast_switch_profile_confirmation">Votre profil est maintenant au nom de <xliff:g id="name">%1$s</xliff:g></string>
-    <string name="toast_follow_confirmation">Vous suivez <xliff:g id="name">%1$s</xliff:g></string>
-    <string name="toast_unfollow_confirmation">Vous ne suivez plus <xliff:g id="name">%1$s</xliff:g></string>
-    <string name="dialog_edit_profile_follow_title">Changement de profil/Suivre</string>
+    <string name="profile">Profile</string>
+    <string name="edit_profile">Switch profile</string>
+    <string name="toast_switch_profile_confirmation">Your profile is now assigned in the name of <xliff:g id="name">%1$s</xliff:g></string>
+    <string name="toast_follow_confirmation">You follow <xliff:g id="name">%1$s</xliff:g></string>
+    <string name="toast_unfollow_confirmation">You do not follow <xliff:g id="name">%1$s</xliff:g> anymore</string>
+    <!-- todo: adapter selon le sexe -->
     <string name="dialog_edit_profile_follow_message">
-        Vous pouvez :
-        <xliff:g>\n\t-</xliff:g>Suivre <xliff:g id="name">%1$s</xliff:g> et être informé si il obtient de nouveaux records.
-        <xliff:g>\n\t-</xliff:g>Changer de profil et assigner votre profil personnel au nom de <xliff:g id="name">%1$s</xliff:g>.
+        You can :
+        <xliff:g>\n\t-</xliff:g>Follow <xliff:g id="name">%1$s</xliff:g> and keep you informed if he breaks records
+        <xliff:g>\n\t-</xliff:g>Switch profile and assign your personal profile in the name of <xliff:g id="name">%1$s</xliff:g>.
     </string>
 
     <!-- User -->
-    <string name="gender">Genre</string>
-    <string name="male">Cubeur</string>
-    <string name="female">Cubeuse</string>
-    <string name="country">Pays</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="country">Country</string>
 
     <!-- Competitions -->
-    <string name="competition">Compétition</string>
-    <string name="competitions">Compétitions</string>
+    <string name="competition">Competition</string>
+    <string name="competitions">Competitions</string>
 
     <plurals name="in_progress_competitions">
-        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> compétition en cours</item>
-        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> compétitions en cours</item>
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> in progress competition</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> in progress competitions</item>
     </plurals>
 
-    <plurals name="upcomming_competitions">
-        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> compétition à venir</item>
-        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> compétitions à venir</item>
+    <plurals name="upcoming_competitions">
+        <item quantity="one"><xliff:g id="count">%1$d</xliff:g> upcoming competition</item>
+        <item quantity="other"><xliff:g id="count">%1$d</xliff:g> upcoming competitions</item>
     </plurals>
 
     <plurals name="competitions">
@@ -107,86 +108,86 @@
 
 
     <!-- Search -->
-    <string name="search">Rechercher</string>
-    <string name="search_hint_users">Rechercher des joueurs…</string>
+    <string name="search">Search</string>
+    <string name="search_hint_users">Rechercher players…</string>
 
     <!-- Errors -->
-    <string name="error_activity">Aucune application disponible pour effectuer cette action</string>
-    <string name="error_connection">Veuillez vous connecter à internet</string>
-    <string name="err_loading">Erreur de chargement<xliff:g>\n\n :-(</xliff:g></string>
-    <string name="error_interpretation_html">Erreur d\'interpretation du code HTML</string>
-    <string name="unknown_error">Erreur inconnue</string>
-    <string name="no_followers">Vous ne suivez personne</string>
+    <string name="error_activity">No applications can carry out this action</string>
+    <string name="error_connection">Please connect to the internett</string>
+    <string name="err_loading">Loading error<xliff:g>\n\n :-(</xliff:g></string>
+    <string name="error_interpretation_html">HTML code interpretation error</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="no_followers">You do not follow anyone</string>
 
     <!-- Menus -->
-    <string name="settings">Réglages</string>
-    <string name="my_profile">Mon profil</string>
-    <string name="explore">Explorer</string>
+    <string name="settings">Settings</string>
+    <string name="my_profile">My profile</string>
+    <string name="explore">Explore</string>
 
 
     <!-- Préférences -->
 
     <!-- Thème -->
-    <string name="theme">Thème</string>
-    <string name="day_night">Thème clair/sombre</string>
-    <string name="pref_theme_summary">Choisissez un thème clair ou sombre</string>
-    <string name="light">Clair</string>
-    <string name="dark">Sombre</string>
+    <string name="theme">Theme</string>
+    <string name="light_dark_theme">Light/Dark theme</string>
+    <string name="pref_theme_summary">Choose a dark or light theme</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
 
 
     <!-- Check records network -->
-    <string name="pref_check_network_title">Réseau utilisé pour vérifier les records</string>
-    <string name="pref_check_network_summary">Utiliser le Wi-Fi ou le Wi-Fi et les données mobiles pour effectuer la vérification</string>
+    <string name="pref_check_network_title">Network used to check records</string>
+    <string name="pref_check_network_summary">Use Wi-Fi or Wi-Fi and mobile datas to perform the verification</string>
     <string name="wifi">Wi-Fi</string>
-    <string name="wifi_datas">Wi-Fi + Données mobiles</string>
+    <string name="wifi_datas">Wi-Fi + Mobile datas</string>
 
 
     <!-- Check record frequency -->
-    <string name="pref_check_freq_title">Fréquence de vérification</string>
-    <string name="pref_check_freq_summary">Fréquence de vérification des records, historiques du profil personnel et des followers.</string>
+    <string name="pref_check_freq_title">Verification frequency</string>
+    <string name="pref_check_freq_summary">Verification frequency of the records, histories of the personal profile and the followers.</string>
 
-    <string name="once_hour">Une fois par heure</string>
-    <string name="once_day">Une fois par jour</string>
-    <string name="twice_day">Deux fois par jour</string>
-    <string name="once_week">Une fois par semaine</string>
-    <string name="twice_week">Deux fois par semaine</string>
-    <string name="never">Jamais</string>
+    <string name="once_hour">Once an hour</string>
+    <string name="once_day">Once a day</string>
+    <string name="twice_day">Twice a day</string>
+    <string name="once_week">Once a week</string>
+    <string name="twice_week">Twice a week</string>
+    <string name="never">Never</string>
 
 
     <!-- Reset profile -->
-    <string name="reset_pref_id_title">Réinitialiser votre profil personnel</string>
-    <string name="reset_pref_id_content">Réinitialiser votre profil personnel ?</string>
+    <string name="reset_pref_id_title">Reset your personal profile</string>
+    <string name="reset_pref_id_content">Reset your personal profile?</string>
 
 
 
 
     <!-- Actions -->
     <string name="ok">OK</string>
-    <string name="cancel">Annuler</string>
-    <string name="yes">Oui</string>
-    <string name="no">Non</string>
-    <string name="more_info">Plus d\'infos</string>
-    <string name="share">Partager</string>
-    <string name="details">Détails</string>
-    <string name="about">À propos</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="more_info">More information</string>
+    <string name="share">Share</string>
+    <string name="details">Details</string>
+    <string name="about">About</string>
     <string name="contact">Contact</string>
-    <string name="goto_internet">Voir le site web</string>
-    <string name="toast_adding">Ajout en cours</string>
-    <string name="goto_maps">Voir sur la carte</string>
+    <string name="goto_internet">See on the website</string>
+    <string name="toast_adding">Adding</string>
+    <string name="goto_maps">See on the map</string>
 
     <!-- Send mail -->
     <string name="mail_subject" translatable="false"><xliff:g id="mail_title">Feedback</xliff:g></string>
     <string name="mail_body" translatable="false"><xliff:g>\n\nSend from: %1$s\nAndroid version: %2$s (%3$d)\nApplication Version %4$s (%5$d)</xliff:g></string>
 
     <!-- Others -->
-    <string name="zero" translatable="false">0</string>
+    <string name="zero" translatable="false"><xliff:g>0</xliff:g></string>
     <string name="intro">Introduction</string>
 
 
     <!-- Notification -->
 
-    <string name="notif_new_single">Single battu: <xliff:g id="time">%1$s</xliff:g></string>
-    <string name="notif_new_average">Average battu: <xliff:g id="time">%1$s</xliff:g></string>
+    <string name="notif_new_single">Single broken: <xliff:g id="time">%1$s</xliff:g></string>
+    <string name="notif_new_average">Average broken: <xliff:g id="time">%1$s</xliff:g></string>
 
     <string name="string_details_string"><xliff:g id="title">%1$s</xliff:g> (<xliff:g id="content">%2$s</xliff:g>)</string>
     <string name="string_details_number"><xliff:g id="title">%1$s</xliff:g> (<xliff:g id="number">%2$d</xliff:g>)</string>

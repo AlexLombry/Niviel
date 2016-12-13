@@ -13,7 +13,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Debug;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
@@ -42,7 +41,6 @@ import android.widget.TextView;
 import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
@@ -53,7 +51,6 @@ import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.models.readable.SuggestionUser;
-import com.adrastel.niviel.models.readable.User;
 import com.adrastel.niviel.services.EditRecordService;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.InterstitialAd;
@@ -517,7 +514,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 startActivityForResult(settings, 0);
                 return true;
 
-            case R.id.day_night:
+            case R.id.dark_light:
 
                 isDark = !isDark;
                 preferences

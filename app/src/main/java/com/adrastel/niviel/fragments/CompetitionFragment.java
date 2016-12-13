@@ -198,15 +198,15 @@ public class CompetitionFragment extends BaseFragment {
                 // In progress
                 Title inProgress = treatData(document, CompetitionProvider.IN_PROGRESS, R.plurals.in_progress_competitions);
 
-                // Upcomming
-                Title upcomming = treatData(document, CompetitionProvider.UPCOMING_COMPS, R.plurals.upcomming_competitions);
+                // Upcoming
+                Title upcoming = treatData(document, CompetitionProvider.UPCOMING_COMPS, R.plurals.upcoming_competitions);
 
                 if(inProgress != null) {
                     titles.add(inProgress);
                 }
 
-                if(upcomming != null) {
-                    titles.add(upcomming);
+                if(upcoming != null) {
+                    titles.add(upcoming);
                 }
 
                 // Ouvre le premier onglet

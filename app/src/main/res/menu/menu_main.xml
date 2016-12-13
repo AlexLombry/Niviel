@@ -12,8 +12,8 @@
         app:actionViewClass="android.support.v7.widget.SearchView"/>
 
     <item
-        android:id="@+id/day_night"
-        android:title="@string/day_night"
+        android:id="@+id/dark_light"
+        android:title="@string/light_dark_theme"
         app:showAsAction="never"/>
 
     <item
