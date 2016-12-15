@@ -19,6 +19,7 @@ import com.adrastel.niviel.activities.BaseActivity;
 import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.activities.SettingsActivity;
 import com.adrastel.niviel.assets.Assets;
+import com.adrastel.niviel.assets.DetailsMaker;
 import com.adrastel.niviel.assets.InboxStyle;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.assets.WcaUrl;
@@ -145,6 +146,8 @@ public class CheckRecordService extends Service {
 
                         // Corps de la notification etendue
                         InboxStyle inboxStyle = new InboxStyle(this);
+
+                        DetailsMaker detailsMaker = new DetailsMaker(this);
 
                         RecordModel.Marshal values = Record.FACTORY.marshal();
 

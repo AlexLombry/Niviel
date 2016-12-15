@@ -58,6 +58,10 @@
         </activity>
 
         <activity
+            android:name=".activities.NotificationActivity"
+            android:theme="@android:style/Theme.Dialog"/>
+
+        <activity
             android:name="com.applovin.adview.AppLovinInterstitialActivity"
             android:configChanges="orientation|screenSize"/>
         <activity

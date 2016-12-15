@@ -1,5 +1,6 @@
 package com.adrastel.niviel.activities;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -323,6 +324,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
      * @param menu menu
      * @return true pour l'instancier
      */
+    @SuppressLint("StringFormatInvalid")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflation
@@ -490,9 +492,17 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 return true;
 
             case R.id.settings:
-                Intent settings = new Intent(this, SettingsActivity.class);
-                startActivityForResult(settings, 0);
-                return true;
+                if(BuildConfig.DEBUG) {
+                    Intent intent = new Intent(this, NotificationActivity.class);
+                    intent.putExtra(NotificationActivity.CONTENT, "Hello World !");
+                    startActivity(intent);
+                    return true;
+                }
+                else {
+                    Intent settings = new Intent(this, SettingsActivity.class);
+                    startActivityForResult(settings, 0);
+                    return true;
+                }
 
             case R.id.dark_light:
 
