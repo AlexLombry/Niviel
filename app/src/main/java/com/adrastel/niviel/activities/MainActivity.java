@@ -13,6 +13,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
@@ -52,9 +54,8 @@ import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.models.readable.SuggestionUser;
 import com.adrastel.niviel.services.EditRecordService;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
+import com.applovin.adview.AppLovinInterstitialAd;
+import com.applovin.sdk.AppLovinSdk;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -66,8 +67,6 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicLong;
 
 import butterknife.BindView;
@@ -108,8 +107,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
     private FragmentManager fragmentManager;
     private BaseFragment fragment;
     private SharedPreferences preferences;
-
-    private InterstitialAd interstitialAd;
 
     // L'identifiant du profil
     private long prefId = -1;
@@ -209,6 +206,8 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
         switchFragment(fragment);
 
+        final Handler handler = new Handler(Looper.getMainLooper());
+
         // Lance un fragment lors d'un clique du menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -225,8 +224,21 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                     runWhenDrawerClose(new Runnable() {
                         @Override
                         public void run() {
-                            runAdd();
-                            switchFragment(fragment);
+                            /**
+                             * Si une pub est affiché, freeze l'app pour une seconde, sinon switch de fragment
+                             * Cela a pour but d'eviter les cliques non voulus de l'utilisateur
+                             */
+                            if (runAdd())
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        switchFragment(fragment);
+
+                                    }
+                                }, 1000);
+
+                            else
+                                switchFragment(fragment);
                         }
                     });
                 }
@@ -235,83 +247,50 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             }
         });
 
-        /**
-         * Initialisation des annonces
-         * Lance avec 5 secondes de retard pour soulager le Thread
-         */
+        // Initialisation des annonces
+        AppLovinSdk.initializeSdk(this);
 
-        try {
-            Timer timer = new Timer();
+        int oldDayOfMonth = preferences.getInt("dayOfMonth", 0);
+        int currentDayOfMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    MobileAds.initialize(getApplicationContext(), "ca-app-pub-4938379788839148~5723165913");
+        // Si l'application a été ouverte aujourd'hui, retarde, l'affichage de l'annonce
+        if(oldDayOfMonth == currentDayOfMonth)
+            adViewedTime = System.currentTimeMillis();
 
-                    int oldDayOfMonth = preferences.getInt("dayOfMonth", 0);
-                    int currentDayOfMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        else
+            preferences.edit().putInt("dayOfMonth", currentDayOfMonth).apply();
 
-                    // Si l'application a été ouverte aujourd'hui, retarde, l'affichage de l'annonce
-                    if(oldDayOfMonth == currentDayOfMonth)
-                        adViewedTime = System.currentTimeMillis();
-
-                    else
-                        preferences.edit().putInt("dayOfMonth", currentDayOfMonth).apply();
-
-                    interstitialAd = new InterstitialAd(MainActivity.this);
-                    interstitialAd.setAdUnitId("ca-app-pub-4938379788839148/5596801111");
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            requestNewAd();
-
-                            interstitialAd.setAdListener(new AdListener() {
-                                @Override
-                                public void onAdClosed() {
-                                    super.onAdClosed();
-                                    requestNewAd();
-                                }
-                            });
-                        }
-                    });
-                }
-            }, 5000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 
-
-    /**
-     * Charge une annonce dans la RAM
-     */
-    public void requestNewAd() {
-        interstitialAd.loadAd(getAdRequest());
-    }
 
     /**
      * Affiche une annonce
      */
-    public void showAdd() {
-        if(interstitialAd != null && interstitialAd.isLoaded()) {
-            interstitialAd.show();
-            adViewed++;
-            adViewedTime = System.currentTimeMillis();
+    public boolean showAdd() {
+        if(AppLovinInterstitialAd.isAdReadyToDisplay(this)) {
+           adViewed++;
+           adViewedTime = System.currentTimeMillis();
+           AppLovinInterstitialAd.show(this);
+
+           return true;
         }
+
+        return false;
     }
 
-    public void runAdd() {
+    public boolean runAdd() {
 
         // Ne montre pas d'annonce avant les 15 premières minutes du premier lancement de l'app
         if(System.currentTimeMillis() - preferences.getLong(getString(R.string.pref_time_first_launch), 0) >= 15 * 60 * 1000) {
 
             // Ne montre pas d'annonce à 3 minutes d'intervalles ou à 6 minutes d'intervalles si 5 annonces ont étés montréees
             if ((adViewed >= 5 && System.currentTimeMillis() >= 6 * 60 * 1000) || (System.currentTimeMillis() - adViewedTime >= 3 * 60 * 1000)) {
-                showAdd();
+                return showAdd();
             }
         }
+
+        return false;
 
     }
 
@@ -394,6 +373,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
          * Stocke le temps en ms de la derniere requête
          */
         final AtomicLong lastRequest = new AtomicLong();
+
 
         lastRequest.set(0);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

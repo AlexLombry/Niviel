@@ -173,7 +173,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
             holder.share.setVisibility(View.GONE);
 
             DetailsMaker detailsMaker = new DetailsMaker(getActivity());
-
+            
             detailsMaker.add(R.string.single, single);
 
             if (average != null && !average.equals("")) {

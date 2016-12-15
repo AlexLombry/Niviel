@@ -17,6 +17,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <meta-data android:name="applovin.sdk.key"
+                   android:value="_fnWwpRdBmQdBUyFbv8N3Qh2yyaZ0Ix_zhWuUzWgiyIvQF818HOBh5De1pC26714pTyIVSzCOG6qVFsdWEqDK1"  />
 
         <activity
             android:name=".activities.MainActivity"
@@ -56,9 +58,11 @@
         </activity>
 
         <activity
-            android:name="com.google.android.gms.ads.AdActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:theme="@android:style/Theme.Translucent" />
+            android:name="com.applovin.adview.AppLovinInterstitialActivity"
+            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name="com.applovin.adview.AppLovinConfirmationActivity"
+            android:configChanges="orientation|screenSize"/>
 
         <provider
             android:name=".providers.content.SuggestionProvider"

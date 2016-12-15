@@ -73,6 +73,7 @@
     <string name="toast_switch_profile_confirmation">Your profile is now assigned in the name of <xliff:g id="name">%1$s</xliff:g></string>
     <string name="toast_follow_confirmation">You follow <xliff:g id="name">%1$s</xliff:g></string>
     <string name="toast_unfollow_confirmation">You do not follow <xliff:g id="name">%1$s</xliff:g> anymore</string>
+    <string name="dialog_edit_profile_follow_title">Switch profile/Follow</string>
     <!-- todo: adapter selon le sexe -->
     <string name="dialog_edit_profile_follow_message">
         You can :
