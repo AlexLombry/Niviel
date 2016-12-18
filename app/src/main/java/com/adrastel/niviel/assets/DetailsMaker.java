@@ -44,6 +44,12 @@ public class DetailsMaker {
         return this;
     }
 
+    public DetailsMaker add(String body, int size) {
+        String message = "<font size=\"" + size + "\">" + body + "</font>";
+
+        return add(message);
+    }
+
     public DetailsMaker br() {
         this.message += "<br/>";
 
@@ -59,5 +65,9 @@ public class DetailsMaker {
         this.message = "<font color=\"" + color + "\">" + this.message + "</font>";
 
         return build();
+    }
+
+    public String html() {
+        return this.message;
     }
 }

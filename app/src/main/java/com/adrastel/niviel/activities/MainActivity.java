@@ -54,6 +54,7 @@ import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.models.readable.SuggestionUser;
+import com.adrastel.niviel.services.CheckRecordService;
 import com.adrastel.niviel.services.EditRecordService;
 import com.applovin.adview.AppLovinInterstitialAd;
 import com.applovin.sdk.AppLovinSdk;
@@ -493,9 +494,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
             case R.id.settings:
                 if(BuildConfig.DEBUG) {
-                    Intent intent = new Intent(this, NotificationActivity.class);
-                    intent.putExtra(NotificationActivity.CONTENT, "Hello World !");
-                    startActivity(intent);
+                    startService(new Intent(this, CheckRecordService.class));
                     return true;
                 }
                 else {
@@ -525,14 +524,12 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                     .setLabel("Contact")
                     .build());
 
-                if(!BuildConfig.DEBUG) {
-                    EmailIntentBuilder
-                            .from(this)
-                            .to(getString(R.string.email))
-                            .subject(getString(R.string.mail_subject))
-                            .body(getString(R.string.mail_body, Build.MODEL, Build.VERSION.RELEASE, Build.VERSION.SDK_INT, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE))
-                            .start();
-                }
+                EmailIntentBuilder
+                        .from(this)
+                        .to(getString(R.string.email))
+                        .subject(getString(R.string.mail_subject))
+                        .body(getString(R.string.mail_body, Build.MODEL, Build.VERSION.RELEASE, Build.VERSION.SDK_INT, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE))
+                        .start();
 
         }
 
