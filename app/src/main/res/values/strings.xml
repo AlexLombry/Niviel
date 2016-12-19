@@ -35,6 +35,8 @@
     <string name="records">Records</string>
     <string name="single">Single</string>
     <string name="average">Average</string>
+    <string name="single_colon">Single: </string>
+    <string name="average_colon">Average: </string>
 
     <string name="record_time">Time: <xliff:g id="time">%1$s</xliff:g></string>
     <string name="record_nr">National record</string>

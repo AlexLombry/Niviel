@@ -125,105 +125,6 @@ public class CheckRecordService extends Service {
 
         if(oldRecords.size() == newRecords.size()) {
 
-            /*for(int i = 0; i < oldRecords.size(); i++) {
-
-                Record oldRecord = oldRecords.get(i);
-                com.adrastel.niviel.models.readable.Record newRecord = newRecords.get(i);
-
-                // Si ils ont le meme event, on peut comparer
-                if(oldRecord.event().equals(newRecord.getEvent())) {
-
-                    try {
-
-                        // Check for singles
-
-                        // Savoir si il faut notifier
-                        boolean hasToNotify = false;
-
-                        // Corps de la notification
-                        String content = "";
-                        String nr = "";
-                        String cr = "";
-                        String wr = "";
-
-                        // Corps de la notification etendue
-                        InboxStyle inboxStyle = new InboxStyle(this);
-
-                        DetailsMaker detailsMaker = new DetailsMaker(this);
-
-                        RecordModel.Marshal values = Record.FACTORY.marshal();
-
-                        if(singleChanged(oldRecord, newRecord)) {
-
-                            Log.v(oldRecord.single() + "->" + newRecord.getSingle());
-
-
-                            content = getString(R.string.notif_new_single, newRecord.getSingle());
-
-                            // Update notification title
-                            nr = newRecord.getNr_single();
-                            cr = newRecord.getCr_single();
-                            wr = newRecord.getWr_single();
-
-                            // Update database
-                            values.single(newRecord.getSingle());
-                            values.nr_single(Long.parseLong(newRecord.getNr_single()));
-                            values.cr_single(Long.parseLong(newRecord.getCr_single()));
-                            values.wr_single(Long.parseLong(newRecord.getWr_single()));
-
-                            hasToNotify = true;
-
-                        }
-
-                        // Check for average
-                        if(averageChanged(oldRecord, newRecord)) {
-
-                            Log.v(oldRecord.average() + "->" + newRecord.getAverage());
-                            // Si le titre est vide, on ne fait rien, sinon on ajoute un séparateur
-                            content = content.equals("") ? "" : content + " | ";
-                            content += getString(R.string.notif_new_average, newRecord.getAverage());
-
-                            // Update notification
-                            nr = nr.equals("") ? "" : nr + " | ";
-                            nr += newRecord.getNr_average();
-
-                            cr = cr.equals("") ? "" : cr + " | ";
-                            cr += newRecord.getCr_average();
-
-                            wr = wr.equals("") ? "" : wr + " | ";
-                            wr += newRecord.getWr_average();
-
-                            // Update database
-                            values.average(newRecord.getAverage());
-                            values.nr_average(Long.parseLong(newRecord.getNr_average()));
-                            values.cr_average(Long.parseLong(newRecord.getCr_average()));
-                            values.wr_average(Long.parseLong(newRecord.getWr_average()));
-
-                            hasToNotify = true;
-                        }
-
-                        if (hasToNotify) {
-
-                            inboxStyle.setBigContentTitle(follower.name());
-                            inboxStyle.setSummaryText(follower.wca_id());
-                            inboxStyle.addLine(content);
-                            inboxStyle.addLine(getString(R.string.record_nr_format, nr));
-                            inboxStyle.addLine(getString(R.string.record_cr_format, cr));
-                            inboxStyle.addLine(getString(R.string.record_wr_format, wr));
-
-                            makeNotification(follower, follower.name(), content, inboxStyle);
-
-                            // Update database
-                            database.updateRecord(follower._id(), newRecord.getEvent(), values.asContentValues());
-                        }
-                    }
-
-                    catch (Exception e) {
-                        Log.e("Invalid long");
-                    }
-                }
-            }*/
-
             boolean hasToNotify = false;
             DetailsMaker detailsMaker = new DetailsMaker(this);
             ArrayList<OldNewRecord> oldNewRecords = new ArrayList<>();
@@ -273,8 +174,8 @@ public class CheckRecordService extends Service {
                         scoresHasChanged = true;
 
                         OldNewRecord oldNewRecord = new OldNewRecord(
-                                follower.name(),
-                                newRecord.getEvent(), oldRecord.single(),
+                                this, follower.name(),
+                                newRecord.getEvent(), OldNewRecord.SINGLE, oldRecord.single(),
                                 newRecord.getSingle(), oldRecord.nr_single(), oldRecord.cr_single(), oldRecord.wr_single(),
                                 newRecord.getNr_single(), newRecord.getCr_single(), newRecord.getWr_single());
 
@@ -313,7 +214,9 @@ public class CheckRecordService extends Service {
                         scoresHasChanged = true;
 
                         OldNewRecord oldNewRecord = new OldNewRecord(
+                                this,
                                 follower.name(), newRecord.getEvent(),
+                                OldNewRecord.AVERAGE,
                                 oldRecord.average(), newRecord.getAverage(),
                                 oldRecord.nr_average(), oldRecord.cr_average(), oldRecord.wr_average(),
                                 newRecord.getNr_average(), newRecord.getCr_average(), newRecord.getWr_average()
@@ -344,8 +247,9 @@ public class CheckRecordService extends Service {
             if(hasToNotify) {
                 // Plus de details
                 Intent moreDetails = new Intent(this, NotificationActivity.class);
-                moreDetails.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                moreDetails.putExtra(NotificationActivity.OLD_NEW_RECORDS, oldNewRecords);
+                moreDetails.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                moreDetails.putExtra(NotificationActivity.CONTENT, toHtmlText(oldNewRecords));
+                moreDetails.putExtra(NotificationActivity.NAME, follower.name());
                 PendingIntent moreDetailsAction = PendingIntent.getActivity(this, 0, moreDetails, PendingIntent.FLAG_UPDATE_CURRENT);
 
                 // Partager todo: resoudre ce pb
@@ -436,49 +340,13 @@ public class CheckRecordService extends Service {
             }
         }
 
-    }
+        // Soulage le thread
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-    private void makeNotification(Follower follower, String title, String content, InboxStyle bigContent) {
-
-        // Voir le profil
-        Intent gotoMainActivity = new Intent(this, MainActivity.class);
-        gotoMainActivity.putExtra(MainActivity.FRAGMENT_DESTINATION, ProfileFragment.FRAGMENT_TAG);
-        gotoMainActivity.putExtra(BaseActivity.WCA_ID, follower.wca_id());
-        gotoMainActivity.putExtra(BaseActivity.USERNAME, follower.name());
-
-        PendingIntent gotoMainActivityAction = PendingIntent.getActivity(this, 0, gotoMainActivity, 0);
-
-        // Partager
-        Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("text/plain");
-        share.putExtra(Intent.EXTRA_TEXT, bigContent.toString());
-
-        Intent shareChooser = Intent.createChooser(share, getString(R.string.share));
-        PendingIntent shareAction = PendingIntent.getActivity(this, 0, shareChooser, 0);
-
-        // Parametres
-        Intent gotoSettings = new Intent(this, SettingsActivity.class);
-        PendingIntent gotoSettingsAction = PendingIntent.getActivity(this, 0, gotoSettings, 0);
-
-        NotificationCompat.Builder notification = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(title)
-                .setContentText(content)
-                .setTicker(content)
-                .setPriority(Notification.PRIORITY_MAX)
-                .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS)
-                .setWhen(System.currentTimeMillis())
-                .setAutoCancel(true)
-                .setContentIntent(gotoMainActivityAction)
-                .addAction(R.drawable.ic_share, getString(R.string.share), shareAction)
-                .addAction(R.drawable.ic_settings, getString(R.string.settings), gotoSettingsAction)
-                .setStyle(bigContent);
-
-
-        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        manager.notify(notif_id, notification.build());
-
-        notif_id++;
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -551,5 +419,31 @@ public class CheckRecordService extends Service {
     private interface dataCallback {
         void onSuccess(ArrayList<com.adrastel.niviel.models.readable.Record> records);
         void onFailure();
+    }
+
+    private String toHtmlText(ArrayList<OldNewRecord> records) {
+
+        String content = "";
+
+        for(OldNewRecord record : records) {
+
+            String type = "<strong><big>" + record.getType() + "</big></strong><br/><br/>";
+
+            String time_result = record.getOldTime() + " -> " + record.getNewTime() + "<br/>";
+            String time = "\t" + getString(R.string.record_time, time_result);
+
+            String nr_result = record.getOldNr() + " -> " + record.getNewNr() + "<br/>";
+            String nr = "\t" + getString(R.string.record_nr_format, nr_result);
+
+            String cr_result = record.getOldCr() + " -> " + record.getNewCr() + "<br/>";
+            String cr = "\t" + getString(R.string.record_cr_format, cr_result);
+
+            String wr_result = record.getOldWr() + " -> " + record.getNewWr() + "<br/><br/><br/>";
+            String wr = "\t" + getString(R.string.record_wr_format, wr_result);
+
+            content += type + time + nr + cr + wr;
+        }
+
+        return content;
     }
 }

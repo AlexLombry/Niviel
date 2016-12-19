@@ -1,14 +1,21 @@
 package com.adrastel.niviel.models.writeable;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.adrastel.niviel.R;
 import com.adrastel.niviel.models.BaseModel;
 
 public class OldNewRecord extends BaseModel implements Parcelable {
 
+    public static int SINGLE = 0;
+    public static int AVERAGE = 1;
+
+    private Context context;
     private String name;
     private String event;
+    private int type;
     private String oldTime;
     private String newTime;
     private String oldNr;
@@ -18,9 +25,11 @@ public class OldNewRecord extends BaseModel implements Parcelable {
     private String newCr;
     private String newWr;
 
-    public OldNewRecord(String name, String event, String oldTime, String newTime, long oldNr, long oldCr, long oldWr, String newNr, String newCr, String newWr) {
+    public OldNewRecord(Context context, String name, String event, int type, String oldTime, String newTime, long oldNr, long oldCr, long oldWr, String newNr, String newCr, String newWr) {
+        this.context = context;
         this.name = name;
         this.event = event;
+        this.type = type;
         this.oldTime = oldTime;
         this.newTime = newTime;
         this.oldNr = String.valueOf(oldNr);
@@ -34,6 +43,7 @@ public class OldNewRecord extends BaseModel implements Parcelable {
     protected OldNewRecord(Parcel in) {
         name = in.readString();
         event = in.readString();
+        type = in.readInt();
         oldTime = in.readString();
         newTime = in.readString();
         oldNr = in.readString();
@@ -65,6 +75,7 @@ public class OldNewRecord extends BaseModel implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
         parcel.writeString(event);
+        parcel.writeInt(type);
         parcel.writeString(oldTime);
         parcel.writeString(newTime);
         parcel.writeString(oldNr);
@@ -81,6 +92,16 @@ public class OldNewRecord extends BaseModel implements Parcelable {
 
     public String getEvent() {
         return event;
+    }
+
+    public String getType() {
+        if(type == SINGLE) {
+            return context.getString(R.string.single_colon);
+        }
+
+        else {
+            return context.getString(R.string.average_colon);
+        }
     }
 
     public String getOldTime() {
