@@ -12,22 +12,20 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
+import android.text.TextUtils;
 
+import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.RecordModel;
-import com.adrastel.niviel.activities.BaseActivity;
-import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.activities.NotificationActivity;
 import com.adrastel.niviel.activities.SettingsActivity;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.DetailsMaker;
-import com.adrastel.niviel.assets.InboxStyle;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.database.Record;
-import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.models.writeable.OldNewRecord;
 import com.adrastel.niviel.providers.html.RecordProvider;
 
@@ -145,25 +143,14 @@ public class CheckRecordService extends Service {
                  *  Et verification qu'il n'ait pas de crossing over
                  */
 
-                if((oldRecord == null || newRecord == null) && (oldRecord.event().equals(newRecord.getEvent()))) continue;
+                if((oldRecord == null || newRecord == null) || !oldRecord.event().equals(newRecord.getEvent())) continue;
 
                 RecordModel.Marshal values = Record.FACTORY.marshal();
-
-                String content = "";
-                String nr = "";
-                String cr = "";
-                String wr = "";
-
 
                 if(singleChanged(oldRecord, newRecord)) {
                     try {
 
                         Log.v(oldRecord.single() + "->" + newRecord.getSingle());
-                        content = getString(R.string.notif_new_single, newRecord.getSingle());
-
-                        nr = newRecord.getNr_single();
-                        cr = newRecord.getCr_single();
-                        wr = newRecord.getWr_single();
 
                         values.single(newRecord.getSingle());
                         values.nr_single(Long.parseLong(newRecord.getNr_single()));
@@ -190,19 +177,7 @@ public class CheckRecordService extends Service {
 
                     try {
                         Log.v(oldRecord.average() + "->" + newRecord.getAverage());
-                        // Si le titre est vide, on ne fait rien, sinon on ajoute un séparateur
-                        content = content.equals("") ? "" : content + " | ";
-                        content += getString(R.string.notif_new_average, newRecord.getAverage());
 
-                        // Update notification
-                        nr = nr.equals("") ? "" : nr + " | ";
-                        nr += newRecord.getNr_average();
-
-                        cr = cr.equals("") ? "" : cr + " | ";
-                        cr += newRecord.getCr_average();
-
-                        wr = wr.equals("") ? "" : wr + " | ";
-                        wr += newRecord.getWr_average();
 
                         // Update database
                         values.average(newRecord.getAverage());
@@ -230,16 +205,7 @@ public class CheckRecordService extends Service {
                 }
 
                 if(scoresHasChanged) {
-                    notificationMessage += newRecord.getEvent() + "/";
-                    detailsMaker.add(newRecord.getEvent(), 4);
-
-                    detailsMaker
-                            .add(content)
-                            .add(getString(R.string.record_nr_format, nr))
-                            .add(getString(R.string.record_cr_format, cr))
-                            .add(getString(R.string.record_wr_format, wr))
-                            .br();
-
+                    database.updateRecord(follower._id(), newRecord.getEvent(), values.asContentValues());
                 }
 
             }
@@ -261,8 +227,12 @@ public class CheckRecordService extends Service {
                 Intent gotoSettings = new Intent(this, SettingsActivity.class);
                 PendingIntent gotoSettingsAction = PendingIntent.getActivity(this, 0, gotoSettings, 0);
 
+                for(OldNewRecord record : oldNewRecords) {
+                    notificationMessage += record.getEvent() + "/";
+                }
                 // Supprime le dernier slash et formate le tout
                 notificationMessage = getString(R.string.notif_new_event, notificationMessage.substring(0, notificationMessage.length() - 1));
+
 
 
                 NotificationCompat.Builder notification = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
