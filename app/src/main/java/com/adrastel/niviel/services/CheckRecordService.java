@@ -339,14 +339,6 @@ public class CheckRecordService extends Service {
                 compareRecords(follower, oldFollowersUpdated, newRecords);
             }
         }
-
-        // Soulage le thread
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -406,9 +398,6 @@ public class CheckRecordService extends Service {
                 response.close();
 
                 ArrayList<com.adrastel.niviel.models.readable.Record> records = RecordProvider.getRecord(getApplicationContext(), document);
-
-                records.get(0).setSingle("1");
-                records.get(0).setWr_single("1");
 
                 callback.onSuccess(records);
             }

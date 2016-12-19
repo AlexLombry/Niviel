@@ -493,15 +493,10 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 return true;
 
             case R.id.settings:
-                if(BuildConfig.DEBUG) {
-                    startService(new Intent(this, CheckRecordService.class));
-                    return true;
-                }
-                else {
-                    Intent settings = new Intent(this, SettingsActivity.class);
-                    startActivityForResult(settings, 0);
-                    return true;
-                }
+
+                Intent settings = new Intent(this, SettingsActivity.class);
+                startActivityForResult(settings, 0);
+                return true;
 
             case R.id.dark_light:
 

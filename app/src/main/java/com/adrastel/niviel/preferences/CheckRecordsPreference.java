@@ -16,6 +16,8 @@ public class CheckRecordsPreference extends ListPreference {
     @Override
     protected void onDialogClosed(boolean positiveResult) {
 
+        super.onDialogClosed(positiveResult);
+
         if(positiveResult) {
 
             Intent checkRecords = new Intent(getContext(), CheckRecordService.class);
