@@ -34,8 +34,8 @@
     <string name="records">Records</string>
     <string name="single">Single</string>
     <string name="average">Average</string>
-    <string name="single_colon">Single: </string>
-    <string name="average_colon">Average: </string>
+    <string name="single_colon">Single:</string>
+    <string name="average_colon">Average:</string>
 
     <string name="record_time">Time: <xliff:g id="time">%1$s</xliff:g></string>
     <string name="record_nr">National record</string>
@@ -191,7 +191,7 @@
     <string name="notif_new_average">Average broken: <xliff:g id="time">%1$s</xliff:g></string>
     <string name="notif_new_event">Record broken: <xliff:g id="cubes">%1$s</xliff:g></string>
     
-    <string name="notif_share">%1$s has broken his records in %2$s!</string>
+    <string name="notif_share"><xliff:g id="user">%1$s</xliff:g> has broken his records in <xliff:g id="events">%2$s</xliff:g>!</string>
     
 
     <string name="string_details_string"><xliff:g id="title">%1$s</xliff:g> (<xliff:g id="content">%2$s</xliff:g>)</string>
