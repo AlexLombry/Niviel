@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 
 import com.adrastel.niviel.R;
 
+@SuppressWarnings("SameParameterValue")
 public class InfoDialog extends DialogFragment {
 
     private static final String TITLE = "title";

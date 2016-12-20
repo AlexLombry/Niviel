@@ -21,11 +21,6 @@ public class WcaUrl {
         return this;
     }
 
-    public WcaUrl competition() {
-        url.addEncodedPathSegment("competitions");
-        return this;
-    }
-
     public WcaUrl competition(String segment) {
         url.addEncodedPathSegments(segment);
         return this;

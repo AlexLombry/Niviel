@@ -215,9 +215,8 @@ public class RecordFragment extends BaseFragment {
 
     protected User loadUserData(Bundle savedInstanceState) {
         if(savedInstanceState != null) {
-            User user = savedInstanceState.getParcelable(USER);
-            //this.wca_id = user != null ? user.getWca_id() : null;
-            return user;
+
+            return savedInstanceState.getParcelable(USER);
         }
 
         return null;

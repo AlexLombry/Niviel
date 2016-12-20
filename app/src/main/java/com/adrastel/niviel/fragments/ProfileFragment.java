@@ -20,7 +20,6 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.BaseActivity;
 import com.adrastel.niviel.activities.MainActivity;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.EditProfileFollowDialog;
@@ -309,8 +308,6 @@ public class ProfileFragment extends BaseFragment {
 
 
     private void updateProfileInfos() {
-
-        //activity.setTitle(username);
         activity.setSubtitle(username);
     }
 

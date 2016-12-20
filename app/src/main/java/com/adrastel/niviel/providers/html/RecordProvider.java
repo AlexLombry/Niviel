@@ -65,18 +65,6 @@ public class RecordProvider {
 
 
                 /**
-                 * Si on veux ajouter les competitions, on les recupere, on les filtres avec l'event et on les ajouter au buffer
-                 */
-                /*if (addCompetitions) {
-
-                    ArrayList<History> history = HistoryProvider.getHistory(context, document);
-
-                    bufferRecord.setCompetitions(history);
-
-
-                }*/
-
-                /**
                  * Si ce sont des entêtes, on les testes pour savoir si elles sont toujours les mêmes, pour verifier le code HTML
                  * Sinon on ajoute un record
                  */

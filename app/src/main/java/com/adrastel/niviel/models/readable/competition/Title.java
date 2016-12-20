@@ -40,18 +40,6 @@ public class Title implements Parent<Competition>, Parcelable {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public ArrayList<Competition> getCompetitions() {
-        return competitions;
-    }
-
-    public void setCompetitions(ArrayList<Competition> competitions) {
-        this.competitions = competitions;
-    }
-
     public void expend() {
         isExpanded = true;
     }

@@ -7,16 +7,6 @@ public class BufferHistory extends History {
     public BufferHistory() {
     }
 
-    public BufferHistory(BufferHistory history) {
-        event = history.getEvent();
-        competition = history.getCompetition();
-        round = history.getRound();
-        place = history.getPlace();
-        best = history.getBest();
-        average = history.getAverage();
-        result_details = history.getResult_details();
-    }
-
     public void setEvent(String event) {
         this.event = event;
     }

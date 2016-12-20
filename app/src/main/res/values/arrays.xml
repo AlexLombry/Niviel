@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
     <!-- WARNING: si le nombre de cube change, changer le fichier RankingChooseCubeDialog -->
     <string-array name="cubes">
         <item>Rubik\'s cube</item>

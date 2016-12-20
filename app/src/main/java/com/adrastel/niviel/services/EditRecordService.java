@@ -278,20 +278,6 @@ public class EditRecordService extends IntentService {
                     singles[i], nr_singles[i], cr_singles[i], wr_singles[i],
                     averages[i], nr_average[i], cr_average[i], wr_average[i]
             );
-
-            // Insert Histories
-
-            /*ArrayList<History> histories = record.getCompetitions();
-
-            for(History history : histories) {
-
-                db.insertHistory(
-                        record_id, follower,
-                        history.getEvent(),
-                        history.getCompetition(), history.getRound(),
-                        history.getPlace(), history.getBest(), history.getAverage(), history.getResult_details());
-
-            }*/
         }
     }
 

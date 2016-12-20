@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatDelegate;
 import android.widget.Toast;
 
 import com.adrastel.niviel.R;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 
@@ -43,14 +42,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         return tracker;
-    }
-
-    public static AdRequest getAdRequest() {
-        return new AdRequest.Builder()
-                .addTestDevice("60C90B1288225E9B7FDB8AB3972CC7E5")
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .setGender(AdRequest.GENDER_MALE)
-                .build();
     }
 
     /**

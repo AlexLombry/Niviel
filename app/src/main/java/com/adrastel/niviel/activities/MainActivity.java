@@ -54,7 +54,6 @@ import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.models.readable.SuggestionUser;
-import com.adrastel.niviel.services.CheckRecordService;
 import com.adrastel.niviel.services.EditRecordService;
 import com.applovin.adview.AppLovinInterstitialAd;
 import com.applovin.sdk.AppLovinSdk;
@@ -84,7 +83,6 @@ import okhttp3.Response;
 
 /**
  * Activité principale
- * <p>
  * Est composée d'un DrawerLayout qui gère plusieurs fragments
  */
 public class MainActivity extends BaseActivity implements DrawerLayout.DrawerListener {
@@ -121,7 +119,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
     private long adViewedTime = 0;
 
     private OkHttpClient httpClient = new OkHttpClient();
-
 
     // Le reciever
     private BroadcastReceiver activityReceiver = new BroadcastReceiver() {
@@ -261,7 +258,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
         else
             preferences.edit().putInt("dayOfMonth", currentDayOfMonth).apply();
-
 
     }
 

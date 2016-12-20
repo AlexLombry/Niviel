@@ -39,7 +39,6 @@
             android:entryValues="@array/pref_check_network_values"
             android:positiveButtonText="@string/ok"
             android:negativeButtonText="@string/cancel"/>
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/about">
@@ -47,6 +46,8 @@
         <PreferenceScreen android:title="@string/intro">
             <intent android:action="com.adrastel.niviel.Introduction"/>
         </PreferenceScreen>
+
+        <com.adrastel.niviel.preferences.LicensePreference android:title="@string/licenses"/>
 
 
     </PreferenceCategory>

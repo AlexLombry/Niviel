@@ -2,6 +2,7 @@ package com.adrastel.niviel.models.readable;
 
 import com.google.gson.annotations.SerializedName;
 
+@SuppressWarnings("unused")
 public class SuggestionUser {
 
     @SerializedName("class")

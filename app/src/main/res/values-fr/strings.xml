@@ -111,6 +111,7 @@
 
 
     <!-- Préférences -->
+    <string name="licenses">Licences</string>
 
     <!-- Thème -->
     <string name="theme">Thème</string>
@@ -167,8 +168,6 @@
 
     <!-- Notification -->
 
-    <string name="notif_new_single">Single battu: <xliff:g id="time">%1$s</xliff:g></string>
-    <string name="notif_new_average">Average battu: <xliff:g id="time">%1$s</xliff:g></string>
     <string name="notif_new_event">Record battu: <xliff:g id="cubes">%1$s</xliff:g></string>
 
     <string name="notif_share"><xliff:g id="user">%1$s</xliff:g> a battu son record en <xliff:g id="events">%2$s</xliff:g> !</string>

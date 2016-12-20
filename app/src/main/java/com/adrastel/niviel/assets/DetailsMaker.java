@@ -20,6 +20,7 @@ public class DetailsMaker {
         return add(title, body);
     }
 
+    @SuppressWarnings("SameParameterValue")
     public DetailsMaker add(@StringRes int titleRes, @StringRes int bodyRes) {
         String title = context.getString(titleRes);
         String body = context.getString(bodyRes);
@@ -44,12 +45,6 @@ public class DetailsMaker {
         return this;
     }
 
-    public DetailsMaker add(String body, int size) {
-        String message = "<font size=\"" + size + "\">" + body + "</font>";
-
-        return add(message);
-    }
-
     public DetailsMaker br() {
         this.message += "<br/>";
 
@@ -60,14 +55,4 @@ public class DetailsMaker {
         return Assets.fromHtml(message);
     }
 
-    public Spanned build(String color) {
-
-        this.message = "<font color=\"" + color + "\">" + this.message + "</font>";
-
-        return build();
-    }
-
-    public String html() {
-        return this.message;
-    }
 }

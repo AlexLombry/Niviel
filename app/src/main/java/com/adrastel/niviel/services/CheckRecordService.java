@@ -18,7 +18,6 @@ import com.adrastel.niviel.RecordModel;
 import com.adrastel.niviel.activities.NotificationActivity;
 import com.adrastel.niviel.activities.SettingsActivity;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.DetailsMaker;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.database.DatabaseHelper;
@@ -122,10 +121,8 @@ public class CheckRecordService extends Service {
         if(oldRecords.size() == newRecords.size()) {
 
             boolean hasToNotify = false;
-            DetailsMaker detailsMaker = new DetailsMaker(this);
-            ArrayList<OldNewRecord> oldNewRecords = new ArrayList<>();
 
-            detailsMaker.add(follower.name(), 6);
+            ArrayList<OldNewRecord> oldNewRecords = new ArrayList<>();
 
             String notificationMessage = "";
 
@@ -159,7 +156,7 @@ public class CheckRecordService extends Service {
                         scoresHasChanged = true;
 
                         OldNewRecord oldNewRecord = new OldNewRecord(
-                                this, follower.name(),
+                                this,
                                 newRecord.getEvent(), OldNewRecord.SINGLE, oldRecord.single(),
                                 newRecord.getSingle(), oldRecord.nr_single(), oldRecord.cr_single(), oldRecord.wr_single(),
                                 newRecord.getNr_single(), newRecord.getCr_single(), newRecord.getWr_single());
@@ -188,7 +185,7 @@ public class CheckRecordService extends Service {
 
                         OldNewRecord oldNewRecord = new OldNewRecord(
                                 this,
-                                follower.name(), newRecord.getEvent(),
+                                newRecord.getEvent(),
                                 OldNewRecord.AVERAGE,
                                 oldRecord.average(), newRecord.getAverage(),
                                 oldRecord.nr_average(), oldRecord.cr_average(), oldRecord.wr_average(),

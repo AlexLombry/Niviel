@@ -127,6 +127,7 @@
 
 
     <!-- Préférences -->
+    <string name="licenses">Licenses</string>
 
     <!-- Thème -->
     <string name="theme">Theme</string>
@@ -187,8 +188,6 @@
 
     <!-- Notification -->
 
-    <string name="notif_new_single">Single broken: <xliff:g id="time">%1$s</xliff:g></string>
-    <string name="notif_new_average">Average broken: <xliff:g id="time">%1$s</xliff:g></string>
     <string name="notif_new_event">Record broken: <xliff:g id="cubes">%1$s</xliff:g></string>
     
     <string name="notif_share"><xliff:g id="user">%1$s</xliff:g> has broken his records in <xliff:g id="events">%2$s</xliff:g>!</string>

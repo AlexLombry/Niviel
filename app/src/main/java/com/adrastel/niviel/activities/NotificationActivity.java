@@ -1,23 +1,16 @@
 package com.adrastel.niviel.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Window;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.models.writeable.OldNewRecord;
-
-import java.util.ArrayList;
 
 public class NotificationActivity extends AppCompatActivity {
 
-    public static final String OLD_NEW_RECORDS = "oldnewrecords";
     public static final String CONTENT = "content";
     public static final String NAME = "name";
 

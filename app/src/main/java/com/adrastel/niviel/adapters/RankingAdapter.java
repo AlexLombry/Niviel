@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
@@ -27,11 +25,6 @@ import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.services.EditRecordService;
 import com.adrastel.niviel.views.CircleView;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
-
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

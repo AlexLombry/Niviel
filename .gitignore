@@ -6,9 +6,11 @@
 /.idea/workspace.xml
 /.idea/libraries
 /.idea/libraries
+ .idea/misc.xml
 .DS_Store
 /build
 /captures
 
 /app/build
 /app/sha1.txt
+/releases
