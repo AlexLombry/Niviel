@@ -23,7 +23,6 @@
 
     <!-- Intro -->
     <string name="begin">Beginning</string>
-    <!-- todo :Verifier le titre -->
     <string name="intro_slide_1">Welcome to WCA Records, an application simple displaying your records from the World Cube Association</string>
     <string name="intro_slide_2">Get your records, historics, competitions on a light interface</string>
     <string name="intro_slide_3">You can follow cubers so as to save their results offline and keep you informed as soon as they break their records</string>
@@ -76,7 +75,6 @@
     <string name="toast_follow_confirmation">You follow <xliff:g id="name">%1$s</xliff:g></string>
     <string name="toast_unfollow_confirmation">You do not follow <xliff:g id="name">%1$s</xliff:g> anymore</string>
     <string name="dialog_edit_profile_follow_title">Switch profile/Follow</string>
-    <!-- todo: adapter selon le sexe -->
     <string name="dialog_edit_profile_follow_message">
         You can :
         <xliff:g>\n\t-</xliff:g>Follow <xliff:g id="name">%1$s</xliff:g> and keep you informed if he breaks records
@@ -192,6 +190,9 @@
     <string name="notif_new_single">Single broken: <xliff:g id="time">%1$s</xliff:g></string>
     <string name="notif_new_average">Average broken: <xliff:g id="time">%1$s</xliff:g></string>
     <string name="notif_new_event">Record broken: <xliff:g id="cubes">%1$s</xliff:g></string>
+    
+    <string name="notif_share">%1$s has broken his records in %2$s!</string>
+    
 
     <string name="string_details_string"><xliff:g id="title">%1$s</xliff:g> (<xliff:g id="content">%2$s</xliff:g>)</string>
     <string name="string_details_number"><xliff:g id="title">%1$s</xliff:g> (<xliff:g id="number">%2$d</xliff:g>)</string>

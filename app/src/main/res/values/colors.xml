@@ -5,7 +5,7 @@
     <color name="colorPrimary">@color/indigo_500</color>
     <color name="colorPrimaryDark">@color/indigo_700</color>
     <color name="colorPrimaryLight">@color/indigo_200</color>
-    <color name="colorAccent">@color/deep_orange_A400</color>
+    <color name="colorAccent">@color/green_600</color>
     <color name="textColorPrimary">#212121</color>
     <color name="textColorSecondary">#424242</color>
     <color name="background">#FFFFFF</color>
@@ -15,6 +15,7 @@
     <color name="background_card_record">@color/indigo_200</color>
     <color name="background_personal_follower">@color/green_100</color>
     <color name="background_child_expanded_recycler_view">#DDDDDD</color>
+    <color name="adapter_record_color_button">@color/green_800</color>
 
     <color name="red_50">#ffebee</color>
     <color name="red_100">#ffcdd2</color>

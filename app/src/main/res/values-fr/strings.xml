@@ -7,7 +7,7 @@
 
     <!-- Intro -->
     <string name="begin">Pour commencer</string>
-    <string name="intro_slide_1">Bienvenue sur WCA Records, une application simple affichant vos records provenant de la World Cube Association</string>
+    <string name="intro_slide_1">Bienvenue sur Records WCA, une application simple affichant vos records provenant de la World Cube Association</string>
     <string name="intro_slide_2">Retrouvez ainsi vos records, historiques, competitions avec une interface légère et rapide</string>
     <string name="intro_slide_3">Vous pouvez suivre des personnes afin de garder leur résultats hors ligne et être informés quand ils battent leur records</string>
     <string name="intro_slide_4">Identifiez-vous pour acceder rapidement à votre profil.<xliff:g>\n\n</xliff:g>Pour vous identifer, accédez à votre profil via une recherche, appuyez sur le bouton + et cliquez sur \"Changer de profil\"</string>

@@ -12,9 +12,7 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
-import android.text.TextUtils;
 
-import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.RecordModel;
 import com.adrastel.niviel.activities.NotificationActivity;
@@ -211,27 +209,29 @@ public class CheckRecordService extends Service {
             }
 
             if(hasToNotify) {
+
+                for(OldNewRecord record : oldNewRecords) {
+                    notificationMessage += record.getEvent() + ", ";
+                }
+                // Supprime le dernier slash et formate le tout
+                notificationMessage = getString(R.string.notif_new_event, notificationMessage.substring(0, notificationMessage.length() - 1));
+
                 // Plus de details
                 Intent moreDetails = new Intent(this, NotificationActivity.class);
                 moreDetails.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 moreDetails.putExtra(NotificationActivity.CONTENT, toHtmlText(oldNewRecords));
-                moreDetails.putExtra(NotificationActivity.NAME, follower.name());
+                moreDetails.putExtra(NotificationActivity.NAME, getString(R.string.two_infos, follower.name(), follower.wca_id()));
                 PendingIntent moreDetailsAction = PendingIntent.getActivity(this, 0, moreDetails, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                // Partager todo: resoudre ce pb
-                /*Intent share = new Intent(Intent.ACTION_SEND);
+                // Partager
+                Intent share = new Intent(Intent.ACTION_SEND);
                 share.setType("text/plain");
-                share.putExtra(Intent.EXTRA_TEXT, bigContent.toString());*/
+                share.putExtra(Intent.EXTRA_TEXT, getString(R.string.notif_share, follower.name(), notificationMessage));
+                PendingIntent shareAction = PendingIntent.getActivity(this, 0, share, 0);
 
                 // Parametres
                 Intent gotoSettings = new Intent(this, SettingsActivity.class);
                 PendingIntent gotoSettingsAction = PendingIntent.getActivity(this, 0, gotoSettings, 0);
-
-                for(OldNewRecord record : oldNewRecords) {
-                    notificationMessage += record.getEvent() + "/";
-                }
-                // Supprime le dernier slash et formate le tout
-                notificationMessage = getString(R.string.notif_new_event, notificationMessage.substring(0, notificationMessage.length() - 1));
 
 
 
@@ -246,6 +246,7 @@ public class CheckRecordService extends Service {
                         .setAutoCancel(true)
                         .setContentIntent(moreDetailsAction)
                         .addAction(R.drawable.ic_settings, getString(R.string.settings), gotoSettingsAction)
+                        .addAction(R.drawable.ic_share, getString(R.string.share), shareAction)
                         .setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(notificationMessage));
 
 

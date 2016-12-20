@@ -15,7 +15,7 @@ import com.adrastel.niviel.fragments.SettingsFragment;
 public class SettingsActivity extends BaseActivity {
 
     private boolean hasToRestart = false;
-// todo: bug sur freqActivity
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
