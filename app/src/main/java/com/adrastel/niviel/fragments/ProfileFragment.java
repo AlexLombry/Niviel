@@ -32,7 +32,6 @@ public class ProfileFragment extends BaseFragment {
 
     public static final String FRAGMENT_TAG = "profileFragment";
 
-    public static final String TAB = "tab";
 
     private MainActivity activity;
     private TabLayout tabLayout;
@@ -142,10 +141,6 @@ public class ProfileFragment extends BaseFragment {
 
         tabLayout.setupWithViewPager(viewPager);
         setupViewPager(viewPager);
-        if(savedInstanceState != null) {
-            int tab = savedInstanceState.getInt(TAB, 0);
-            viewPager.setCurrentItem(tab);
-        }
         updateProfileInfos();
 
         return view;
@@ -259,7 +254,6 @@ public class ProfileFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         setTargetFragment(null, -1);
-        outState.putInt(TAB, viewPager.getCurrentItem());
         super.onSaveInstanceState(outState);
     }
 
@@ -311,9 +305,6 @@ public class ProfileFragment extends BaseFragment {
 
 
     }
-
-
-
 
     private void updateProfileInfos() {
         activity.setSubtitle(username);

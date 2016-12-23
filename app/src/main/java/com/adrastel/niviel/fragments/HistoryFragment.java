@@ -133,10 +133,21 @@ public class HistoryFragment extends BaseFragment {
 
 
         if(savedInstanceState != null) {
-            ArrayList<Event> histories = savedInstanceState.getParcelableArrayList(EVENTS);
-            adapter.refreshData(histories);
-            recyclerView.showRecycler();
 
+            /**
+             * Utilise une condition pour verifier que les données sauegardées ne sont pas vides
+             *
+             * Si elles le sont, montre la page d'erreur
+             */
+
+            ArrayList<Event> histories = savedInstanceState.getParcelableArrayList(EVENTS);
+
+            if(histories != null && histories.size() != 0) {
+                adapter.refreshData(histories);
+                recyclerView.showRecycler();
+            } else {
+                recyclerView.showEmpty();
+            }
             // Hydrate la variable WCA_ID
             if(follower_id != -1) {
                 DatabaseHelper database = DatabaseHelper.getInstance(getContext());

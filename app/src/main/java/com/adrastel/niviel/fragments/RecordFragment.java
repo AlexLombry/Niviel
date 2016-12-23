@@ -136,8 +136,15 @@ public class RecordFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
-            adapter.refreshData(loadUserData(savedInstanceState), loadRecordData(savedInstanceState));
-            recyclerView.showRecycler();
+            /**
+             * Utilise une condition pour verifier que les données sauegardées ne sont pas vides
+             *
+             * Si elles le sont, montre la page d'erreur
+             */
+            if(adapter.refreshData(loadUserData(savedInstanceState), loadRecordData(savedInstanceState)))
+                recyclerView.showRecycler();
+            else
+                recyclerView.showEmpty();
 
             // Hydrate la variable WCA ID
             if(follower_id != -1) {
