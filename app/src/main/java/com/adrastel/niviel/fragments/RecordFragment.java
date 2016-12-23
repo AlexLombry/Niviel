@@ -146,8 +146,6 @@ public class RecordFragment extends BaseFragment {
                 Follower follower = database.selectFollowerFromId(follower_id);
 
                 this.wca_id = follower.wca_id();
-
-                getContext().startService(new Intent(getContext(), CheckRecordService.class));
             }
         }
         // Si on est connecté, on fait une requete HTTP, sinon on lit les données locales

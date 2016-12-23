@@ -12,9 +12,9 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.database.DatabaseHelper;
-import com.adrastel.niviel.models.readable.history.History;
 import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.models.readable.User;
+import com.adrastel.niviel.models.readable.history.History;
 import com.adrastel.niviel.providers.html.HistoryProvider;
 import com.adrastel.niviel.providers.html.RecordProvider;
 import com.adrastel.niviel.providers.html.UserProvider;
@@ -118,8 +118,6 @@ public class EditRecordService extends IntentService {
         }
 
         else if(action == DELETE_FOLLOWER) {
-
-
 
             if(follower_id == -1) {
                 follower_id = db.selectFollowerIdFromWca(wca_id);

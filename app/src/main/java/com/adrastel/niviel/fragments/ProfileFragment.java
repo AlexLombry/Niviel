@@ -76,6 +76,10 @@ public class ProfileFragment extends BaseFragment {
                 case EditRecordService.ADD_RECORD_SUCCESS:
                     activity.hideFab();
                     break;
+
+                case EditRecordService.ADD_RECORD_FAILURE:
+                    activity.showFab();
+                    break;
             }
         }
     };
@@ -165,6 +169,8 @@ public class ProfileFragment extends BaseFragment {
                         @Override
                         public void onFollow() {
 
+                            activity.hideFab();
+
                             Intent follow = new Intent(getContext(), EditRecordService.class);
 
                             follow.putExtra(EditRecordService.ACTION, EditRecordService.ADD_FOLLOWER);
@@ -177,6 +183,8 @@ public class ProfileFragment extends BaseFragment {
 
                         @Override
                         public void onEdit() {
+
+                            activity.hideFab();
 
                             Intent delete = new Intent(getContext(), EditRecordService.class);
                             delete.putExtra(EditRecordService.ACTION, EditRecordService.DELETE_FOLLOWER);
