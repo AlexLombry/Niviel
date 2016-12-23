@@ -23,7 +23,7 @@
 
     <!-- Intro -->
     <string name="begin">Beginning</string>
-    <string name="intro_slide_1">Welcome to WCA Records, an application simple displaying your records from the World Cube Association</string>
+    <string name="intro_slide_1">Welcome to WCA Records, an simple application displaying your records from the World Cube Association</string>
     <string name="intro_slide_2">Get your records, historics, competitions on a light interface</string>
     <string name="intro_slide_3">You can follow cubers so as to save their results offline and keep you informed as soon as they break their records</string>
     <string name="intro_slide_4">Log in to quickly reach your profile.<xliff:g>\n\n</xliff:g>To log in, get to your profile by searching it, press the + button and click on \"Switch profile\"</string>

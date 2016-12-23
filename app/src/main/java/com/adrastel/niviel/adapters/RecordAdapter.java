@@ -250,11 +250,13 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
         return size != 0 ? size + 1 : 0;
     }
 
-    public void refreshData(User user, ArrayList<Record> datas) {
+    public boolean refreshData(User user, ArrayList<Record> datas) {
         super.refreshData(datas);
 
         this.user = user;
         notifyItemChanged(0);
+
+        return datas.size() != 0;
     }
 
     public User getUser() {

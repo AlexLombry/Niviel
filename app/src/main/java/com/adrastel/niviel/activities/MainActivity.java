@@ -282,8 +282,8 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         // Ne montre pas d'annonce avant les 15 premières minutes du premier lancement de l'app
         if(System.currentTimeMillis() - preferences.getLong(getString(R.string.pref_time_first_launch), 0) >= 15 * 60 * 1000) {
 
-            // Ne montre pas d'annonce à 3 minutes d'intervalles ou à 6 minutes d'intervalles si 5 annonces ont étés montréees
-            if ((adViewed >= 5 && System.currentTimeMillis() >= 6 * 60 * 1000) || (System.currentTimeMillis() - adViewedTime >= 3 * 60 * 1000)) {
+            // Ne montre pas d'annonce à 2min30 minutes d'intervalles ou à 5 minutes d'intervalles si 5 annonces ont étés montréees
+            if ((adViewed >= 5 && System.currentTimeMillis() >= 5 * 60 * 1000) || (System.currentTimeMillis() - adViewedTime >= 2.5 * 60 * 1000)) {
                 return showAdd();
             }
         }
