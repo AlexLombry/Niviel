@@ -52,7 +52,6 @@ public class HistoryFragment extends BaseFragment {
     /**
      * 2 constantes qui déterminent si on veux trier par event ou competition
      */
-
     private boolean sortByEvent = true;
 
 
