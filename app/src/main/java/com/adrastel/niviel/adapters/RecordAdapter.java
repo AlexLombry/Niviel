@@ -48,9 +48,6 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
         @BindView(R.id.share) Button share;
         @BindView(R.id.card) CardView card;
 
-
-
-
         // view holder
         public ViewHolder(View itemView) {
             super(itemView);

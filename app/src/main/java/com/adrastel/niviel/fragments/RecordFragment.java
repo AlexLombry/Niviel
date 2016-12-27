@@ -1,6 +1,5 @@
 package com.adrastel.niviel.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,7 +20,6 @@ import com.adrastel.niviel.models.readable.Record;
 import com.adrastel.niviel.models.readable.User;
 import com.adrastel.niviel.providers.html.RecordProvider;
 import com.adrastel.niviel.providers.html.UserProvider;
-import com.adrastel.niviel.services.CheckRecordService;
 import com.adrastel.niviel.views.RecyclerViewCompat;
 
 import org.jsoup.Jsoup;
