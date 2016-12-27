@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.adrastel.niviel">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.adrastel.niviel">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -15,9 +16,6 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <meta-data android:name="applovin.sdk.key"
-                   android:value="_fnWwpRdBmQdBUyFbv8N3Qh2yyaZ0Ix_zhWuUzWgiyIvQF818HOBh5De1pC26714pTyIVSzCOG6qVFsdWEqDK1"  />
 
         <activity
             android:name=".activities.MainActivity"
@@ -59,13 +57,6 @@
         <activity
             android:name=".activities.NotificationActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity
-            android:name="com.applovin.adview.AppLovinInterstitialActivity"
-            android:configChanges="orientation|screenSize"/>
-        <activity
-            android:name="com.applovin.adview.AppLovinConfirmationActivity"
-            android:configChanges="orientation|screenSize"/>
 
         <provider
             android:name=".providers.content.SuggestionProvider"

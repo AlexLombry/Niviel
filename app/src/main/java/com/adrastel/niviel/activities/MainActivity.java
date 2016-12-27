@@ -14,8 +14,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
@@ -55,8 +53,6 @@ import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.models.readable.SuggestionUser;
 import com.adrastel.niviel.services.EditRecordService;
-import com.applovin.adview.AppLovinInterstitialAd;
-import com.applovin.sdk.AppLovinSdk;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -67,7 +63,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicLong;
 
 import butterknife.BindView;
@@ -114,9 +109,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
     // Le runnable qui est executé après que le drawer soit fermé
     private Runnable fragmentToRun;
-
-    private int adViewed = 0;
-    private long adViewedTime = 0;
 
     private OkHttpClient httpClient = new OkHttpClient();
 
@@ -205,8 +197,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
         switchFragment(fragment);
 
-        final Handler handler = new Handler(Looper.getMainLooper());
-
         // Lance un fragment lors d'un clique du menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -223,21 +213,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                     runWhenDrawerClose(new Runnable() {
                         @Override
                         public void run() {
-                            /**
-                             * Si une pub est affiché, freeze l'app pour une seconde, sinon switch de fragment
-                             * Cela a pour but d'eviter les cliques non voulus de l'utilisateur
-                             */
-                            if (runAdd())
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        switchFragment(fragment);
-
-                                    }
-                                }, 1000);
-
-                            else
-                                switchFragment(fragment);
+                            switchFragment(fragment);
                         }
                     });
                 }
@@ -245,51 +221,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 return true;
             }
         });
-
-        // Initialisation des annonces
-        AppLovinSdk.initializeSdk(this);
-
-        int oldDayOfMonth = preferences.getInt("dayOfMonth", 0);
-        int currentDayOfMonth = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-
-        // Si l'application a été ouverte aujourd'hui, retarde, l'affichage de l'annonce
-        if(oldDayOfMonth == currentDayOfMonth)
-            adViewedTime = System.currentTimeMillis();
-
-        else
-            preferences.edit().putInt("dayOfMonth", currentDayOfMonth).apply();
-
-    }
-
-
-    /**
-     * Affiche une annonce
-     */
-    public boolean showAdd() {
-        if(AppLovinInterstitialAd.isAdReadyToDisplay(this)) {
-           adViewed++;
-           adViewedTime = System.currentTimeMillis();
-           AppLovinInterstitialAd.show(this);
-
-           return true;
-        }
-
-        return false;
-    }
-
-    public boolean runAdd() {
-
-        // Ne montre pas d'annonce avant les 15 premières minutes du premier lancement de l'app
-        if(System.currentTimeMillis() - preferences.getLong(getString(R.string.pref_time_first_launch), 0) >= 15 * 60 * 1000) {
-
-            // Ne montre pas d'annonce à 3 minutes d'intervalles ou à 6 minutes d'intervalles si 5 annonces ont étés montréees
-            if ((adViewed >= 5 && System.currentTimeMillis() >= 6 * 60 * 1000) || (System.currentTimeMillis() - adViewedTime >= 3 * 60 * 1000)) {
-                return showAdd();
-            }
-        }
-
-        return false;
-
     }
 
     /**
