@@ -1,16 +1,18 @@
 *.iml
 *.log
 *.jks
+*.apk
 .gradle
-/local.properties
-/.idea/workspace.xml
-/.idea/libraries
-/.idea/libraries
- .idea/misc.xml
+local.properties
+.idea
 .DS_Store
-/build
-/captures
+build
+captures
+logos
+projectFilesBackup
 
-/app/build
-/app/sha1.txt
-/releases
+app/build
+app/libs
+app/google-services.json
+app/sha1.txt
+releases
