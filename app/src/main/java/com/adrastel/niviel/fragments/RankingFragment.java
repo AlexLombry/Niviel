@@ -145,8 +145,11 @@ public class RankingFragment extends BaseFragment {
         });
 
         Tracker tracker = activity.getDefaultTracker();
-        tracker.setScreenName(getString(R.string.ranking_fragment));
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+        if(tracker != null) {
+            tracker.setScreenName(getString(R.string.ranking_fragment));
+            tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        }
     }
 
     @Override

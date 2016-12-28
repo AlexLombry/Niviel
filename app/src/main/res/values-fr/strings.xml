@@ -12,6 +12,8 @@
     <string name="intro_slide_3">Vous pouvez suivre des personnes afin de garder leur résultats hors ligne et être informés quand ils battent leur records</string>
     <string name="intro_slide_4">Identifiez-vous pour acceder rapidement à votre profil.<xliff:g>\n\n</xliff:g>Pour vous identifer, accédez à votre profil via une recherche, appuyez sur le bouton + et cliquez sur \"Changer de profil\"</string>
 
+    <string name="one_last_thing">Une dernière chose…</string>
+
     <string name="information">Information</string>
     <string name="info_no_connection">Tant que vous n\'êtes pas connecté, des profils aléatoires des meilleurs cubeurs.</string>
     <!-- Records -->
@@ -112,6 +114,8 @@
 
     <!-- Préférences -->
     <string name="licenses">Licences</string>
+    <string name="send_data_title">Envoyer des données anonymes</string>
+    <string name="send_data_content">Autoriser l\'application à envoyer des données anonymes dans un but non commercial ?</string>
 
     <!-- Thème -->
     <string name="theme">Thème</string>

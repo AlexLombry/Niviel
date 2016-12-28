@@ -1,13 +1,18 @@
 package com.adrastel.niviel.activities;
 
 import android.content.Intent;
+import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.widget.Toast;
 
+import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.internal.zzrw;
+import com.google.android.gms.internal.zzsv;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -30,20 +35,26 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Retourne le tracker pour Google Analytics
      */
+    @Nullable
     public synchronized Tracker getDefaultTracker() {
-        if(tracker == null) {
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            tracker = analytics.newTracker(R.xml.global_tracker);
 
-            tracker.setAnonymizeIp(false);
-            tracker.enableExceptionReporting(true);
+        if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_send_data), true) || !BuildConfig.DEBUG) {
+            if (tracker == null) {
+                GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+                tracker = analytics.newTracker(R.xml.global_tracker);
 
-            // Les dimensions et stats sont définies globales son définies sur le ProfileFragment
+                tracker.setAnonymizeIp(true);
+                tracker.enableExceptionReporting(true);
+
+
+                // Les dimensions et stats sont définies globales son définies sur le ProfileFragment
+            }
+
+            return tracker;
         }
 
-        return tracker;
+        return null;
     }
-
     /**
      * Protège la fonction contre le crash
      * @param intent Activité
