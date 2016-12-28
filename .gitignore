@@ -2,6 +2,7 @@
 *.log
 *.jks
 *.apk
+*.bat
 .gradle
 local.properties
 .idea/
