@@ -3,7 +3,9 @@ package com.adrastel.niviel.activities;
 import android.os.Bundle;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.fragments.AuthorizationFragment;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
+import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 
 public class MainIntroActivity extends IntroActivity {
@@ -39,6 +41,11 @@ public class MainIntroActivity extends IntroActivity {
             .description(R.string.intro_slide_4)
             .image(R.drawable.ic_add)
             .background(R.color.indigo_200)
+            .build());
+
+        addSlide(new FragmentSlide.Builder()
+            .background(R.color.red_200)
+            .fragment(new AuthorizationFragment())
             .build());
 
     }

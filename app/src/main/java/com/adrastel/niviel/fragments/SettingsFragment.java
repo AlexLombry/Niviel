@@ -32,8 +32,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         super.onActivityCreated(savedInstanceState);
 
         Tracker tracker = activity.getDefaultTracker();
-        tracker.setScreenName(getString(R.string.settings_fragment));
-        tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        if (tracker != null) {
+            tracker.setScreenName(getString(R.string.settings_fragment));
+            tracker.send(new HitBuilders.ScreenViewBuilder().build());
+        }
     }
 
     @Override

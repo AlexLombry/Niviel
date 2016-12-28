@@ -43,6 +43,11 @@
 
     <PreferenceCategory android:title="@string/about">
 
+        <CheckBoxPreference
+            android:key="@string/pref_send_data"
+            android:title="@string/send_data_title"
+            android:contentDescription="@string/send_data_content"/>
+
         <PreferenceScreen android:title="@string/intro">
             <intent android:action="com.adrastel.niviel.Introduction"/>
         </PreferenceScreen>

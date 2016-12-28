@@ -210,7 +210,9 @@ public class ProfileFragment extends BaseFragment {
         Les dimensions et stats globales s'appliquent ici
          */
         Tracker tracker = activity.getDefaultTracker();
-        tracker.setScreenName(getString(R.string.profile_fragment));
+
+        if(tracker != null)
+            tracker.setScreenName(getString(R.string.profile_fragment));
 
         HitBuilders.ScreenViewBuilder builder = new HitBuilders.ScreenViewBuilder();
 
@@ -223,7 +225,8 @@ public class ProfileFragment extends BaseFragment {
         boolean isDark = Assets.isDark(preferences.getString(getString(R.string.pref_isdark), "0"));
         builder.setCustomDimension(2, isDark ? "Sombre" : "Clair");
 
-        tracker.send(builder.build());
+        if(tracker != null)
+            tracker.send(builder.build());
 
     }
 

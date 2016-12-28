@@ -94,12 +94,14 @@ public class FollowerFragment extends BaseFragment {
         }
 
         Tracker tracker = activity.getDefaultTracker();
-        tracker.setScreenName(getString(R.string.follower_fragment));
-        tracker.send(new HitBuilders.ScreenViewBuilder()
-                .setCustomMetric(1, followers.size(
+        if(tracker != null) {
+            tracker.setScreenName(getString(R.string.follower_fragment));
+            tracker.send(new HitBuilders.ScreenViewBuilder()
+                    .setCustomMetric(1, followers.size(
 
-                ))
-                .build());
+                    ))
+                    .build());
+        }
     }
 
     @Override
