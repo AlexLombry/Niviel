@@ -18,3 +18,8 @@
 
 -dontwarn com.squareup.okhttp.**
 -dontwarn okio.**
+
+-keep class android.support.v4.app.** { *; }
+-keep interface android.support.v4.app.** { *; }
+-keep class android.support.v7.app.** { *; }
+-keep interface android.support.v7.app.** { *; }
