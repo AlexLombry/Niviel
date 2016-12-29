@@ -53,8 +53,6 @@ import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.models.readable.SuggestionUser;
 import com.adrastel.niviel.services.EditRecordService;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -239,13 +237,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
             }
         } catch (Exception e) {
             e.printStackTrace();
-
-            if(getDefaultTracker() != null) {
-                getDefaultTracker().send(new HitBuilders.ExceptionBuilder()
-                        .setDescription(e.getMessage())
-                        .setFatal(false)
-                        .build());
-            }
         }
     }
 
@@ -442,14 +433,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 return true;
 
             case R.id.contact:
-                if(getDefaultTracker() != null) {
-                    getDefaultTracker().send(new HitBuilders.EventBuilder()
-                            .setCategory("Menu")
-                            .setAction("Press Button")
-                            .setLabel("Contact")
-                            .build());
-                }
-
                 EmailIntentBuilder
                         .from(this)
                         .to(getString(R.string.email))

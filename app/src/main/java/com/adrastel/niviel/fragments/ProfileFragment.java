@@ -24,8 +24,6 @@ import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.EditProfileFollowDialog;
 import com.adrastel.niviel.services.EditRecordService;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 public class ProfileFragment extends BaseFragment {
 
@@ -204,29 +202,6 @@ public class ProfileFragment extends BaseFragment {
                 }
             });
         }
-
-        /*
-        Creation du Tracker de Google Analytics
-        Les dimensions et stats globales s'appliquent ici
-         */
-        Tracker tracker = activity.getDefaultTracker();
-
-        if(tracker != null)
-            tracker.setScreenName(getString(R.string.profile_fragment));
-
-        HitBuilders.ScreenViewBuilder builder = new HitBuilders.ScreenViewBuilder();
-
-        // WCA ID
-        if(follower_id != -1 && Assets.isPersonal(getContext(), follower_id)) {
-            builder.setCustomDimension(1, wca_id);
-        }
-
-        // idDark
-        boolean isDark = Assets.isDark(preferences.getString(getString(R.string.pref_isdark), "0"));
-        builder.setCustomDimension(2, isDark ? "Sombre" : "Clair");
-
-        if(tracker != null)
-            tracker.send(builder.build());
 
     }
 

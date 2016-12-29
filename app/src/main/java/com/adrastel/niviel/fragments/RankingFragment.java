@@ -22,8 +22,6 @@ import com.adrastel.niviel.dialogs.RankingSwitchCubeDialog;
 import com.adrastel.niviel.models.readable.Ranking;
 import com.adrastel.niviel.providers.html.RankingProvider;
 import com.adrastel.niviel.views.RecyclerViewCompat;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -144,12 +142,6 @@ public class RankingFragment extends BaseFragment {
             }
         });
 
-        Tracker tracker = activity.getDefaultTracker();
-
-        if(tracker != null) {
-            tracker.setScreenName(getString(R.string.ranking_fragment));
-            tracker.send(new HitBuilders.ScreenViewBuilder().build());
-        }
     }
 
     @Override

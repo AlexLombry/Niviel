@@ -6,8 +6,6 @@ import android.preference.PreferenceFragment;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.activities.SettingsActivity;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -24,17 +22,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        Tracker tracker = activity.getDefaultTracker();
-        if (tracker != null) {
-            tracker.setScreenName(getString(R.string.settings_fragment));
-            tracker.send(new HitBuilders.ScreenViewBuilder().build());
         }
     }
 

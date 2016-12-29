@@ -42,7 +42,6 @@ dependencies {
     compile 'com.bignerdranch.android:expandablerecyclerview:3.0.0-RC1'
     compile 'de.cketti.mailto:email-intent-builder:1.0.0'
     compile 'com.heinrichreimersoftware:material-intro:1.6'
-    compile 'com.google.android.gms:play-services-analytics:10.0.1'
     compile 'de.psdev.licensesdialog:licensesdialog:1.8.1'
 
     compile 'com.jakewharton:butterknife:8.0.1'
@@ -51,5 +50,3 @@ dependencies {
     provided 'com.google.auto.value:auto-value:1.2'
     apt "com.google.auto.value:auto-value:1.2"
 }
-
-apply plugin: 'com.google.gms.google-services'

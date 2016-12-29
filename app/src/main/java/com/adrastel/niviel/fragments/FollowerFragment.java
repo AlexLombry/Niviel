@@ -15,8 +15,6 @@ import com.adrastel.niviel.adapters.FollowerAdapter;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.views.RecyclerViewCompat;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -91,16 +89,6 @@ public class FollowerFragment extends BaseFragment {
         if(followers.size() == 0) {
             emptyView.setText(R.string.no_followers);
             recyclerView.showEmpty();
-        }
-
-        Tracker tracker = activity.getDefaultTracker();
-        if(tracker != null) {
-            tracker.setScreenName(getString(R.string.follower_fragment));
-            tracker.send(new HitBuilders.ScreenViewBuilder()
-                    .setCustomMetric(1, followers.size(
-
-                    ))
-                    .build());
         }
     }
 
