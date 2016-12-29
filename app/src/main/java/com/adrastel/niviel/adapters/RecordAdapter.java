@@ -31,14 +31,31 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Adapter used to show the profile and the records of someone
+ *
+ * The first child shows the profile and the rest shos the records
+ */
 public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> {
 
+    /**
+     * Profile of the user (name, WCA Id...)
+     */
     private User user;
 
+    /**
+     * Parent contructor
+     * @param activity Fragment activity
+     */
     public RecordAdapter(FragmentActivity activity) {
         super(activity);
     }
 
+    /**
+     * ViewHolder used only in RecordAdapter
+     *
+     * Used to show the profile and the records
+     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.event) TextView event;
@@ -54,9 +71,6 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
             ButterKnife.bind(this, itemView);
         }
     }
-
-    // constructeur
-
 
     // lors de la creation de la vue
     @Override
@@ -177,12 +191,16 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                 detailsMaker.add(R.string.average, average);
             }
 
+            // Space
+            detailsMaker.br();
+
+            // Choose the ranking type to display for single
             try {
 
                 int wr = Integer.parseInt(record.getWr_single());
 
                 if(wr <= 300) {
-                    detailsMaker.add(getActivity().getString(R.string.record_wr), record.getWr_single());
+                    detailsMaker.add(getString(R.string.single_format, getString(R.string.record_wr)), record.getWr_single());
                 }
 
                 else {
@@ -190,11 +208,11 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                     int cr = Integer.parseInt(record.getCr_single());
 
                     if(cr <= 300) {
-                        detailsMaker.add(getActivity().getString(R.string.record_cr), record.getCr_single());
+                        detailsMaker.add(getString(R.string.single_format, getString(R.string.record_cr)), record.getCr_single());
                     }
 
                     else {
-                        detailsMaker.add(getActivity().getString(R.string.record_nr), record.getNr_single());
+                        detailsMaker.add(getString(R.string.single_format, getString(R.string.record_nr)), record.getNr_single());
                     }
                 }
 
@@ -202,11 +220,37 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
             catch (Exception e) {
                 e.printStackTrace();
-                detailsMaker.add(getActivity().getString(R.string.record_nr_format, ""), record.getNr_single());
+                detailsMaker.add(getString(R.string.single_format, getString(R.string.record_nr)), record.getNr_single());
+            }
+
+            // Choose the ranking type to display for average
+            if(average != null) {
+                try {
+
+                    int wr = Integer.parseInt(record.getWr_average());
+
+                    if (wr <= 300) {
+                        detailsMaker.add(getString(R.string.average_format, getString(R.string.record_wr)), record.getWr_average());
+                    } else {
+
+                        int cr = Integer.parseInt(record.getCr_average());
+
+                        if (cr <= 300) {
+                            detailsMaker.add(getString(R.string.average_format, getString(R.string.record_cr)), record.getCr_average());
+                        } else {
+                            detailsMaker.add(getString(R.string.average_format, getString(R.string.record_nr)), record.getNr_average());
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    detailsMaker.add(getString(R.string.average_format, getString(R.string.record_nr)), record.getNr_average());
+                }
+
             }
 
             holder.single.setText(detailsMaker.build(), TextView.BufferType.SPANNABLE);
-
+            // todo : certaines images ne correspondent pas a leur titre /!\ A CORRIGER /!\
             Picasso.with(getActivity())
                     .load(image_resource)
                     .fit()

@@ -26,4 +26,8 @@ public abstract class BaseAdapter<T extends RecyclerView.ViewHolder> extends Rec
     protected String getString(@StringRes int resId) {
         return getActivity().getString(resId);
     }
+
+    protected String getString(@StringRes int resId, Object... args) {
+        return getActivity().getString(resId, args);
+    }
 }

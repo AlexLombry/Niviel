@@ -20,6 +20,8 @@
     <string name="average">Moyenne</string>
     <string name="single_colon">Single: </string>
     <string name="average_colon">Average: </string>
+    <string name="single_format">%1$s single</string>
+    <string name="average_format">%1$s average</string>
 
     <string name="record_time">Temps: <xliff:g id="time">%1$s</xliff:g></string>
     <string name="record_nr">Classement national</string>
