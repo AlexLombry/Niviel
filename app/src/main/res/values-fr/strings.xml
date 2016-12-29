@@ -8,9 +8,9 @@
     <!-- Intro -->
     <string name="begin">Pour commencer</string>
     <string name="intro_slide_1">Bienvenue sur Records WCA, une application simple affichant vos records provenant de la World Cube Association</string>
-    <string name="intro_slide_2">Retrouvez ainsi vos records, historiques, competitions avec une interface légère et rapide</string>
-    <string name="intro_slide_3">Vous pouvez suivre des personnes afin de garder leur résultats hors ligne et être informés quand ils battent leur records</string>
-    <string name="intro_slide_4">Identifiez-vous pour acceder rapidement à votre profil.<xliff:g>\n\n</xliff:g>Pour vous identifer, accédez à votre profil via une recherche, appuyez sur le bouton + et cliquez sur \"Changer de profil\"</string>
+    <string name="intro_slide_2">Retrouvez ainsi vos records, historiques, compétitions avec une interface légère et rapide</string>
+    <string name="intro_slide_3">Vous pouvez suivre des personnes afin de garder leurs résultats hors ligne et être informés quand ils battent leurs records</string>
+    <string name="intro_slide_4">Identifiez-vous pour accéder rapidement à votre profil.<xliff:g>\n\n</xliff:g>Pour vous identifier, accédez à votre profil via une recherche, appuyez sur le bouton + et cliquez sur \"Changer de profil\"</string>
 
     <string name="one_last_thing">Une dernière chose…</string>
 
@@ -33,7 +33,7 @@
     <string name="online">En ligne</string>
 
     <!-- History -->
-    <string name="event">Évenement</string>
+    <string name="event">Événement</string>
     <string name="history">Historique</string>
     <string name="round">Round</string>
     <string name="best">Meilleur</string>
@@ -43,7 +43,7 @@
     <string name="rank">Place</string>
     <string name="person">Personne</string>
     <string name="result">Résultat</string>
-    <string name="citizen">Nationnalité</string>
+    <string name="citizen">Nationalité</string>
     <string name="world">Monde</string>
     <string name="two_infos"><xliff:g>%1$s (%2$s)</xliff:g></string>
     <string name="switch_cube">Changer de cube</string>
@@ -63,7 +63,7 @@
     <string name="dialog_edit_profile_follow_title">Changement de profil/Suivre</string>
     <string name="dialog_edit_profile_follow_message">
         Vous pouvez :
-        <xliff:g>\n\t-</xliff:g>Suivre <xliff:g id="name">%1$s</xliff:g> et être informé si il obtient de nouveaux records.
+        <xliff:g>\n\t-</xliff:g>Suivre <xliff:g id="name">%1$s</xliff:g> et être informé s\'il obtient de nouveaux records.
         <xliff:g>\n\t-</xliff:g>Changer de profil et assigner votre profil personnel au nom de <xliff:g id="name">%1$s</xliff:g>.
     </string>
 
@@ -88,8 +88,8 @@
     </plurals>
 
     <plurals name="competitions">
-        <item quantity="one">%1$d competition</item>
-        <item quantity="other">%1$d competitions</item>
+        <item quantity="one">%1$d compétition</item>
+        <item quantity="other">%1$d compétitions</item>
     </plurals>
 
 
@@ -102,7 +102,7 @@
     <string name="error_activity">Aucune application disponible pour effectuer cette action</string>
     <string name="error_connection">Veuillez vous connecter à internet</string>
     <string name="err_loading">Erreur de chargement<xliff:g>\n\n :-(</xliff:g></string>
-    <string name="error_interpretation_html">Erreur d\'interpretation du code HTML</string>
+    <string name="error_interpretation_html">Erreur d\'interprétation du code HTML</string>
     <string name="unknown_error">Erreur inconnue</string>
     <string name="no_followers">Vous ne suivez personne</string>
 
@@ -174,7 +174,7 @@
 
     <string name="notif_new_event">Record battu: <xliff:g id="cubes">%1$s</xliff:g></string>
 
-    <string name="notif_share"><xliff:g id="user">%1$s</xliff:g> a battu son record en <xliff:g id="events">%2$s</xliff:g> !</string>
+    <string name="notif_share"><xliff:g id="user">%1$s</xliff:g> a battu son record en <xliff:g id="events">%2$s</xliff:g>!</string>
 
 
     <string name="string_details_string"><xliff:g id="title">%1$s</xliff:g> (<xliff:g id="content">%2$s</xliff:g>)</string>

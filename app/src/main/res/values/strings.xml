@@ -23,7 +23,7 @@
 
     <!-- Intro -->
     <string name="begin">Beginning</string>
-    <string name="intro_slide_1">Welcome to WCA Records, an simple app displaying your records from the World Cube Association</string>
+    <string name="intro_slide_1">Welcome to WCA Records, a simple app displaying your records from the World Cube Association</string>
     <string name="intro_slide_2">Get your records, historics, competitions on a light interface</string>
     <string name="intro_slide_3">You can follow cubers so as to save their results offline and keep you informed as soon as they break their records</string>
     <string name="intro_slide_4">Log in to quickly reach your profile.<xliff:g>\n\n</xliff:g>To log in, get to your profile by searching it, press the + button and click on \"Switch profile\"</string>
@@ -113,11 +113,11 @@
 
     <!-- Search -->
     <string name="search">Search</string>
-    <string name="search_hint_users">Rechercher players…</string>
+    <string name="search_hint_users">Search for players…</string>
 
     <!-- Errors -->
     <string name="error_activity">No apps can carry out this action</string>
-    <string name="error_connection">Please connect to the internett</string>
+    <string name="error_connection">Please connect to the internet</string>
     <string name="err_loading">Loading error<xliff:g>\n\n :-(</xliff:g></string>
     <string name="error_interpretation_html">HTML code interpretation error</string>
     <string name="unknown_error">Unknown error</string>
@@ -144,9 +144,9 @@
 
     <!-- Check records network -->
     <string name="pref_check_network_title">Network used to check records</string>
-    <string name="pref_check_network_summary">Use Wi-Fi or Wi-Fi and mobile datas to perform the verification</string>
+    <string name="pref_check_network_summary">Use Wi-Fi or Wi-Fi and mobile data to perform the verification</string>
     <string name="wifi">Wi-Fi</string>
-    <string name="wifi_datas">Wi-Fi + Mobile datas</string>
+    <string name="wifi_datas">Wi-Fi + Mobile data</string>
 
 
     <!-- Check record frequency -->
