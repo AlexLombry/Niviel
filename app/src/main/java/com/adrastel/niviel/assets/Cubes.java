@@ -10,22 +10,24 @@ public class Cubes {
      * @param event type du cube
      * @return drawable
      */
+
+    // todo ajouter les OH et BF
     public static int getImage(String event) {
 
         switch (event.toLowerCase()) {
-            case "2x2 cube":
+            case "2x2x2 cube":
                 return R.drawable.cube_2x2;
 
-            case "4x4 cube":
+            case "4x4x4 cube":
                 return R.drawable.cube_4x4;
 
-            case "5x5 cube":
+            case "5x5x5 cube":
                 return R.drawable.cube_5x5;
 
-            case "6x6 cube":
+            case "6x6x6 cube":
                 return R.drawable.cube_6x6;
 
-            case "7x7 cube":
+            case "7x7x7 cube":
                 return R.drawable.cube_7x7;
 
             case "megaminx":
@@ -43,10 +45,10 @@ public class Cubes {
             case "skewb":
                 return R.drawable.skewb;
 
-            case "4x4 blindfolded":
+            case "4x4x4 blindfolded":
                 return R.drawable.cube_4x4;
 
-            case "5x5 blindfolded":
+            case "5x5x5 blindfolded":
                 return R.drawable.cube_5x5;
 
             default:
@@ -63,10 +65,10 @@ public class Cubes {
      */
     public static int getCubeId(String event) {
 
-        String[] cubes = {"Rubik's cube", "4x4 Cube", "5x5 Cube", "2x2 Cube", "3x3 blindfolded",
+        String[] cubes = {"Rubik's cube", "4x4x4 Cube", "5x5x5 Cube", "2x2x2 Cube", "3x3x3 blindfolded",
                 "Rubik's Cube: Blindfolded", "3x3 one-handed", "Rubik's Cube: One-handed",
-                "3x3 fewest moves", "Rubik's Cube: Fewest moves",
-                "Megaminx", "Pyraminx", "Square-1", "Rubik's Clock", "Skewb", "6x6 Cube", "7x7 Cube",
+                "3x3x3 fewest moves", "Rubik's Cube: Fewest moves",
+                "Megaminx", "Pyraminx", "Square-1", "Rubik's Clock", "Skewb", "6x6x6 Cube", "7x7x7 Cube",
                 "Rubik's Magic", "Master Magic"
         };
 
