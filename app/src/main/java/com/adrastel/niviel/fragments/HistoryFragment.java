@@ -49,9 +49,7 @@ public class HistoryFragment extends BaseFragment {
     private String wca_id = null;
     private long follower_id = -1;
 
-    /**
-     * 2 constantes qui déterminent si on veux trier par event ou competition
-     */
+    // Si sortByEvent = true, trie selon l'event, sinon, tri selon la competition
     private boolean sortByEvent = true;
 
 
@@ -170,6 +168,7 @@ public class HistoryFragment extends BaseFragment {
                 histories.add(history.toHistoryModel());
             }
 
+            // todo : a simplifier
             adapter.refreshData(sortByEvent ? makeExpandedArrayList(histories, true) : makeExpandedArrayList(histories, false));
             recyclerView.showRecycler();
         }
@@ -244,6 +243,9 @@ public class HistoryFragment extends BaseFragment {
 
     /**
      * Transforme un arraylist d'histoires en arraylist d'arraylist
+     *
+     * Si sortByEvent = true, trie selon l'event, sinon, tri selon la competition
+     *
      * @param histories historique
      * @return arraylist d'arraylist
      */
