@@ -115,6 +115,10 @@
     <!-- Préférences -->
     <string name="licenses">Licences</string>
 
+    <string name="order">Tri</string>
+    <string name="alphabetical_order">Ordre alphabétique</string>
+    <string name="chronological_order">Ordre chronologique</string>
+
     <!-- Thème -->
     <string name="theme">Thème</string>
     <string name="light_dark_theme">Thème clair/sombre</string>

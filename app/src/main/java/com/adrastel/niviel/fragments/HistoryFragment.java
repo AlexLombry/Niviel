@@ -37,7 +37,7 @@ import okhttp3.HttpUrl;
 public class HistoryFragment extends BaseFragment {
 
     public static final String EVENTS = "events";
-    public static final String SORT = "sort";
+    public static final String SORT = "order";
 
     @BindView(R.id.progress) ProgressBar progressBar;
     @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
@@ -53,7 +53,8 @@ public class HistoryFragment extends BaseFragment {
     // Si sortByEvent = true, trie selon l'event, sinon, tri selon la competition
     private boolean sortByEvent = true;
 
-    private boolean alphabeticalOrder = false;
+    private boolean alphabeticalOrderHist = false;
+    private boolean alphabeticalOrderComp = false;
 
 
     public static HistoryFragment newInstance(long follower_id, boolean sort) {
@@ -94,7 +95,8 @@ public class HistoryFragment extends BaseFragment {
 
         adapter = new HistoryAdapter(getActivity(), new ArrayList<Event>());
 
-        alphabeticalOrder = preferences.getBoolean(getString(R.string.pref_alphabetical_order), false);
+        alphabeticalOrderHist = preferences.getBoolean(getString(R.string.pref_alphabetical_hist_order), false);
+        alphabeticalOrderComp = preferences.getBoolean(getString(R.string.pref_alphabetical_comp_order), false);
     }
 
     /**
@@ -171,8 +173,7 @@ public class HistoryFragment extends BaseFragment {
                 histories.add(history.toHistoryModel());
             }
 
-            // todo : a simplifier
-            adapter.refreshData(sortByEvent ? makeExpandedArrayList(histories, true, alphabeticalOrder) : makeExpandedArrayList(histories, false, alphabeticalOrder));
+            adapter.refreshData(makeExpandedArrayList(histories));
             recyclerView.showRecycler();
         }
 
@@ -231,8 +232,7 @@ public class HistoryFragment extends BaseFragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        // todo : à simplifier
-                        adapter.refreshData(sortByEvent ? makeExpandedArrayList(histories, true, alphabeticalOrder) : makeExpandedArrayList(histories, false, alphabeticalOrder));
+                        adapter.refreshData(makeExpandedArrayList(histories));
                     }
                 });
             }
@@ -253,7 +253,7 @@ public class HistoryFragment extends BaseFragment {
      * @param histories historique
      * @return arraylist d'arraylist
      */
-    public static ArrayList<Event> makeExpandedArrayList(ArrayList<History> histories, boolean sortByEvent, boolean alphabeticalOrder) {
+    public ArrayList<Event> makeExpandedArrayList(ArrayList<History> histories) {
 
         LinkedHashMap<String, ArrayList<History>> hashmap = new LinkedHashMap<>();
         ArrayList<Event> events = new ArrayList<>();
@@ -291,7 +291,16 @@ public class HistoryFragment extends BaseFragment {
             events.add(event);
         }
 
-        if(!sortByEvent && alphabeticalOrder)
+        // Options de tri
+
+        // Dans l'onglet historique
+        if(sortByEvent && alphabeticalOrderHist) {
+            for(Event event : events)
+                Collections.sort(event.getChildList(), new History.ComparatorByCompetition());
+        }
+
+        // Dans l'onglet competition
+        else if(!sortByEvent && alphabeticalOrderComp)
             Collections.sort(events, new Event.ComparatorByName());
 
         return events;

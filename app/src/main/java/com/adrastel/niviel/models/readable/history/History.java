@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import com.adrastel.niviel.models.BaseModel;
 import com.google.gson.Gson;
 
+import java.util.Comparator;
+
 public class History extends BaseModel implements Parcelable {
 
     /**
@@ -135,6 +137,12 @@ public class History extends BaseModel implements Parcelable {
         return result_details;
     }
 
+    public static class ComparatorByCompetition implements Comparator<History> {
+        @Override
+        public int compare(History history, History t1) {
+            return history.getCompetition().compareTo(t1.getCompetition());
+        }
+    }
 
 
 }

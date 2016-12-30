@@ -8,3 +8,7 @@ CHANGELOG
 - 1.0.2 possibilité de désactiver l'envoi de données
 
 - 1.0.3 Google Analytics enlevé
+
+- 1.0.4
+    - Bugs mineurs corrigés
+    - Ajout d'un ordre alphabetique/chronologique

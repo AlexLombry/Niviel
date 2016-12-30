@@ -41,12 +41,20 @@
             android:negativeButtonText="@string/cancel"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/history">
+        <CheckBoxPreference
+            android:key="@string/pref_alphabetical_hist_order"
+            android:title="@string/order"
+            android:summaryOn="@string/alphabetical_order"
+            android:summaryOff="@string/chronological_order"/>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/competition">
         <CheckBoxPreference
-            android:key="@string/pref_alphabetical_order"
-            android:title="Ordre de tri"
-            android:summaryOn="Ordre alphabetique"
-            android:summaryOff="Ordre chronologique"/>
+            android:key="@string/pref_alphabetical_comp_order"
+            android:title="@string/order"
+            android:summaryOn="@string/alphabetical_order"
+            android:summaryOff="@string/chronological_order"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/about">

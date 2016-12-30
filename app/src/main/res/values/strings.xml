@@ -127,6 +127,10 @@
 
     <!-- Préférences -->
     <string name="licenses">Licenses</string>
+    
+    <string name="order">Order</string>
+    <string name="alphabetical_order">Alphabetical order</string>
+    <string name="chronological_order">Chronological order</string>
 
     <!-- Thème -->
     <string name="theme">Theme</string>

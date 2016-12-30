@@ -9,5 +9,6 @@
     <string name="pref_first_launch" translatable="false"><xliff:g>pref_launch</xliff:g></string>
     <string name="pref_time_first_launch" translatable="false"><xliff:g>pref_time_first_launch</xliff:g></string>
 
-    <string name="pref_alphabetical_order" translatable="false"><xliff:g>pref_alphabetical_order</xliff:g></string>
+    <string name="pref_alphabetical_comp_order" translatable="false"><xliff:g>pref_alphabetical_comp_order</xliff:g></string>
+    <string name="pref_alphabetical_hist_order" translatable="false"><xliff:g>pref_alphabetical_hist_order</xliff:g></string>
 </resources>
