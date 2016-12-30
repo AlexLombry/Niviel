@@ -78,4 +78,11 @@ public class Event implements Parent<History>, Parcelable {
         }
     }
 
+    public static class ComparatorByName implements Comparator<Event> {
+        @Override
+        public int compare(Event event, Event t1) {
+            return event.getTitle().compareTo(t1.getTitle());
+        }
+    }
+
 }

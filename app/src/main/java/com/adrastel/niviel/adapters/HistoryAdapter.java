@@ -227,7 +227,7 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
     }
 
     /**
-     * Appelé pour raffrechir les donnéees
+     * Appelé pour rafraichir les donnéees
      *
      * Trie les données avant de les raffrechir
      * @param datas données

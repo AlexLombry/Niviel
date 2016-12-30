@@ -25,8 +25,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +52,8 @@ public class HistoryFragment extends BaseFragment {
 
     // Si sortByEvent = true, trie selon l'event, sinon, tri selon la competition
     private boolean sortByEvent = true;
+
+    private boolean alphabeticalOrder = false;
 
 
     public static HistoryFragment newInstance(long follower_id, boolean sort) {
@@ -91,7 +94,7 @@ public class HistoryFragment extends BaseFragment {
 
         adapter = new HistoryAdapter(getActivity(), new ArrayList<Event>());
 
-
+        alphabeticalOrder = preferences.getBoolean(getString(R.string.pref_alphabetical_order), false);
     }
 
     /**
@@ -169,7 +172,7 @@ public class HistoryFragment extends BaseFragment {
             }
 
             // todo : a simplifier
-            adapter.refreshData(sortByEvent ? makeExpandedArrayList(histories, true) : makeExpandedArrayList(histories, false));
+            adapter.refreshData(sortByEvent ? makeExpandedArrayList(histories, true, alphabeticalOrder) : makeExpandedArrayList(histories, false, alphabeticalOrder));
             recyclerView.showRecycler();
         }
 
@@ -228,7 +231,8 @@ public class HistoryFragment extends BaseFragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter.refreshData(sortByEvent ? makeExpandedArrayList(histories, true) : makeExpandedArrayList(histories, false));
+                        // todo : à simplifier
+                        adapter.refreshData(sortByEvent ? makeExpandedArrayList(histories, true, alphabeticalOrder) : makeExpandedArrayList(histories, false, alphabeticalOrder));
                     }
                 });
             }
@@ -249,39 +253,46 @@ public class HistoryFragment extends BaseFragment {
      * @param histories historique
      * @return arraylist d'arraylist
      */
-    public static ArrayList<Event> makeExpandedArrayList(ArrayList<History> histories, boolean sortByEvent) {
+    public static ArrayList<Event> makeExpandedArrayList(ArrayList<History> histories, boolean sortByEvent, boolean alphabeticalOrder) {
 
-        Hashtable<String, ArrayList<History>> hashtable = new Hashtable<>();
+        LinkedHashMap<String, ArrayList<History>> hashmap = new LinkedHashMap<>();
         ArrayList<Event> events = new ArrayList<>();
 
         // Pour chaque historique, les trie dans un HashTable avec pour clé l'event
         for(History history : histories) {
 
-            if(hashtable.containsKey(sortByEvent ? history.getEvent() : history.getCompetition())) {
+            // Si la categorie existe, l'ajoute
+            if(hashmap.containsKey(sortByEvent ? history.getEvent() : history.getCompetition())) {
 
-                ArrayList<History> oldHistory = hashtable.get(sortByEvent ? history.getEvent() : history.getCompetition());
+                ArrayList<History> oldHistory = hashmap.get(sortByEvent ? history.getEvent() : history.getCompetition());
                 oldHistory.add(history);
 
-                hashtable.put(sortByEvent ? history.getEvent() : history.getCompetition(), oldHistory);
+                hashmap.put(sortByEvent ? history.getEvent() : history.getCompetition(), oldHistory);
 
             }
 
+            // Sinon cree une categorie
             else {
 
                 ArrayList<History> oldHistories = new ArrayList<>();
                 oldHistories.add(history);
 
-                hashtable.put(sortByEvent ? history.getEvent() : history.getCompetition(), oldHistories);
+                hashmap.put(sortByEvent ? history.getEvent() : history.getCompetition(), oldHistories);
             }
         }
 
 
-        // Convertie le HashTable en Event
-        for(Map.Entry<String, ArrayList<History>> value : hashtable.entrySet()) {
+        // Convertie le HashMap en Event en le parcourant
+        Set<String> keys = hashmap.keySet();
 
-            Event event = new Event(value.getKey(), sortByEvent, value.getValue());
+        for(String key : keys) {
+
+            Event event = new Event(key, sortByEvent, hashmap.get(key));
             events.add(event);
         }
+
+        if(!sortByEvent && alphabeticalOrder)
+            Collections.sort(events, new Event.ComparatorByName());
 
         return events;
     }
