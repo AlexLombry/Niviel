@@ -3,7 +3,9 @@ package com.adrastel.niviel.activities;
 import android.os.Bundle;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.fragments.RedirectFragment;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
+import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 
 public class MainIntroActivity extends IntroActivity {
@@ -11,6 +13,11 @@ public class MainIntroActivity extends IntroActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        addSlide(new FragmentSlide.Builder()
+            .fragment(new RedirectFragment())
+            .background(R.color.red_200)
+            .build());
 
         addSlide(new SimpleSlide.Builder()
                 .title(R.string.app_name)

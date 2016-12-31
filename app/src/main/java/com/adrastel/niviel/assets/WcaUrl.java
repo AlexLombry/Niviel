@@ -53,6 +53,7 @@ public class WcaUrl {
     }
 
     public WcaUrl apiSearch(String query) {
+        query = query.trim().replace(" ", "+");
         url.addEncodedPathSegments("api/v0/search").addEncodedQueryParameter("q", query);
         return this;
     }

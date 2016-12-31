@@ -64,7 +64,5 @@
         </PreferenceScreen>
 
         <com.adrastel.niviel.preferences.LicensePreference android:title="@string/licenses"/>
-
-
     </PreferenceCategory>
 </PreferenceScreen>

@@ -366,18 +366,18 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
                                             String field = getString(R.string.string_details_string, suggestionUser.getName(), suggestionUser.getWca_id());
                                             cursor.addRow(new Object[]{i, field, suggestionUser.getName()});
-                                            i++;
                                         }
+                                        i++;
 
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                adapter.swapCursor(cursor);
-                                                adapter.notifyDataSetChanged();
-                                            }
-                                        });
 
                                     }
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            adapter.swapCursor(cursor);
+                                            adapter.notifyDataSetChanged();
+                                        }
+                                    });
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
