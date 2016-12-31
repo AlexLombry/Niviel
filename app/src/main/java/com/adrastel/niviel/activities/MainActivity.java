@@ -62,6 +62,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.concurrent.atomic.AtomicLong;
 
 import butterknife.BindView;
@@ -366,18 +367,18 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
                                             String field = getString(R.string.string_details_string, suggestionUser.getName(), suggestionUser.getWca_id());
                                             cursor.addRow(new Object[]{i, field, suggestionUser.getName()});
+                                            i++;
                                         }
-                                        i++;
 
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                adapter.swapCursor(cursor);
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        });
 
                                     }
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            adapter.swapCursor(cursor);
-                                            adapter.notifyDataSetChanged();
-                                        }
-                                    });
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -433,12 +434,18 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 return true;
 
             case R.id.contact:
-                EmailIntentBuilder
-                        .from(this)
-                        .to(getString(R.string.email))
-                        .subject(getString(R.string.mail_subject))
-                        .body(getString(R.string.mail_body, Build.MODEL, Build.VERSION.RELEASE, Build.VERSION.SDK_INT, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE))
-                        .start();
+
+                if(BuildConfig.DEBUG) {
+                    startActivity(new Intent(this, SearchActivity.class));
+                }
+                else {
+                    EmailIntentBuilder
+                            .from(this)
+                            .to(getString(R.string.email))
+                            .subject(getString(R.string.mail_subject))
+                            .body(getString(R.string.mail_body, Build.MODEL, Build.VERSION.RELEASE, Build.VERSION.SDK_INT, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE))
+                            .start();
+                }
 
         }
 

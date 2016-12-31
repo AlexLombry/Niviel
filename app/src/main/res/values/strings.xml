@@ -106,7 +106,6 @@
     </plurals>
 
 
-
     <!-- Search -->
     <string name="search">Search</string>
     <string name="search_hint_users">Search for players…</string>
@@ -127,7 +126,7 @@
 
     <!-- Préférences -->
     <string name="licenses">Licenses</string>
-    
+
     <string name="order">Order</string>
     <string name="alphabetical_order">Alphabetical order</string>
     <string name="chronological_order">Chronological order</string>
@@ -164,8 +163,6 @@
     <string name="reset_pref_id_content">Reset your personal profile?</string>
 
 
-
-
     <!-- Actions -->
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -192,9 +189,9 @@
     <!-- Notification -->
 
     <string name="notif_new_event">Record broken: <xliff:g id="cubes">%1$s</xliff:g></string>
-    
+
     <string name="notif_share"><xliff:g id="user">%1$s</xliff:g> has broken his records in <xliff:g id="events">%2$s</xliff:g>!</string>
-    
+
 
     <string name="string_details_string"><xliff:g id="title">%1$s</xliff:g> (<xliff:g id="content">%2$s</xliff:g>)</string>
     <string name="string_details_number"><xliff:g id="title">%1$s</xliff:g> (<xliff:g id="number">%2$d</xliff:g>)</string>
