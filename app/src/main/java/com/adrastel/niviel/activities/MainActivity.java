@@ -1,21 +1,19 @@
 package com.adrastel.niviel.activities;
 
 import android.annotation.SuppressLint;
-import android.app.SearchManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.database.MatrixCursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
-import android.provider.BaseColumns;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -24,12 +22,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +36,7 @@ import android.widget.TextView;
 import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.WcaUrl;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.dialogs.InfoDialog;
@@ -51,29 +45,12 @@ import com.adrastel.niviel.fragments.CompetitionFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
-import com.adrastel.niviel.models.readable.SuggestionUser;
 import com.adrastel.niviel.services.EditRecordService;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.concurrent.atomic.AtomicLong;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.cketti.mailto.EmailIntentBuilder;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.HttpUrl;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 
 /**
@@ -86,7 +63,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
     // Code de requête pour redemarrer l'activité
     public static final int RESTART_ACTIVITY = 0;
     public static final String FRAGMENT = "fragment";
-    public static final String FRAGMENT_DESTINATION = "fragment";
 
 
     // Les vues
@@ -95,7 +71,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.navigation_view) NavigationView navigationView;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
-    private MenuItem searchMenuItem;
 
 
     // Les core-objects
@@ -109,8 +84,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
 
     // Le runnable qui est executé après que le drawer soit fermé
     private Runnable fragmentToRun;
-
-    private OkHttpClient httpClient = new OkHttpClient();
 
     // Le reciever
     private BroadcastReceiver activityReceiver = new BroadcastReceiver() {
@@ -254,147 +227,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
 
-        // Définition du moteur de rechervche
-        searchMenuItem = menu.findItem(R.id.search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
-        searchView.setQueryRefinementEnabled(true);
-
-
-        final CursorAdapter adapter = new SimpleCursorAdapter(
-                this,
-                R.layout.adapter_suggestion, null,
-                new String[] {SearchManager.SUGGEST_COLUMN_TEXT_1},
-                new int[] {android.R.id.text1},
-                0
-        );
-
-        final ArrayList<SuggestionUser> suggestions = new ArrayList<>();
-
-        searchView.setSuggestionsAdapter(adapter);
-
-
-
-        searchView.setOnSuggestionListener(new SearchView.OnSuggestionListener() {
-            @Override
-            public boolean onSuggestionSelect(int position) {
-                return false;
-            }
-
-            @Override
-            public boolean onSuggestionClick(int position) {
-
-                SuggestionUser user = suggestions.get(position);
-                searchView.setQuery(user.getName(), false);
-                searchView.clearFocus();
-
-                searchUser(user.getWca_id(), user.getName());
-                closeSearchview();
-                return true;
-            }
-        });
-
-        /**
-         * Envoie des requetes espacées de 500ms pour gagner en fluidité
-         * Stocke le temps en ms de la derniere requête
-         */
-        final AtomicLong lastRequest = new AtomicLong();
-
-
-        lastRequest.set(0);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-
-                if(System.currentTimeMillis() - lastRequest.get() >= 500) {
-
-                    HttpUrl url = new WcaUrl()
-                            .apiSearch(query)
-                            .build();
-
-                    Request request = new Request.Builder()
-                            .url(url)
-                            .build();
-
-                    httpClient.newCall(request).enqueue(new Callback() {
-                        @Override
-                        public void onFailure(Call call, IOException e) {
-                        }
-
-                        @Override
-                        public void onResponse(Call call, Response response) throws IOException {
-
-                            try {
-                                if (response.isSuccessful()) {
-                                    String data = response.body().string();
-                                    response.close();
-
-                                    JsonParser jsonParser = new JsonParser();
-                                    JsonElement jsonTree = jsonParser.parse(data);
-
-                                    JsonObject jsonObject = jsonTree.getAsJsonObject();
-
-                                    JsonArray result = jsonObject.getAsJsonArray("result");
-
-                                    Gson gson = new Gson();
-                                    ArrayList<SuggestionUser> suggestionUsers = gson.fromJson(result, new TypeToken<ArrayList<SuggestionUser>>() {
-                                    }.getType());
-
-                                    suggestions.clear();
-                                    suggestions.addAll(suggestionUsers);
-
-
-                                    String[] COLUMNS = {
-                                            BaseColumns._ID,
-                                            SearchManager.SUGGEST_COLUMN_TEXT_1,
-                                            SearchManager.SUGGEST_COLUMN_INTENT_DATA
-                                    };
-                                    final MatrixCursor cursor = new MatrixCursor(COLUMNS);
-
-
-                                    int limit = 10;
-
-                                    for (int i = 0; i < suggestions.size() && cursor.getCount() < limit; i++) {
-
-                                        SuggestionUser suggestionUser = suggestions.get(i);
-
-                                        // verifie que l'utilisateur a un id wca
-                                        if ((suggestionUser.getType().equals("person") || suggestionUser.getType().equals("suggestionUser")) && suggestionUser.getWca_id() != null) {
-
-                                            String field = getString(R.string.string_details_string, suggestionUser.getName(), suggestionUser.getWca_id());
-                                            cursor.addRow(new Object[]{i, field, suggestionUser.getName()});
-                                            i++;
-                                        }
-
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                adapter.swapCursor(cursor);
-                                                adapter.notifyDataSetChanged();
-                                            }
-                                        });
-
-                                    }
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-
-                    lastRequest.set(System.currentTimeMillis());
-                }
-
-                return false;
-
-            }
-
-
-        });
         return true;
     }
 
@@ -412,6 +244,11 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         switch (item.getItemId()) {
             case android.R.id.home:
                 openDrawer();
+                return true;
+
+            case R.id.search:
+                Intent search = new Intent(this, SearchActivity.class);
+                startActivityForResult(search, 0);
                 return true;
 
             case R.id.settings:
@@ -434,18 +271,12 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 return true;
 
             case R.id.contact:
-
-                if(BuildConfig.DEBUG) {
-                    startActivity(new Intent(this, SearchActivity.class));
-                }
-                else {
-                    EmailIntentBuilder
-                            .from(this)
-                            .to(getString(R.string.email))
-                            .subject(getString(R.string.mail_subject))
-                            .body(getString(R.string.mail_body, Build.MODEL, Build.VERSION.RELEASE, Build.VERSION.SDK_INT, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE))
-                            .start();
-                }
+                EmailIntentBuilder
+                        .from(this)
+                        .to(getString(R.string.email))
+                        .subject(getString(R.string.mail_subject))
+                        .body(getString(R.string.mail_body, Build.MODEL, Build.VERSION.RELEASE, Build.VERSION.SDK_INT, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE))
+                        .start();
 
         }
 
@@ -458,7 +289,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
      */
     @Override
     public void onBackPressed() {
-        closeSearchview();
 
         if (isDrawerOpen()) {
             closeDrawer();
@@ -487,10 +317,11 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         super.onResume();
         drawerLayout.addDrawerListener(this);
         LocalBroadcastManager.getInstance(this).registerReceiver(activityReceiver, new IntentFilter(EditRecordService.INTENT_FILTER));
+
     }
 
     /**
-     * Redemarre l'activité si un réglage a été changé
+     * Lorsque l'utilisateur revient sur l'écran principal
      *
      * @param requestCode requête
      * @param resultCode  réponse
@@ -498,21 +329,31 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESTART_ACTIVITY) {
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
-        }
-    }
+        try {
+            // Ordre de redemarrer l'activity
+            if (resultCode == RESTART_ACTIVITY) {
+                finish();
+                startActivity(new Intent(this, MainActivity.class));
+            }
 
-    /**
-     * Appelé en cas de recherche
-     *
-     * @param intent recherche
-     */
-    @Override
-    protected void onNewIntent(Intent intent) {
-        setIntent(intent);
-        handleIntent(intent);
+            // Ordre de changer de profil
+            else if(resultCode == SearchActivity.SEARCH_SUCCESS) {
+
+
+                final String name = data.getStringExtra(SearchActivity.NAME);
+                final String wca_id = data.getStringExtra(SearchActivity.WCA_ID);
+
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        searchUser(wca_id, name);
+                    }
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //<editor-fold desc="Drawer events">
@@ -777,54 +618,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         fab.setImageDrawable(fabIcon);
 
         typedArray.recycle();
-    }
-
-    /**
-     * Gere les intent lors du démarrage de l'activité
-     *
-     * @param intent intent
-     */
-    private void handleIntent(Intent intent) {
-        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_VIEW)) {
-
-            Uri query = intent.getData();
-
-            if (query.getAuthority().equals("com.adrastel.search")) {
-
-                String wca_id = query.getLastPathSegment();
-                String name = intent.getStringExtra(SearchManager.EXTRA_DATA_KEY);
-                searchUser(wca_id, name);
-
-                closeSearchview();
-            }
-        } else {
-
-            String fragment_tag = intent.getStringExtra(FRAGMENT_DESTINATION);
-
-            if (fragment_tag != null) {
-
-                switch (fragment_tag) {
-
-                    case ProfileFragment.FRAGMENT_TAG:
-                        String wca_id = intent.getStringExtra(BaseActivity.WCA_ID);
-                        String username = intent.getStringExtra(BaseActivity.USERNAME);
-
-                        BaseFragment fragment = ProfileFragment.newInstance(wca_id, username);
-                        switchFragment(fragment);
-                        break;
-                }
-
-            }
-        }
-    }
-
-    /**
-     * Ferme la zone de recherche
-     */
-    private void closeSearchview() {
-        if (searchMenuItem != null) {
-            searchMenuItem.collapseActionView();
-        }
     }
 
     /**

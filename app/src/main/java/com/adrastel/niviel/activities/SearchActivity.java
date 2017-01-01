@@ -1,5 +1,6 @@
 package com.adrastel.niviel.activities;
 
+import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +51,10 @@ public class SearchActivity extends AppCompatActivity {
     private SimpleAdapter adapter;
     private Call oldCall;
 
+    public static final int SEARCH_SUCCESS = 50;
+    public static final String NAME = "name";
+    public static final String WCA_ID = "wca_id";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,19 +74,18 @@ public class SearchActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @SuppressWarnings("unchecked")
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
-                try {
-                    HashMap<String, String> test = (HashMap<String, String>) adapterView.getItemAtPosition(position);
-                    Log.d(test.get("text1"));
+                HashMap<String, String> infos = (HashMap<String, String>) adapterView.getItemAtPosition(position);
 
-                }
-                catch (Exception e) {
-                    e.printStackTrace();
-                }
+                Intent intent = new Intent();
+                intent.putExtra(NAME, infos.get("text1"));
+                intent.putExtra(WCA_ID, infos.get("text2"));
 
-
+                setResult(SEARCH_SUCCESS, intent);
+                finish();
             }
         });
     }

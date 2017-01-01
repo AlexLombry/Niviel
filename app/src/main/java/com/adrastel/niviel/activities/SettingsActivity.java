@@ -1,5 +1,6 @@
 package com.adrastel.niviel.activities;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -61,9 +62,10 @@ public class SettingsActivity extends BaseActivity {
 
     @Override
     public void finish() {
-        if(hasToRestart) {
+        if(hasToRestart)
             setResult(MainActivity.RESTART_ACTIVITY);
-        }
+        else
+            setResult(Activity.RESULT_CANCELED);
         super.finish();
     }
 }
