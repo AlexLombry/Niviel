@@ -62,6 +62,9 @@ public class Cubes {
             case "3x3x3 with feet":
                 return R.drawable.cube_3x3_wf;
 
+            case "3x3x3 fewest moves":
+                return R.drawable.cube_3x3_fm;
+
             default:
                 return R.drawable.cube_3x3;
 
