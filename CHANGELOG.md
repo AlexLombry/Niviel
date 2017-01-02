@@ -11,4 +11,8 @@ CHANGELOG
 
 - 1.0.4
     - Bugs mineurs corrigés
+    - Bugs majeurs corrigés
     - Ajout d'un ordre alphabetique/chronologique
+    - Interface de la recherche modifié
+    - Interface de l'intro modifé
+    - Image implémentés pour le One Handed et le Blindfolded

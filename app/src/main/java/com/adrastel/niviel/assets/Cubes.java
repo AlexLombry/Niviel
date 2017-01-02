@@ -11,7 +11,6 @@ public class Cubes {
      * @return drawable
      */
 
-    // todo ajouter les OH et BF
     public static int getImage(String event) {
 
         switch (event.toLowerCase()) {

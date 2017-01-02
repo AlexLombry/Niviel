@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ListViewCompat;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -67,8 +68,6 @@ public class SearchActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        // todo: lier a search.xml
-        // todo: regarde si c'est bien de changer en listviewcompat
 
         // Creation de l'adapter
         adapter = new SimpleAdapter(this, suggestions, android.R.layout.simple_list_item_2,new String[] {"text1", "text2"}, new int[] {android.R.id.text1, android.R.id.text2 });
@@ -181,8 +180,6 @@ public class SearchActivity extends AppCompatActivity {
 
                     // verifie que l'utilisateur a un id wca
                     if ((suggestionUser.getType().equals("person") || suggestionUser.getType().equals("suggestionUser")) && suggestionUser.getWca_id() != null) {
-
-                        String field = getString(R.string.string_details_string, suggestionUser.getName(), suggestionUser.getWca_id());
 
                         HashMap<String, String> row = new HashMap<>();
 
