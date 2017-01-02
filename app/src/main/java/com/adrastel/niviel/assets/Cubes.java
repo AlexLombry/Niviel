@@ -30,6 +30,12 @@ public class Cubes {
             case "7x7x7 cube":
                 return R.drawable.cube_7x7;
 
+            case "3x3x3 blindfolded":
+                return R.drawable.cube_3x3_bf;
+
+            case "3x3x3 one-handed":
+                return R.drawable.cube_3x3_oh;
+
             case "megaminx":
                 return R.drawable.megaminx;
 
@@ -46,10 +52,16 @@ public class Cubes {
                 return R.drawable.skewb;
 
             case "4x4x4 blindfolded":
-                return R.drawable.cube_4x4;
+                return R.drawable.cube_4x4_bf;
 
             case "5x5x5 blindfolded":
-                return R.drawable.cube_5x5;
+                return R.drawable.cube_5x5_bf;
+
+            case "3x3x3 multi-blind":
+                return R.drawable.cube_3x3_mbf;
+
+            case "3x3x3 with feet":
+                return R.drawable.cube_3x3_wf;
 
             default:
                 return R.drawable.cube_3x3;
