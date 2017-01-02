@@ -5,23 +5,23 @@
     <!-- WARNING: si le nombre de cube change, changer le fichier RankingChooseCubeDialog -->
     <string-array name="cubes">
         <item>Rubik\'s cube</item>
-        <item>4x4 Cube</item>
-        <item>5x5 Cube</item>
-        <item>2x2 Cube</item>
-        <item>3x3 blindfolded</item>
-        <item>3x3 one-handed</item>
-        <item>3x3 fewest moves</item>
-        <item>3x3 with feet</item>
+        <item>4x4x4 Cube</item>
+        <item>5x5x5 Cube</item>
+        <item>2x2x2 Cube</item>
+        <item>3x3x3 blindfolded</item>
+        <item>3x3x3 one-handed</item>
+        <item>3x3x3 fewest moves</item>
+        <item>3x3x3 with feet</item>
         <item>Megaminx</item>
         <item>Pyraminx</item>
         <item>Square-1</item>
         <item>Rubik\'s clock</item>
         <item>Skewb</item>
-        <item>6x6 Cube</item>
-        <item>7x7 Cube</item>
-        <item>4x4 blindfolded</item>
-        <item>5x5 blindfolded</item>
-        <item>3x3 multi blind</item>
+        <item>6x6x6 Cube</item>
+        <item>7x7x7 Cube</item>
+        <item>4x4x4 blindfolded</item>
+        <item>5x5x5 blindfolded</item>
+        <item>3x3x3 multi blind</item>
     </string-array>
 
     <!-- Array pour choisir une fréquence de vérification -->
