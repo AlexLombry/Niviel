@@ -329,30 +329,26 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        try {
-            // Ordre de redemarrer l'activity
-            if (resultCode == RESTART_ACTIVITY) {
-                finish();
-                startActivity(new Intent(this, MainActivity.class));
-            }
+        // Ordre de redemarrer l'activity
+        if (resultCode == RESTART_ACTIVITY) {
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
+        }
 
-            // Ordre de changer de profil
-            else if(resultCode == SearchActivity.SEARCH_SUCCESS) {
+        // Ordre de changer de profil
+        else if(resultCode == SearchActivity.SEARCH_SUCCESS) {
 
 
-                final String name = data.getStringExtra(SearchActivity.NAME);
-                final String wca_id = data.getStringExtra(SearchActivity.WCA_ID);
+            final String name = data.getStringExtra(SearchActivity.NAME);
+            final String wca_id = data.getStringExtra(SearchActivity.WCA_ID);
 
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        searchUser(wca_id, name);
-                    }
-                });
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    searchUser(wca_id, name);
+                }
+            });
         }
     }
 

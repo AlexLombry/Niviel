@@ -1,10 +1,10 @@
 package com.adrastel.niviel.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -30,7 +29,6 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,7 +47,6 @@ public class SearchActivity extends AppCompatActivity {
     private OkHttpClient client = new OkHttpClient();
     private ArrayList<HashMap<String, String>> suggestions = new ArrayList<>();
     private SimpleAdapter adapter;
-    private Call oldCall;
 
     public static final int SEARCH_SUCCESS = 50;
     public static final String NAME = "name";
@@ -65,11 +62,15 @@ public class SearchActivity extends AppCompatActivity {
 
         final ActionBar actionBar = getSupportActionBar();
 
+        // Ajoute le bouton retour arrière
         if (actionBar != null) {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        // todo: lier a search.xml
+        // todo: regarde si c'est bien de changer en listviewcompat
 
+        // Creation de l'adapter
         adapter = new SimpleAdapter(this, suggestions, android.R.layout.simple_list_item_2,new String[] {"text1", "text2"}, new int[] {android.R.id.text1, android.R.id.text2 });
         listView.setAdapter(adapter);
 
@@ -144,13 +145,8 @@ public class SearchActivity extends AppCompatActivity {
                 .url(url)
                 .build();
 
-        if(oldCall != null) {
-            oldCall.cancel();
-        }
 
-        oldCall = client.newCall(request);
-
-        oldCall.enqueue(new Callback() {
+        client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();

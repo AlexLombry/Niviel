@@ -7,10 +7,12 @@
 
     <!-- Intro -->
     <string name="begin">Pour commencer</string>
-    <string name="intro_slide_1">Bienvenue sur Records WCA, une application simple affichant vos records provenant de la World Cube Association</string>
+    <string name="intro_slide_1">Bienvenue sur Records WCA, une application simple affichant vos records provenant de la World Cube Association.\nPour commencer, connectez-vous à l\'aide de votre identifiant WCA. Vous pourrez vous connecter plus tard</string>
     <string name="intro_slide_2">Retrouvez ainsi vos records, historiques, compétitions avec une interface légère et rapide</string>
     <string name="intro_slide_3">Vous pouvez suivre des personnes afin de garder leurs résultats hors ligne et être informés quand ils battent leurs records</string>
-    <string name="intro_slide_4">Identifiez-vous pour accéder rapidement à votre profil.<xliff:g>\n\n</xliff:g>Pour vous identifier, accédez à votre profil via une recherche, appuyez sur le bouton + et cliquez sur \"Changer de profil\"</string>
+
+    <string name="visitor">Visiteur</string>
+    <string name="log_in">Se connecter</string>
 
     <string name="information">Information</string>
     <string name="info_no_connection">Tant que vous n\'êtes pas connecté, des profils aléatoires des meilleurs cubeurs.</string>

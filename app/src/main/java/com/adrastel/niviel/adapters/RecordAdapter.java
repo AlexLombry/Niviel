@@ -20,6 +20,7 @@ import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.Cubes;
 import com.adrastel.niviel.assets.DetailsMaker;
+import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.dialogs.RecordDialog;
 import com.adrastel.niviel.models.readable.Record;
@@ -243,14 +244,12 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                     }
 
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    detailsMaker.add(getString(R.string.average_format, getString(R.string.record_nr)), record.getNr_average());
+                    Log.w("Average non pris en compte sur " + event);
                 }
 
             }
 
             holder.single.setText(detailsMaker.build(), TextView.BufferType.SPANNABLE);
-            // todo : certaines images ne correspondent pas a leur titre /!\ A CORRIGER /!\
             Picasso.with(getActivity())
                     .load(image_resource)
                     .fit()

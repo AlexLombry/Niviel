@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
+import com.adrastel.niviel.activities.MainIntroActivity;
 import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.assets.WcaUrl;
 import com.adrastel.niviel.dialogs.RankingDetailsDialog;
@@ -30,7 +31,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Ranking> {
-
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override

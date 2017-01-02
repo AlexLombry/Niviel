@@ -1,6 +1,7 @@
 package com.adrastel.niviel.dialogs;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -14,6 +15,9 @@ public class InfoDialog extends DialogFragment {
 
     private static final String TITLE = "title";
     private static final String BODY = "body";
+
+    private DialogInterface.OnClickListener listener = null;
+
 
     public static InfoDialog newInstance(@StringRes int title, @StringRes int body) {
 
@@ -40,7 +44,11 @@ public class InfoDialog extends DialogFragment {
         return new AlertDialog.Builder(getContext())
                 .setTitle(title)
                 .setMessage(body)
-                .setPositiveButton(R.string.ok, null)
+                .setPositiveButton(R.string.ok, listener)
                 .create();
+    }
+
+    public void setOnClickListener(DialogInterface.OnClickListener listener) {
+        this.listener = listener;
     }
 }
