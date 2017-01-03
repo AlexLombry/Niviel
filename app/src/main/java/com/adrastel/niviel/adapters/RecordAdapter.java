@@ -160,9 +160,6 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
                         getActivity().startActivity(Intent.createChooser(share, getString(R.string.share)));
                     }
                 });
-
-
-
             }
 
         }

@@ -1,13 +1,11 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">Records WCA</string>
-
     <!-- CUBES -->
     <string name="cube_3x3">Rubik\'s cube</string>
 
     <!-- Intro -->
     <string name="begin">Pour commencer</string>
-    <string name="intro_slide_1">Bienvenue sur Records WCA, une application simple affichant vos records provenant de la World Cube Association.\nPour commencer, connectez-vous à l\'aide de votre identifiant WCA. Vous pourrez vous connecter plus tard</string>
+    <string name="intro_slide_1">Bienvenue sur WCA Scores, une application simple affichant vos records provenant de la World Cube Association.\nPour commencer, connectez-vous à l\'aide de votre identifiant WCA. Vous pourrez vous connecter plus tard</string>
     <string name="intro_slide_2">Retrouvez ainsi vos records, historiques, compétitions avec une interface légère et rapide</string>
     <string name="intro_slide_3">Vous pouvez suivre des personnes afin de garder leurs résultats hors ligne et être informés quand ils battent leurs records</string>
 
@@ -168,7 +166,11 @@
     <string name="goto_internet">Voir le site web</string>
     <string name="toast_adding">Ajout en cours</string>
     <string name="goto_maps">Voir sur la carte</string>
-
+    <string name="rate_app">Notez cette application</string>
+    <string name="rate_app_message">Si vous aimez utiliser cette application, prenez le temps de la noter sur le Play Store. Merci pour votre contribution !</string>
+    <string name="rate_it">Noter !</string>
+    <string name="no_thanks">Non merci</string>
+    <string name="remind_me">Me rappeler plus tard</string>
 
     <!-- Others -->
     <string name="intro">Introduction</string>

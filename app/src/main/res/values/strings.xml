@@ -9,7 +9,7 @@
             0192: À
     -->
     <!-- Personal -->
-    <string name="app_name">WCA Records</string>
+    <string name="app_name" translatable="false"><xliff:g id="app_name">WCA Scores</xliff:g></string>
     <string name="email" translatable="false"><xliff:g id="email">herel.dev@gmail.com</xliff:g></string>
 
     <!-- Activities -->
@@ -19,7 +19,7 @@
 
     <!-- Intro -->
     <string name="begin">Beginning</string>
-    <string name="intro_slide_1">Welcome to WCA Records, a simple app displaying your records from the World Cube Association.\nTo begin, log in with your WCA ID.\nYou can log in later</string>
+    <string name="intro_slide_1">Welcome to WCA Scores, a simple app displaying your records from the World Cube Association.\nTo begin, log in with your WCA ID.\nYou can log in later</string>
     <string name="intro_slide_2">Get your records, historics, competitions on a light interface</string>
     <string name="intro_slide_3">You can follow cubers so as to save their results offline and keep you informed as soon as they break their records</string>
 
@@ -177,6 +177,11 @@
     <string name="goto_internet">See on the website</string>
     <string name="toast_adding">Adding</string>
     <string name="goto_maps">See on the map</string>
+    <string name="rate_app">Rate this app</string>
+    <string name="rate_app_message">If you enjoy using WCA Scores, please take a moment to rate it. Thanks for your support!</string>
+    <string name="rate_it">Rate it!</string>
+    <string name="no_thanks">No thanks</string>
+    <string name="remind_me">Remind me later</string>
 
     <!-- Send mail -->
     <string name="mail_subject" translatable="false"><xliff:g id="mail_title">Feedback</xliff:g></string>

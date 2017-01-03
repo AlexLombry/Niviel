@@ -1,6 +1,7 @@
 package com.adrastel.niviel.activities;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,11 +48,15 @@ import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.services.EditRecordService;
+import com.afollestad.materialdialogs.AlertDialogWrapper;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.squareup.leakcanary.LeakCanary;
 
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.cketti.mailto.EmailIntentBuilder;
+import me.msfjarvis.apprate.AppRate;
 
 
 /**
@@ -116,6 +122,11 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        LeakCanary.install(getApplication());
 
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
@@ -194,6 +205,21 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 return true;
             }
         });
+
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
+                .title(R.string.rate_app)
+                .content(R.string.rate_app_message)
+                .iconRes(R.drawable.ic_star_black)
+                .positiveText(R.string.rate_it)
+                .neutralText(R.string.remind_me)
+                .negativeText(R.string.no_thanks);
+
+        new AppRate(this)
+                .setMinDaysUntilPrompt(3)
+                .setCustomDialog(builder)
+                .setShowIfAppHasCrashed(false)
+                .init();
+
     }
 
     /**
@@ -412,8 +438,29 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 runWhenDrawerClose(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                        startActivityForResult(intent, 0);
+                        Intent settings = new Intent(MainActivity.this, SettingsActivity.class);
+                        startActivityForResult(settings, 0);
+                    }
+                });
+                return null;
+
+            case R.id.rate:
+
+                runWhenDrawerClose(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        // Pour noter l'app, essaie de rediriger l'utilisateur vers le play store, si ne marche pas, utilise le navigateur internet
+                        try {
+                            Uri market = Uri.parse("market://details?id=" + MainActivity.this.getPackageName());
+                            startActivity(new Intent(Intent.ACTION_VIEW, market));
+                        }
+
+                        catch (ActivityNotFoundException e) {
+                            Uri browser = Uri.parse("http://play.google.com/store/apps/details?id=" + MainActivity.this.getPackageName());
+                            startActivity(new Intent(Intent.ACTION_VIEW, browser));
+                        }
+
                     }
                 });
                 return null;

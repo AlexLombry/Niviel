@@ -39,13 +39,18 @@
             </menu>
         </item>
 
-        <item android:title="@string/settings">
+        <item android:title="@string/about">
             <menu>
                 <group android:checkableBehavior="single">
                     <item
                         android:id="@+id/settings"
                         android:title="@string/settings"
                         android:icon="@drawable/ic_settings"/>
+
+                    <item
+                        android:id="@+id/rate"
+                        android:title="@string/rate_app"
+                        android:icon="@drawable/ic_star_white"/>
                 </group>
             </menu>
 
