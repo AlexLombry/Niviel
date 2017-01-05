@@ -4,7 +4,6 @@
     <string name="cube_3x3">Rubik\'s cube</string>
 
     <!-- Intro -->
-    <string name="begin">Pour commencer</string>
     <string name="intro_slide_1">Bienvenue sur WCA Scores, une application simple affichant vos records provenant de la World Cube Association.\nPour commencer, connectez-vous à l\'aide de votre identifiant WCA. Vous pourrez vous connecter plus tard</string>
     <string name="intro_slide_2">Retrouvez ainsi vos records, historiques, compétitions avec une interface légère et rapide</string>
     <string name="intro_slide_3">Vous pouvez suivre des personnes afin de garder leurs résultats hors ligne et être informés quand ils battent leurs records</string>
@@ -96,7 +95,6 @@
 
     <!-- Search -->
     <string name="search">Rechercher</string>
-    <string name="search_hint_users">Rechercher des joueurs…</string>
 
     <!-- Errors -->
     <string name="error_activity">Aucune application disponible pour effectuer cette action</string>
