@@ -16,3 +16,7 @@ CHANGELOG
     - Interface de la recherche modifié
     - Interface de l'intro modifé
     - Image implémentés pour le One Handed et le Blindfolded
+
+- 1.0.5
+    - Bugs mineurs corrigés
+    - Icones ameillorées
