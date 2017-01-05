@@ -279,6 +279,7 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                         .apply();
 
                 finish();
+
                 startActivity(new Intent(this, MainActivity.class));
 
                 return true;
