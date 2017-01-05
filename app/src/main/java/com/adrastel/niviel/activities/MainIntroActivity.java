@@ -1,14 +1,11 @@
 package com.adrastel.niviel.activities;
 
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.fragments.RedirectFragment;
 import com.heinrichreimersoftware.materialintro.app.IntroActivity;
 import com.heinrichreimersoftware.materialintro.app.NavigationPolicy;
-import com.heinrichreimersoftware.materialintro.app.OnNavigationBlockedListener;
 import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
 import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 

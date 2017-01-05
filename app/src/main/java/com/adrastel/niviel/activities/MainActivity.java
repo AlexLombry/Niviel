@@ -38,20 +38,15 @@ import android.widget.TextView;
 import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
-import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
-import com.adrastel.niviel.dialogs.InfoDialog;
 import com.adrastel.niviel.fragments.BaseFragment;
 import com.adrastel.niviel.fragments.CompetitionFragment;
 import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.services.EditRecordService;
-import com.afollestad.materialdialogs.AlertDialogWrapper;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.squareup.leakcanary.LeakCanary;
-
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -123,11 +118,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        LeakCanary.install(getApplication());
-
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
@@ -152,9 +142,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                     .putBoolean(getString(R.string.pref_first_launch), false)
                     .putLong(getString(R.string.pref_time_first_launch), System.currentTimeMillis())
                     .apply();
-
-            InfoDialog introDialog = InfoDialog.newInstance(R.string.information, R.string.info_no_connection);
-            introDialog.show(getSupportFragmentManager(), "IntroDialog");
 
             startActivity(new Intent(this, MainIntroActivity.class));
         }

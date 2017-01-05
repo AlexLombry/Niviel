@@ -151,17 +151,18 @@ public class HistoryAdapter extends BaseExpandableAdapter<Event, History, Histor
         title.setTextAppearance(getActivity(), R.style.TextAppearance_AppCompat_Large);
 
         ImageView cube = parentViewHolder.cube;
-        cube.setVisibility(View.VISIBLE);
+
 
 
         if(sortByEvent) {
+            cube.setVisibility(View.VISIBLE);
             Picasso.with(getActivity())
                     .load(Cubes.getImage(parent.getTitle()))
                     .fit()
                     .centerInside()
                     .into(cube);
         } else {
-            cube.setImageResource(R.drawable.ic_star_black);
+            cube.setVisibility(View.GONE);
         }
 
 

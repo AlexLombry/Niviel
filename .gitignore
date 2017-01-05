@@ -13,6 +13,4 @@ projectFilesBackup/
 
 app/build/
 app/libs/
-app/google-services.json
-app/sha1.txt
 releases/
