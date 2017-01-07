@@ -83,9 +83,10 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         final String person = ranking.getPerson();
         final String result = ranking.getResult();
         final String details = ranking.getDetails();
+        final String country = ranking.getCitizen();
 
         holder.rank.setText(rank);
-        holder.person.setText(person);
+        holder.person.setText(getString(R.string.string_details_string, person, country));
 
         if (isSingle) {
             holder.result.setText(result);
