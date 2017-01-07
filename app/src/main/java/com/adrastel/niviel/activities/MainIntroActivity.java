@@ -38,7 +38,7 @@ public class MainIntroActivity extends IntroActivity {
 
         addSlide(new FragmentSlide.Builder()
             .fragment(new RedirectFragment())
-            .background(R.color.green_200)
+            .background(R.color.indigo_200)
             .build());
 
         addSlide(new SimpleSlide.Builder()
@@ -51,7 +51,7 @@ public class MainIntroActivity extends IntroActivity {
         addSlide(new SimpleSlide.Builder()
             .title(R.string.followers)
             .description(R.string.intro_slide_3)
-            .background(R.color.blue_grey_200)
+            .background(R.color.green_200)
             .image(R.drawable.ic_followers)
             .build());
     }
