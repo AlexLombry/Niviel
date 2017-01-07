@@ -213,7 +213,7 @@ public class ProfileFragment extends BaseFragment {
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_star_white);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_history);
-        tabLayout.getTabAt(2).setIcon(R.drawable.ic_competition);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_podium);
 
     }
 

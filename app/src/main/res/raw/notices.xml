@@ -85,6 +85,13 @@
     </notice>
 
     <notice>
+        <name>Pixel perfect</name>
+        <url>http://www.flaticon.com/authors/pixel-perfect</url>
+        <copyright>© 2013-2017 Graphic Resources S.L</copyright>
+        <license>Flaticon Basic License</license>
+    </notice>
+
+    <notice>
         <name>LicensesDialog</name>
         <url>https://github.com/PSDev/LicensesDialog</url>
         <copyright>Copyright 2013-2016 Philip Schiffer</copyright>
