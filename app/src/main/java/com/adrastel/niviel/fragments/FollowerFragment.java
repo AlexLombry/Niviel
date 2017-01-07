@@ -71,16 +71,11 @@ public class FollowerFragment extends BaseFragment {
             }
         }
 
-        if(personalProfile != null) {
+        // Si l'utilisateur possède un profil personnel, le supprime de la liste
+        if(personalProfile != null)
             followers.remove(personalProfile);
-            Collections.sort(followers, new Follower.Comparator());
-            followers.add(0, personalProfile);
-        }
 
-        else {
-            Collections.sort(followers, new Follower.Comparator());
-        }
-
+        Collections.sort(followers, new Follower.Comparator());
 
         FollowerAdapter adapter = new FollowerAdapter(getActivity(), followers);
         recyclerView.setAdapter(adapter);

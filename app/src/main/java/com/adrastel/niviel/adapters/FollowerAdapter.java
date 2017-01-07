@@ -17,7 +17,6 @@ import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.ProfileFragment;
-import com.adrastel.niviel.views.CircleView;
 
 import java.util.ArrayList;
 
@@ -35,11 +34,11 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.place) CircleView place;
         @BindView(R.id.first_line) TextView firstLine;
         @BindView(R.id.second_line) TextView secondLine;
         @BindView(R.id.more) ImageButton more;
         @BindView(R.id.root_layout) LinearLayout click_area;
+        @BindView(R.id.icon) ImageButton icon;
 
         public ViewHolder(View view) {
             super(view);
@@ -51,7 +50,7 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
     public FollowerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        View view = inflater.inflate(R.layout.adapter_list_avatar, parent, false);
+        View view = inflater.inflate(R.layout.adapter_follower, parent, false);
 
         return new ViewHolder(view);
     }
@@ -63,16 +62,19 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
 
         holder.firstLine.setText(follower.name());
         holder.secondLine.setText(follower.wca_id());
-        holder.place.setBackground(Assets.getColor(getActivity(), R.color.green_300));
-        holder.place.setText(String.valueOf(position + 1));
 
-        if (Assets.isPersonal(getActivity(), follower._id())) {
-            holder.click_area.setBackgroundResource(R.color.background_personal_follower);
-            holder.more.setVisibility(View.INVISIBLE);
-        } else {
-            loadMenu(holder, follower);
-        }
+        holder.icon.setImageResource(R.drawable.ic_profile);
+        holder.icon.setColorFilter(Assets.getColor(getActivity(), R.color.green_300));
+        holder.icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ProfileFragment profileFragment = ProfileFragment.newInstance(follower._id());
+                getActivity().switchFragment(profileFragment);
+            }
+        });
 
+
+        loadMenu(holder, follower);
     }
 
     private void loadMenu(ViewHolder holder, final Follower follower) {
