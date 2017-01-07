@@ -68,6 +68,7 @@
     <string name="followers">Followers</string>
 
     <!-- Profile -->
+    <string name="me">Me</string>
     <string name="profile">Profile</string>
     <string name="edit_profile">Switch profile</string>
     <string name="toast_switch_profile_confirmation">Your profile is now assigned in the name of <xliff:g id="name">%1$s</xliff:g></string>
