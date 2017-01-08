@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.NotificationCompat;
 
+import com.adrastel.niviel.BuildConfig;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.RecordModel;
 import com.adrastel.niviel.activities.NotificationActivity;
@@ -210,8 +211,8 @@ public class CheckRecordService extends Service {
                 for(OldNewRecord record : oldNewRecords) {
                     notificationMessage += record.getEvent() + ", ";
                 }
-                // Supprime le dernier slash et formate le tout
-                notificationMessage = getString(R.string.notif_new_event, notificationMessage.substring(0, notificationMessage.length() - 1));
+                // Supprime la derniere virgule et formate le tout
+                notificationMessage = getString(R.string.notif_new_event, notificationMessage.substring(0, notificationMessage.length() - 2));
 
                 // Plus de details
                 Intent moreDetails = new Intent(this, NotificationActivity.class);
@@ -384,7 +385,7 @@ public class CheckRecordService extends Service {
 
         for(OldNewRecord record : records) {
 
-            String type = "<strong><big>" + record.getType() + "</big></strong><br/><br/>";
+            String type = "<strong><big>" + record.getEvent() + " " + record.getType() + "</big></strong><br/><br/>";
 
             String time_result = record.getOldTime() + " -> " + record.getNewTime() + "<br/>";
             String time = "\t" + getString(R.string.record_time, time_result);

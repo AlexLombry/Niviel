@@ -197,7 +197,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
                 int wr = Integer.parseInt(record.getWr_single());
 
-                if(wr <= 300) {
+                if(wr < 100) {
                     detailsMaker.add(getString(R.string.single_format, getString(R.string.record_wr)), record.getWr_single());
                 }
 
@@ -205,7 +205,7 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
                     int cr = Integer.parseInt(record.getCr_single());
 
-                    if(cr <= 300) {
+                    if(cr < 100) {
                         detailsMaker.add(getString(R.string.single_format, getString(R.string.record_cr)), record.getCr_single());
                     }
 
@@ -227,13 +227,13 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
                     int wr = Integer.parseInt(record.getWr_average());
 
-                    if (wr <= 300) {
+                    if (wr < 100) {
                         detailsMaker.add(getString(R.string.average_format, getString(R.string.record_wr)), record.getWr_average());
                     } else {
 
                         int cr = Integer.parseInt(record.getCr_average());
 
-                        if (cr <= 300) {
+                        if (cr < 100) {
                             detailsMaker.add(getString(R.string.average_format, getString(R.string.record_cr)), record.getCr_average());
                         } else {
                             detailsMaker.add(getString(R.string.average_format, getString(R.string.record_nr)), record.getNr_average());

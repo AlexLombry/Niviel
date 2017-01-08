@@ -17,8 +17,8 @@
     <string name="records">Records</string>
     <string name="single">Single</string>
     <string name="average">Moyenne</string>
-    <string name="single_colon">Single: </string>
-    <string name="average_colon">Average: </string>
+    <string name="single_colon">single: </string>
+    <string name="average_colon">average: </string>
     <string name="single_format">%1$s single</string>
     <string name="average_format">%1$s average</string>
 
