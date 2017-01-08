@@ -209,12 +209,11 @@ public class CompetitionFragment extends BaseFragment {
                     titles.add(upcoming);
                 }
 
-                // Ouvre le premier onglet
-                expendFirst(titles);
-
-                getActivity().runOnUiThread(new Runnable() {
+                activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        // Ouvre le premier onglet
+                        expendFirst(titles);
                         adapter.refreshData(titles);
                     }
                 });

@@ -480,6 +480,9 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
      */
     public void switchFragment(BaseFragment fragment) {
 
+        fragment.getStyle();
+
+
         // Remplace le fragment
         fragmentManager
                 .beginTransaction()
