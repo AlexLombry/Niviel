@@ -13,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
-import com.adrastel.niviel.assets.Assets;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.fragments.ProfileFragment;
@@ -37,8 +36,8 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
         @BindView(R.id.first_line) TextView firstLine;
         @BindView(R.id.second_line) TextView secondLine;
         @BindView(R.id.more) ImageButton more;
+        @BindView(R.id.profile) ImageButton profile;
         @BindView(R.id.root_layout) LinearLayout click_area;
-        @BindView(R.id.icon) ImageButton icon;
 
         public ViewHolder(View view) {
             super(view);
@@ -63,9 +62,7 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
         holder.firstLine.setText(follower.name());
         holder.secondLine.setText(follower.wca_id());
 
-        holder.icon.setImageResource(R.drawable.ic_profile);
-        holder.icon.setColorFilter(Assets.getColor(getActivity(), R.color.green_300));
-        holder.icon.setOnClickListener(new View.OnClickListener() {
+        holder.profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ProfileFragment profileFragment = ProfileFragment.newInstance(follower._id());
@@ -94,11 +91,6 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
                         switch (item.getItemId()) {
                             case R.id.unfollow:
                                 onUnfollow(view.getContext(), follower);
-                                return true;
-
-                            case R.id.goto_profile:
-                                ProfileFragment profileFragment = ProfileFragment.newInstance(follower._id());
-                                getActivity().switchFragment(profileFragment);
                                 return true;
                         }
 

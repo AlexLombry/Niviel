@@ -20,3 +20,8 @@ CHANGELOG
 - 1.0.5
     - Bugs mineurs corrigés
     - Icones ameillorées
+
+- 1.0.6
+    - Correction de bugs majeurs
+    - Icones ameillorées
+    -
