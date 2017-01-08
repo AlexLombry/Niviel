@@ -46,12 +46,11 @@ import com.adrastel.niviel.fragments.FollowerFragment;
 import com.adrastel.niviel.fragments.ProfileFragment;
 import com.adrastel.niviel.fragments.RankingFragment;
 import com.adrastel.niviel.services.EditRecordService;
-import com.afollestad.materialdialogs.MaterialDialog;
+import com.kobakei.ratethisapp.RateThisApp;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.cketti.mailto.EmailIntentBuilder;
-import me.msfjarvis.apprate.AppRate;
 
 
 /**
@@ -192,21 +191,14 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 return true;
             }
         });
+    }
 
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
-                .title(R.string.rate_app)
-                .content(R.string.rate_app_message)
-                .iconRes(R.drawable.ic_star_black)
-                .positiveText(R.string.rate_it)
-                .neutralText(R.string.remind_me)
-                .negativeText(R.string.no_thanks);
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-        new AppRate(this)
-                .setMinDaysUntilPrompt(3)
-                .setCustomDialog(builder)
-                .setShowIfAppHasCrashed(false)
-                .init();
-
+        RateThisApp.onStart(this);
+        RateThisApp.showRateDialogIfNeeded(this);
     }
 
     /**

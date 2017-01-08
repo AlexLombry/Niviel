@@ -177,10 +177,6 @@
     <string name="toast_adding">Adding</string>
     <string name="goto_maps">See on the map</string>
     <string name="rate_app">Rate this app</string>
-    <string name="rate_app_message">If you enjoy using WCA Scores, please take a moment to rate it. Thanks for your support!</string>
-    <string name="rate_it">Rate it!</string>
-    <string name="no_thanks">No thanks</string>
-    <string name="remind_me">Remind me later</string>
 
     <!-- Send mail -->
     <string name="mail_subject" translatable="false"><xliff:g id="mail_title">Feedback</xliff:g></string>
