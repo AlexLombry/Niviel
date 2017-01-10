@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.adrastel.niviel.models.BaseModel;
-import com.google.gson.Gson;
 
 /**
  * Record est une classe regroupant les records personnels d'un joueur
@@ -97,15 +96,6 @@ public class Record extends BaseModel implements Parcelable {
             return new Record[size];
         }
     };
-
-    // Pour les logs
-    @Override
-    public String toString() {
-
-        Gson gson = new Gson();
-        return gson.toJson(this);
-
-     }
 
     public String getEvent() {
         return event;

@@ -52,12 +52,6 @@
             android:name=".activities.NotificationActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <provider
-            android:name=".providers.content.SuggestionProvider"
-            android:authorities="com.adrastel.niviel.SuggestionProvider"
-            android:enabled="true"
-            android:exported="false"/>
-
         <service
             android:name=".services.EditRecordService"
             android:enabled="true"

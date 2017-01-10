@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.adrastel.niviel.models.BaseModel;
-import com.google.gson.Gson;
 
 public class Ranking extends BaseModel implements Parcelable {
 
@@ -54,12 +53,6 @@ public class Ranking extends BaseModel implements Parcelable {
         parcel.writeString(citizen);
         parcel.writeString(competition);
         parcel.writeString(details);
-    }
-
-    @Override
-    public String toString() {
-        Gson gson = new Gson();
-        return gson.toJson(this);
     }
 
     public String getWca_id() {

@@ -18,13 +18,10 @@ import android.widget.SimpleAdapter;
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Log;
 import com.adrastel.niviel.assets.WcaUrl;
-import com.adrastel.niviel.models.readable.SuggestionUser;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -153,42 +150,51 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
-                if(!response.isSuccessful()) {
-                    Log.e("HTTP Error");
-                    return;
-                }
 
-                String data = response.body().string();
-                response.close();
-
-                JsonParser jsonParser = new JsonParser();
-                JsonElement jsonTree = jsonParser.parse(data);
-
-                JsonObject jsonObject = jsonTree.getAsJsonObject();
-
-                JsonArray result = jsonObject.getAsJsonArray("result");
-
-                Gson gson = new Gson();
-                ArrayList<SuggestionUser> suggestionUsers = gson.fromJson(result, new TypeToken<ArrayList<SuggestionUser>>() {}.getType());
-
-                suggestions.clear();
-
-                for (int i = 0; i < suggestionUsers.size(); i++) {
-
-                    SuggestionUser suggestionUser = suggestionUsers.get(i);
-
-                    // verifie que l'utilisateur a un id wca
-                    if ((suggestionUser.getType().equals("person") || suggestionUser.getType().equals("suggestionUser")) && suggestionUser.getWca_id() != null) {
-
-                        HashMap<String, String> row = new HashMap<>();
-
-                        row.put("text1", suggestionUser.getName());
-                        row.put("text2", suggestionUser.getWca_id());
-
-                        suggestions.add(row);
-
-                        i++;
+                try {
+                    if(!response.isSuccessful()) {
+                        Log.e("HTTP Error");
+                        return;
                     }
+
+                    String data = response.body().string();
+                    response.close();
+
+                    JSONObject tree = new JSONObject(data);
+                    JSONArray result = tree.getJSONArray("result");
+
+                    suggestions.clear();
+
+                    for (int i = 0; i < result.length(); i++) {
+
+
+                        JSONObject user = result.getJSONObject(i);
+
+                        String type = "";
+                        String name = "";
+                        String wca_id = "";
+
+                        if(user != null) {
+                            type = user.getString("class");
+                            name = user.getString("name");
+                            wca_id = user.getString("wca_id");
+                        }
+
+                        if((type.equals("person") || type.equals("suggestionUser")) && wca_id != null) {
+
+                            HashMap<String, String> row = new HashMap<>();
+
+                            row.put("text1", name);
+                            row.put("text2", wca_id);
+
+                            suggestions.add(row);
+
+                            i++;
+
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
                 runOnUiThread(new Runnable() {
