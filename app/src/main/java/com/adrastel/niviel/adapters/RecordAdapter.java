@@ -94,7 +94,22 @@ public class RecordAdapter extends WebAdapter<RecordAdapter.ViewHolder, Record> 
 
                 Resources resources = getActivity().getResources();
 
-                holder.image.setVisibility(View.GONE);
+                if(user.getPicture() != null) {
+
+                    holder.image.setVisibility(View.VISIBLE);
+                    Uri uri = new WcaUrl()
+                            .localeUrl(user.getPicture())
+                            .toUri();
+
+                    Picasso.with(getActivity())
+                            .load(uri)
+                            .fit()
+                            .centerInside()
+                            .into(holder.image);
+
+
+                } else
+                    holder.image.setVisibility(View.GONE);
 
                 holder.event.setText(getActivity().getString(R.string.two_infos, user.getName(), user.getWca_id()));
                 holder.event.setTextSize(Assets.spToPx(getActivity(), 9));

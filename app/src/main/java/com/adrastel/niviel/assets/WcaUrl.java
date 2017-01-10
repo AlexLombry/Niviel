@@ -16,8 +16,13 @@ public class WcaUrl {
                 .host("www.worldcubeassociation.org");
     }
 
+    public WcaUrl localeUrl(String url) {
+        this.url.addEncodedPathSegment(url);
+        return this;
+    }
+
     public WcaUrl profile(String wca_id) {
-        url.addPathSegments("results/p.php").addEncodedQueryParameter("i", wca_id);
+        url.addEncodedPathSegments("results/p.php").addEncodedQueryParameter("i", wca_id);
         return this;
     }
 
@@ -62,6 +67,7 @@ public class WcaUrl {
         return url.build();
     }
 
+    @Override
     public String toString() {
         return url.toString();
     }

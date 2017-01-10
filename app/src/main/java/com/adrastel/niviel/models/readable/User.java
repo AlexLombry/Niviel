@@ -2,6 +2,7 @@ package com.adrastel.niviel.models.readable;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.models.BaseModel;
@@ -14,12 +15,16 @@ public class User extends BaseModel implements Parcelable {
     private String gender;
     private String competitions;
 
-    public User(String name, String country, String wca_id, String gender, String competitions) {
+    @Nullable
+    private String picture;
+
+    public User(String name, String country, String wca_id, String gender, String competitions, String picture) {
         this.name = name;
         this.country = country;
         this.wca_id = wca_id;
         this.gender = gender;
         this.competitions = competitions;
+        this.picture = picture;
     }
 
     public User(Follower follower) {
@@ -36,6 +41,7 @@ public class User extends BaseModel implements Parcelable {
         wca_id = in.readString();
         gender = in.readString();
         competitions = in.readString();
+        picture = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -70,6 +76,11 @@ public class User extends BaseModel implements Parcelable {
         return competitions;
     }
 
+    @Nullable
+    public String getPicture() {
+        return picture;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -82,5 +93,6 @@ public class User extends BaseModel implements Parcelable {
         parcel.writeString(wca_id);
         parcel.writeString(gender);
         parcel.writeString(competitions);
+        parcel.writeString(picture);
     }
 }

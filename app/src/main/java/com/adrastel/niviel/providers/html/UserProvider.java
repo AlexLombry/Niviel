@@ -27,7 +27,16 @@ public class UserProvider {
             String gender = tds.get(2).text();
             String competitions = tds.get(3).text();
 
-            return new User(name, country, wca_id, gender, competitions);
+            String picture = null;
+
+            try {
+                picture = document.select("#content center img").first().attr("src");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return new User(name, country, wca_id, gender, competitions, picture);
 
         }
         catch (Exception e) {
