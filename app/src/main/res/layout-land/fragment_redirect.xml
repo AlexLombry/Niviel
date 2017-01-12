@@ -31,12 +31,7 @@
         android:text="@string/intro_slide_1" />
 
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/p2"
-        android:visibility="invisible"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,6 +46,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/visitor"/>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="invisible"/>
 
         <Button
             style="@style/Widget.AppCompat.Button.Colored"

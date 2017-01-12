@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.adrastel.niviel.R;
@@ -68,7 +67,7 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        View view = inflater.inflate(R.layout.adapter_list_avatar, parent, false);
+        View view = inflater.inflate(R.layout.adapter_ranking, parent, false);
 
         return new ViewHolder(view);
     }
@@ -101,19 +100,18 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         // Actualise le circle view
         invalidateCircleView(holder.rank, isFollowing);
 
+        holder.profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoProfile(ranking);
+            }
+        });
+
         // charge le menu
         holder.more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loadMenu(view, holder, ranking);
-            }
-        });
-
-        holder.click_area.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                loadMenu(view, holder, ranking);
-                return true;
             }
         });
     }
@@ -152,11 +150,6 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
                     case R.id.share:
                         onShare(ranking);
                         return true;
-
-                    case R.id.goto_profile:
-                        gotoProfile(ranking);
-                        break;
-
 
                     case R.id.follow:
                         if(isFollowing) {
@@ -242,8 +235,8 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         @BindView(R.id.place) CircleView rank;
         @BindView(R.id.first_line) TextView person;
         @BindView(R.id.second_line) TextView result;
+        @BindView(R.id.profile) ImageButton profile;
         @BindView(R.id.more) ImageButton more;
-        @BindView(R.id.root_layout) LinearLayout click_area;
 
 
         public ViewHolder(View itemView) {
