@@ -7,7 +7,13 @@
 
 Retreive easily your records from the World Cube Association on a Android app!
 
-Do not hesitate to send a pull request if you wanna translate the app, fix a bug, or improve the app!
+# How can I imporve the app as a translator
+The app is not translated in your native language? I made an horrible mistake? Fork the project!
+
+You don't know what fork means or you don't have a Github  account but you still want to make a contribution? You can find [here](https://github.com/HerelDev/Niviel/blob/master/app/src/main/res/values/strings.xml), copy the file and send it me at [herel.dev@gmail.com](mailto:herel.dev@gmail.com).
+
+# How can I improve the app as a developer ?
+You have found a bug, you are not satified of the app? Bring your personal touch by forking the project!
 
 # License (GNU GPL v3)
 

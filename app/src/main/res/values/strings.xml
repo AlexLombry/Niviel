@@ -181,6 +181,7 @@
     <string name="rate_app">Rate this app</string>
     <string name="share_app">Share the app</string>
     <string name="share_app_message">Retrieve all your WCA Scores on an Android App! (<xliff:g>bit.ly/2ismF8A</xliff:g>)</string>
+    <string name="translate_contribute">Translate/Contribute</string>
 
     <!-- Send mail -->
     <string name="mail_subject" translatable="false"><xliff:g id="mail_title">Feedback</xliff:g></string>
