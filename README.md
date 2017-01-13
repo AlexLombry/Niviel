@@ -1,4 +1,4 @@
-# WCA-Records
+# WCA Scores
 
 <a href="https://play.google.com/store/apps/details?id=com.adrastel.niviel" target="_blank">
   <img alt="Get it on Google Play"
