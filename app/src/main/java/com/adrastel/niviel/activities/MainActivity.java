@@ -284,6 +284,15 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                         .subject(getString(R.string.mail_subject))
                         .body(getString(R.string.mail_body, Build.MODEL, Build.VERSION.RELEASE, Build.VERSION.SDK_INT, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE))
                         .start();
+                return true;
+
+            case R.id.share:
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_message));
+
+                startActivity(Intent.createChooser(intent, getString(R.string.share_app)));
+                return true;
 
         }
 

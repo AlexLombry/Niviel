@@ -162,11 +162,13 @@
     <string name="share">Partager</string>
     <string name="details">Détails</string>
     <string name="about">À propos</string>
-    <string name="contact">Contact</string>
+    <string name="contact">Contactez-moi</string>
     <string name="goto_internet">Voir le site web</string>
     <string name="toast_adding">Ajout en cours</string>
     <string name="goto_maps">Voir sur la carte</string>
     <string name="rate_app">Notez cette application</string>
+    <string name="share_app">Partager l\'application</string>
+    <string name="share_app_message">Retrouvez tous vos scores WCA sur une application Android ! (<xliff:g>bit.ly/2ismF8A</xliff:g>)</string>
 
     <!-- Others -->
     <string name="intro">Introduction</string>

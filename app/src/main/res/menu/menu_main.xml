@@ -16,11 +16,17 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/contact"
-        android:title="@string/contact"
-        app:showAsAction="never"/>
-    <item
         android:title="@string/settings"
         android:id="@+id/settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/share"
+        android:title="@string/share_app"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/contact"
+        android:title="@string/contact"
+        app:showAsAction="never"/>
 </menu>
