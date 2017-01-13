@@ -1,17 +1,14 @@
 package com.adrastel.niviel.assets;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.TypedValue;
 
-import com.adrastel.niviel.R;
 import com.adrastel.niviel.database.DatabaseHelper;
 import com.adrastel.niviel.database.Follower;
 import com.adrastel.niviel.database.Record;

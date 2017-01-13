@@ -27,3 +27,6 @@ CHANGELOG
 
 - 1.0.7
     - Bugs mineurs corrigés
+
+- 1.0.8
+    - Bugs majeurs corrigés
