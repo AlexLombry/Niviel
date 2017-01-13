@@ -454,6 +454,18 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                 });
                 return null;
 
+            case R.id.contribute:
+
+                runWhenDrawerClose(new Runnable() {
+                    @Override
+                    public void run() {
+                        Uri uri = Uri.parse("https://github.com/HerelDev/Niviel");
+                        startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                    }
+                });
+
+                return null;
+
             default:
                 return ProfileFragment.newInstance(prefId);
 

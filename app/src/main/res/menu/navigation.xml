@@ -51,6 +51,11 @@
                         android:id="@+id/rate"
                         android:title="@string/rate_app"
                         android:icon="@drawable/ic_star_white"/>
+
+                    <item
+                        android:id="@+id/contribute"
+                        android:title="@string/translate_contribute"
+                        android:icon="@drawable/ic_smile"/>
                 </group>
             </menu>
 

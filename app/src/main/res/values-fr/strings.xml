@@ -169,6 +169,7 @@
     <string name="rate_app">Notez cette application</string>
     <string name="share_app">Partager l\'application</string>
     <string name="share_app_message">Retrouvez tous vos scores WCA sur une application Android ! (<xliff:g>bit.ly/2ismF8A</xliff:g>)</string>
+    <string name="translate_contribute">Traduire/Contribuer</string>
 
     <!-- Others -->
     <string name="intro">Introduction</string>

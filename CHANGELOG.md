@@ -30,3 +30,6 @@ CHANGELOG
 
 - 1.0.8
     - Bugs majeurs corrigés
+
+- 1.0.9
+    - Option de contribution ajoutée
