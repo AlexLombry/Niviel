@@ -142,7 +142,8 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
                     .putLong(getString(R.string.pref_time_first_launch), System.currentTimeMillis())
                     .apply();
 
-            startActivity(new Intent(this, MainIntroActivity.class));
+            startActivityForResult(new Intent(this, MainIntroActivity.class), 0);
+            return;
         }
 
         // Paramètre le thème
@@ -290,7 +291,6 @@ public class MainActivity extends BaseActivity implements DrawerLayout.DrawerLis
     }
     /**
      * Lors de l'appui du bouton arrière
-     * <p>
      * Ferme le menu et la barre de recherche
      */
     @Override

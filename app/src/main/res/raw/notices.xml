@@ -15,13 +15,6 @@
     </notice>
 
     <notice>
-        <name>google-gson</name>
-        <url>https://github.com/google/gson</url>
-        <copyright>Copyright 2008 Google Inc.</copyright>
-        <license>Apache Software License 2.0</license>
-    </notice>
-
-    <notice>
         <name>Picasso</name>
         <url>https://github.com/square/picasso</url>
         <copyright>Copyright 2013 Square, Inc.</copyright>

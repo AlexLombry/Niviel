@@ -47,6 +47,7 @@
     <string name="two_infos"><xliff:g>%1$s (%2$s)</xliff:g></string>
     <string name="switch_cube">Changer de cube</string>
     <string name="switch_country">Changer de pays</string>
+    <string name="goto_profile_tip">Maintenez pour allez sur ce profil</string>
 
     <!-- Followers -->
     <string name="follow">Suivre</string>

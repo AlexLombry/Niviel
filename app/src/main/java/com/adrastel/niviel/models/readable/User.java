@@ -18,7 +18,7 @@ public class User extends BaseModel implements Parcelable {
     @Nullable
     private String picture;
 
-    public User(String name, String country, String wca_id, String gender, String competitions, String picture) {
+    public User(String name, String country, String wca_id, String gender, String competitions, @Nullable String picture) {
         this.name = name;
         this.country = country;
         this.wca_id = wca_id;

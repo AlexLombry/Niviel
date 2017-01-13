@@ -24,4 +24,6 @@ CHANGELOG
 - 1.0.6
     - Correction de bugs majeurs
     - Icones ameillorées
-    -
+
+- 1.0.7
+    - Bugs mineurs corrigés

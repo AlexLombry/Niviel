@@ -65,14 +65,6 @@ public class Assets {
         }
     }
 
-    public static boolean isPersonal(Context context, long id) {
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-
-        return id == preferences.getLong(context.getString(R.string.pref_personal_id), -1);
-
-    }
-
     public static Spanned formatHtmlAverageDetails(String average, String details) {
 
         String html = "<strong>" + average + "</strong>" + " (" + details + ")";

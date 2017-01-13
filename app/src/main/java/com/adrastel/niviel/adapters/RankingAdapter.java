@@ -14,7 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.assets.Assets;
@@ -100,10 +102,19 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         // Actualise le circle view
         invalidateCircleView(holder.rank, isFollowing);
 
-        holder.profile.setOnClickListener(new View.OnClickListener() {
+
+        holder.click_area.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getActivity(), R.string.goto_profile_tip, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        holder.click_area.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
                 gotoProfile(ranking);
+                return true;
             }
         });
 
@@ -235,8 +246,8 @@ public class RankingAdapter extends WebAdapter<RankingAdapter.ViewHolder, Rankin
         @BindView(R.id.place) CircleView rank;
         @BindView(R.id.first_line) TextView person;
         @BindView(R.id.second_line) TextView result;
-        @BindView(R.id.profile) ImageButton profile;
         @BindView(R.id.more) ImageButton more;
+        @BindView(R.id.root_layout) LinearLayout click_area;
 
 
         public ViewHolder(View itemView) {

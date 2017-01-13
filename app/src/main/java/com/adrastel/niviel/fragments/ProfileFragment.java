@@ -28,9 +28,6 @@ import com.adrastel.niviel.services.EditRecordService;
 public class ProfileFragment extends BaseFragment {
 
 
-    public static final String FRAGMENT_TAG = "profileFragment";
-
-
     private MainActivity activity;
     private TabLayout tabLayout;
 

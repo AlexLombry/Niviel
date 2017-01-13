@@ -14,7 +14,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="@dimen/p2"
-        android:layout_marginRight="@dimen/p2"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="24dp"
         app:backgroundColor="@color/colorAccent"
         app:text="@string/zero"
@@ -26,7 +26,6 @@
         android:layout_weight="1"
         android:paddingTop="20dp"
         android:paddingBottom="5dp"
-        android:paddingLeft="24dp"
         android:orientation="vertical">
 
         <TextView
@@ -48,25 +47,11 @@
 
     </LinearLayout>
 
-
-    <ImageButton
-        android:id="@+id/profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/p2"
-        android:layout_marginRight="@dimen/p2"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/profile"
-        android:layout_gravity="center_vertical"
-        android:clickable="true"
-        android:src="@drawable/ic_profile_black"/>
-
-
     <ImageButton
         android:id="@+id/more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/p2"
+        android:paddingLeft="8dp"
         android:paddingRight="@dimen/p2"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_more"

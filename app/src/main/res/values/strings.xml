@@ -60,7 +60,8 @@
     <string name="world">World</string>
     <string name="two_infos"><xliff:g>%1$s (%2$s)</xliff:g></string>
     <string name="switch_cube">Switch cube</string>
-    <string name="switch_country">Switch pays</string>
+    <string name="switch_country">Switch country</string>
+    <string name="goto_profile_tip">Hold to go to this profile</string>
 
     <!-- Followers -->
     <string name="follow">Follow</string>

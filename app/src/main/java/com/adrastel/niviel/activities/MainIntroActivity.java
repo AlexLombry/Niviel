@@ -11,9 +11,6 @@ import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
 
 public class MainIntroActivity extends IntroActivity {
 
-
-
-
     private NavigationPolicy policy = new NavigationPolicy() {
         @Override
         public boolean canGoForward(int i) {
@@ -54,6 +51,12 @@ public class MainIntroActivity extends IntroActivity {
             .background(R.color.green_200)
             .image(R.drawable.ic_followers)
             .build());
+    }
+
+    @Override
+    public void finish() {
+        setResult(MainActivity.RESTART_ACTIVITY);
+        super.finish();
     }
 
     @Override
