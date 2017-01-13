@@ -3,6 +3,7 @@
 *.jks
 *.apk
 *.bat
+!gradlew.bat
 .gradle
 local.properties
 .idea/
