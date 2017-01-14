@@ -33,3 +33,7 @@ CHANGELOG
 
 - 1.0.9
     - Option de contribution ajoutée
+
+- 1.0.10
+    - Bug majeurs corrigés
+    - Harmonisation de l'interface
