@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adrastel.niviel.R;
 import com.adrastel.niviel.database.DatabaseHelper;
@@ -36,7 +37,6 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
         @BindView(R.id.first_line) TextView firstLine;
         @BindView(R.id.second_line) TextView secondLine;
         @BindView(R.id.more) ImageButton more;
-        @BindView(R.id.profile) ImageButton profile;
         @BindView(R.id.root_layout) LinearLayout click_area;
 
         public ViewHolder(View view) {
@@ -62,14 +62,22 @@ public class FollowerAdapter extends BaseAdapter<FollowerAdapter.ViewHolder> {
         holder.firstLine.setText(follower.name());
         holder.secondLine.setText(follower.wca_id());
 
-        holder.profile.setOnClickListener(new View.OnClickListener() {
+
+        holder.click_area.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ProfileFragment profileFragment = ProfileFragment.newInstance(follower._id());
-                getActivity().switchFragment(profileFragment);
+                Toast.makeText(getActivity(), R.string.goto_profile_tip, Toast.LENGTH_LONG).show();
             }
         });
 
+        holder.click_area.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                ProfileFragment fragment = ProfileFragment.newInstance(follower._id());
+                getActivity().switchFragment(fragment);
+                return true;
+            }
+        });
 
         loadMenu(holder, follower);
     }

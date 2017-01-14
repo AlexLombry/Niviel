@@ -36,20 +36,6 @@
 
     </LinearLayout>
 
-
-    <ImageButton
-        android:id="@+id/profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/p2"
-        android:layout_marginRight="@dimen/p2"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/profile"
-        android:layout_gravity="center_vertical"
-        android:clickable="true"
-        android:src="@drawable/ic_profile_black"/>
-
-
     <ImageButton
         android:id="@+id/more"
         android:layout_width="wrap_content"
